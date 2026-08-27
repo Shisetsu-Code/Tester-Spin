@@ -146,13 +146,13 @@ def _group_presence(fields: dict[str, str], groups: dict[str, tuple[str, ...]]) 
 def analyze_response(fields: dict[str, str]) -> dict[str, Any]:
     """Classify one Pragmatic gameService response without discarding unknowns.
 
-    The analyzer deliberately separates *observation* from *execution*. Unknown
+    The analyzer deliberately separates observation from execution. Unknown
     continuation states are described and fingerprinted so they can be compared
     across games. Only states already implemented by the transport state machine
     are marked with an automatic handler.
     """
     normalized = {str(key): "" if value is None else str(value) for key, value in fields.items()}
-    na = normalized.get("na", "")
+    na = normalized.get("na", "").strip().lower()
     feature_groups = _group_presence(normalized, FEATURE_GROUPS)
     value_groups = _group_presence(normalized, VALUE_GROUPS)
     explicit_actions = _explicit_actions(normalized)
@@ -169,6 +169,12 @@ def analyze_response(fields: dict[str, str]) -> dict[str, Any]:
     terminal_hint = False
     if error_value not in ("", "0"):
         state_kind = "server_error"
+    elif na == "b":
+        state_kind = "bonus_required"
+        automatic_handler = "doBonus"
+    elif na in {"cb", "bc"}:
+        state_kind = "bonus_collect_required"
+        automatic_handler = "doCollectBonus"
     elif na == "c":
         state_kind = "collect_required"
         automatic_handler = "doCollect"
