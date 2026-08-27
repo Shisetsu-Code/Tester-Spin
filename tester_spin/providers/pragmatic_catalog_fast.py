@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+import re
 import threading
 import time
 from concurrent.futures import Future, ThreadPoolExecutor, as_completed
-from pathlib import Path
 from typing import Any
 
 from tester_spin.models import Game, utc_now_iso
@@ -20,10 +20,7 @@ from tester_spin.providers.pragmatic_catalog_dom import (
 MUTATION_OBSERVER_JS = r"""
 () => {
   if (window.__testerSpinCatalogMutation) return;
-  const state = {
-    seq: 0,
-    last: performance.now(),
-  };
+  const state = {seq: 0, last: performance.now()};
   const observer = new MutationObserver((records) => {
     state.seq += Math.max(1, records.length);
     state.last = performance.now();
@@ -40,6 +37,120 @@ MUTATION_OBSERVER_JS = r"""
   window.__testerSpinCatalogMutation = state;
 }
 """
+
+
+# Unlike the visible-card collector, this intentionally ignores CSS visibility.
+# The HAR shows Load More can reveal cards already present client-side and only then
+# lazy-load their images. If those cards already exist in the DOM, reading them now
+# eliminates most or all Load More clicks.
+ALL_CARD_SNAPSHOT_JS = r"""
+() => {
+  const attrMap = (el) => {
+    const out = {};
+    if (!el || !el.attributes) return out;
+    for (const a of Array.from(el.attributes)) {
+      if (a && a.name && a.value) out[a.name] = a.value;
+    }
+    return out;
+  };
+
+  const sourceCandidates = (img) => [
+    img.getAttribute('data-src') || '',
+    img.getAttribute('data-lazy-src') || '',
+    img.getAttribute('data-original') || '',
+    img.getAttribute('src') || '',
+    img.currentSrc || '',
+    img.getAttribute('data-srcset') || '',
+    img.getAttribute('srcset') || '',
+  ].filter(Boolean);
+
+  const sourceFor = (img) => {
+    const values = sourceCandidates(img);
+    return values.find(v => /(?:339x180|338x180|340x180|300x160|600x320)/i.test(v)) ||
+           values.find(v => /\/wp-content\/uploads\//i.test(v)) ||
+           values[0] || '';
+  };
+
+  const gameishImage = (img) => {
+    const values = sourceCandidates(img);
+    const joined = values.join(' ');
+    const alt = (img.alt || img.title || '').trim();
+    if (/(?:339x180|338x180|340x180|300x160|600x320)/i.test(joined)) return true;
+    if (/\/wp-content\/uploads\//i.test(joined) && alt.length >= 2) return true;
+    return false;
+  };
+
+  const chooseCard = (img) => {
+    let node = img;
+    let best = img.parentElement || img;
+    for (let i = 0; i < 9 && node && node.parentElement; i++) {
+      node = node.parentElement;
+      const controls = node.querySelectorAll(
+        'a,button,[role="button"],[data-href],[data-url],[data-game],[data-slug],[onclick]'
+      );
+      const gameImgs = Array.from(node.querySelectorAll('img')).filter(gameishImage);
+      const text = (node.innerText || node.textContent || '').trim();
+      if (gameImgs.length >= 1 && gameImgs.length <= 4 && (controls.length >= 1 || text.length > 0)) {
+        best = node;
+        if (gameImgs.length === 1) break;
+      }
+    }
+    return best;
+  };
+
+  const cards = [];
+  const seen = new Set();
+  for (const img of Array.from(document.querySelectorAll('img')).filter(gameishImage)) {
+    const card = chooseCard(img);
+    const src = sourceFor(img);
+    const key = src + '|' + (img.alt || '') + '|' + (card.textContent || '').slice(0, 160);
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    const links = [];
+    for (const el of Array.from(card.querySelectorAll(
+      'a,button,[role="button"],[data-href],[data-url],[data-game],[data-slug],[onclick]'
+    ))) {
+      links.push({
+        tag: el.tagName,
+        text: (el.innerText || el.textContent || el.value || '').trim().slice(0, 300),
+        href: el.href || el.getAttribute('href') || '',
+        attrs: attrMap(el),
+      });
+    }
+
+    const cardAttrs = [];
+    let p = card;
+    for (let depth = 0; depth < 5 && p; depth++, p = p.parentElement) {
+      cardAttrs.push({tag: p.tagName, attrs: attrMap(p)});
+    }
+
+    cards.push({
+      text: (card.innerText || card.textContent || '').trim().slice(0, 1200),
+      image: {
+        src,
+        raw_src: img.getAttribute('src') || '',
+        alt: img.alt || '',
+        title: img.title || '',
+        width: Number(img.getAttribute('width') || 0),
+        height: Number(img.getAttribute('height') || 0),
+        attrs: attrMap(img),
+      },
+      links,
+      card_attrs: cardAttrs,
+    });
+  }
+  return cards;
+}
+"""
+
+
+def _all_snapshot(page) -> list[dict[str, Any]]:
+    try:
+        value = page.evaluate(ALL_CARD_SNAPSHOT_JS)
+        return value if isinstance(value, list) else []
+    except Exception:
+        return []
 
 
 def _snapshot_key(snapshot: dict[str, Any], base_url: str) -> str:
@@ -80,13 +191,6 @@ def _mutation_seq(page) -> int:
 
 
 def _wait_for_dom_update(page, before_seq: int) -> None:
-    """Wait for actual DOM activity, not an arbitrary multi-second sleep.
-
-    Load More in the observed Pragmatic catalog changes visibility/classes and starts
-    lazy image loading. MutationObserver lets us react as soon as that happens. A
-    short fallback covers animation/frame scheduling without turning every click
-    into the previous 15-second polling loop.
-    """
     try:
         page.wait_for_function(
             "before => Number((window.__testerSpinCatalogMutation || {}).seq || 0) > before",
@@ -122,14 +226,13 @@ def crawl_pragmatic_catalog_fast(
     max_pages: int,
     on_game: GameCallback | None = None,
 ) -> list[Game]:
-    """Fast Load More crawler for Pragmatic's preloaded/lazy-visible catalog.
+    """Fast catalog crawler for Pragmatic's preloaded/lazy-visible game grid.
 
-    Performance properties:
-    - one full DOM snapshot per successful click instead of repeated 250 ms rescans;
-    - MutationObserver-driven settling, normally hundreds of ms rather than 15 s;
-    - no full-page HTML write on successful clicks;
-    - new games are emitted immediately, before thumbnail network I/O;
-    - thumbnail/game.json persistence runs concurrently after enumeration.
+    First enumerate game-like cards regardless of CSS visibility. A single Load More
+    click is then enough to tell whether the site is merely revealing already-known
+    cards or structurally appending new cards. Structural additions are followed
+    until they stop; visibility-only pagination terminates immediately because all
+    hidden cards have already been captured.
     """
     by_slug: dict[str, Game] = {}
     persistence_source: dict[str, str] = {}
@@ -155,21 +258,19 @@ def crawl_pragmatic_catalog_fast(
             by_slug[game.slug] = game
             persistence_source[game.slug] = source
             new_count += 1
-
-            # Do not block catalog discovery on thumbnail HTTP and disk writes.
             if on_game is not None:
                 on_game(game)
             progress(f"  + [{source}] {game.name} — {game.url}")
         return new_count
 
     progress(f"Catálogo Pragmatic FAST-DOM — {provider.catalog_url}")
-    progress("Modo rápido: MutationObserver + delta DOM; miniaturas diferidas y paralelas.")
+    progress("Modo rápido: enumera tarjetas ocultas/preloaded; Load More queda como verificación/fallback.")
 
     from playwright.sync_api import sync_playwright
 
     loads_done = 0
-    no_growth = 0
     final_snapshot: list[dict[str, Any]] = []
+    preloaded_complete = False
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -179,8 +280,6 @@ def crawl_pragmatic_catalog_fast(
             page.goto(provider.catalog_url, wait_until="domcontentloaded", timeout=60_000)
             for label in ("Accept All", "Accept all", "Allow all", "I agree"):
                 try:
-                    import re
-
                     control = page.get_by_role("button", name=re.compile(re.escape(label), re.I))
                     if control.count() and control.first.is_visible():
                         control.first.click(timeout=1_000)
@@ -191,11 +290,18 @@ def crawl_pragmatic_catalog_fast(
             _install_mutation_observer(page)
             page.wait_for_timeout(150)
 
-            current = _snapshot(page)
+            visible_initial = _snapshot(page)
+            current = _all_snapshot(page)
+            if not current:
+                current = visible_initial
             current_keys = _snapshot_keys(current, provider.catalog_url)
-            provider._write_json(diag_root / "visible-cards-0000.json", current)
-            ingest(current, "fast-dom:0")
-            progress(f"DOM inicial: tarjetas={len(current)}, juegos={len(by_slug)}")
+
+            provider._write_json(diag_root / "all-cards-0000.json", current)
+            ingest(current, "preloaded-dom:0")
+            progress(
+                f"DOM inicial: visibles={len(visible_initial)}, todas={len(current)}, "
+                f"juegos={len(by_slug)}"
+            )
 
             while loads_done < max_loads and not stop_event.is_set():
                 control = _find_load_more(page)
@@ -203,10 +309,9 @@ def crawl_pragmatic_catalog_fast(
                     progress("Load More Games ya no está visible: catálogo agotado.")
                     break
 
-                loads_done += 1
                 before_keys = current_keys
-                before_count = len(current)
                 before_seq = _mutation_seq(page)
+                loads_done += 1
 
                 try:
                     strategy = _click_load_more(page, control)
@@ -215,60 +320,64 @@ def crawl_pragmatic_catalog_fast(
                     break
 
                 _wait_for_dom_update(page, before_seq)
-                after = _snapshot(page)
-                after_keys = _snapshot_keys(after, provider.catalog_url)
-                delta = _delta_snapshots(after, before_keys, provider.catalog_url)
-
-                # One compact retry is enough for a requestAnimationFrame / lazy-load
-                # edge case, while avoiding the old 15 s polling loop.
-                if not delta and len(after) <= before_count:
-                    page.wait_for_timeout(180)
+                after = _all_snapshot(page)
+                if not after:
                     after = _snapshot(page)
-                    after_keys = _snapshot_keys(after, provider.catalog_url)
-                    delta = _delta_snapshots(after, before_keys, provider.catalog_url)
+                after_keys = _snapshot_keys(after, provider.catalog_url)
+                structural_delta = _delta_snapshots(after, before_keys, provider.catalog_url)
 
-                new_count = ingest(delta, f"fast-dom:{loads_done}")
+                if not structural_delta:
+                    # One short frame/lazy-load retry. If still no new structural card,
+                    # this click only changed visibility of cards already captured.
+                    page.wait_for_timeout(180)
+                    after = _all_snapshot(page) or _snapshot(page)
+                    after_keys = _snapshot_keys(after, provider.catalog_url)
+                    structural_delta = _delta_snapshots(after, before_keys, provider.catalog_url)
+
+                new_count = ingest(structural_delta, f"appended-dom:{loads_done}")
                 current = after
                 current_keys = after_keys
 
-                if delta:
-                    provider._write_json(diag_root / f"delta-cards-{loads_done:04d}.json", delta)
-
-                progress(
-                    f"Load More #{loads_done}: click={strategy}, +tarjetas={len(delta)}, "
-                    f"+juegos={new_count}, total={len(by_slug)}"
-                )
-
-                if delta or new_count:
-                    no_growth = 0
+                if structural_delta:
+                    provider._write_json(
+                        diag_root / f"delta-cards-{loads_done:04d}.json",
+                        structural_delta,
+                    )
+                    progress(
+                        f"Load More #{loads_done}: click={strategy}, "
+                        f"+estructurales={len(structural_delta)}, +juegos={new_count}, total={len(by_slug)}"
+                    )
                     continue
 
-                no_growth += 1
-                progress(f"Click sin crecimiento ({no_growth}/2); guardando diagnóstico completo.")
-                provider._write_json(diag_root / f"visible-cards-stall-{loads_done:04d}.json", after)
-                try:
-                    (diag_root / f"dom-stall-{loads_done:04d}.html").write_text(
-                        page.content(), encoding="utf-8"
-                    )
-                except Exception:
-                    pass
-                if no_growth >= 2:
-                    break
+                preloaded_complete = True
+                progress(
+                    f"Load More #{loads_done}: click={strategy}, sin tarjetas estructurales nuevas. "
+                    f"Las tarjetas restantes ya estaban precargadas; total={len(by_slug)}."
+                )
+                break
 
             final_snapshot = current
+        except Exception:
+            try:
+                provider._write_json(diag_root / "all-cards-error.json", _all_snapshot(page))
+                (diag_root / "dom-error.html").write_text(page.content(), encoding="utf-8")
+            except Exception:
+                pass
+            raise
         finally:
             context.close()
             browser.close()
 
-    provider._write_json(diag_root / "visible-cards-final.json", final_snapshot)
+    provider._write_json(diag_root / "all-cards-final.json", final_snapshot)
 
     games = sorted(by_slug.values(), key=lambda item: item.name.casefold())
     provider._write_catalog_index(games)
 
-    # Thumbnails are useful for the GUI but should not serialize discovery.
+    # The GUI receives games immediately during enumeration. Native thumbnail and
+    # game.json persistence is intentionally deferred so it cannot block Load More.
     if games and not stop_event.is_set():
-        workers = min(12, max(4, len(games) // 20 + 1))
-        progress(f"Catálogo enumerado: {len(games)} juegos. Guardando miniaturas con {workers} workers...")
+        workers = min(10, max(4, len(games) // 25 + 1))
+        progress(f"Enumeración terminada: {len(games)} juegos. Miniaturas en paralelo ({workers} workers)...")
         errors = 0
         completed = 0
         futures: list[Future[tuple[Game, str]]] = []
@@ -293,7 +402,6 @@ def crawl_pragmatic_catalog_fast(
                 if error:
                     errors += 1
                     progress(f"[{game.name}] miniatura/metadata: {error}")
-                # Refresh storage/UI now that thumbnail_path may be available.
                 if on_game is not None:
                     on_game(game)
                 if completed % 25 == 0 or completed == len(games):
@@ -303,11 +411,12 @@ def crawl_pragmatic_catalog_fast(
     provider._write_json(
         diag_root / "summary.json",
         {
-            "schema": "tester-spin/pragmatic-fast-dom-catalog/v1",
+            "schema": "tester-spin/pragmatic-fast-dom-catalog/v2",
             "updated_at": utc_now_iso(),
             "count": len(games),
             "loads_done": loads_done,
-            "strategy": "mutation-observer + delta snapshots + parallel artifact persistence",
+            "preloaded_complete": preloaded_complete,
+            "strategy": "hidden/preloaded DOM enumeration + structural Load More verification + parallel persistence",
             "games": [
                 {
                     "name": game.name,
