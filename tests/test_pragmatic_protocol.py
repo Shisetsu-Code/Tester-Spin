@@ -16,6 +16,19 @@ class PragmaticProtocolAnalysisTests(unittest.TestCase):
         self.assertFalse(analysis["terminal_hint"])
         self.assertIn("win", analysis["value_groups"])
 
+    def test_bonus_states_are_understood(self) -> None:
+        cases = (
+            ("b", "bonus_required", "doBonus"),
+            ("cb", "bonus_collect_required", "doCollectBonus"),
+            ("bc", "bonus_collect_required", "doCollectBonus"),
+            ("B", "bonus_required", "doBonus"),
+        )
+        for na, state_kind, handler in cases:
+            with self.subTest(na=na):
+                analysis = analyze_response({"na": na, "index": "5", "counter": "8"})
+                self.assertEqual(analysis["state_kind"], state_kind)
+                self.assertEqual(analysis["automatic_handler"], handler)
+
     def test_feature_spin_continuation_is_understood(self) -> None:
         analysis = analyze_response({"na": "s", "fs": "3", "fsmax": "10", "tw": "0"})
         self.assertEqual(analysis["state_kind"], "feature_spin_continuation")
