@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import unittest
 
-from tester_spin.providers.pragmatic_catalog_fast import _delta_snapshots, _snapshot_keys
+from tester_spin.providers.pragmatic_catalog_preloaded import _delta, _keys
 
 
-class PragmaticFastCatalogTests(unittest.TestCase):
-    def test_delta_only_returns_new_game_cards(self) -> None:
+class PragmaticPreloadedCatalogTests(unittest.TestCase):
+    def test_delta_only_returns_structurally_new_game_cards(self) -> None:
         base = "https://www.pragmaticplay.com/en/games/"
         candy = {
             "text": "Candy Rush",
@@ -29,8 +29,8 @@ class PragmaticFastCatalogTests(unittest.TestCase):
             "card_attrs": [],
         }
 
-        before = _snapshot_keys([candy], base)
-        delta = _delta_snapshots([candy, sugar], before, base)
+        before = _keys([candy], base)
+        delta = _delta([candy, sugar], before, base)
 
         self.assertEqual(len(delta), 1)
         self.assertEqual(delta[0]["text"], "Sugar Rush 1000")
