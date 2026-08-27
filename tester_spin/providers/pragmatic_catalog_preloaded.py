@@ -249,6 +249,7 @@ def crawl_pragmatic_catalog_preloaded(
     loads_done = 0
     preloaded_complete = False
     last_all: list[dict[str, Any]] = []
+    no_growth_streak = 0
 
     progress("Catálogo ULTRA: leyendo tarjetas ocultas/preloaded antes de pulsar Load More.")
 
@@ -273,10 +274,12 @@ def crawl_pragmatic_catalog_preloaded(
             visible = _snapshot(page)
             all_cards = _all_cards(page) or visible
             all_keys = _keys(all_cards, provider.catalog_url)
+            hidden_preloaded = max(0, len(all_cards) - len(visible))
             ingest(all_cards, "preloaded-dom:0")
             provider._write_json(diag / "all-cards-0000.json", all_cards)
             progress(
-                f"Inicial: visibles={len(visible)}, DOM total={len(all_cards)}, juegos={len(by_slug)}"
+                f"Inicial: visibles={len(visible)}, DOM total={len(all_cards)}, "
+                f"ocultas/preloaded={hidden_preloaded}, juegos={len(by_slug)}"
             )
 
             while loads_done < max_loads and not stop_event.is_set():
@@ -310,14 +313,45 @@ def crawl_pragmatic_catalog_preloaded(
                 )
 
                 if added_cards:
+                    no_growth_streak = 0
                     provider._write_json(diag / f"delta-{loads_done:04d}.json", added_cards)
                     continue
 
-                # No structural cards were appended. Because all hidden cards were
-                # already enumerated, this click only changed visibility/lazy images.
-                preloaded_complete = True
-                progress("Sin estructuras nuevas: las tandas restantes ya estaban precargadas. No hacen falta más clicks.")
-                break
+                no_growth_streak += 1
+
+                # Strong case: we already saw hidden game cards before clicking. If a
+                # click changes no structure, it is only revealing/lazy-loading cards
+                # we already captured, so further clicks add no catalog information.
+                if hidden_preloaded > 0:
+                    preloaded_complete = True
+                    progress(
+                        "Sin estructuras nuevas y ya había tarjetas ocultas precargadas: "
+                        "catálogo obtenido sin recorrer todas las tandas visuales."
+                    )
+                    break
+
+                # Inconclusive DOM: do NOT repeat the old premature-stop bug. Keep
+                # clicking while the button survives, allowing intermittent no-op or
+                # animation-only batches. Eight consecutive no-growth clicks is the
+                # safety guard, not one or two.
+                if _find_load_more(page) is None:
+                    progress("Sin crecimiento y el botón desapareció: catálogo agotado.")
+                    break
+                if no_growth_streak >= 8:
+                    progress("Ocho clicks consecutivos sin estructuras nuevas; se detiene por guardia de seguridad.")
+                    provider._write_json(diag / f"stall-{loads_done:04d}.json", after)
+                    try:
+                        (diag / f"dom-stall-{loads_done:04d}.html").write_text(
+                            page.content(), encoding="utf-8"
+                        )
+                    except Exception:
+                        pass
+                    break
+
+                progress(
+                    f"Click sin crecimiento concluyente ({no_growth_streak}/8); "
+                    "el botón sigue activo, se continúa."
+                )
 
             last_all = all_cards
         except Exception:
@@ -360,12 +394,13 @@ def crawl_pragmatic_catalog_preloaded(
     provider._write_json(
         diag / "summary.json",
         {
-            "schema": "tester-spin/pragmatic-preloaded-catalog/v1",
+            "schema": "tester-spin/pragmatic-preloaded-catalog/v2",
             "updated_at": utc_now_iso(),
             "count": len(games),
             "loads_done": loads_done,
+            "hidden_preloaded_initial": hidden_preloaded if 'hidden_preloaded' in locals() else 0,
             "preloaded_complete": preloaded_complete,
-            "strategy": "all hidden/preloaded DOM first; Load More structural verification only",
+            "strategy": "hidden/preloaded DOM first; structural Load More fallback; 8-click inconclusive guard",
             "games": [
                 {
                     "name": g.name,
