@@ -5,19 +5,18 @@ from pathlib import Path
 
 from tester_spin.models import Game, GameTestResult
 from tester_spin.providers.base import GameCallback, Progress
-from tester_spin.providers.pragmatic_catalog_dom import crawl_pragmatic_catalog_dom
+from tester_spin.providers.pragmatic_catalog_fast import crawl_pragmatic_catalog_fast
 from tester_spin.providers.pragmatic_endpoint import PragmaticProvider as _EndpointPragmaticProvider
 from tester_spin.providers.pragmatic_protocol import analyze_response, summarize_analysis_files
 
 
 class PragmaticProvider(_EndpointPragmaticProvider):
-    """Pragmatic adapter with visible-DOM catalog enumeration and endpoint game I/O.
+    """Pragmatic adapter with fast visible-DOM catalog enumeration and endpoint game I/O.
 
-    The catalog's Load More control does not necessarily fetch a new catalog page.
-    The observed browser HAR shows lazy-loaded game images after the click without a
-    catalog XHR/fetch. Catalog discovery therefore treats newly visible live DOM
-    cards/images as authoritative and recovers slugs from href/data-* attributes or,
-    when necessary, from native thumbnail filenames.
+    The catalog's Load More control reveals cards already present in the frontend and
+    lazy-loads their images. Catalog discovery therefore observes live DOM mutations,
+    processes only newly visible cards, and defers thumbnail persistence so image I/O
+    does not serialize the Load More loop.
 
     Once a game is selected, discovery/bootstrap and all game state transitions are
     handled by the endpoint-first implementation through HTTP/gameService. Every
@@ -33,8 +32,8 @@ class PragmaticProvider(_EndpointPragmaticProvider):
         max_pages: int = 100,
         on_game: GameCallback | None = None,
     ) -> list[Game]:
-        progress("Catálogo híbrido v3: tarjetas visibles del DOM; protocolo de juego por endpoint.")
-        return crawl_pragmatic_catalog_dom(
+        progress("Catálogo híbrido v4 FAST: MutationObserver + delta DOM; protocolo por endpoint.")
+        return crawl_pragmatic_catalog_fast(
             self,
             stop_event=stop_event,
             progress=progress,
