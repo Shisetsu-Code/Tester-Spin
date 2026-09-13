@@ -4,7 +4,7 @@ import threading
 
 from tester_spin.models import Game, GameTestResult
 from tester_spin.providers.base import Progress
-from tester_spin.providers import bgaming_exhaustive as _exhaustive
+import tester_spin.providers.bgaming_exhaustive as _exhaustive
 from tester_spin.providers.bgaming_path_policy import (
     begin_policy_run,
     end_policy_run,
