@@ -1,0 +1,945 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T09:25:52+00:00",
+  "source_commit": "c98ad4264ce542a06a267e2e6a013bad3a6ce216",
+  "provider": "bgaming",
+  "game": {
+    "slug": "hot-chilli-bells",
+    "name": "Hot Chilli Bells",
+    "symbol": "HotChilliBells",
+    "url": "https://demo.bgaming-network.com/play/HotChilliBells/FUN?server=demo"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "hot-chilli-bells",
+    "game_name": "Hot Chilli Bells",
+    "game_url": "https://demo.bgaming-network.com/play/HotChilliBells/FUN?server=demo",
+    "requested_spins": 2,
+    "successful_spins": 0,
+    "failed_spins": 2,
+    "status": "ERROR",
+    "symbol": "HotChilliBells",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": true,
+        "wire_command": "spin"
+      },
+      {
+        "id": "PURCHASE_BONUS_BUY",
+        "kind": "PURCHASE",
+        "observed": true,
+        "client_observed": false,
+        "executable": true,
+        "discovery_state": "SERVER_ADVERTISED_PROBE",
+        "wire_command": "spin",
+        "purchased_feature": "bonus_buy",
+        "purchased_feature_level": null,
+        "feature_multiplier": 1200,
+        "base_multiplier": 20,
+        "cost_multiplier": 60.0,
+        "source": "init.feature_multipliers+provider-probe"
+      }
+    ],
+    "started_at": "2026-09-13T09:25:46+00:00",
+    "finished_at": "2026-09-13T09:25:52+00:00",
+    "elapsed_ms": 5780.99999999904,
+    "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/HotChilliBells/2367143/<session>",
+    "run_dir": "2026-09-13_06-25-46-bgaming-http-api-v2",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": false,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": null,
+        "elapsed_ms": 671.9999999986612,
+        "symbol": "HotChilliBells",
+        "endpoint": "https://demo.bgaming-network.com/api/HotChilliBells/2367143/<session>",
+        "na": "",
+        "terminal": false,
+        "wire_steps": 0,
+        "warning": "",
+        "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/HotChilliBells/2367143/<session>",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli Bells\\tests\\2026-09-13_06-25-46-bgaming-http-api-v2\\SPIN\\attempt-001"
+      },
+      {
+        "number": 1,
+        "ok": false,
+        "mode_id": "PURCHASE_BONUS_BUY",
+        "mode_kind": "PURCHASE",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": null,
+        "elapsed_ms": 1438.0000000019209,
+        "symbol": "HotChilliBells",
+        "endpoint": "https://demo.bgaming-network.com/api/HotChilliBells/2367143/<session>",
+        "na": "",
+        "terminal": false,
+        "wire_steps": 0,
+        "warning": "",
+        "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/HotChilliBells/2367143/<session>",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli Bells\\tests\\2026-09-13_06-25-46-bgaming-http-api-v2\\PURCHASE_BONUS_BUY\\attempt-001"
+      }
+    ]
+  },
+  "artifact_bytes_embedded": 22333,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 945,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "hot-chilli-bells",
+          "name": "Hot Chilli Bells",
+          "identifier": "HotChilliBells"
+        },
+        "generated_at": "2026-09-13T09:25:52+00:00",
+        "source_run": "2026-09-13_06-25-46-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 729,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "hot-chilli-bells",
+          "name": "Hot Chilli Bells",
+          "identifier": "HotChilliBells"
+        },
+        "generated_at": "2026-09-13T09:25:52+00:00",
+        "source_run": "2026-09-13_06-25-46-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "bootstrap.json": {
+      "encoding": "json",
+      "bytes": 6370,
+      "value": {
+        "identifier": "HotChilliBells",
+        "launch_url": "https://demo.bgaming-network.com/games/HotChilliBells/FUN",
+        "api_url": "https://demo.bgaming-network.com/api/HotChilliBells/2367143/<session>",
+        "options": {
+          "env": "production",
+          "csrfTokenHeaderName": "X-CSRF-Token",
+          "csrfTokenHeaderValue": "<redacted>",
+          "play_token": "<redacted>",
+          "game": "slots/hot_chilli_bells",
+          "identifier": "HotChilliBells",
+          "title": "Hot Chilli Bells",
+          "currency": "FUN",
+          "balance_polling_interval": 30000,
+          "cache_id": "5a487d0b36369fd62b369301f5e9b2da60c9c8ab3b752dcc0840d955e17c0685",
+          "cache_player_id": "a87338fb8e1fd7501996cace73d49d7fa87f85a92ce5c7842922aea42245b290",
+          "api": "https://demo.bgaming-network.com/api/HotChilliBells/2367143/<session>",
+          "rules_url": "https://rules.bgaming-network.com/en/HotChilliBells.json",
+          "deposit_url": null,
+          "games_page_url": "https://www.bgaming.com/games.html",
+          "history_url": null,
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09a16-5342-770b-8e65-2eaa8a47893e/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/HotChilliBells/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY1OTE0NDl9LCJleHAiOjE4MDQ5Mjk5NDl9.F_eDyGssaX7sUBmJqXbPUchLm9DgrZynvphUv5JeHY8",
+          "websocket_url": "wss://demo.bgaming-network.com:443/cable",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=HotChilliBells&play_token=01a09a16-5342-770b-8e65-2eaa8a47893e&server_id=demo",
+          "ui": {
+            "home_button": true,
+            "full_screen_prompt": true,
+            "logo": "standard",
+            "skin": "basic",
+            "skins": [
+              "basic"
+            ],
+            "brand_logo": null,
+            "brand": {
+              "name": "",
+              "logo": null,
+              "logo_in_game": null
+            },
+            "autospins_dialog": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "gamble_enabled": true,
+            "show_rtp_in_rules": true
+          },
+          "resources_path": "https://cdn.bgaming-network.com/html/HotChilliBells",
+          "custom": {},
+          "actual_currency_rate": 0.0,
+          "sound_enabled": true,
+          "games_loader_source": "https://cdn.bgaming-network.com/html/HotChilliBells/loader.js?1789291549",
+          "game_bundle_source": "https://cdn.bgaming-network.com/html/HotChilliBells/bundle.js",
+          "provable_fair": {
+            "verify_url": "https://demo.bgaming-network.com/api/games/verify"
+          },
+          "math": {
+            "rtp": {
+              "main": 97.0,
+              "bonus_buy": 97.0
+            },
+            "gamble_limit": 5000,
+            "max_multiplier": 5000.0,
+            "max_win_freq": 21978022
+          },
+          "rules": {
+            "min_bet": 20,
+            "max_bet": 5000,
+            "currency": {
+              "code": "FUN",
+              "symbol": "FUN",
+              "subunits": 100,
+              "exponent": 2
+            }
+          },
+          "version": "1.0.0",
+          "growthbook_flags": {
+            "tech_analytics": {
+              "value": true,
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "tech_analyticsfun": {
+              "value": true,
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "tech_lobby_widget_position": {
+              "value": {
+                "desktop": "bottom",
+                "portrait": "bottom",
+                "landscape": "bottom"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "growth_drop_init_popup_ui": {
+              "value": {
+                "id": 602,
+                "value": "A"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            }
+          },
+          "lobby_v2_options": {
+            "player_id": 345341187,
+            "lobby_enabled": false,
+            "drops_enabled": false,
+            "drops_token": "<redacted>",
+            "drops_api_url": "https://drops.bgaming-network.com/api/v1/",
+            "profile_enabled": false,
+            "profile_api_url": "https://loyalty-core.shared.bgaming-system.com/api/v1",
+            "profile_token": "<redacted>",
+            "gamelist_enabled": false,
+            "gamelist_api_url": "https://gamelist.bgaming-network.com",
+            "gamelist_token": "<redacted>",
+            "challenges_enabled": false,
+            "challenges_api_url": "https://challenges.bgaming-network.com/",
+            "challenges_token": "<redacted>",
+            "challenges_fe_script_url": "https://brush.bgaming-network.com/",
+            "quests_enabled": false,
+            "quests_api_url": null,
+            "quests_token": "<redacted>",
+            "shop_enabled": false,
+            "shop_api_url": "",
+            "shop_token": "<redacted>",
+            "growth_fe_url": ""
+          },
+          "server_id": "demo",
+          "locale": "en",
+          "actions": {
+            "deposit": null,
+            "return": null,
+            "history": {
+              "text": null,
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzNDExODcsImd0X2lkIjoyMzY3MTQzfSwiZXhwIjoxODA0OTI5OTQ5fQ.FLryGI1NvslKWwuEGmMQHVZU5LACqeCYJHLGfH8Z8nE",
+              "mode": "open"
+            }
+          },
+          "show_paytable": false,
+          "license_rules": {
+            "rules_section": {
+              "show_license_requirements": false,
+              "license_requirement_show_purchase": false,
+              "license_requirement_show_autoplay": false,
+              "license_requirement_show_quick_spins": false,
+              "license_requirement_show_autospin_confirmation": false,
+              "license_requirement_reset_autospin": false,
+              "show_rtp": [
+                "main_rtp",
+                "chance_rtp",
+                "bonus_rtp"
+              ],
+              "show_gamble_round": true,
+              "show_min_max": false,
+              "show_max_win_frequency": false,
+              "show_max_multiplier": true,
+              "show_max_win_rules_text": null
+            },
+            "screen_section": {
+              "show_rtp_on_main_screen": false,
+              "show_max_win_frequency_on_main_screen": false,
+              "show_max_multiplier_on_main_screen": false
+            },
+            "lines_count": "60"
+          },
+          "open_page_method": "redirect",
+          "reset_bet_to_default": false,
+          "enable_chinese_logos": false,
+          "enable_quick_spins_by_default": null,
+          "purchased_feature_limit": null,
+          "pre_bet_balance_validation": false,
+          "available_games_to_switch": []
+        },
+        "round_series_id": 1789291547594
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 1723,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "hot-chilli-bells",
+          "name": "Hot Chilli Bells",
+          "identifier": "HotChilliBells"
+        },
+        "generated_at": "2026-09-13T09:25:52+00:00",
+        "source_run": "2026-09-13_06-25-46-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": "bonus_buy",
+            "purchased_feature_level": null,
+            "cost_multiplier": 60.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "init.feature_multipliers+provider-probe"
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 88,
+      "value": {
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789291547594
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1165,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            20,
+            40,
+            60,
+            80,
+            100,
+            120,
+            140,
+            160,
+            180,
+            200,
+            240,
+            280,
+            320,
+            400,
+            500,
+            600,
+            800,
+            1000
+          ],
+          "default_bet": 40,
+          "paytable": {},
+          "paytables": {},
+          "special_symbols": [],
+          "lines": [],
+          "reels": {
+            "main": []
+          },
+          "layout": {
+            "reels": 1,
+            "rows": 1
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [],
+          "default_seed": 14577,
+          "feature_options": {
+            "feature_multipliers": {
+              "bonus_buy": 1200,
+              "base_bet": 20
+            },
+            "disabled_features": []
+          },
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "last-refresh-init-request.json": {
+      "encoding": "json",
+      "bytes": 88,
+      "value": {
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789291551867
+        }
+      }
+    },
+    "last-refresh-init-response.json": {
+      "encoding": "json",
+      "bytes": 1165,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            20,
+            40,
+            60,
+            80,
+            100,
+            120,
+            140,
+            160,
+            180,
+            200,
+            240,
+            280,
+            320,
+            400,
+            500,
+            600,
+            800,
+            1000
+          ],
+          "default_bet": 40,
+          "paytable": {},
+          "paytables": {},
+          "special_symbols": [],
+          "lines": [],
+          "reels": {
+            "main": []
+          },
+          "layout": {
+            "reels": 1,
+            "rows": 1
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [],
+          "default_seed": 14608,
+          "feature_options": {
+            "feature_multipliers": {
+              "bonus_buy": 1200,
+              "base_bet": 20
+            },
+            "disabled_features": []
+          },
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 600,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "hot-chilli-bells",
+          "name": "Hot Chilli Bells",
+          "identifier": "HotChilliBells"
+        },
+        "generated_at": "2026-09-13T09:25:52+00:00",
+        "source_run": "2026-09-13_06-25-46-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 173,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "hot-chilli-bells",
+        "branch_points": [],
+        "complete": true,
+        "missing_count": 0
+      }
+    },
+    "profile.json": {
+      "encoding": "json",
+      "bytes": 3711,
+      "value": {
+        "schema": "tester-spin/bgaming-profile/v1",
+        "capability_version": 2,
+        "family": "api-v2",
+        "confidence": 1.0,
+        "evidence": [
+          "init.options",
+          "init.api_version=2"
+        ],
+        "spin_options": {},
+        "command_options": {},
+        "request_extra_data": {},
+        "spin_option_choices": {},
+        "effective_bet_selector": "",
+        "effective_bet_multipliers": {},
+        "dynamic_purchased_feature": false,
+        "purchase_feature_level_supported": false,
+        "purchase_features": [],
+        "rows_required": false,
+        "line_count": 0,
+        "variable_layout": false,
+        "allowed_continuations": [
+          "close",
+          "freespin",
+          "play_bonus",
+          "play_preselection_game",
+          "preselection_game",
+          "respin"
+        ],
+        "source": "https://boost2.bgaming-network.com/wrapper.js",
+        "bundle_sha256": "038a073a88d2236e50d0ca24190ccce2e190ed820fa2e4fd2bdc37ecaa09a138",
+        "discovery_diagnostics": [
+          {
+            "kind": "loader",
+            "url": "https://cdn.bgaming-network.com/html/HotChilliBells/loader.js",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "kind": "script-skip",
+            "url": "https://www.googletagmanager.com/gtag/js",
+            "reason": "third-party-origin"
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/HotChilliBells/bundle.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/HotChilliBells/bundle.js",
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/wrapper.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 160620,
+            "contract_score": 24,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/analytics/amplitude.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 5312,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://replays.bgaming-network.com/replays.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 6770,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/HotChilliBells/loader.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 831,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/:()=>!K(globalThis.navigator.sendBeacon),ArrayBuffer:()=>!K(globalThis.Uint8Array),Set:()=>!K(globalThis.Set),atob:()=>!K(globalThis.atob)},ls=`https:/polyfill-fastly.io/v3/polyfill.min.js",
+            "status": 403,
+            "ok": false,
+            "error": "HTTPError: 403 Client Error: Forbidden for url: https://boost2.bgaming-network.com/:()=%3E!K(globalThis.navigator.sendBeacon),ArrayBuffer:()=%3E!K(globalThis.Uint8Array),Set:()=%3E!K(globalThis.Set),atob:()=%3E!K(globalThis.atob)%7D,ls=%60https:/polyfill-fastly.io/v3/polyfill.min.js?version=3.111.0&features=$%7BObject.keys(as).join(",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/assets/index-BYCiiVrc.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/assets/index-BYCiiVrc.js",
+            "depth": 1
+          },
+          {
+            "kind": "http-command-error",
+            "command": "spin",
+            "status": 422,
+            "content_type": "application/json; charset=utf-8",
+            "json": {
+              "errors": [
+                {
+                  "code": 203,
+                  "desc": "invalid_options"
+                }
+              ]
+            }
+          }
+        ],
+        "validated": false
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 1723,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "hot-chilli-bells",
+          "name": "Hot Chilli Bells",
+          "identifier": "HotChilliBells"
+        },
+        "generated_at": "2026-09-13T09:25:52+00:00",
+        "source_run": "2026-09-13_06-25-46-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": "bonus_buy",
+            "purchased_feature_level": null,
+            "cost_multiplier": 60.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "init.feature_multipliers+provider-probe"
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "PURCHASE_BONUS_BUY/attempt-001/http-spin-422.json": {
+      "encoding": "json",
+      "bytes": 193,
+      "value": {
+        "status": 422,
+        "content_type": "application/json; charset=utf-8",
+        "json": {
+          "errors": [
+            {
+              "code": 203,
+              "desc": "invalid_options"
+            }
+          ]
+        }
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 2921,
+      "value": {
+        "provider": "bgaming",
+        "slug": "hot-chilli-bells",
+        "game_name": "Hot Chilli Bells",
+        "game_url": "https://demo.bgaming-network.com/play/HotChilliBells/FUN?server=demo",
+        "requested_spins": 2,
+        "successful_spins": 0,
+        "failed_spins": 2,
+        "status": "ERROR",
+        "symbol": "HotChilliBells",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": true,
+            "wire_command": "spin"
+          },
+          {
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": false,
+            "executable": true,
+            "discovery_state": "SERVER_ADVERTISED_PROBE",
+            "wire_command": "spin",
+            "purchased_feature": "bonus_buy",
+            "purchased_feature_level": null,
+            "feature_multiplier": 1200,
+            "base_multiplier": 20,
+            "cost_multiplier": 60.0,
+            "source": "init.feature_multipliers+provider-probe"
+          }
+        ],
+        "started_at": "2026-09-13T09:25:46+00:00",
+        "finished_at": "2026-09-13T09:25:52+00:00",
+        "elapsed_ms": 5780.99999999904,
+        "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/HotChilliBells/2367143/<session>",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli Bells\\tests\\2026-09-13_06-25-46-bgaming-http-api-v2",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": null,
+            "elapsed_ms": 671.9999999986612,
+            "symbol": "HotChilliBells",
+            "endpoint": "https://demo.bgaming-network.com/api/HotChilliBells/2367143/<session>",
+            "na": "",
+            "terminal": false,
+            "wire_steps": 0,
+            "warning": "",
+            "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/HotChilliBells/2367143/<session>",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli Bells\\tests\\2026-09-13_06-25-46-bgaming-http-api-v2\\SPIN\\attempt-001"
+          },
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "PURCHASE_BONUS_BUY",
+            "mode_kind": "PURCHASE",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": null,
+            "elapsed_ms": 1438.0000000019209,
+            "symbol": "HotChilliBells",
+            "endpoint": "https://demo.bgaming-network.com/api/HotChilliBells/2367143/<session>",
+            "na": "",
+            "terminal": false,
+            "wire_steps": 0,
+            "warning": "",
+            "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/HotChilliBells/2367143/<session>",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli Bells\\tests\\2026-09-13_06-25-46-bgaming-http-api-v2\\PURCHASE_BONUS_BUY\\attempt-001"
+          }
+        ]
+      }
+    },
+    "SPIN/attempt-001/http-spin-422.json": {
+      "encoding": "json",
+      "bytes": 193,
+      "value": {
+        "status": 422,
+        "content_type": "application/json; charset=utf-8",
+        "json": {
+          "errors": [
+            {
+              "code": 203,
+              "desc": "invalid_options"
+            }
+          ]
+        }
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 546,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "hot-chilli-bells",
+          "name": "Hot Chilli Bells",
+          "identifier": "HotChilliBells"
+        },
+        "generated_at": "2026-09-13T09:25:52+00:00",
+        "source_run": "2026-09-13_06-25-46-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {},
+        "transitions": []
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
