@@ -1,0 +1,542 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T10:17:09+00:00",
+  "source_commit": "e6fb9803a301fa12d1eda2d3b8d4f2a8b881ba2a",
+  "provider": "bgaming",
+  "game": {
+    "slug": "treasure-explorer",
+    "name": "Treasure Explorer",
+    "symbol": "TreasureExplorer",
+    "url": "https://demo.bgaming-network.com/play/TreasureExplorer/FUN"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "treasure-explorer",
+    "game_name": "Treasure Explorer",
+    "game_url": "https://demo.bgaming-network.com/play/TreasureExplorer/FUN",
+    "requested_spins": 1,
+    "successful_spins": 0,
+    "failed_spins": 1,
+    "status": "ERROR",
+    "symbol": "TreasureExplorer",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "REJECTED_51100",
+        "wire_method": "play",
+        "request_options": {
+          "bet_type": "bet"
+        },
+        "source": "game_bundle_source"
+      }
+    ],
+    "started_at": "2026-09-13T10:16:58+00:00",
+    "finished_at": "2026-09-13T10:17:09+00:00",
+    "elapsed_ms": 10718.999999997322,
+    "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+    "run_dir": "2026-09-13_07-16-58-bgaming-hyperhive-jsonrpc",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": false,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": null,
+        "elapsed_ms": 546.9999999986612,
+        "symbol": "TreasureExplorer",
+        "endpoint": "https://treasure-explorer.demo.bgaming-network.com/api",
+        "na": "",
+        "terminal": false,
+        "wire_steps": 0,
+        "warning": "",
+        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\tests\\2026-09-13_07-16-58-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+      }
+    ]
+  },
+  "artifact_bytes_embedded": 11529,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 937,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "treasure-explorer",
+          "name": "Treasure Explorer",
+          "identifier": "TreasureExplorer"
+        },
+        "generated_at": "2026-09-13T10:17:09+00:00",
+        "source_run": "2026-09-13_07-16-58-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 721,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "treasure-explorer",
+          "name": "Treasure Explorer",
+          "identifier": "TreasureExplorer"
+        },
+        "generated_at": "2026-09-13T10:17:09+00:00",
+        "source_run": "2026-09-13_07-16-58-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "contract-diagnostic.json": {
+      "encoding": "json",
+      "bytes": 694,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "script_urls": [
+          "https://treasure-explorer.demo.bgaming-network.com/wg-boost/wrapper.js",
+          "https://treasure-explorer.demo.bgaming-network.com/wg-boost/analytics/amplitude.js",
+          "https://treasure-explorer.demo.bgaming-network.com/wg-replays/replays.js",
+          "https://treasure-explorer.demo.bgaming-network.com/main.acd231bc0218c9c00cd1.js"
+        ],
+        "bundle_sha256": "",
+        "engine_sha256": "427e9a981c840b6f8a04fb36882d63bb56c06a3059301f1994462008c2b4279f",
+        "rpc_id_profile": "uuid",
+        "action_vocabulary": [],
+        "base_request": {
+          "bet_type": "bet"
+        },
+        "custom_req_profile": "",
+        "base_discovery_state": "BASE_CONTRACT"
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 1682,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "treasure-explorer",
+          "name": "Treasure Explorer",
+          "identifier": "TreasureExplorer"
+        },
+        "generated_at": "2026-09-13T10:17:09+00:00",
+        "source_run": "2026-09-13_07-16-58-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 142,
+      "value": {
+        "id": "07016321-278d-445f-88a7-8aa34384f466",
+        "jsonrpc": "2.0",
+        "method": "init",
+        "params": {
+          "token": "<redacted>"
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1895,
+      "value": {
+        "id": "07016321-278d-445f-88a7-8aa34384f466",
+        "jsonrpc": "2.0",
+        "result": {
+          "freebets": null,
+          "currency": "FUN",
+          "currency_attributes": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "locale": "en",
+          "config": {
+            "rtp": "97",
+            "displayed_rtp": "97.07",
+            "bet_limits": [
+              25,
+              50,
+              75,
+              100,
+              150,
+              200,
+              250,
+              300,
+              400,
+              500,
+              700,
+              1000,
+              1500,
+              2000,
+              2500,
+              3000,
+              4000,
+              5000
+            ],
+            "freebets_limits": [
+              25,
+              50,
+              75,
+              100,
+              150,
+              200,
+              250,
+              300,
+              400,
+              500,
+              700,
+              1000,
+              1500,
+              2000,
+              2500,
+              3000,
+              4000,
+              5000
+            ],
+            "default_bet": 200,
+            "purchased_features": [
+              "buy_bonus",
+              "bonus_buy",
+              "freespin_buy",
+              "high_freespin_buy",
+              "buy_chance",
+              "bonus_chance",
+              "freespin_chance",
+              "buy_bonus_and_chance",
+              "freespin_and_bonus_chance"
+            ],
+            "autospin_variant": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "quick_spins_enabled": false
+          },
+          "state": null,
+          "urls": {
+            "deposit_url": null,
+            "return_url": null,
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzNjg1ODgsImd0X2lkIjo0MzY1NDA5fSwiZXhwIjoxODA0OTMzMDI5fQ.d6I6eQjFlRTxSUd9_wb_tIl1dSD1foU4yZa2NAu_EKQ"
+          },
+          "balance": 100000,
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 592,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "treasure-explorer",
+          "name": "Treasure Explorer",
+          "identifier": "TreasureExplorer"
+        },
+        "generated_at": "2026-09-13T10:17:09+00:00",
+        "source_run": "2026-09-13_07-16-58-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 447,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "treasure-explorer",
+        "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false
+          }
+        ],
+        "complete": false,
+        "missing_count": 1
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 1682,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "treasure-explorer",
+          "name": "Treasure Explorer",
+          "identifier": "TreasureExplorer"
+        },
+        "generated_at": "2026-09-13T10:17:09+00:00",
+        "source_run": "2026-09-13_07-16-58-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 1822,
+      "value": {
+        "provider": "bgaming",
+        "slug": "treasure-explorer",
+        "game_name": "Treasure Explorer",
+        "game_url": "https://demo.bgaming-network.com/play/TreasureExplorer/FUN",
+        "requested_spins": 1,
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "ERROR",
+        "symbol": "TreasureExplorer",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "REJECTED_51100",
+            "wire_method": "play",
+            "request_options": {
+              "bet_type": "bet"
+            },
+            "source": "game_bundle_source"
+          }
+        ],
+        "started_at": "2026-09-13T10:16:58+00:00",
+        "finished_at": "2026-09-13T10:17:09+00:00",
+        "elapsed_ms": 10718.999999997322,
+        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\tests\\2026-09-13_07-16-58-bgaming-hyperhive-jsonrpc",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": null,
+            "elapsed_ms": 546.9999999986612,
+            "symbol": "TreasureExplorer",
+            "endpoint": "https://treasure-explorer.demo.bgaming-network.com/api",
+            "na": "",
+            "terminal": false,
+            "wire_steps": 0,
+            "warning": "",
+            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\tests\\2026-09-13_07-16-58-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+          }
+        ]
+      }
+    },
+    "SPIN/attempt-001/rpc-error-request.json": {
+      "encoding": "json",
+      "bytes": 241,
+      "value": {
+        "id": "aff70cbd-3244-482e-ab57-cdbd0a40e274",
+        "jsonrpc": "2.0",
+        "method": "play",
+        "params": {
+          "token": "<redacted>",
+          "req": {
+            "bet": 200,
+            "bet_type": "bet"
+          },
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "SPIN/attempt-001/rpc-error-response.json": {
+      "encoding": "json",
+      "bytes": 136,
+      "value": {
+        "id": "x",
+        "jsonrpc": "2.0",
+        "error": {
+          "code": 51100,
+          "message": "Something went wrong. Refresh the page."
+        }
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 538,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "treasure-explorer",
+          "name": "Treasure Explorer",
+          "identifier": "TreasureExplorer"
+        },
+        "generated_at": "2026-09-13T10:17:09+00:00",
+        "source_run": "2026-09-13_07-16-58-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {},
+        "transitions": []
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
