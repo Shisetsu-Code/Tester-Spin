@@ -1,0 +1,475 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T10:15:03+00:00",
+  "source_commit": "e6fb9803a301fa12d1eda2d3b8d4f2a8b881ba2a",
+  "provider": "bgaming",
+  "game": {
+    "slug": "temple-of-power",
+    "name": "Temple of Power",
+    "symbol": "GatesOfPower",
+    "url": "https://demo.bgaming-network.com/play/GatesOfPower/FUN"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "temple-of-power",
+    "game_name": "Temple of Power",
+    "game_url": "https://demo.bgaming-network.com/play/GatesOfPower/FUN",
+    "requested_spins": 1,
+    "successful_spins": 0,
+    "failed_spins": 1,
+    "status": "PARCIAL",
+    "symbol": "GatesOfPower",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "CONTRACT_UNRESOLVED",
+        "wire_method": "play",
+        "request_options": {
+          "bet_type": "bet"
+        },
+        "source": "live-client-evidence-incomplete"
+      }
+    ],
+    "started_at": "2026-09-13T10:14:53+00:00",
+    "finished_at": "2026-09-13T10:15:02+00:00",
+    "elapsed_ms": 9687.999999998283,
+    "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
+    "run_dir": "2026-09-13_07-14-53-bgaming-hyperhive-jsonrpc",
+    "attempts": []
+  },
+  "artifact_bytes_embedded": 10487,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 929,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "temple-of-power",
+          "name": "Temple of Power",
+          "identifier": "GatesOfPower"
+        },
+        "generated_at": "2026-09-13T10:15:02+00:00",
+        "source_run": "2026-09-13_07-14-53-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 713,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "temple-of-power",
+          "name": "Temple of Power",
+          "identifier": "GatesOfPower"
+        },
+        "generated_at": "2026-09-13T10:15:02+00:00",
+        "source_run": "2026-09-13_07-14-53-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "contract-diagnostic.json": {
+      "encoding": "json",
+      "bytes": 684,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "script_urls": [
+          "https://gates-of-power.demo.bgaming-network.com/wg-boost/wrapper.js",
+          "https://gates-of-power.demo.bgaming-network.com/wg-boost/analytics/amplitude.js",
+          "https://gates-of-power.demo.bgaming-network.com/wg-replays/replays.js",
+          "https://gates-of-power.demo.bgaming-network.com/assets/index-BtluUDAP.js"
+        ],
+        "bundle_sha256": "",
+        "engine_sha256": "5fb36ab5efdcd285ca1269783ca3eda927bbc85887a627b80360638c3a732ead",
+        "rpc_id_profile": "uuid",
+        "action_vocabulary": [],
+        "base_request": {
+          "bet_type": "bet"
+        },
+        "custom_req_profile": "",
+        "base_discovery_state": "CONTRACT_UNRESOLVED"
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 1702,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "temple-of-power",
+          "name": "Temple of Power",
+          "identifier": "GatesOfPower"
+        },
+        "generated_at": "2026-09-13T10:15:02+00:00",
+        "source_run": "2026-09-13_07-14-53-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 142,
+      "value": {
+        "id": "e6106cc9-0111-4984-a16d-8abcab25aa18",
+        "jsonrpc": "2.0",
+        "method": "init",
+        "params": {
+          "token": "<redacted>"
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1885,
+      "value": {
+        "id": "e6106cc9-0111-4984-a16d-8abcab25aa18",
+        "jsonrpc": "2.0",
+        "result": {
+          "freebets": null,
+          "currency": "FUN",
+          "currency_attributes": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "locale": "en",
+          "config": {
+            "rtp": "96",
+            "displayed_rtp": "96.03",
+            "bet_limits": [
+              10,
+              20,
+              30,
+              50,
+              70,
+              100,
+              150,
+              200,
+              250,
+              300,
+              400,
+              500,
+              600,
+              800,
+              1000,
+              1200,
+              1400,
+              1700
+            ],
+            "freebets_limits": [
+              10,
+              20,
+              30,
+              50,
+              70,
+              100,
+              150,
+              200,
+              250,
+              300,
+              400,
+              500,
+              600,
+              800,
+              1000,
+              1200,
+              1400,
+              1700
+            ],
+            "default_bet": 200,
+            "purchased_features": [
+              "buy_bonus",
+              "bonus_buy",
+              "freespin_buy",
+              "high_freespin_buy",
+              "buy_chance",
+              "bonus_chance",
+              "freespin_chance",
+              "buy_bonus_and_chance",
+              "freespin_and_bonus_chance"
+            ],
+            "autospin_variant": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "quick_spins_enabled": false
+          },
+          "state": null,
+          "urls": {
+            "deposit_url": null,
+            "return_url": null,
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzNjc0NDAsImd0X2lkIjo0MzY1NDEwfSwiZXhwIjoxODA0OTMyOTAzfQ.Af6n0lKY7WW0UXsHxPK_BJSRzuKA8M9SQJWc5_nEjjQ"
+          },
+          "balance": 100000,
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 584,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "temple-of-power",
+          "name": "Temple of Power",
+          "identifier": "GatesOfPower"
+        },
+        "generated_at": "2026-09-13T10:15:02+00:00",
+        "source_run": "2026-09-13_07-14-53-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 445,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "temple-of-power",
+        "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false
+          }
+        ],
+        "complete": false,
+        "missing_count": 1
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 1702,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "temple-of-power",
+          "name": "Temple of Power",
+          "identifier": "GatesOfPower"
+        },
+        "generated_at": "2026-09-13T10:15:02+00:00",
+        "source_run": "2026-09-13_07-14-53-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 1171,
+      "value": {
+        "provider": "bgaming",
+        "slug": "temple-of-power",
+        "game_name": "Temple of Power",
+        "game_url": "https://demo.bgaming-network.com/play/GatesOfPower/FUN",
+        "requested_spins": 1,
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "PARCIAL",
+        "symbol": "GatesOfPower",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "CONTRACT_UNRESOLVED",
+            "wire_method": "play",
+            "request_options": {
+              "bet_type": "bet"
+            },
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "started_at": "2026-09-13T10:14:53+00:00",
+        "finished_at": "2026-09-13T10:15:02+00:00",
+        "elapsed_ms": 9687.999999998283,
+        "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Temple of Power\\tests\\2026-09-13_07-14-53-bgaming-hyperhive-jsonrpc",
+        "attempts": []
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 530,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "temple-of-power",
+          "name": "Temple of Power",
+          "identifier": "GatesOfPower"
+        },
+        "generated_at": "2026-09-13T10:15:02+00:00",
+        "source_run": "2026-09-13_07-14-53-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {},
+        "transitions": []
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
