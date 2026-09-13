@@ -4,13 +4,26 @@ import json
 import re
 from typing import Any
 
-_COMMAND = re.compile(r'(?:["\']?command["\']?)\s*:\s*["\']([A-Za-z_][A-Za-z0-9_.:-]{0,95})["\']')
-_LITERAL = re.compile(r'^\s*(?:["\'](?P<s>[^"\']*)["\']|(?P<n>-?\d+(?:\.\d+)?)|(?P<b>true|false)|(?P<z>null))\s*$', re.I)
+_COMMAND = re.compile(
+    r'(?:["\']?command["\']?)\s*:\s*["\']([A-Za-z_][A-Za-z0-9_.:-]{0,95})["\']'
+)
+_LITERAL = re.compile(
+    r'^\s*(?:["\'](?P<s>[^"\']*)["\']|(?P<n>-?\d+(?:\.\d+)?)|(?P<b>true|false)|(?P<z>null))\s*$',
+    re.I,
+)
+_CALL_OBJECT = re.compile(
+    r'(?P<callee>[A-Za-z_$][A-Za-z0-9_$]*(?:\s*\.\s*[A-Za-z_$][A-Za-z0-9_$]*)*)\s*\(\s*\{',
+    re.S,
+)
 
 
-def _balanced_object(text: str, open_index: int, limit: int = 5000) -> str:
+def _balanced_object_span(
+    text: str,
+    open_index: int,
+    limit: int = 12000,
+) -> tuple[int, str]:
     if open_index < 0 or open_index >= len(text) or text[open_index] != '{':
-        return ''
+        return -1, ''
     quote = ''
     escaped = False
     depth = 0
@@ -31,8 +44,13 @@ def _balanced_object(text: str, open_index: int, limit: int = 5000) -> str:
         elif char == '}':
             depth -= 1
             if depth == 0:
-                return text[open_index + 1:index]
-    return ''
+                return index, text[open_index + 1:index]
+    return -1, ''
+
+
+def _balanced_object(text: str, open_index: int, limit: int = 12000) -> str:
+    _close, body = _balanced_object_span(text, open_index, limit)
+    return body
 
 
 def _split_fields(body: str) -> list[tuple[str, str]]:
@@ -62,7 +80,10 @@ def _split_fields(body: str) -> list[tuple[str, str]]:
     chunks.append(body[start:])
 
     result: list[tuple[str, str]] = []
-    pattern = re.compile(r'\s*(?:["\']([^"\']+)["\']|([A-Za-z_$][A-Za-z0-9_$]*))\s*:\s*(.*?)\s*$', re.S)
+    pattern = re.compile(
+        r'\s*(?:["\']([^"\']+)["\']|([A-Za-z_$][A-Za-z0-9_$]*))\s*:\s*(.*?)\s*$',
+        re.S,
+    )
     for chunk in chunks:
         match = pattern.match(chunk)
         if match:
@@ -84,12 +105,52 @@ def _literal(raw: str) -> tuple[bool, Any]:
     return True, None
 
 
+def _command_literal(raw: str) -> str:
+    ok, value = _literal(raw)
+    return str(value) if ok and isinstance(value, str) else ''
+
+
+def _direct_call_envelope(
+    source: str,
+    command_pos: int,
+    command: str,
+) -> tuple[str, str] | None:
+    """Return (callee, options expression) for a real call object.
+
+    The command and options fields must be siblings in the *same object* and that
+    object must be the direct object argument of a call. This prevents response
+    payloads or configuration objects containing their own command/options keys
+    from being mistaken for outbound request serializers.
+    """
+    start = max(0, command_pos - 1800)
+    prefix = source[start:command_pos + 1]
+    matches = list(_CALL_OBJECT.finditer(prefix))
+    for match in reversed(matches):
+        open_index = start + match.end() - 1
+        close_index, body = _balanced_object_span(source, open_index)
+        if close_index < 0 or not (open_index < command_pos < close_index):
+            continue
+        fields = _split_fields(body)
+        command_value = ''
+        options_raw: str | None = None
+        for field, raw in fields:
+            if field == 'command':
+                command_value = _command_literal(raw)
+            elif field == 'options':
+                options_raw = raw.strip()
+        if command_value != command or options_raw is None:
+            continue
+        callee = re.sub(r'\s+', '', str(match.group('callee') or ''))
+        return callee, options_raw
+    return None
+
+
 def _wrapper_before(source: str, command_pos: int, parameter: str) -> str:
-    before = source[max(0, command_pos - 1400):command_pos]
+    before = source[max(0, command_pos - 1800):command_pos]
     patterns = (
-        rf'([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*(?:async\s+)?\(?\s*{re.escape(parameter)}\s*\)?\s*=>[^;]{{0,1000}}$',
-        rf'([A-Za-z_$][A-Za-z0-9_$]*)\s*\(\s*{re.escape(parameter)}\s*\)\s*\{{[^{{}}]{{0,1000}}$',
-        rf'function\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*\(\s*{re.escape(parameter)}\s*\)\s*\{{[^{{}}]{{0,1000}}$',
+        rf'([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*(?:async\s+)?\(?\s*{re.escape(parameter)}\s*\)?\s*=>[^;]{{0,1400}}$',
+        rf'([A-Za-z_$][A-Za-z0-9_$]*)\s*\(\s*{re.escape(parameter)}\s*\)\s*\{{[^{{}}]{{0,1400}}$',
+        rf'function\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*\(\s*{re.escape(parameter)}\s*\)\s*\{{[^{{}}]{{0,1400}}$',
     )
     for pattern in patterns:
         matches = list(re.finditer(pattern, before, re.S))
@@ -98,13 +159,17 @@ def _wrapper_before(source: str, command_pos: int, parameter: str) -> str:
     return ''
 
 
-def _callsites(source: str, wrapper: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str]]:
+def _callsites(
+    source: str,
+    wrapper: str,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str]]:
     exact: list[dict[str, Any]] = []
     unresolved: list[dict[str, Any]] = []
     fields: list[str] = []
     if not wrapper:
         return exact, unresolved, fields
-    for match in list(re.finditer(rf'(?:\.|\b){re.escape(wrapper)}\s*\(\s*\{{', source))[:96]:
+    pattern = re.compile(rf'(?:\.|\b){re.escape(wrapper)}\s*\(\s*\{{')
+    for match in list(pattern.finditer(source))[:128]:
         open_index = source.find('{', match.start(), min(len(source), match.end() + 3))
         body = _balanced_object(source, open_index)
         if not body:
@@ -120,36 +185,61 @@ def _callsites(source: str, wrapper: str) -> tuple[list[dict[str, Any]], list[di
             else:
                 dynamic.append(field)
         if dynamic:
-            unresolved.append({'literal_options': literals, 'unresolved_fields': dynamic})
+            unresolved.append(
+                {'literal_options': literals, 'unresolved_fields': dynamic}
+            )
         else:
             exact.append({'options': literals})
     return exact, unresolved, fields
 
 
-def scan_request_syntax(source: str) -> dict[str, dict[str, Any]]:
-    """Find command/options request envelopes and follow one wrapper hop.
+def _append_unique(target: list[dict[str, Any]], rows: list[dict[str, Any]]) -> None:
+    seen = {
+        json.dumps(item, ensure_ascii=False, sort_keys=True)
+        for item in target
+        if isinstance(item, dict)
+    }
+    for item in rows:
+        marker = json.dumps(item, ensure_ascii=False, sort_keys=True)
+        if marker not in seen:
+            seen.add(marker)
+            target.append(item)
 
-    This is static parsing only: it never evaluates JavaScript and never emits a
-    request. It is intentionally provider-local and title-agnostic.
+
+def scan_request_syntax(source: str) -> dict[str, dict[str, Any]]:
+    """Find outbound-looking command/options call envelopes statically.
+
+    A hit is accepted only when command and options are sibling fields in the
+    same object passed directly to a function/method call. If options forwards a
+    local parameter, one wrapper hop is followed to object-literal callsites.
+
+    No JavaScript is evaluated and no network request is emitted.
     """
     commands: dict[str, dict[str, Any]] = {}
     for occurrence in _COMMAND.finditer(source or ''):
         command = str(occurrence.group(1))
-        row = commands.setdefault(command, {
-            'hits': 0,
-            'option_fields': [],
-            'literal_variants': [],
-            'unresolved_variants': [],
-            'wrappers': [],
-        })
-        row['hits'] = int(row['hits']) + 1
-        window = source[occurrence.start():min(len(source), occurrence.start() + 2600)]
-        option = re.search(r'(?:["\']?options["\']?)\s*:\s*', window)
-        if not option:
+        envelope = _direct_call_envelope(source, occurrence.start(), command)
+        if envelope is None:
             continue
-        tail = window[option.end():]
-        if tail.startswith('{'):
-            body = _balanced_object(tail, 0)
+        callee, options_raw = envelope
+
+        row = commands.setdefault(
+            command,
+            {
+                'hits': 0,
+                'option_fields': [],
+                'literal_variants': [],
+                'unresolved_variants': [],
+                'wrappers': [],
+                'callees': [],
+            },
+        )
+        row['hits'] = int(row['hits']) + 1
+        if callee and callee not in row['callees']:
+            row['callees'].append(callee)
+
+        if options_raw.startswith('{'):
+            body = _balanced_object(options_raw, 0)
             literals: dict[str, Any] = {}
             dynamic: list[str] = []
             for field, raw in _split_fields(body):
@@ -161,12 +251,15 @@ def scan_request_syntax(source: str) -> dict[str, dict[str, Any]]:
                 else:
                     dynamic.append(field)
             if dynamic:
-                row['unresolved_variants'].append({'literal_options': literals, 'unresolved_fields': dynamic})
+                _append_unique(
+                    row['unresolved_variants'],
+                    [{'literal_options': literals, 'unresolved_fields': dynamic}],
+                )
             else:
-                row['literal_variants'].append({'options': literals})
+                _append_unique(row['literal_variants'], [{'options': literals}])
             continue
 
-        forwarded = re.match(r'([A-Za-z_$][A-Za-z0-9_$]*)', tail)
+        forwarded = re.match(r'([A-Za-z_$][A-Za-z0-9_$]*)\b', options_raw)
         if not forwarded:
             continue
         parameter = str(forwarded.group(1))
@@ -177,19 +270,9 @@ def scan_request_syntax(source: str) -> dict[str, dict[str, Any]]:
         for field in fields:
             if field not in row['option_fields']:
                 row['option_fields'].append(field)
-        row['literal_variants'].extend(exact)
-        row['unresolved_variants'].extend(unresolved)
+        _append_unique(row['literal_variants'], exact)
+        _append_unique(row['unresolved_variants'], unresolved)
 
-    for row in commands.values():
-        for key in ('literal_variants', 'unresolved_variants'):
-            unique: list[dict[str, Any]] = []
-            seen: set[str] = set()
-            for item in row[key]:
-                marker = json.dumps(item, ensure_ascii=False, sort_keys=True)
-                if marker not in seen:
-                    seen.add(marker)
-                    unique.append(item)
-            row[key] = unique
     return commands
 
 
