@@ -1,0 +1,2147 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T09:17:09+00:00",
+  "source_commit": "c98ad4264ce542a06a267e2e6a013bad3a6ce216",
+  "provider": "bgaming",
+  "game": {
+    "slug": "book-of-hidden-tombs",
+    "name": "Book of Hidden Tombs",
+    "symbol": "BookOfHiddenTombs",
+    "url": "https://demo.bgaming-network.com/play/BookOfHiddenTombs/FUN?server=demo"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "book-of-hidden-tombs",
+    "game_name": "Book of Hidden Tombs",
+    "game_url": "https://demo.bgaming-network.com/play/BookOfHiddenTombs/FUN?server=demo",
+    "requested_spins": 2,
+    "successful_spins": 2,
+    "failed_spins": 0,
+    "status": "PARCIAL",
+    "symbol": "BookOfHiddenTombs",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": true,
+        "wire_command": "spin"
+      },
+      {
+        "id": "PURCHASE_FREESPIN_CHANCE",
+        "kind": "PURCHASE",
+        "observed": true,
+        "client_observed": false,
+        "executable": true,
+        "discovery_state": "SERVER_ADVERTISED_PROBE",
+        "wire_command": "spin",
+        "purchased_feature": "freespin_chance",
+        "purchased_feature_level": null,
+        "feature_multiplier": 15,
+        "base_multiplier": 10,
+        "cost_multiplier": 1.5,
+        "source": "init.feature_multipliers+provider-probe"
+      },
+      {
+        "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+        "kind": "PURCHASE",
+        "observed": true,
+        "client_observed": false,
+        "executable": false,
+        "discovery_state": "ADVERTISED_ONLY",
+        "wire_command": "spin",
+        "purchased_feature": "freespin_buy",
+        "purchased_feature_level": "0",
+        "feature_multiplier": 1000,
+        "base_multiplier": 10,
+        "cost_multiplier": 100.0,
+        "source": "options.feature_options.feature_multipliers"
+      },
+      {
+        "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+        "kind": "PURCHASE",
+        "observed": true,
+        "client_observed": false,
+        "executable": false,
+        "discovery_state": "ADVERTISED_ONLY",
+        "wire_command": "spin",
+        "purchased_feature": "freespin_buy",
+        "purchased_feature_level": "1",
+        "feature_multiplier": 2000,
+        "base_multiplier": 10,
+        "cost_multiplier": 200.0,
+        "source": "options.feature_options.feature_multipliers"
+      }
+    ],
+    "started_at": "2026-09-13T09:17:03+00:00",
+    "finished_at": "2026-09-13T09:17:09+00:00",
+    "elapsed_ms": 5718.000000000757,
+    "error": "BGaming respondió 2/2 intentos; modos terminales validados=2/2. Compras probadas: freespin_chance x1.5, freespin_buy x100, freespin_buy x200. Cobertura requerida pendiente: PURCHASE_FREESPIN_BUY_LEVEL_0, PURCHASE_FREESPIN_BUY_LEVEL_1. Cobertura de ramificaciones pendiente: PURCHASE_FREESPIN_BUY_LEVEL_0 -> ['spin']; PURCHASE_FREESPIN_BUY_LEVEL_1 -> ['spin'].",
+    "run_dir": "2026-09-13_06-17-03-bgaming-http-api-v2",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": true,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": 200,
+        "elapsed_ms": 328.0000000013388,
+        "symbol": "BookOfHiddenTombs",
+        "endpoint": "https://demo.bgaming-network.com/api/BookOfHiddenTombs/4369239/<session>",
+        "na": "closed",
+        "terminal": true,
+        "wire_steps": 1,
+        "warning": "",
+        "error": "",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Book of Hidden Tombs\\tests\\2026-09-13_06-17-03-bgaming-http-api-v2\\SPIN\\attempt-001"
+      },
+      {
+        "number": 1,
+        "ok": true,
+        "mode_id": "PURCHASE_FREESPIN_CHANCE",
+        "mode_kind": "PURCHASE",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": 200,
+        "elapsed_ms": 1514.999999999418,
+        "symbol": "BookOfHiddenTombs",
+        "endpoint": "https://demo.bgaming-network.com/api/BookOfHiddenTombs/4369239/<session>",
+        "na": "closed",
+        "terminal": true,
+        "wire_steps": 1,
+        "warning": "",
+        "error": "",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Book of Hidden Tombs\\tests\\2026-09-13_06-17-03-bgaming-http-api-v2\\PURCHASE_FREESPIN_CHANCE\\attempt-001"
+      }
+    ]
+  },
+  "artifact_bytes_embedded": 50286,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 2017,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "book-of-hidden-tombs",
+          "name": "Book of Hidden Tombs",
+          "identifier": "BookOfHiddenTombs"
+        },
+        "generated_at": "2026-09-13T09:17:09+00:00",
+        "source_run": "2026-09-13_06-17-03-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [
+          {
+            "id": "CASE_0001",
+            "source_state": "READY",
+            "request_contract": "SPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "accepted_outcome": "SPIN__TO__READY",
+            "expected_target_state": "READY",
+            "response_schema": "response-schemas/spin__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          },
+          {
+            "id": "CASE_0002",
+            "source_state": "READY",
+            "request_contract": "SPIN__PURCHASE_FREESPIN_CHANCE",
+            "request_selector_vectors_observed": [
+              {
+                "purchased_feature": "freespin_chance"
+              }
+            ],
+            "accepted_outcome": "SPIN__PURCHASE_FREESPIN_CHANCE__TO__READY",
+            "expected_target_state": "READY",
+            "response_schema": "response-schemas/spin__purchase_freespin_chance__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "PURCHASE_FREESPIN_CHANCE/attempt-001/step-001-request.json"
+            ]
+          }
+        ],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 1982,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "book-of-hidden-tombs",
+          "name": "Book of Hidden Tombs",
+          "identifier": "BookOfHiddenTombs"
+        },
+        "generated_at": "2026-09-13T09:17:09+00:00",
+        "source_run": "2026-09-13_06-17-03-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {
+          "READY": {
+            "SPIN": {
+              "wire_action": "spin",
+              "selector_domains_observed": {},
+              "selector_vectors_observed": [
+                {}
+              ],
+              "outcomes": [
+                {
+                  "id": "SPIN__TO__READY",
+                  "target_state": [
+                    "READY"
+                  ],
+                  "response_schema": "response-schemas/spin__to__ready.json",
+                  "terminal_observed": true,
+                  "math_probability_known": false
+                }
+              ]
+            },
+            "SPIN__PURCHASE_FREESPIN_CHANCE": {
+              "wire_action": "spin",
+              "selector_domains_observed": {
+                "purchased_feature": [
+                  "freespin_chance"
+                ]
+              },
+              "selector_vectors_observed": [
+                {
+                  "purchased_feature": "freespin_chance"
+                }
+              ],
+              "outcomes": [
+                {
+                  "id": "SPIN__PURCHASE_FREESPIN_CHANCE__TO__READY",
+                  "target_state": [
+                    "READY"
+                  ],
+                  "response_schema": "response-schemas/spin__purchase_freespin_chance__to__ready.json",
+                  "terminal_observed": true,
+                  "math_probability_known": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "bootstrap.json": {
+      "encoding": "json",
+      "bytes": 6499,
+      "value": {
+        "identifier": "BookOfHiddenTombs",
+        "launch_url": "https://demo.bgaming-network.com/games/BookOfHiddenTombs/FUN",
+        "api_url": "https://demo.bgaming-network.com/api/BookOfHiddenTombs/4369239/<session>",
+        "options": {
+          "env": "production",
+          "csrfTokenHeaderName": "X-CSRF-Token",
+          "csrfTokenHeaderValue": "<redacted>",
+          "play_token": "<redacted>",
+          "game": "slots/book_of_hidden_tombs",
+          "identifier": "BookOfHiddenTombs",
+          "title": "Book of Hidden Tombs",
+          "currency": "FUN",
+          "balance_polling_interval": 30000,
+          "cache_id": "a5c31190628ca2d23f1a2926b26e7e89d3b994dd5460c4b3328e01b0bfad634f",
+          "cache_player_id": "369a710b7eff328ee850174dd391ca85b23c3e77d2a6a3c9cff915163e9dc707",
+          "api": "https://demo.bgaming-network.com/api/BookOfHiddenTombs/4369239/<session>",
+          "rules_url": "https://rules.bgaming-network.com/en/BookOfHiddenTombs.json",
+          "deposit_url": null,
+          "games_page_url": "https://www.bgaming.com/games.html",
+          "history_url": null,
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09a0e-5862-7cbf-9db0-6622fc059bc5/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/BookOfHiddenTombs/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY1ODY2OTJ9LCJleHAiOjE4MDQ5Mjk0MjZ9.ZivZxSu15co2TUgca87qUzINC9au_0mCIbmLHPTlFTo",
+          "websocket_url": "wss://demo.bgaming-network.com:443/cable",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=BookOfHiddenTombs&play_token=01a09a0e-5862-7cbf-9db0-6622fc059bc5&server_id=demo",
+          "ui": {
+            "home_button": true,
+            "full_screen_prompt": true,
+            "logo": "standard",
+            "skin": "basic",
+            "skins": [
+              "basic"
+            ],
+            "brand_logo": null,
+            "brand": {
+              "name": "",
+              "logo": null,
+              "logo_in_game": null
+            },
+            "autospins_dialog": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "gamble_enabled": true,
+            "show_rtp_in_rules": true
+          },
+          "resources_path": "https://cdn.bgaming-network.com/html/BookOfHiddenTombs",
+          "custom": {},
+          "actual_currency_rate": 0.0,
+          "sound_enabled": true,
+          "games_loader_source": "https://cdn.bgaming-network.com/html/BookOfHiddenTombs/loader.js?1789291026",
+          "game_bundle_source": "https://cdn.bgaming-network.com/html/BookOfHiddenTombs/bundle.js",
+          "provable_fair": {
+            "verify_url": "https://demo.bgaming-network.com/api/games/verify"
+          },
+          "math": {
+            "rtp": {
+              "main": 97.0,
+              "freespin_buy_0": 97.0,
+              "freespin_buy_1": 97.0,
+              "freespin_chance": 97.0
+            },
+            "gamble_limit": 10000,
+            "max_multiplier": 10000.0,
+            "max_win_freq": 9925859
+          },
+          "rules": {
+            "min_bet": 10,
+            "max_bet": 3750,
+            "currency": {
+              "code": "FUN",
+              "symbol": "FUN",
+              "subunits": 100,
+              "exponent": 2
+            }
+          },
+          "version": "1.0.0",
+          "growthbook_flags": {
+            "tech_analytics": {
+              "value": true,
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "tech_lobby_widget_position": {
+              "value": {
+                "desktop": "bottom",
+                "portrait": "top",
+                "landscape": "top"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "growth_drop_init_popup_ui": {
+              "value": {
+                "id": 602,
+                "value": "A"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "buy_bonus_description": {
+              "value": 0,
+              "variation_id": 0,
+              "experiment_key": "book_of_buy_bonus_description"
+            }
+          },
+          "lobby_v2_options": {
+            "player_id": 345336436,
+            "lobby_enabled": false,
+            "drops_enabled": false,
+            "drops_token": "<redacted>",
+            "drops_api_url": "https://drops.bgaming-network.com/api/v1/",
+            "profile_enabled": false,
+            "profile_api_url": "https://loyalty-core.shared.bgaming-system.com/api/v1",
+            "profile_token": "<redacted>",
+            "gamelist_enabled": false,
+            "gamelist_api_url": "https://gamelist.bgaming-network.com",
+            "gamelist_token": "<redacted>",
+            "challenges_enabled": false,
+            "challenges_api_url": "https://challenges.bgaming-network.com/",
+            "challenges_token": "<redacted>",
+            "challenges_fe_script_url": "https://brush.bgaming-network.com/",
+            "quests_enabled": false,
+            "quests_api_url": null,
+            "quests_token": "<redacted>",
+            "shop_enabled": false,
+            "shop_api_url": "",
+            "shop_token": "<redacted>",
+            "growth_fe_url": ""
+          },
+          "server_id": "demo",
+          "locale": "en",
+          "actions": {
+            "deposit": null,
+            "return": null,
+            "history": {
+              "text": null,
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzMzY0MzYsImd0X2lkIjo0MzY5MjM5fSwiZXhwIjoxODA0OTI5NDI2fQ.LSMpUmlx7FrpEPOmy_jg8zIfNsvpCyGRntIWSp0Cr20",
+              "mode": "open"
+            }
+          },
+          "show_paytable": false,
+          "license_rules": {
+            "rules_section": {
+              "show_license_requirements": false,
+              "license_requirement_show_purchase": false,
+              "license_requirement_show_autoplay": false,
+              "license_requirement_show_quick_spins": false,
+              "license_requirement_show_autospin_confirmation": false,
+              "license_requirement_reset_autospin": false,
+              "show_rtp": [
+                "main_rtp",
+                "chance_rtp",
+                "bonus_rtp"
+              ],
+              "show_gamble_round": true,
+              "show_min_max": false,
+              "show_max_win_frequency": false,
+              "show_max_multiplier": true,
+              "show_max_win_rules_text": null
+            },
+            "screen_section": {
+              "show_rtp_on_main_screen": false,
+              "show_max_win_frequency_on_main_screen": false,
+              "show_max_multiplier_on_main_screen": false
+            },
+            "lines_count": "60"
+          },
+          "open_page_method": "redirect",
+          "reset_bet_to_default": false,
+          "enable_chinese_logos": false,
+          "enable_quick_spins_by_default": null,
+          "purchased_feature_limit": null,
+          "pre_bet_balance_validation": false,
+          "available_games_to_switch": []
+        },
+        "round_series_id": 1789291024652
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 6688,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "book-of-hidden-tombs",
+          "name": "Book of Hidden Tombs",
+          "identifier": "BookOfHiddenTombs"
+        },
+        "generated_at": "2026-09-13T09:17:09+00:00",
+        "source_run": "2026-09-13_06-17-03-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "SPIN",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bet"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          },
+          {
+            "id": "SPIN__PURCHASE_FREESPIN_CHANCE",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {
+              "purchased_feature": [
+                "freespin_chance"
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "purchased_feature": "freespin_chance"
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    },
+                    "purchased_feature": {
+                      "type": "string",
+                      "observed_enum": [
+                        "freespin_chance"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bet",
+                    "purchased_feature"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "PURCHASE_FREESPIN_CHANCE",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": "freespin_chance",
+            "purchased_feature_level": null,
+            "cost_multiplier": 1.5,
+            "required_options": [],
+            "covered_options": [],
+            "source": "init.feature_multipliers+provider-probe"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "0",
+            "cost_multiplier": 100.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "options.feature_options.feature_multipliers"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "1",
+            "cost_multiplier": 200.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "options.feature_options.feature_multipliers"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "0",
+            "cost_multiplier": 100.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "options.feature_options.feature_multipliers"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "1",
+            "cost_multiplier": 200.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "options.feature_options.feature_multipliers"
+          }
+        ],
+        "dispatch": {
+          "READY": {
+            "SPIN": [
+              "SPIN__TO__READY"
+            ],
+            "SPIN__PURCHASE_FREESPIN_CHANCE": [
+              "SPIN__PURCHASE_FREESPIN_CHANCE__TO__READY"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 88,
+      "value": {
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789291024652
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1257,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            10,
+            20,
+            30,
+            50,
+            70,
+            100,
+            150,
+            200,
+            250,
+            300,
+            400,
+            500,
+            600,
+            800,
+            1000,
+            1500,
+            2000,
+            2500
+          ],
+          "default_bet": 200,
+          "paytable": {},
+          "paytables": {},
+          "special_symbols": [],
+          "lines": [],
+          "reels": {
+            "main": []
+          },
+          "layout": {
+            "reels": 1,
+            "rows": 1
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [],
+          "default_seed": 45008054,
+          "feature_options": {
+            "feature_multipliers": {
+              "base_bet": 10,
+              "freespin_chance": 15,
+              "freespin_buy": {
+                "0": 1000,
+                "1": 2000
+              }
+            },
+            "disabled_features": []
+          },
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "last-refresh-init-request.json": {
+      "encoding": "json",
+      "bytes": 88,
+      "value": {
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789291028770
+        }
+      }
+    },
+    "last-refresh-init-response.json": {
+      "encoding": "json",
+      "bytes": 1258,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            10,
+            20,
+            30,
+            50,
+            70,
+            100,
+            150,
+            200,
+            250,
+            300,
+            400,
+            500,
+            600,
+            800,
+            1000,
+            1500,
+            2000,
+            2500
+          ],
+          "default_bet": 200,
+          "paytable": {},
+          "paytables": {},
+          "special_symbols": [],
+          "lines": [],
+          "reels": {
+            "main": []
+          },
+          "layout": {
+            "reels": 1,
+            "rows": 1
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [],
+          "default_seed": 304539142,
+          "feature_options": {
+            "feature_multipliers": {
+              "base_bet": 10,
+              "freespin_chance": 15,
+              "freespin_buy": {
+                "0": 1000,
+                "1": 2000
+              }
+            },
+            "disabled_features": []
+          },
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 2186,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "book-of-hidden-tombs",
+          "name": "Book of Hidden Tombs",
+          "identifier": "BookOfHiddenTombs"
+        },
+        "generated_at": "2026-09-13T09:17:09+00:00",
+        "source_run": "2026-09-13_06-17-03-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": [
+          {
+            "id": "SPIN__PURCHASE_FREESPIN_CHANCE__TO__READY",
+            "kind": "PURCHASE_RESULT",
+            "request_contract": "SPIN__PURCHASE_FREESPIN_CHANCE",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "READY"
+            ],
+            "provider_states": [
+              "closed"
+            ],
+            "available_actions": [
+              "init",
+              "spin"
+            ],
+            "terminal_observed": true,
+            "observed_count": 1,
+            "response_schema": "response-schemas/spin__purchase_freespin_chance__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "PURCHASE_FREESPIN_CHANCE/attempt-001/step-001-request.json"
+            ]
+          },
+          {
+            "id": "SPIN__TO__READY",
+            "kind": "BASE_OR_FEATURE_ENTRY",
+            "request_contract": "SPIN",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "READY"
+            ],
+            "provider_states": [
+              "closed"
+            ],
+            "available_actions": [
+              "init",
+              "spin"
+            ],
+            "terminal_observed": true,
+            "observed_count": 1,
+            "response_schema": "response-schemas/spin__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 819,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "book-of-hidden-tombs",
+        "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+            "signature": "PURCHASE_FREESPIN_BUY_LEVEL_0:UNEXECUTED",
+            "required": [
+              "spin"
+            ],
+            "covered": [],
+            "missing": [
+              "spin"
+            ],
+            "complete": false
+          },
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+            "signature": "PURCHASE_FREESPIN_BUY_LEVEL_1:UNEXECUTED",
+            "required": [
+              "spin"
+            ],
+            "covered": [],
+            "missing": [
+              "spin"
+            ],
+            "complete": false
+          }
+        ],
+        "complete": false,
+        "missing_count": 2
+      }
+    },
+    "profile.json": {
+      "encoding": "json",
+      "bytes": 3485,
+      "value": {
+        "schema": "tester-spin/bgaming-profile/v1",
+        "capability_version": 2,
+        "family": "api-v2",
+        "confidence": 1.0,
+        "evidence": [
+          "init.options",
+          "init.api_version=2",
+          "persisted.validated",
+          "refresh:purchase-contract-missing"
+        ],
+        "spin_options": {},
+        "command_options": {},
+        "request_extra_data": {},
+        "spin_option_choices": {},
+        "effective_bet_selector": "",
+        "effective_bet_multipliers": {},
+        "dynamic_purchased_feature": false,
+        "purchase_feature_level_supported": false,
+        "purchase_features": [],
+        "rows_required": false,
+        "line_count": 0,
+        "variable_layout": false,
+        "allowed_continuations": [
+          "close",
+          "freespin",
+          "play_bonus",
+          "play_preselection_game",
+          "preselection_game",
+          "respin"
+        ],
+        "source": "https://boost2.bgaming-network.com/wrapper.js",
+        "bundle_sha256": "038a073a88d2236e50d0ca24190ccce2e190ed820fa2e4fd2bdc37ecaa09a138",
+        "discovery_diagnostics": [
+          {
+            "kind": "loader",
+            "url": "https://cdn.bgaming-network.com/html/BookOfHiddenTombs/loader.js",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "kind": "script-skip",
+            "url": "https://www.googletagmanager.com/gtag/js",
+            "reason": "third-party-origin"
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BookOfHiddenTombs/bundle.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BookOfHiddenTombs/bundle.js",
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/wrapper.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 160620,
+            "contract_score": 24,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/analytics/amplitude.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 5312,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://replays.bgaming-network.com/replays.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 6770,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BookOfHiddenTombs/loader.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 831,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/:()=>!K(globalThis.navigator.sendBeacon),ArrayBuffer:()=>!K(globalThis.Uint8Array),Set:()=>!K(globalThis.Set),atob:()=>!K(globalThis.atob)},ls=`https:/polyfill-fastly.io/v3/polyfill.min.js",
+            "status": 403,
+            "ok": false,
+            "error": "HTTPError: 403 Client Error: Forbidden for url: https://boost2.bgaming-network.com/:()=%3E!K(globalThis.navigator.sendBeacon),ArrayBuffer:()=%3E!K(globalThis.Uint8Array),Set:()=%3E!K(globalThis.Set),atob:()=%3E!K(globalThis.atob)%7D,ls=%60https:/polyfill-fastly.io/v3/polyfill.min.js?version=3.111.0&features=$%7BObject.keys(as).join(",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/assets/index-B0GAQSxv.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/assets/index-B0GAQSxv.js",
+            "depth": 1
+          }
+        ],
+        "validated": true
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 6688,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "book-of-hidden-tombs",
+          "name": "Book of Hidden Tombs",
+          "identifier": "BookOfHiddenTombs"
+        },
+        "generated_at": "2026-09-13T09:17:09+00:00",
+        "source_run": "2026-09-13_06-17-03-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "SPIN",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bet"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          },
+          {
+            "id": "SPIN__PURCHASE_FREESPIN_CHANCE",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {
+              "purchased_feature": [
+                "freespin_chance"
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "purchased_feature": "freespin_chance"
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    },
+                    "purchased_feature": {
+                      "type": "string",
+                      "observed_enum": [
+                        "freespin_chance"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bet",
+                    "purchased_feature"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "PURCHASE_FREESPIN_CHANCE",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": "freespin_chance",
+            "purchased_feature_level": null,
+            "cost_multiplier": 1.5,
+            "required_options": [],
+            "covered_options": [],
+            "source": "init.feature_multipliers+provider-probe"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "0",
+            "cost_multiplier": 100.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "options.feature_options.feature_multipliers"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "1",
+            "cost_multiplier": 200.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "options.feature_options.feature_multipliers"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "0",
+            "cost_multiplier": 100.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "options.feature_options.feature_multipliers"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "1",
+            "cost_multiplier": 200.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "options.feature_options.feature_multipliers"
+          }
+        ],
+        "dispatch": {
+          "READY": {
+            "SPIN": [
+              "SPIN__TO__READY"
+            ],
+            "SPIN__PURCHASE_FREESPIN_CHANCE": [
+              "SPIN__PURCHASE_FREESPIN_CHANCE__TO__READY"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_CHANCE/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 515,
+      "value": {
+        "round_id": 17296400257,
+        "last_action_id": "17296400257_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "freespin_chance",
+        "bet": 200,
+        "win": 0,
+        "balance_total": 99700,
+        "screen_sha256": "",
+        "storage_seed": 241075247,
+        "storage_mode": "1",
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "df92673dccad7ac2",
+        "mode_id": "PURCHASE_FREESPIN_CHANCE",
+        "step": 1,
+        "expected_debit": 300.0,
+        "expected_outcome_bet": 200.0
+      }
+    },
+    "PURCHASE_FREESPIN_CHANCE/attempt-001/request.json": {
+      "encoding": "json",
+      "bytes": 171,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 200,
+          "purchased_feature": "freespin_chance"
+        },
+        "extra_data": {
+          "round_series_id": 1789291028770
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_CHANCE/attempt-001/response.json": {
+      "encoding": "json",
+      "bytes": 547,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 200,
+          "win": 0,
+          "wins": [],
+          "storage": {
+            "seed": 241075247,
+            "mode": "1"
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 99700
+        },
+        "flow": {
+          "round_id": 17296400257,
+          "last_action_id": "17296400257_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {
+            "name": "freespin_chance"
+          }
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_CHANCE/attempt-001/step-001-proof.json": {
+      "encoding": "json",
+      "bytes": 515,
+      "value": {
+        "round_id": 17296400257,
+        "last_action_id": "17296400257_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "freespin_chance",
+        "bet": 200,
+        "win": 0,
+        "balance_total": 99700,
+        "screen_sha256": "",
+        "storage_seed": 241075247,
+        "storage_mode": "1",
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "df92673dccad7ac2",
+        "mode_id": "PURCHASE_FREESPIN_CHANCE",
+        "step": 1,
+        "expected_debit": 300.0,
+        "expected_outcome_bet": 200.0
+      }
+    },
+    "PURCHASE_FREESPIN_CHANCE/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 171,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 200,
+          "purchased_feature": "freespin_chance"
+        },
+        "extra_data": {
+          "round_series_id": 1789291028770
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_CHANCE/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 547,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 200,
+          "win": 0,
+          "wins": [],
+          "storage": {
+            "seed": 241075247,
+            "mode": "1"
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 99700
+        },
+        "flow": {
+          "round_id": 17296400257,
+          "last_action_id": "17296400257_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {
+            "name": "freespin_chance"
+          }
+        }
+      }
+    },
+    "response-schemas/spin__purchase_freespin_chance__to__ready.json": {
+      "encoding": "json",
+      "bytes": 3622,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "SPIN__PURCHASE_FREESPIN_CHANCE__TO__READY",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "type": "string",
+              "observed_enum": [
+                "2"
+              ]
+            },
+            "balance": {
+              "type": "object",
+              "properties": {
+                "game": {
+                  "type": "integer"
+                },
+                "wallet": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "game",
+                "wallet"
+              ],
+              "additionalProperties": true
+            },
+            "flow": {
+              "type": "object",
+              "properties": {
+                "available_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "observed_enum": [
+                      "init",
+                      "spin"
+                    ]
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "last_action_id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "17296400257_1"
+                  ]
+                },
+                "purchased_feature": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "observed_enum": [
+                        "freespin_chance"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "additionalProperties": true
+                },
+                "round_id": {
+                  "type": "integer"
+                },
+                "state": {
+                  "type": "string",
+                  "observed_enum": [
+                    "closed"
+                  ]
+                }
+              },
+              "required": [
+                "available_actions",
+                "command",
+                "last_action_id",
+                "purchased_feature",
+                "round_id",
+                "state"
+              ],
+              "additionalProperties": true
+            },
+            "outcome": {
+              "type": "object",
+              "properties": {
+                "bet": {
+                  "type": "integer"
+                },
+                "screen": {
+                  "type": "null"
+                },
+                "special_symbols": {
+                  "type": "null"
+                },
+                "storage": {
+                  "type": "object",
+                  "properties": {
+                    "mode": {
+                      "type": "string",
+                      "observed_enum": [
+                        "1"
+                      ]
+                    },
+                    "seed": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "mode",
+                    "seed"
+                  ],
+                  "additionalProperties": true
+                },
+                "win": {
+                  "type": "integer"
+                },
+                "wins": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "bet",
+                "screen",
+                "special_symbols",
+                "storage",
+                "win",
+                "wins"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "api_version",
+            "balance",
+            "flow",
+            "outcome"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.balance.wallet",
+          "$.flow.last_action_id",
+          "$.flow.round_id",
+          "$.outcome.storage.seed",
+          "$.outcome.win"
+        ]
+      }
+    },
+    "response-schemas/spin__to__ready.json": {
+      "encoding": "json",
+      "bytes": 3377,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "SPIN__TO__READY",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "type": "string",
+              "observed_enum": [
+                "2"
+              ]
+            },
+            "balance": {
+              "type": "object",
+              "properties": {
+                "game": {
+                  "type": "integer"
+                },
+                "wallet": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "game",
+                "wallet"
+              ],
+              "additionalProperties": true
+            },
+            "flow": {
+              "type": "object",
+              "properties": {
+                "available_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "observed_enum": [
+                      "init",
+                      "spin"
+                    ]
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "last_action_id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "17296400074_1"
+                  ]
+                },
+                "purchased_feature": {
+                  "type": "object",
+                  "properties": {},
+                  "required": [],
+                  "additionalProperties": true
+                },
+                "round_id": {
+                  "type": "integer"
+                },
+                "state": {
+                  "type": "string",
+                  "observed_enum": [
+                    "closed"
+                  ]
+                }
+              },
+              "required": [
+                "available_actions",
+                "command",
+                "last_action_id",
+                "purchased_feature",
+                "round_id",
+                "state"
+              ],
+              "additionalProperties": true
+            },
+            "outcome": {
+              "type": "object",
+              "properties": {
+                "bet": {
+                  "type": "integer"
+                },
+                "screen": {
+                  "type": "null"
+                },
+                "special_symbols": {
+                  "type": "null"
+                },
+                "storage": {
+                  "type": "object",
+                  "properties": {
+                    "mode": {
+                      "type": "string",
+                      "observed_enum": [
+                        "0"
+                      ]
+                    },
+                    "seed": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "mode",
+                    "seed"
+                  ],
+                  "additionalProperties": true
+                },
+                "win": {
+                  "type": "integer"
+                },
+                "wins": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "bet",
+                "screen",
+                "special_symbols",
+                "storage",
+                "win",
+                "wins"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "api_version",
+            "balance",
+            "flow",
+            "outcome"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.balance.wallet",
+          "$.flow.last_action_id",
+          "$.flow.round_id",
+          "$.outcome.storage.seed",
+          "$.outcome.win"
+        ]
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 3952,
+      "value": {
+        "provider": "bgaming",
+        "slug": "book-of-hidden-tombs",
+        "game_name": "Book of Hidden Tombs",
+        "game_url": "https://demo.bgaming-network.com/play/BookOfHiddenTombs/FUN?server=demo",
+        "requested_spins": 2,
+        "successful_spins": 2,
+        "failed_spins": 0,
+        "status": "PARCIAL",
+        "symbol": "BookOfHiddenTombs",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": true,
+            "wire_command": "spin"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_CHANCE",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": false,
+            "executable": true,
+            "discovery_state": "SERVER_ADVERTISED_PROBE",
+            "wire_command": "spin",
+            "purchased_feature": "freespin_chance",
+            "purchased_feature_level": null,
+            "feature_multiplier": 15,
+            "base_multiplier": 10,
+            "cost_multiplier": 1.5,
+            "source": "init.feature_multipliers+provider-probe"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": false,
+            "executable": false,
+            "discovery_state": "ADVERTISED_ONLY",
+            "wire_command": "spin",
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "0",
+            "feature_multiplier": 1000,
+            "base_multiplier": 10,
+            "cost_multiplier": 100.0,
+            "source": "options.feature_options.feature_multipliers"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": false,
+            "executable": false,
+            "discovery_state": "ADVERTISED_ONLY",
+            "wire_command": "spin",
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "1",
+            "feature_multiplier": 2000,
+            "base_multiplier": 10,
+            "cost_multiplier": 200.0,
+            "source": "options.feature_options.feature_multipliers"
+          }
+        ],
+        "started_at": "2026-09-13T09:17:03+00:00",
+        "finished_at": "2026-09-13T09:17:09+00:00",
+        "elapsed_ms": 5718.000000000757,
+        "error": "BGaming respondió 2/2 intentos; modos terminales validados=2/2. Compras probadas: freespin_chance x1.5, freespin_buy x100, freespin_buy x200. Cobertura requerida pendiente: PURCHASE_FREESPIN_BUY_LEVEL_0, PURCHASE_FREESPIN_BUY_LEVEL_1. Cobertura de ramificaciones pendiente: PURCHASE_FREESPIN_BUY_LEVEL_0 -> ['spin']; PURCHASE_FREESPIN_BUY_LEVEL_1 -> ['spin'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Book of Hidden Tombs\\tests\\2026-09-13_06-17-03-bgaming-http-api-v2",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": true,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 328.0000000013388,
+            "symbol": "BookOfHiddenTombs",
+            "endpoint": "https://demo.bgaming-network.com/api/BookOfHiddenTombs/4369239/<session>",
+            "na": "closed",
+            "terminal": true,
+            "wire_steps": 1,
+            "warning": "",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Book of Hidden Tombs\\tests\\2026-09-13_06-17-03-bgaming-http-api-v2\\SPIN\\attempt-001"
+          },
+          {
+            "number": 1,
+            "ok": true,
+            "mode_id": "PURCHASE_FREESPIN_CHANCE",
+            "mode_kind": "PURCHASE",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 1514.999999999418,
+            "symbol": "BookOfHiddenTombs",
+            "endpoint": "https://demo.bgaming-network.com/api/BookOfHiddenTombs/4369239/<session>",
+            "na": "closed",
+            "terminal": true,
+            "wire_steps": 1,
+            "warning": "",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Book of Hidden Tombs\\tests\\2026-09-13_06-17-03-bgaming-http-api-v2\\PURCHASE_FREESPIN_CHANCE\\attempt-001"
+          }
+        ]
+      }
+    },
+    "SPIN/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 480,
+      "value": {
+        "round_id": 17296400074,
+        "last_action_id": "17296400074_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 200,
+        "win": 0,
+        "balance_total": 99800,
+        "screen_sha256": "",
+        "storage_seed": 246589753,
+        "storage_mode": "0",
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "deaa377b411974b2",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 200.0,
+        "expected_outcome_bet": 200.0
+      }
+    },
+    "SPIN/attempt-001/request.json": {
+      "encoding": "json",
+      "bytes": 126,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 200
+        },
+        "extra_data": {
+          "round_series_id": 1789291024652
+        }
+      }
+    },
+    "SPIN/attempt-001/response.json": {
+      "encoding": "json",
+      "bytes": 508,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 200,
+          "win": 0,
+          "wins": [],
+          "storage": {
+            "seed": 246589753,
+            "mode": "0"
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 99800
+        },
+        "flow": {
+          "round_id": 17296400074,
+          "last_action_id": "17296400074_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {}
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-proof.json": {
+      "encoding": "json",
+      "bytes": 480,
+      "value": {
+        "round_id": 17296400074,
+        "last_action_id": "17296400074_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 200,
+        "win": 0,
+        "balance_total": 99800,
+        "screen_sha256": "",
+        "storage_seed": 246589753,
+        "storage_mode": "0",
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "deaa377b411974b2",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 200.0,
+        "expected_outcome_bet": 200.0
+      }
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 126,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 200
+        },
+        "extra_data": {
+          "round_series_id": 1789291024652
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 508,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 200,
+          "win": 0,
+          "wins": [],
+          "storage": {
+            "seed": 246589753,
+            "mode": "0"
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 99800
+        },
+        "flow": {
+          "round_id": 17296400074,
+          "last_action_id": "17296400074_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {}
+        }
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 1586,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "book-of-hidden-tombs",
+          "name": "Book of Hidden Tombs",
+          "identifier": "BookOfHiddenTombs"
+        },
+        "generated_at": "2026-09-13T09:17:09+00:00",
+        "source_run": "2026-09-13_06-17-03-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {
+          "READY": {
+            "provider_states": [
+              "closed"
+            ],
+            "allowed_wire_actions_observed": [
+              "spin"
+            ],
+            "terminal_observed": true
+          }
+        },
+        "transitions": [
+          {
+            "source": "READY",
+            "request_contract": "SPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "outcome": "SPIN__TO__READY",
+            "target": "READY",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          },
+          {
+            "source": "READY",
+            "request_contract": "SPIN__PURCHASE_FREESPIN_CHANCE",
+            "request_selector_vectors_observed": [
+              {
+                "purchased_feature": "freespin_chance"
+              }
+            ],
+            "outcome": "SPIN__PURCHASE_FREESPIN_CHANCE__TO__READY",
+            "target": "READY",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "PURCHASE_FREESPIN_CHANCE/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
