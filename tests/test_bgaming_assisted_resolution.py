@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from tester_spin.providers.bgaming.assisted_resolution import (
+    _restore_assisted_history,
     capture_matches_target,
     merge_assisted_captures,
     unresolved_targets,
@@ -95,3 +96,21 @@ def test_completed_capture_promotes_reviewed_domain_and_preserves_tuples() -> No
     assert candidate["complete"] is True
     assert merged["coverage"]["unresolved_fields_without_domain"] == 0
     assert merged["coverage"]["assisted_user_reviewed_fields"] == 1
+
+
+def test_static_refresh_can_restore_prior_assisted_session() -> None:
+    previous, _ = merge_assisted_captures(
+        _payload(),
+        [
+            {"command": "play_bonus_game", "options": {"mode": "pick", "index": 0}},
+            {"command": "play_bonus_game", "options": {"mode": "pick", "index": 1}},
+        ],
+        completed=True,
+        session_id="reviewed",
+    )
+    fresh = _payload()
+    assert unresolved_targets(fresh)
+    restored = _restore_assisted_history(fresh, previous)
+    assert unresolved_targets(restored) == []
+    candidate = restored["commands"][0]["fields"]["index"]["domain_candidates"][0]
+    assert candidate["values"] == [0, 1]
