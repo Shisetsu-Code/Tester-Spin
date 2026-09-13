@@ -50,10 +50,9 @@ class BGamingProvider(_exhaustive.BGamingProvider):
                 stop_event=stop_event,
                 progress=progress,
             )
+            return finalize_policy_artifacts(result)
         finally:
             end_policy_run()
-
-        return finalize_policy_artifacts(result)
 
 
 # Preserve the public provider boundary used by registry/wiring tests.
