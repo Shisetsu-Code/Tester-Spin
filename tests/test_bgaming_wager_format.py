@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from tester_spin.providers.bgaming.request_syntax import scan_request_syntax
 from tester_spin.providers.bgaming.wager_format import (
     build_wager_format,
     canonical_wager_domains,
@@ -75,6 +76,25 @@ def test_finite_census_keeps_config_and_excludes_outcome_rng_arrays() -> None:
     assert not any("screen" in path for path in paths)
 
 
+def test_generic_syntax_scanner_follows_forwarded_options_callsites() -> None:
+    syntax = scan_request_syntax(_bundle())
+    spin = syntax["spin"]
+    assert set(spin["option_fields"]) == {
+        "bet",
+        "purchased_feature",
+        "purchased_feature_level",
+    }
+    bonus = syntax["play_bonus_game"]
+    assert bonus["option_fields"] == ["mode", "index"]
+    assert bonus["literal_variants"] == []
+    assert bonus["unresolved_variants"] == [
+        {
+            "literal_options": {"mode": "pick"},
+            "unresolved_fields": ["index"],
+        }
+    ]
+
+
 def test_command_inventory_links_known_wager_fields_without_ui() -> None:
     commands = discover_command_formats(_bundle(), _adventures_init())
     spin = next(row for row in commands if row["command"] == "spin")
@@ -99,8 +119,8 @@ def test_command_inventory_links_known_wager_fields_without_ui() -> None:
 
 def test_artifact_is_static_analysis_and_reports_remaining_unknowns() -> None:
     payload = build_wager_format(_adventures_init(), _bundle(), source="https://cdn.invalid/game/bundle.js")
-    assert payload["method"] == "bootstrap+init+official-client-static-analysis"
-    assert "no spin" in payload["network_policy"]
+    assert payload["method"] == "har+init+client-request-syntax"
+    assert "no browser UI" in payload["network_policy"]
     assert payload["coverage"]["commands"] >= 3
     assert payload["canonical_wager_domains"]["bet"]["values"] == [10, 20, 40, 100]
     bonus = next(row for row in payload["commands"] if row["command"] == "play_bonus_game")
