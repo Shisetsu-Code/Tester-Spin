@@ -1,0 +1,1224 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T12:11:11+00:00",
+  "source_commit": "299ba3374f3740551aa66a66eabf02c0d7ba03ad",
+  "provider": "bgaming",
+  "game": {
+    "slug": "alien-fruits-2",
+    "name": "Alien Fruits 2",
+    "symbol": "AlienFruits2",
+    "url": "https://demo.bgaming-network.com/play/AlienFruits2/FUN?server=demo"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "alien-fruits-2",
+    "game_name": "Alien Fruits 2",
+    "game_url": "https://demo.bgaming-network.com/play/AlienFruits2/FUN?server=demo",
+    "requested_spins": 3,
+    "successful_spins": 0,
+    "failed_spins": 3,
+    "status": "ERROR",
+    "symbol": "AlienFruits2",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": true,
+        "wire_command": "spin"
+      },
+      {
+        "id": "PURCHASE_FREESPIN_CHANCE",
+        "kind": "PURCHASE",
+        "observed": true,
+        "client_observed": true,
+        "executable": true,
+        "discovery_state": "CLIENT_OBSERVED",
+        "wire_command": "spin",
+        "purchased_feature": "freespin_chance",
+        "purchased_feature_level": null,
+        "feature_multiplier": 25,
+        "base_multiplier": 20,
+        "cost_multiplier": 1.25,
+        "source": "init.feature_multipliers+client"
+      },
+      {
+        "id": "PURCHASE_FREESPIN_BUY",
+        "kind": "PURCHASE",
+        "observed": true,
+        "client_observed": true,
+        "executable": true,
+        "discovery_state": "CLIENT_OBSERVED",
+        "wire_command": "spin",
+        "purchased_feature": "freespin_buy",
+        "purchased_feature_level": null,
+        "feature_multiplier": 2000,
+        "base_multiplier": 20,
+        "cost_multiplier": 100.0,
+        "source": "init.feature_multipliers+client"
+      }
+    ],
+    "started_at": "2026-09-13T12:10:59+00:00",
+    "finished_at": "2026-09-13T12:11:11+00:00",
+    "elapsed_ms": 12312.000000000126,
+    "error": "No se completó ninguna tirada BGaming.",
+    "run_dir": "2026-09-13_09-10-59-bgaming-http-api-v2",
+    "attempts": [],
+    "samples_per_path": 1
+  },
+  "artifact_bytes_embedded": 32554,
+  "artifacts": {
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 171,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "alien-fruits-2",
+        "branch_points": [],
+        "complete": true,
+        "missing_count": 0
+      }
+    },
+    "profile.json": {
+      "encoding": "json",
+      "bytes": 11413,
+      "value": {
+        "schema": "tester-spin/bgaming-profile/v1",
+        "capability_version": 2,
+        "family": "api-v2",
+        "confidence": 1.0,
+        "evidence": [
+          "init.options",
+          "init.api_version=2",
+          "persisted.validated"
+        ],
+        "spin_options": {},
+        "command_options": {},
+        "request_extra_data": {},
+        "spin_option_choices": {},
+        "effective_bet_selector": "",
+        "effective_bet_multipliers": {},
+        "dynamic_purchased_feature": true,
+        "purchase_feature_level_supported": true,
+        "purchase_features": [
+          "freespin_buy",
+          "freespin_chance"
+        ],
+        "rows_required": false,
+        "line_count": 0,
+        "variable_layout": false,
+        "allowed_continuations": [
+          "close",
+          "freespin",
+          "play_bonus",
+          "play_preselection_game",
+          "preselection_game",
+          "respin"
+        ],
+        "source": "persisted-validated-profile",
+        "bundle_sha256": "4bd233582d3b95868d22dfe3117672a3f0583f693fd3c00fa93b02e78cc9640d",
+        "discovery_diagnostics": [
+          {
+            "kind": "loader",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/loader.js",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "kind": "script-skip",
+            "url": "https://www.googletagmanager.com/gtag/js",
+            "reason": "third-party-origin"
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/bundle.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 1664481,
+            "contract_score": 82,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/bundle.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/bundle.js",
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/wrapper.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 160620,
+            "contract_score": 24,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/analytics/amplitude.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 5312,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://replays.bgaming-network.com/replays.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 6770,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/loader.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 1577,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/bg.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/bg.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/de.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/de.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/el.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/el.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/en.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/en.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/es.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/es.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/fi.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/fi.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/fr.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/fr.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/id.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/id.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/it.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/it.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/ja.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/ja.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/kde.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/kde.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/ko.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/ko.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/nl.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/nl.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/nn.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/nn.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/pl.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/pl.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/pt.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/pt.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/ro.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/ro.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/ru.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/ru.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/ses.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/ses.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/sv.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/sv.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/th.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/th.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/tr.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/tr.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/vi.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/vi.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/zh.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/zh.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/config/webpack.debug.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/config/webpack.debug.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/config/webpack.prod.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/AlienFruits2/v0.0.437_v14.19.2/config/webpack.prod.js",
+            "depth": 1
+          }
+        ],
+        "validated": true
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 1758,
+      "value": {
+        "provider": "bgaming",
+        "slug": "alien-fruits-2",
+        "game_name": "Alien Fruits 2",
+        "game_url": "https://demo.bgaming-network.com/play/AlienFruits2/FUN?server=demo",
+        "requested_spins": 3,
+        "successful_spins": 0,
+        "failed_spins": 3,
+        "status": "ERROR",
+        "symbol": "AlienFruits2",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": true,
+            "wire_command": "spin"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_CHANCE",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": true,
+            "executable": true,
+            "discovery_state": "CLIENT_OBSERVED",
+            "wire_command": "spin",
+            "purchased_feature": "freespin_chance",
+            "purchased_feature_level": null,
+            "feature_multiplier": 25,
+            "base_multiplier": 20,
+            "cost_multiplier": 1.25,
+            "source": "init.feature_multipliers+client"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": true,
+            "executable": true,
+            "discovery_state": "CLIENT_OBSERVED",
+            "wire_command": "spin",
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": null,
+            "feature_multiplier": 2000,
+            "base_multiplier": 20,
+            "cost_multiplier": 100.0,
+            "source": "init.feature_multipliers+client"
+          }
+        ],
+        "started_at": "2026-09-13T12:10:59+00:00",
+        "finished_at": "2026-09-13T12:11:11+00:00",
+        "elapsed_ms": 12312.000000000126,
+        "error": "No se completó ninguna tirada BGaming.",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Alien Fruits 2\\tests\\2026-09-13_09-10-59-bgaming-http-api-v2",
+        "attempts": [],
+        "samples_per_path": 1
+      }
+    },
+    "sample-catalog.json": {
+      "encoding": "json",
+      "bytes": 271,
+      "value": {
+        "schema": "tester-spin/sample-catalog/v2",
+        "provider": "bgaming",
+        "game": "alien-fruits-2",
+        "scope": "observed_paths_only",
+        "samples_per_path": 1,
+        "groups": [],
+        "observed_state_types": [],
+        "diagnostics": [],
+        "observed_paths_sampled": false
+      }
+    },
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 939,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "alien-fruits-2",
+          "name": "Alien Fruits 2",
+          "identifier": "AlienFruits2"
+        },
+        "generated_at": "2026-09-13T12:11:11+00:00",
+        "source_run": "2026-09-13_09-10-59-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 723,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "alien-fruits-2",
+          "name": "Alien Fruits 2",
+          "identifier": "AlienFruits2"
+        },
+        "generated_at": "2026-09-13T12:11:11+00:00",
+        "source_run": "2026-09-13_09-10-59-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "bootstrap.json": {
+      "encoding": "json",
+      "bytes": 6245,
+      "value": {
+        "identifier": "AlienFruits2",
+        "launch_url": "https://demo.bgaming-network.com/games/AlienFruits2/FUN",
+        "api_url": "https://demo.bgaming-network.com/api/AlienFruits2/2367111/<session>",
+        "options": {
+          "env": "production",
+          "csrfTokenHeaderName": "X-CSRF-Token",
+          "csrfTokenHeaderValue": "<redacted>",
+          "play_token": "<redacted>",
+          "game": "slots/alien_fruits2",
+          "identifier": "AlienFruits2",
+          "title": "Alien Fruits 2",
+          "currency": "FUN",
+          "balance_polling_interval": 30000,
+          "cache_id": "0495a91f80d188a448120c839de6b81796f1e72e483d6b93d593c667c4a9efb9",
+          "cache_player_id": "18c607678462284c86f18f54916fe4c8a6f849c5576c8dc0615df93687f02f9a",
+          "api": "https://demo.bgaming-network.com/api/AlienFruits2/2367111/<session>",
+          "rules_url": "https://rules.bgaming-network.com/en/AlienFruits2.json",
+          "deposit_url": null,
+          "games_page_url": "https://www.bgaming.com/games.html",
+          "history_url": null,
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09aad-95c8-766d-9d19-93f67818d56a/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/AlienFruits2/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY2ODc0MjR9LCJleHAiOjE4MDQ5Mzk4NjJ9.p5yS429JSjBRSjjA7Lj90s6d4tf3dFe4cMjc45gRTe8",
+          "websocket_url": "wss://demo.bgaming-network.com:443/cable",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=AlienFruits2&play_token=01a09aad-95c8-766d-9d19-93f67818d56a&server_id=demo",
+          "ui": {
+            "home_button": true,
+            "full_screen_prompt": true,
+            "logo": "standard",
+            "skin": "basic",
+            "skins": [
+              "basic"
+            ],
+            "brand_logo": null,
+            "brand": {
+              "name": "",
+              "logo": null,
+              "logo_in_game": null
+            },
+            "autospins_dialog": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "gamble_enabled": true,
+            "show_rtp_in_rules": true
+          },
+          "resources_path": "https://cdn.bgaming-network.com/html/AlienFruits2",
+          "custom": {},
+          "actual_currency_rate": 0.0,
+          "sound_enabled": true,
+          "games_loader_source": "https://cdn.bgaming-network.com/html/AlienFruits2/loader.js?1789301462",
+          "game_bundle_source": "https://cdn.bgaming-network.com/html/AlienFruits2/bundle.js",
+          "provable_fair": {
+            "verify_url": "https://demo.bgaming-network.com/api/games/verify"
+          },
+          "math": {
+            "rtp": {
+              "main": 97.17,
+              "freespin_buy": 97.17,
+              "freespin_chance": 97.17
+            },
+            "gamble_limit": 5000,
+            "max_multiplier": 5000.0,
+            "max_win_freq": 3008718
+          },
+          "rules": {
+            "min_bet": 20,
+            "max_bet": 6250,
+            "currency": {
+              "code": "FUN",
+              "symbol": "FUN",
+              "subunits": 100,
+              "exponent": 2
+            }
+          },
+          "version": "1.0.0",
+          "growthbook_flags": {
+            "tech_analytics": {
+              "value": true,
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "tech_lobby_widget_position": {
+              "value": {
+                "desktop": "bottom",
+                "portrait": "top",
+                "landscape": "top"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "growth_drop_init_popup_ui": {
+              "value": {
+                "id": 602,
+                "value": "A"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            }
+          },
+          "lobby_v2_options": {
+            "player_id": 345437044,
+            "lobby_enabled": false,
+            "drops_enabled": false,
+            "drops_token": "<redacted>",
+            "drops_api_url": "https://drops.bgaming-network.com/api/v1/",
+            "profile_enabled": false,
+            "profile_api_url": "https://loyalty-core.shared.bgaming-system.com/api/v1",
+            "profile_token": "<redacted>",
+            "gamelist_enabled": false,
+            "gamelist_api_url": "https://gamelist.bgaming-network.com",
+            "gamelist_token": "<redacted>",
+            "challenges_enabled": false,
+            "challenges_api_url": "https://challenges.bgaming-network.com/",
+            "challenges_token": "<redacted>",
+            "challenges_fe_script_url": "https://brush.bgaming-network.com/",
+            "quests_enabled": false,
+            "quests_api_url": null,
+            "quests_token": "<redacted>",
+            "shop_enabled": false,
+            "shop_api_url": "",
+            "shop_token": "<redacted>",
+            "growth_fe_url": ""
+          },
+          "server_id": "demo",
+          "locale": "en",
+          "actions": {
+            "deposit": null,
+            "return": null,
+            "history": {
+              "text": null,
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDU0MzcwNDQsImd0X2lkIjoyMzY3MTExfSwiZXhwIjoxODA0OTM5ODYyfQ.Jxq8dBvqoOQANrdzIF2ckQUco2D0Dxspj0nniSRVrag",
+              "mode": "open"
+            }
+          },
+          "show_paytable": false,
+          "license_rules": {
+            "rules_section": {
+              "show_license_requirements": false,
+              "license_requirement_show_purchase": false,
+              "license_requirement_show_autoplay": false,
+              "license_requirement_show_quick_spins": false,
+              "license_requirement_show_autospin_confirmation": false,
+              "license_requirement_reset_autospin": false,
+              "show_rtp": [
+                "main_rtp",
+                "chance_rtp",
+                "bonus_rtp"
+              ],
+              "show_gamble_round": true,
+              "show_min_max": false,
+              "show_max_win_frequency": false,
+              "show_max_multiplier": true,
+              "show_max_win_rules_text": null
+            },
+            "screen_section": {
+              "show_rtp_on_main_screen": false,
+              "show_max_win_frequency_on_main_screen": false,
+              "show_max_multiplier_on_main_screen": false
+            },
+            "lines_count": "60"
+          },
+          "open_page_method": "redirect",
+          "reset_bet_to_default": false,
+          "enable_chinese_logos": false,
+          "enable_quick_spins_by_default": null,
+          "purchased_feature_limit": null,
+          "pre_bet_balance_validation": false,
+          "available_games_to_switch": []
+        },
+        "round_series_id": 1789301460064
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 2123,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "alien-fruits-2",
+          "name": "Alien Fruits 2",
+          "identifier": "AlienFruits2"
+        },
+        "generated_at": "2026-09-13T12:11:11+00:00",
+        "source_run": "2026-09-13_09-10-59-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "PURCHASE_FREESPIN_CHANCE",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": "freespin_chance",
+            "purchased_feature_level": null,
+            "cost_multiplier": 1.25,
+            "required_options": [],
+            "covered_options": [],
+            "source": "init.feature_multipliers+client"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": null,
+            "cost_multiplier": 100.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "init.feature_multipliers+client"
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 88,
+      "value": {
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789301460064
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 2410,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            20,
+            40,
+            60,
+            100,
+            160,
+            200,
+            300,
+            400,
+            500,
+            700,
+            1000,
+            1500,
+            2000,
+            3000,
+            4000,
+            5000
+          ],
+          "default_bet": 20,
+          "paytable": {
+            "1": [
+              200,
+              500,
+              1000
+            ],
+            "2": [
+              50,
+              200,
+              500
+            ],
+            "3": [
+              40,
+              100,
+              300
+            ],
+            "4": [
+              30,
+              40,
+              240
+            ],
+            "5": [
+              20,
+              30,
+              200
+            ],
+            "6": [
+              16,
+              24,
+              160
+            ],
+            "7": [
+              10,
+              20,
+              100
+            ],
+            "8": [
+              8,
+              18,
+              80
+            ],
+            "9": [
+              5,
+              15,
+              40
+            ]
+          },
+          "paytable_levels": null,
+          "special_symbols": [
+            {
+              "kind": "scatter",
+              "symbol": "0"
+            }
+          ],
+          "special_paytable": {
+            "[:scatter, \"0\"]": {
+              "4": 3,
+              "5": 5,
+              "6": 100
+            }
+          },
+          "layout": {
+            "reels": 6,
+            "rows": 5
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [
+            [
+              "5",
+              "1",
+              "7",
+              "3",
+              "1"
+            ],
+            [
+              "7",
+              "7",
+              "9",
+              "9",
+              "3"
+            ],
+            [
+              "6",
+              "1",
+              "1",
+              "7",
+              "4"
+            ],
+            [
+              "2",
+              "7",
+              "12",
+              "6",
+              "6"
+            ],
+            [
+              "6",
+              "8",
+              "8",
+              "1",
+              "5"
+            ],
+            [
+              "6",
+              "4",
+              "4",
+              "5",
+              "6"
+            ]
+          ],
+          "feature_options": {
+            "feature_multipliers": {
+              "base_bet": 20,
+              "freespin_chance": 25,
+              "freespin_buy": 2000
+            },
+            "disabled_features": []
+          },
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 594,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "alien-fruits-2",
+          "name": "Alien Fruits 2",
+          "identifier": "AlienFruits2"
+        },
+        "generated_at": "2026-09-13T12:11:11+00:00",
+        "source_run": "2026-09-13_09-10-59-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "path-catalog.json": {
+      "encoding": "json",
+      "bytes": 1626,
+      "value": {
+        "schema": "tester-spin/bgaming-path-catalog/v1",
+        "phase": "coverage",
+        "provider": "bgaming",
+        "game": {
+          "slug": "alien-fruits-2",
+          "name": "Alien Fruits 2",
+          "symbol": "AlienFruits2"
+        },
+        "semantics": {
+          "path_completeness": "Every provider/client-demonstrated executable branch must be traversed.",
+          "rng_completeness": "Observed random outcomes are samples, not proof that every RNG outcome exists or was exhausted.",
+          "future_sampling_unit": "Repeat each executable path independently; do not multiply unrelated modes by a scoped selector."
+        },
+        "paths": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "branch_signature": "",
+            "executable": null,
+            "coverage_required": false,
+            "required_options": [],
+            "covered_options": [],
+            "attempts_observed": 0,
+            "terminal_successes": 0,
+            "wire_steps": 0,
+            "artifacts": []
+          },
+          {
+            "id": "PURCHASE_FREESPIN_CHANCE",
+            "kind": "PURCHASE",
+            "branch_signature": "",
+            "executable": true,
+            "coverage_required": false,
+            "required_options": [],
+            "covered_options": [],
+            "attempts_observed": 0,
+            "terminal_successes": 0,
+            "wire_steps": 0,
+            "artifacts": []
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY",
+            "kind": "PURCHASE",
+            "branch_signature": "",
+            "executable": true,
+            "coverage_required": false,
+            "required_options": [],
+            "covered_options": [],
+            "attempts_observed": 0,
+            "terminal_successes": 0,
+            "wire_steps": 0,
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 2123,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "alien-fruits-2",
+          "name": "Alien Fruits 2",
+          "identifier": "AlienFruits2"
+        },
+        "generated_at": "2026-09-13T12:11:11+00:00",
+        "source_run": "2026-09-13_09-10-59-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "PURCHASE_FREESPIN_CHANCE",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": "freespin_chance",
+            "purchased_feature_level": null,
+            "cost_multiplier": 1.25,
+            "required_options": [],
+            "covered_options": [],
+            "source": "init.feature_multipliers+client"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": null,
+            "cost_multiplier": 100.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "init.feature_multipliers+client"
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 540,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "alien-fruits-2",
+          "name": "Alien Fruits 2",
+          "identifier": "AlienFruits2"
+        },
+        "generated_at": "2026-09-13T12:11:11+00:00",
+        "source_run": "2026-09-13_09-10-59-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {},
+        "transitions": []
+      }
+    },
+    "wager-catalog.json": {
+      "encoding": "json",
+      "bytes": 1530,
+      "value": {
+        "schema": "tester-spin/bgaming-wager-catalog/v1",
+        "policy": {
+          "coverage": "Use the minimum provider-advertised wager for exhaustive protocol/path traversal; never invent a lower wager.",
+          "sampling": "Preserve default and full wager domain so future statistical sampling can be scheduled independently per path.",
+          "purchase_identity": "purchased_feature and purchased_feature_level are scoped to PURCHASE_* modes and are not global spin-option dimensions."
+        },
+        "plans": [
+          {
+            "default_bet": 20.0,
+            "coverage_bet": 20.0,
+            "available_bets": [
+              20.0,
+              40.0,
+              60.0,
+              100.0,
+              160.0,
+              200.0,
+              300.0,
+              400.0,
+              500.0,
+              700.0,
+              1000.0,
+              1500.0,
+              2000.0,
+              3000.0,
+              4000.0,
+              5000.0
+            ],
+            "balance": 100000.0,
+            "source": "options.available_bets:min",
+            "evidence": "init-response.json",
+            "purchase_costs": [
+              {
+                "mode_id": "PURCHASE_FREESPIN_CHANCE",
+                "purchased_feature": "freespin_chance",
+                "purchased_feature_level": null,
+                "cost_multiplier": 1.25,
+                "estimated_debit_at_coverage_bet": 25.0
+              },
+              {
+                "mode_id": "PURCHASE_FREESPIN_BUY",
+                "purchased_feature": "freespin_buy",
+                "purchased_feature_level": null,
+                "cost_multiplier": 100.0,
+                "estimated_debit_at_coverage_bet": 2000.0
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
