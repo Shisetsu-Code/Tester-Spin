@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-13T10:26:40+00:00",
-  "source_commit": "7ec75b8f3e5b7e6692dde9e0aa5020d5fc2f582e",
+  "published_at": "2026-09-13T12:44:27+00:00",
+  "source_commit": "299ba3374f3740551aa66a66eabf02c0d7ba03ad",
   "provider": "bgaming",
   "game": {
     "slug": "divine-queen-heart-of-ice",
@@ -67,11 +67,11 @@
         "covered_options": []
       }
     ],
-    "started_at": "2026-09-13T10:26:36+00:00",
-    "finished_at": "2026-09-13T10:26:40+00:00",
-    "elapsed_ms": 4375.0,
+    "started_at": "2026-09-13T12:44:22+00:00",
+    "finished_at": "2026-09-13T12:44:27+00:00",
+    "elapsed_ms": 4655.999999999949,
     "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_BUY, PURCHASE_FREESPIN_CHANCE. Cobertura de ramificaciones pendiente: PURCHASE_FREESPIN_BUY -> ['PURCHASE_FREESPIN_BUY']; PURCHASE_FREESPIN_CHANCE -> ['PURCHASE_FREESPIN_CHANCE'].",
-    "run_dir": "2026-09-13_07-26-36-bgaming-http-api-v2",
+    "run_dir": "2026-09-13_09-44-22-bgaming-http-api-v2",
     "attempts": [
       {
         "number": 1,
@@ -81,7 +81,7 @@
         "provider_bl": null,
         "provider_pur": null,
         "status_code": 200,
-        "elapsed_ms": 296.9999999986612,
+        "elapsed_ms": 327.99999999997453,
         "symbol": "DivineQueenHeartOfIce",
         "endpoint": "https://demo.bgaming-network.com/api/DivineQueenHeartOfIce/2772426/<session>",
         "na": "closed",
@@ -89,12 +89,491 @@
         "wire_steps": 1,
         "warning": "",
         "error": "",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Divine Queen_ Heart of Ice\\tests\\2026-09-13_07-26-36-bgaming-http-api-v2\\SPIN\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Divine Queen_ Heart of Ice\\tests\\2026-09-13_09-44-22-bgaming-http-api-v2\\SPIN\\attempt-001"
       }
-    ]
+    ],
+    "samples_per_path": 1
   },
-  "artifact_bytes_embedded": 41199,
+  "artifact_bytes_embedded": 41056,
   "artifacts": {
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 1006,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "divine-queen-heart-of-ice",
+        "branch_points": [
+          {
+            "source": "discovered_modes",
+            "mode_id": "PURCHASE_FREESPIN_BUY",
+            "signature": "PURCHASE_FREESPIN_BUY",
+            "required": [
+              "PURCHASE_FREESPIN_BUY"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_FREESPIN_BUY"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          },
+          {
+            "source": "discovered_modes",
+            "mode_id": "PURCHASE_FREESPIN_CHANCE",
+            "signature": "PURCHASE_FREESPIN_CHANCE",
+            "required": [
+              "PURCHASE_FREESPIN_CHANCE"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_FREESPIN_CHANCE"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          }
+        ],
+        "complete": false,
+        "missing_count": 2
+      }
+    },
+    "profile.json": {
+      "encoding": "json",
+      "bytes": 3501,
+      "value": {
+        "schema": "tester-spin/bgaming-profile/v1",
+        "capability_version": 2,
+        "family": "api-v2",
+        "confidence": 1.0,
+        "evidence": [
+          "init.options",
+          "init.api_version=2",
+          "persisted.validated",
+          "refresh:purchase-contract-missing"
+        ],
+        "spin_options": {},
+        "command_options": {},
+        "request_extra_data": {},
+        "spin_option_choices": {},
+        "effective_bet_selector": "",
+        "effective_bet_multipliers": {},
+        "dynamic_purchased_feature": false,
+        "purchase_feature_level_supported": false,
+        "purchase_features": [],
+        "rows_required": false,
+        "line_count": 0,
+        "variable_layout": false,
+        "allowed_continuations": [
+          "close",
+          "freespin",
+          "play_bonus",
+          "play_preselection_game",
+          "preselection_game",
+          "respin"
+        ],
+        "source": "https://boost2.bgaming-network.com/wrapper.js",
+        "bundle_sha256": "038a073a88d2236e50d0ca24190ccce2e190ed820fa2e4fd2bdc37ecaa09a138",
+        "discovery_diagnostics": [
+          {
+            "kind": "loader",
+            "url": "https://cdn.bgaming-network.com/html/DivineQueenHeartOfIce/loader.js",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "kind": "script-skip",
+            "url": "https://www.googletagmanager.com/gtag/js",
+            "reason": "third-party-origin"
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DivineQueenHeartOfIce/bundle.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DivineQueenHeartOfIce/bundle.js",
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/wrapper.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 160620,
+            "contract_score": 24,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/analytics/amplitude.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 5312,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://replays.bgaming-network.com/replays.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 6770,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DivineQueenHeartOfIce/loader.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 831,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/:()=>!K(globalThis.navigator.sendBeacon),ArrayBuffer:()=>!K(globalThis.Uint8Array),Set:()=>!K(globalThis.Set),atob:()=>!K(globalThis.atob)},ls=`https:/polyfill-fastly.io/v3/polyfill.min.js",
+            "status": 403,
+            "ok": false,
+            "error": "HTTPError: 403 Client Error: Forbidden for url: https://boost2.bgaming-network.com/:()=%3E!K(globalThis.navigator.sendBeacon),ArrayBuffer:()=%3E!K(globalThis.Uint8Array),Set:()=%3E!K(globalThis.Set),atob:()=%3E!K(globalThis.atob)%7D,ls=%60https:/polyfill-fastly.io/v3/polyfill.min.js?version=3.111.0&features=$%7BObject.keys(as).join(",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/assets/index-64ESaS81.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/assets/index-64ESaS81.js",
+            "depth": 1
+          }
+        ],
+        "validated": true
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 2982,
+      "value": {
+        "provider": "bgaming",
+        "slug": "divine-queen-heart-of-ice",
+        "game_name": "Divine Queen: Heart of Ice",
+        "game_url": "https://demo.bgaming-network.com/play/DivineQueenHeartOfIce/FUN?server=demo",
+        "requested_spins": 1,
+        "successful_spins": 1,
+        "failed_spins": 0,
+        "status": "PARCIAL",
+        "symbol": "DivineQueenHeartOfIce",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": true,
+            "wire_command": "spin"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": false,
+            "executable": false,
+            "coverage_required": true,
+            "discovery_state": "ADVERTISED_ONLY",
+            "wire_command": "spin",
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": null,
+            "feature_multiplier": 2000,
+            "base_multiplier": 20,
+            "cost_multiplier": 100.0,
+            "source": "init.feature_multipliers;wire-unproven",
+            "required_options": [
+              "PURCHASE_FREESPIN_BUY"
+            ],
+            "covered_options": []
+          },
+          {
+            "id": "PURCHASE_FREESPIN_CHANCE",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": false,
+            "executable": false,
+            "coverage_required": true,
+            "discovery_state": "ADVERTISED_ONLY",
+            "wire_command": "spin",
+            "purchased_feature": "freespin_chance",
+            "purchased_feature_level": null,
+            "feature_multiplier": 30,
+            "base_multiplier": 20,
+            "cost_multiplier": 1.5,
+            "source": "init.feature_multipliers;wire-unproven",
+            "required_options": [
+              "PURCHASE_FREESPIN_CHANCE"
+            ],
+            "covered_options": []
+          }
+        ],
+        "started_at": "2026-09-13T12:44:22+00:00",
+        "finished_at": "2026-09-13T12:44:27+00:00",
+        "elapsed_ms": 4655.999999999949,
+        "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_BUY, PURCHASE_FREESPIN_CHANCE. Cobertura de ramificaciones pendiente: PURCHASE_FREESPIN_BUY -> ['PURCHASE_FREESPIN_BUY']; PURCHASE_FREESPIN_CHANCE -> ['PURCHASE_FREESPIN_CHANCE'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Divine Queen_ Heart of Ice\\tests\\2026-09-13_09-44-22-bgaming-http-api-v2",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": true,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 327.99999999997453,
+            "symbol": "DivineQueenHeartOfIce",
+            "endpoint": "https://demo.bgaming-network.com/api/DivineQueenHeartOfIce/2772426/<session>",
+            "na": "closed",
+            "terminal": true,
+            "wire_steps": 1,
+            "warning": "",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Divine Queen_ Heart of Ice\\tests\\2026-09-13_09-44-22-bgaming-http-api-v2\\SPIN\\attempt-001"
+          }
+        ],
+        "samples_per_path": 1
+      }
+    },
+    "sample-catalog.json": {
+      "encoding": "json",
+      "bytes": 2502,
+      "value": {
+        "schema": "tester-spin/sample-catalog/v2",
+        "provider": "bgaming",
+        "game": "divine-queen-heart-of-ice",
+        "scope": "observed_paths_only",
+        "samples_per_path": 1,
+        "groups": [
+          {
+            "id": "a179acbfa9295736f1e930b5ce3d37a237f56d86b16cce5a1bfd01dd210dd41a",
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "choices": [],
+            "validated_samples": 1,
+            "samples": [
+              {
+                "attempt": 1,
+                "artifact_dir": "SPIN/attempt-001",
+                "validated": true,
+                "terminal": true,
+                "observed_state_sequence": [
+                  [
+                    {
+                      "field": "$.flow.state",
+                      "value": "closed"
+                    },
+                    {
+                      "field": "$.flow.command",
+                      "value": "spin"
+                    }
+                  ]
+                ],
+                "evidence": [
+                  {
+                    "path": "SPIN/attempt-001/request.json",
+                    "sha256": "06c3609bc2f770892817cef75afc20e7f1d2ea56300b289c10c200d8013ba1c1",
+                    "bytes": 125
+                  },
+                  {
+                    "path": "SPIN/attempt-001/response.json",
+                    "sha256": "2987ab1a664b29c6ef1ae85b86c59f087f8133ad930e3be972ad7d40a5fd00f2",
+                    "bytes": 503
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "06c3609bc2f770892817cef75afc20e7f1d2ea56300b289c10c200d8013ba1c1",
+                    "bytes": 125
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "2987ab1a664b29c6ef1ae85b86c59f087f8133ad930e3be972ad7d40a5fd00f2",
+                    "bytes": 503
+                  }
+                ]
+              }
+            ],
+            "missing_samples": 0
+          }
+        ],
+        "observed_state_types": [
+          {
+            "id": "ed49600f5050b30d6fbaf9ebe020002d45a8e2dfec92172a5b89a1701378a61f",
+            "observed_tags": [
+              {
+                "field": "$.flow.state",
+                "value": "closed"
+              },
+              {
+                "field": "$.flow.command",
+                "value": "spin"
+              }
+            ],
+            "evidence": [
+              {
+                "attempt": 1,
+                "mode_id": "SPIN",
+                "path": "SPIN/attempt-001/response.json"
+              },
+              {
+                "attempt": 1,
+                "mode_id": "SPIN",
+                "path": "SPIN/attempt-001/step-001-response.json"
+              }
+            ]
+          }
+        ],
+        "diagnostics": [],
+        "observed_paths_sampled": true
+      }
+    },
+    "SPIN/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 473,
+      "value": {
+        "round_id": 17298210913,
+        "last_action_id": "17298210913_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 20,
+        "win": 0,
+        "balance_total": 99980,
+        "screen_sha256": "",
+        "storage_seed": 17111,
+        "storage_mode": "0",
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "2aabd85b0542489f",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 20.0,
+        "expected_outcome_bet": 20.0
+      }
+    },
+    "SPIN/attempt-001/request.json": {
+      "encoding": "json",
+      "bytes": 125,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 20
+        },
+        "extra_data": {
+          "round_series_id": 1789303463887
+        }
+      }
+    },
+    "SPIN/attempt-001/response.json": {
+      "encoding": "json",
+      "bytes": 503,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 20,
+          "win": 0,
+          "wins": [],
+          "storage": {
+            "seed": 17111,
+            "mode": "0"
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 99980
+        },
+        "flow": {
+          "round_id": 17298210913,
+          "last_action_id": "17298210913_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {}
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-proof.json": {
+      "encoding": "json",
+      "bytes": 473,
+      "value": {
+        "round_id": 17298210913,
+        "last_action_id": "17298210913_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 20,
+        "win": 0,
+        "balance_total": 99980,
+        "screen_sha256": "",
+        "storage_seed": 17111,
+        "storage_mode": "0",
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "2aabd85b0542489f",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 20.0,
+        "expected_outcome_bet": 20.0
+      }
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 125,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 20
+        },
+        "extra_data": {
+          "round_series_id": 1789303463887
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 503,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 20,
+          "win": 0,
+          "wins": [],
+          "storage": {
+            "seed": 17111,
+            "mode": "0"
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 99980
+        },
+        "flow": {
+          "round_id": 17298210913,
+          "last_action_id": "17298210913_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {}
+        }
+      }
+    },
     "backend-conformance.json": {
       "encoding": "json",
       "bytes": 1424,
@@ -106,8 +585,8 @@
           "name": "Divine Queen: Heart of Ice",
           "identifier": "DivineQueenHeartOfIce"
         },
-        "generated_at": "2026-09-13T10:26:40+00:00",
-        "source_run": "2026-09-13_07-26-36-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T12:44:27+00:00",
+        "source_run": "2026-09-13_09-44-22-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -155,8 +634,8 @@
           "name": "Divine Queen: Heart of Ice",
           "identifier": "DivineQueenHeartOfIce"
         },
-        "generated_at": "2026-09-13T10:26:40+00:00",
-        "source_run": "2026-09-13_07-26-36-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T12:44:27+00:00",
+        "source_run": "2026-09-13_09-44-22-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -209,17 +688,17 @@
           "title": "Divine Queen: Heart of Ice",
           "currency": "FUN",
           "balance_polling_interval": 30000,
-          "cache_id": "640d6f17dafc5cb94e407f095ac53af370f659e8bf695daef8839b084f306a27",
-          "cache_player_id": "721f68a0aebff4e4e0249a1932cf3a1a54e85ea42bc95478168478b23de7b418",
+          "cache_id": "353657d2a1a4f64e8dcd15497d23609609856edf3a78936b8c76346aafcf7b17",
+          "cache_player_id": "c19bdef0730ca6ce9413f0b4bd015757fa661d9481e9ec36c00712ef2d63605a",
           "api": "https://demo.bgaming-network.com/api/DivineQueenHeartOfIce/2772426/<session>",
           "rules_url": "https://rules.bgaming-network.com/en/DivineQueenHeartOfIce.json",
           "deposit_url": null,
           "games_page_url": "https://www.bgaming.com/games.html",
           "history_url": null,
-          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09a4e-0364-7400-84df-a397545e5d21/launch",
-          "game_page_url": "https://demo.bgaming-network.com/games/DivineQueenHeartOfIce/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY2MjQzNjJ9LCJleHAiOjE4MDQ5MzM1OTl9.fI3yPvSzZZ-mgMR7EX14lpip4mtOZ_Gv5XJvuJAA9rI",
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09acc-27f8-757b-855f-220bc2bdcceb/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/DivineQueenHeartOfIce/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY3MDg4NjV9LCJleHAiOjE4MDQ5NDE4NjZ9.rcYlb0e9Rb-wMsFBLg8igoi5KFQx_UB7J9wvENlYrro",
           "websocket_url": "wss://demo.bgaming-network.com:443/cable",
-          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=DivineQueenHeartOfIce&play_token=01a09a4e-0364-7400-84df-a397545e5d21&server_id=demo",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=DivineQueenHeartOfIce&play_token=01a09acc-27f8-757b-855f-220bc2bdcceb&server_id=demo",
           "ui": {
             "home_button": true,
             "full_screen_prompt": true,
@@ -253,7 +732,7 @@
           "custom": {},
           "actual_currency_rate": 0.0,
           "sound_enabled": true,
-          "games_loader_source": "https://cdn.bgaming-network.com/html/DivineQueenHeartOfIce/loader.js?1789295199",
+          "games_loader_source": "https://cdn.bgaming-network.com/html/DivineQueenHeartOfIce/loader.js?1789303466",
           "game_bundle_source": "https://cdn.bgaming-network.com/html/DivineQueenHeartOfIce/bundle.js",
           "provable_fair": {
             "verify_url": "https://demo.bgaming-network.com/api/games/verify"
@@ -304,7 +783,7 @@
             }
           },
           "lobby_v2_options": {
-            "player_id": 345374050,
+            "player_id": 345458466,
             "lobby_enabled": false,
             "drops_enabled": false,
             "drops_token": "<redacted>",
@@ -334,7 +813,7 @@
             "return": null,
             "history": {
               "text": null,
-              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzNzQwNTAsImd0X2lkIjoyNzcyNDI2fSwiZXhwIjoxODA0OTMzNTk5fQ.0dLPsx3-jHd2PXcYGojv2W-hy1jgo0R_EE5b-xjutmQ",
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDU0NTg0NjYsImd0X2lkIjoyNzcyNDI2fSwiZXhwIjoxODA0OTQxODY2fQ.UbHslJXDm0vNyFVzp1yLX5RA1RX4MOxEmWObzz7dR10",
               "mode": "open"
             }
           },
@@ -373,7 +852,7 @@
           "pre_bet_balance_validation": false,
           "available_games_to_switch": []
         },
-        "round_series_id": 1789295197063
+        "round_series_id": 1789303463887
       }
     },
     "emulation-contract.json": {
@@ -387,8 +866,8 @@
           "name": "Divine Queen: Heart of Ice",
           "identifier": "DivineQueenHeartOfIce"
         },
-        "generated_at": "2026-09-13T10:26:40+00:00",
-        "source_run": "2026-09-13_07-26-36-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T12:44:27+00:00",
+        "source_run": "2026-09-13_09-44-22-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -558,7 +1037,7 @@
       "value": {
         "command": "init",
         "extra_data": {
-          "round_series_id": 1789295197063
+          "round_series_id": 1789303463887
         }
       }
     },
@@ -607,7 +1086,7 @@
             "exponent": 2
           },
           "screen": [],
-          "default_seed": 19148,
+          "default_seed": 16161,
           "feature_options": {
             "feature_multipliers": {
               "freespin_buy": 2000,
@@ -649,8 +1128,8 @@
           "name": "Divine Queen: Heart of Ice",
           "identifier": "DivineQueenHeartOfIce"
         },
-        "generated_at": "2026-09-13T10:26:40+00:00",
-        "source_run": "2026-09-13_07-26-36-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T12:44:27+00:00",
+        "source_run": "2026-09-13_09-44-22-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -724,7 +1203,7 @@
             "terminal_successes": 1,
             "wire_steps": 1,
             "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Divine Queen_ Heart of Ice\\tests\\2026-09-13_07-26-36-bgaming-http-api-v2\\SPIN\\attempt-001"
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Divine Queen_ Heart of Ice\\tests\\2026-09-13_09-44-22-bgaming-http-api-v2\\SPIN\\attempt-001"
             ]
           },
           {
@@ -760,155 +1239,6 @@
         ]
       }
     },
-    "path-coverage.json": {
-      "encoding": "json",
-      "bytes": 826,
-      "value": {
-        "schema": "tester-spin/path-coverage/v1",
-        "provider": "bgaming",
-        "game": "divine-queen-heart-of-ice",
-        "branch_points": [
-          {
-            "source": "discovered_modes",
-            "mode_id": "PURCHASE_FREESPIN_BUY",
-            "signature": "PURCHASE_FREESPIN_BUY",
-            "required": [
-              "PURCHASE_FREESPIN_BUY"
-            ],
-            "covered": [],
-            "missing": [
-              "PURCHASE_FREESPIN_BUY"
-            ],
-            "complete": false
-          },
-          {
-            "source": "discovered_modes",
-            "mode_id": "PURCHASE_FREESPIN_CHANCE",
-            "signature": "PURCHASE_FREESPIN_CHANCE",
-            "required": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "covered": [],
-            "missing": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "complete": false
-          }
-        ],
-        "complete": false,
-        "missing_count": 2
-      }
-    },
-    "profile.json": {
-      "encoding": "json",
-      "bytes": 3431,
-      "value": {
-        "schema": "tester-spin/bgaming-profile/v1",
-        "capability_version": 2,
-        "family": "api-v2",
-        "confidence": 1.0,
-        "evidence": [
-          "init.options",
-          "init.api_version=2"
-        ],
-        "spin_options": {},
-        "command_options": {},
-        "request_extra_data": {},
-        "spin_option_choices": {},
-        "effective_bet_selector": "",
-        "effective_bet_multipliers": {},
-        "dynamic_purchased_feature": false,
-        "purchase_feature_level_supported": false,
-        "purchase_features": [],
-        "rows_required": false,
-        "line_count": 0,
-        "variable_layout": false,
-        "allowed_continuations": [
-          "close",
-          "freespin",
-          "play_bonus",
-          "play_preselection_game",
-          "preselection_game",
-          "respin"
-        ],
-        "source": "https://boost2.bgaming-network.com/wrapper.js",
-        "bundle_sha256": "038a073a88d2236e50d0ca24190ccce2e190ed820fa2e4fd2bdc37ecaa09a138",
-        "discovery_diagnostics": [
-          {
-            "kind": "loader",
-            "url": "https://cdn.bgaming-network.com/html/DivineQueenHeartOfIce/loader.js",
-            "status": 200,
-            "ok": true
-          },
-          {
-            "kind": "script-skip",
-            "url": "https://www.googletagmanager.com/gtag/js",
-            "reason": "third-party-origin"
-          },
-          {
-            "kind": "bundle",
-            "url": "https://cdn.bgaming-network.com/html/DivineQueenHeartOfIce/bundle.js",
-            "status": 404,
-            "ok": false,
-            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DivineQueenHeartOfIce/bundle.js",
-            "depth": 0
-          },
-          {
-            "kind": "bundle",
-            "url": "https://boost2.bgaming-network.com/wrapper.js",
-            "status": 200,
-            "ok": true,
-            "bytes": 160620,
-            "contract_score": 24,
-            "depth": 0
-          },
-          {
-            "kind": "bundle",
-            "url": "https://boost2.bgaming-network.com/analytics/amplitude.js",
-            "status": 200,
-            "ok": true,
-            "bytes": 5312,
-            "contract_score": 0,
-            "depth": 0
-          },
-          {
-            "kind": "bundle",
-            "url": "https://replays.bgaming-network.com/replays.js",
-            "status": 200,
-            "ok": true,
-            "bytes": 6770,
-            "contract_score": 0,
-            "depth": 0
-          },
-          {
-            "kind": "bundle",
-            "url": "https://cdn.bgaming-network.com/html/DivineQueenHeartOfIce/loader.js",
-            "status": 200,
-            "ok": true,
-            "bytes": 831,
-            "contract_score": 0,
-            "depth": 0
-          },
-          {
-            "kind": "bundle",
-            "url": "https://boost2.bgaming-network.com/:()=>!K(globalThis.navigator.sendBeacon),ArrayBuffer:()=>!K(globalThis.Uint8Array),Set:()=>!K(globalThis.Set),atob:()=>!K(globalThis.atob)},ls=`https:/polyfill-fastly.io/v3/polyfill.min.js",
-            "status": 403,
-            "ok": false,
-            "error": "HTTPError: 403 Client Error: Forbidden for url: https://boost2.bgaming-network.com/:()=%3E!K(globalThis.navigator.sendBeacon),ArrayBuffer:()=%3E!K(globalThis.Uint8Array),Set:()=%3E!K(globalThis.Set),atob:()=%3E!K(globalThis.atob)%7D,ls=%60https:/polyfill-fastly.io/v3/polyfill.min.js?version=3.111.0&features=$%7BObject.keys(as).join(",
-            "depth": 1
-          },
-          {
-            "kind": "bundle",
-            "url": "https://cdn.bgaming-network.com/assets/index-64ESaS81.js",
-            "status": 404,
-            "ok": false,
-            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/assets/index-64ESaS81.js",
-            "depth": 1
-          }
-        ],
-        "validated": true
-      }
-    },
     "protocol-contract.json": {
       "encoding": "json",
       "bytes": 4586,
@@ -920,8 +1250,8 @@
           "name": "Divine Queen: Heart of Ice",
           "identifier": "DivineQueenHeartOfIce"
         },
-        "generated_at": "2026-09-13T10:26:40+00:00",
-        "source_run": "2026-09-13_07-26-36-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T12:44:27+00:00",
+        "source_run": "2026-09-13_09-44-22-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -1141,7 +1471,7 @@
                 "last_action_id": {
                   "type": "string",
                   "observed_enum": [
-                    "17296978853_1"
+                    "17298210913_1"
                   ]
                 },
                 "purchased_feature": {
@@ -1237,331 +1567,6 @@
         ]
       }
     },
-    "result.json": {
-      "encoding": "json",
-      "bytes": 2944,
-      "value": {
-        "provider": "bgaming",
-        "slug": "divine-queen-heart-of-ice",
-        "game_name": "Divine Queen: Heart of Ice",
-        "game_url": "https://demo.bgaming-network.com/play/DivineQueenHeartOfIce/FUN?server=demo",
-        "requested_spins": 1,
-        "successful_spins": 1,
-        "failed_spins": 0,
-        "status": "PARCIAL",
-        "symbol": "DivineQueenHeartOfIce",
-        "discovered_modes": [
-          {
-            "id": "SPIN",
-            "kind": "SPIN",
-            "observed": true,
-            "wire_command": "spin"
-          },
-          {
-            "id": "PURCHASE_FREESPIN_BUY",
-            "kind": "PURCHASE",
-            "observed": true,
-            "client_observed": false,
-            "executable": false,
-            "coverage_required": true,
-            "discovery_state": "ADVERTISED_ONLY",
-            "wire_command": "spin",
-            "purchased_feature": "freespin_buy",
-            "purchased_feature_level": null,
-            "feature_multiplier": 2000,
-            "base_multiplier": 20,
-            "cost_multiplier": 100.0,
-            "source": "init.feature_multipliers;wire-unproven",
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY"
-            ],
-            "covered_options": []
-          },
-          {
-            "id": "PURCHASE_FREESPIN_CHANCE",
-            "kind": "PURCHASE",
-            "observed": true,
-            "client_observed": false,
-            "executable": false,
-            "coverage_required": true,
-            "discovery_state": "ADVERTISED_ONLY",
-            "wire_command": "spin",
-            "purchased_feature": "freespin_chance",
-            "purchased_feature_level": null,
-            "feature_multiplier": 30,
-            "base_multiplier": 20,
-            "cost_multiplier": 1.5,
-            "source": "init.feature_multipliers;wire-unproven",
-            "required_options": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "covered_options": []
-          }
-        ],
-        "started_at": "2026-09-13T10:26:36+00:00",
-        "finished_at": "2026-09-13T10:26:40+00:00",
-        "elapsed_ms": 4375.0,
-        "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_BUY, PURCHASE_FREESPIN_CHANCE. Cobertura de ramificaciones pendiente: PURCHASE_FREESPIN_BUY -> ['PURCHASE_FREESPIN_BUY']; PURCHASE_FREESPIN_CHANCE -> ['PURCHASE_FREESPIN_CHANCE'].",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Divine Queen_ Heart of Ice\\tests\\2026-09-13_07-26-36-bgaming-http-api-v2",
-        "attempts": [
-          {
-            "number": 1,
-            "ok": true,
-            "mode_id": "SPIN",
-            "mode_kind": "SPIN",
-            "provider_bl": null,
-            "provider_pur": null,
-            "status_code": 200,
-            "elapsed_ms": 296.9999999986612,
-            "symbol": "DivineQueenHeartOfIce",
-            "endpoint": "https://demo.bgaming-network.com/api/DivineQueenHeartOfIce/2772426/<session>",
-            "na": "closed",
-            "terminal": true,
-            "wire_steps": 1,
-            "warning": "",
-            "error": "",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Divine Queen_ Heart of Ice\\tests\\2026-09-13_07-26-36-bgaming-http-api-v2\\SPIN\\attempt-001"
-          }
-        ]
-      }
-    },
-    "sampling-plan.json": {
-      "encoding": "json",
-      "bytes": 2937,
-      "value": {
-        "schema": "tester-spin/path-sampling-plan/v1",
-        "provider": "bgaming",
-        "game": {
-          "slug": "divine-queen-heart-of-ice",
-          "name": "Divine Queen: Heart of Ice",
-          "symbol": "DivineQueenHeartOfIce"
-        },
-        "source_status": "PARCIAL",
-        "phase": "coverage",
-        "semantics": {
-          "coverage_goal": "Traverse every provider/client-demonstrated executable path, using fresh sessions whenever the protocol consumes state.",
-          "sampling_unit": "One normalized path/branch. Future high-volume runs repeat each sampling-ready path independently instead of multiplying unrelated selectors.",
-          "outcome_policy": "Provider-specific request/response evidence classifies observed outcome families. Observed counts are samples and are never RNG probabilities.",
-          "repetitions_per_path": null
-        },
-        "summary": {
-          "paths": 3,
-          "sampling_ready": 1,
-          "unresolved": 2
-        },
-        "paths": [
-          {
-            "path_id": "SPIN",
-            "mode_id": "SPIN",
-            "kind": "SPIN",
-            "branch_signature": "",
-            "wire_command": "spin",
-            "executable": true,
-            "coverage_required": false,
-            "required_options": [],
-            "covered_options": [],
-            "missing_options": [],
-            "sampling_ready": true,
-            "observed_attempts": 1,
-            "terminal_successes": 1,
-            "failed_attempts": 0,
-            "wire_steps_observed": 1,
-            "observed_terminal_markers": [
-              "closed"
-            ],
-            "evidence": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Divine Queen_ Heart of Ice\\tests\\2026-09-13_07-26-36-bgaming-http-api-v2\\SPIN\\attempt-001"
-            ]
-          },
-          {
-            "path_id": "PURCHASE_FREESPIN_BUY",
-            "mode_id": "PURCHASE_FREESPIN_BUY",
-            "kind": "PURCHASE",
-            "branch_signature": "",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY"
-            ],
-            "covered_options": [],
-            "missing_options": [
-              "PURCHASE_FREESPIN_BUY"
-            ],
-            "sampling_ready": false,
-            "observed_attempts": 0,
-            "terminal_successes": 0,
-            "failed_attempts": 0,
-            "wire_steps_observed": 0,
-            "observed_terminal_markers": [],
-            "evidence": []
-          },
-          {
-            "path_id": "PURCHASE_FREESPIN_CHANCE",
-            "mode_id": "PURCHASE_FREESPIN_CHANCE",
-            "kind": "PURCHASE",
-            "branch_signature": "",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "required_options": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "covered_options": [],
-            "missing_options": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "sampling_ready": false,
-            "observed_attempts": 0,
-            "terminal_successes": 0,
-            "failed_attempts": 0,
-            "wire_steps_observed": 0,
-            "observed_terminal_markers": [],
-            "evidence": []
-          }
-        ]
-      }
-    },
-    "SPIN/attempt-001/remote-proof.json": {
-      "encoding": "json",
-      "bytes": 472,
-      "value": {
-        "round_id": 17296978853,
-        "last_action_id": "17296978853_1",
-        "flow_state": "closed",
-        "flow_command": "spin",
-        "purchased_feature": "",
-        "bet": 20,
-        "win": 0,
-        "balance_total": 99980,
-        "screen_sha256": "",
-        "storage_seed": 6782,
-        "storage_mode": "0",
-        "freespins_issued": null,
-        "freespins_left": null,
-        "response_sha256": "e3d47d768987de78",
-        "mode_id": "SPIN",
-        "step": 1,
-        "expected_debit": 20.0,
-        "expected_outcome_bet": 20.0
-      }
-    },
-    "SPIN/attempt-001/request.json": {
-      "encoding": "json",
-      "bytes": 125,
-      "value": {
-        "command": "spin",
-        "options": {
-          "bet": 20
-        },
-        "extra_data": {
-          "round_series_id": 1789295197063
-        }
-      }
-    },
-    "SPIN/attempt-001/response.json": {
-      "encoding": "json",
-      "bytes": 502,
-      "value": {
-        "api_version": "2",
-        "outcome": {
-          "screen": null,
-          "special_symbols": null,
-          "bet": 20,
-          "win": 0,
-          "wins": [],
-          "storage": {
-            "seed": 6782,
-            "mode": "0"
-          }
-        },
-        "balance": {
-          "game": 0,
-          "wallet": 99980
-        },
-        "flow": {
-          "round_id": 17296978853,
-          "last_action_id": "17296978853_1",
-          "state": "closed",
-          "command": "spin",
-          "available_actions": [
-            "init",
-            "spin"
-          ],
-          "purchased_feature": {}
-        }
-      }
-    },
-    "SPIN/attempt-001/step-001-proof.json": {
-      "encoding": "json",
-      "bytes": 472,
-      "value": {
-        "round_id": 17296978853,
-        "last_action_id": "17296978853_1",
-        "flow_state": "closed",
-        "flow_command": "spin",
-        "purchased_feature": "",
-        "bet": 20,
-        "win": 0,
-        "balance_total": 99980,
-        "screen_sha256": "",
-        "storage_seed": 6782,
-        "storage_mode": "0",
-        "freespins_issued": null,
-        "freespins_left": null,
-        "response_sha256": "e3d47d768987de78",
-        "mode_id": "SPIN",
-        "step": 1,
-        "expected_debit": 20.0,
-        "expected_outcome_bet": 20.0
-      }
-    },
-    "SPIN/attempt-001/step-001-request.json": {
-      "encoding": "json",
-      "bytes": 125,
-      "value": {
-        "command": "spin",
-        "options": {
-          "bet": 20
-        },
-        "extra_data": {
-          "round_series_id": 1789295197063
-        }
-      }
-    },
-    "SPIN/attempt-001/step-001-response.json": {
-      "encoding": "json",
-      "bytes": 502,
-      "value": {
-        "api_version": "2",
-        "outcome": {
-          "screen": null,
-          "special_symbols": null,
-          "bet": 20,
-          "win": 0,
-          "wins": [],
-          "storage": {
-            "seed": 6782,
-            "mode": "0"
-          }
-        },
-        "balance": {
-          "game": 0,
-          "wallet": 99980
-        },
-        "flow": {
-          "round_id": 17296978853,
-          "last_action_id": "17296978853_1",
-          "state": "closed",
-          "command": "spin",
-          "available_actions": [
-            "init",
-            "spin"
-          ],
-          "purchased_feature": {}
-        }
-      }
-    },
     "state-machine.json": {
       "encoding": "json",
       "bytes": 1114,
@@ -1573,8 +1578,8 @@
           "name": "Divine Queen: Heart of Ice",
           "identifier": "DivineQueenHeartOfIce"
         },
-        "generated_at": "2026-09-13T10:26:40+00:00",
-        "source_run": "2026-09-13_07-26-36-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T12:44:27+00:00",
+        "source_run": "2026-09-13_09-44-22-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
