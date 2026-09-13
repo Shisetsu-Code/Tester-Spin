@@ -225,6 +225,35 @@ def merge_assisted_captures(
     return merged, resolved_fields
 
 
+def _restore_assisted_history(
+    fresh: dict[str, Any],
+    previous: dict[str, Any],
+) -> dict[str, Any]:
+    assisted = previous.get("assisted_resolution")
+    if not isinstance(assisted, dict):
+        return fresh
+    sessions = assisted.get("sessions")
+    if not isinstance(sessions, list):
+        return fresh
+
+    restored = fresh
+    for index, session in enumerate(sessions):
+        if not isinstance(session, dict):
+            continue
+        captures = session.get("captures")
+        if not isinstance(captures, list):
+            continue
+        session_id = str(session.get("session_id") or f"restored-{index}")
+        completed = bool(session.get("completed_by_user"))
+        restored, _ = merge_assisted_captures(
+            restored,
+            [value for value in captures if isinstance(value, dict)],
+            completed=completed,
+            session_id=session_id,
+        )
+    return restored
+
+
 def resolve_game_assisted(
     provider: Any,
     game: Game,
@@ -237,8 +266,11 @@ def resolve_game_assisted(
     analysis_dir.mkdir(parents=True, exist_ok=True)
     artifact = analysis_dir / "wager-format.json"
 
+    previous_payload = _read_json(artifact) if artifact.is_file() else {}
     analyze_game_wager_format(provider, game, timeout_s=timeout_s, progress=progress)
-    payload = _read_json(artifact)
+    payload = _restore_assisted_history(_read_json(artifact), previous_payload)
+    atomic_write(artifact, payload)
+
     targets = unresolved_targets(payload)
     if not targets:
         progress(f"[{game.name}] ASISTIDO: no quedan campos unresolved; no se abre Chromium.")
