@@ -1,0 +1,725 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T09:28:44+00:00",
+  "source_commit": "c98ad4264ce542a06a267e2e6a013bad3a6ce216",
+  "provider": "bgaming",
+  "game": {
+    "slug": "jungle-queen",
+    "name": "Jungle Queen",
+    "symbol": "JungleQueen",
+    "url": "https://demo.bgaming-network.com/play/JungleQueen/FUN"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "jungle-queen",
+    "game_name": "Jungle Queen",
+    "game_url": "https://demo.bgaming-network.com/play/JungleQueen/FUN",
+    "requested_spins": 2,
+    "successful_spins": 0,
+    "failed_spins": 2,
+    "status": "ERROR",
+    "symbol": "JungleQueen",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "REJECTED_51100",
+        "wire_method": "play",
+        "request_options": {
+          "bet_type": "bet"
+        },
+        "source": "selected-har-script-contract"
+      },
+      {
+        "id": "PURCHASE_BUY_BONUS",
+        "kind": "PURCHASE",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "REJECTED_51100",
+        "wire_method": "play",
+        "request_options": {
+          "bet_type": "bet",
+          "purchased_feature": "buy_bonus"
+        },
+        "source": "game_bundle_source"
+      }
+    ],
+    "started_at": "2026-09-13T09:28:28+00:00",
+    "finished_at": "2026-09-13T09:28:44+00:00",
+    "elapsed_ms": 16578.00000000134,
+    "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+    "run_dir": "2026-09-13_06-28-28-bgaming-hyperhive-jsonrpc",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": false,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": null,
+        "elapsed_ms": 469.0000000009604,
+        "symbol": "JungleQueen",
+        "endpoint": "https://jungle-queen.demo.bgaming-network.com/api",
+        "na": "",
+        "terminal": false,
+        "wire_steps": 0,
+        "warning": "",
+        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jungle Queen\\tests\\2026-09-13_06-28-28-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+      },
+      {
+        "number": 1,
+        "ok": false,
+        "mode_id": "PURCHASE_BUY_BONUS",
+        "mode_kind": "PURCHASE",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": null,
+        "elapsed_ms": 485.0000000005821,
+        "symbol": "JungleQueen",
+        "endpoint": "https://jungle-queen.demo.bgaming-network.com/api",
+        "na": "",
+        "terminal": false,
+        "wire_steps": 0,
+        "warning": "",
+        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jungle Queen\\tests\\2026-09-13_06-28-28-bgaming-hyperhive-jsonrpc\\PURCHASE_BUY_BONUS\\attempt-001"
+      }
+    ]
+  },
+  "artifact_bytes_embedded": 15163,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 922,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "jungle-queen",
+          "name": "Jungle Queen",
+          "identifier": "JungleQueen"
+        },
+        "generated_at": "2026-09-13T09:28:44+00:00",
+        "source_run": "2026-09-13_06-28-28-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 706,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "jungle-queen",
+          "name": "Jungle Queen",
+          "identifier": "JungleQueen"
+        },
+        "generated_at": "2026-09-13T09:28:44+00:00",
+        "source_run": "2026-09-13_06-28-28-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "contract-diagnostic.json": {
+      "encoding": "json",
+      "bytes": 1052,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "script_urls": [
+          "https://jungle-queen.demo.bgaming-network.com/wg-boost/wrapper.js",
+          "https://jungle-queen.demo.bgaming-network.com/wg-boost/analytics/amplitude.js",
+          "https://jungle-queen.demo.bgaming-network.com/wg-replays/replays.js",
+          "https://jungle-queen.demo.bgaming-network.com/bundle.js"
+        ],
+        "bundle_sha256": "",
+        "engine_sha256": "c21c62a97a79cc84cd59dce967de8f93adbc195457f758236a1bc736ec460e84",
+        "rpc_id_profile": "uuid",
+        "action_vocabulary": [
+          "addpath",
+          "arc",
+          "arcto",
+          "arctosvg",
+          "beziercurveto",
+          "chamferrect",
+          "circle",
+          "closepath",
+          "ellipse",
+          "fill",
+          "filletrect",
+          "lineto",
+          "moveto",
+          "poly",
+          "quadraticcurveto",
+          "rect",
+          "regularpoly",
+          "roundpoly",
+          "roundrect",
+          "roundshape",
+          "startbatch",
+          "stroke",
+          "texture"
+        ],
+        "base_request": {
+          "bet_type": "bet"
+        },
+        "custom_req_profile": "",
+        "base_discovery_state": "HAR_SCRIPT_OBSERVED"
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 2431,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "jungle-queen",
+          "name": "Jungle Queen",
+          "identifier": "JungleQueen"
+        },
+        "generated_at": "2026-09-13T09:28:44+00:00",
+        "source_run": "2026-09-13_06-28-28-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "selected-har-script-contract"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "selected-har-script-contract"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 142,
+      "value": {
+        "id": "39679e9f-e0a0-4111-8dd6-b802cc42c3e2",
+        "jsonrpc": "2.0",
+        "method": "init",
+        "params": {
+          "token": "<redacted>"
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1887,
+      "value": {
+        "id": "39679e9f-e0a0-4111-8dd6-b802cc42c3e2",
+        "jsonrpc": "2.0",
+        "result": {
+          "freebets": null,
+          "currency": "FUN",
+          "currency_attributes": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "locale": "en",
+          "config": {
+            "rtp": "96",
+            "displayed_rtp": "96.15",
+            "bet_limits": [
+              20,
+              40,
+              60,
+              80,
+              100,
+              120,
+              140,
+              160,
+              200,
+              300,
+              400,
+              500,
+              600,
+              800,
+              1000,
+              1500,
+              2000,
+              2500
+            ],
+            "freebets_limits": [
+              20,
+              40,
+              60,
+              80,
+              100,
+              120,
+              140,
+              160,
+              200,
+              300,
+              400,
+              500,
+              600,
+              800,
+              1000,
+              1500,
+              2000,
+              2500
+            ],
+            "default_bet": 100,
+            "purchased_features": [
+              "buy_bonus",
+              "bonus_buy",
+              "freespin_buy",
+              "high_freespin_buy",
+              "buy_chance",
+              "bonus_chance",
+              "freespin_chance",
+              "buy_bonus_and_chance",
+              "freespin_and_bonus_chance"
+            ],
+            "autospin_variant": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "quick_spins_enabled": false
+          },
+          "state": null,
+          "urls": {
+            "deposit_url": null,
+            "return_url": null,
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzNDI2NzIsImd0X2lkIjo0MzY1NDAwfSwiZXhwIjoxODA0OTMwMTIzfQ.oG6jJZ8TpO4SNYb6317Nv5_DQ7sl7YjaTC6csirigB0"
+          },
+          "balance": 100000,
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 577,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "jungle-queen",
+          "name": "Jungle Queen",
+          "identifier": "JungleQueen"
+        },
+        "generated_at": "2026-09-13T09:28:44+00:00",
+        "source_run": "2026-09-13_06-28-28-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 767,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "jungle-queen",
+        "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false
+          },
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "PURCHASE_BUY_BONUS",
+            "signature": "PURCHASE_BUY_BONUS:UNEXECUTED",
+            "required": [
+              "PURCHASE_BUY_BONUS"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_BUY_BONUS"
+            ],
+            "complete": false
+          }
+        ],
+        "complete": false,
+        "missing_count": 2
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 2431,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "jungle-queen",
+          "name": "Jungle Queen",
+          "identifier": "JungleQueen"
+        },
+        "generated_at": "2026-09-13T09:28:44+00:00",
+        "source_run": "2026-09-13_06-28-28-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "selected-har-script-contract"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "selected-har-script-contract"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "PURCHASE_BUY_BONUS/attempt-001/rpc-error-request.json": {
+      "encoding": "json",
+      "bytes": 282,
+      "value": {
+        "id": "af5c4903-969f-4a3e-8b1d-7e44d1331859",
+        "jsonrpc": "2.0",
+        "method": "play",
+        "params": {
+          "token": "<redacted>",
+          "req": {
+            "bet": 100,
+            "bet_type": "bet",
+            "purchased_feature": "buy_bonus"
+          },
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "PURCHASE_BUY_BONUS/attempt-001/rpc-error-response.json": {
+      "encoding": "json",
+      "bytes": 136,
+      "value": {
+        "id": "x",
+        "jsonrpc": "2.0",
+        "error": {
+          "code": 51100,
+          "message": "Something went wrong. Refresh the page."
+        }
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 2930,
+      "value": {
+        "provider": "bgaming",
+        "slug": "jungle-queen",
+        "game_name": "Jungle Queen",
+        "game_url": "https://demo.bgaming-network.com/play/JungleQueen/FUN",
+        "requested_spins": 2,
+        "successful_spins": 0,
+        "failed_spins": 2,
+        "status": "ERROR",
+        "symbol": "JungleQueen",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "REJECTED_51100",
+            "wire_method": "play",
+            "request_options": {
+              "bet_type": "bet"
+            },
+            "source": "selected-har-script-contract"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "REJECTED_51100",
+            "wire_method": "play",
+            "request_options": {
+              "bet_type": "bet",
+              "purchased_feature": "buy_bonus"
+            },
+            "source": "game_bundle_source"
+          }
+        ],
+        "started_at": "2026-09-13T09:28:28+00:00",
+        "finished_at": "2026-09-13T09:28:44+00:00",
+        "elapsed_ms": 16578.00000000134,
+        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jungle Queen\\tests\\2026-09-13_06-28-28-bgaming-hyperhive-jsonrpc",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": null,
+            "elapsed_ms": 469.0000000009604,
+            "symbol": "JungleQueen",
+            "endpoint": "https://jungle-queen.demo.bgaming-network.com/api",
+            "na": "",
+            "terminal": false,
+            "wire_steps": 0,
+            "warning": "",
+            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jungle Queen\\tests\\2026-09-13_06-28-28-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+          },
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "PURCHASE_BUY_BONUS",
+            "mode_kind": "PURCHASE",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": null,
+            "elapsed_ms": 485.0000000005821,
+            "symbol": "JungleQueen",
+            "endpoint": "https://jungle-queen.demo.bgaming-network.com/api",
+            "na": "",
+            "terminal": false,
+            "wire_steps": 0,
+            "warning": "",
+            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jungle Queen\\tests\\2026-09-13_06-28-28-bgaming-hyperhive-jsonrpc\\PURCHASE_BUY_BONUS\\attempt-001"
+          }
+        ]
+      }
+    },
+    "SPIN/attempt-001/rpc-error-request.json": {
+      "encoding": "json",
+      "bytes": 241,
+      "value": {
+        "id": "69b522d1-0b54-49c4-9182-b1edc50aa238",
+        "jsonrpc": "2.0",
+        "method": "play",
+        "params": {
+          "token": "<redacted>",
+          "req": {
+            "bet": 100,
+            "bet_type": "bet"
+          },
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "SPIN/attempt-001/rpc-error-response.json": {
+      "encoding": "json",
+      "bytes": 136,
+      "value": {
+        "id": "x",
+        "jsonrpc": "2.0",
+        "error": {
+          "code": 51100,
+          "message": "Something went wrong. Refresh the page."
+        }
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 523,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "jungle-queen",
+          "name": "Jungle Queen",
+          "identifier": "JungleQueen"
+        },
+        "generated_at": "2026-09-13T09:28:44+00:00",
+        "source_run": "2026-09-13_06-28-28-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {},
+        "transitions": []
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
