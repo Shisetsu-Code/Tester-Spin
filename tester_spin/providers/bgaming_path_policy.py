@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import threading
 from dataclasses import dataclass
@@ -8,6 +9,7 @@ from typing import Any, Callable
 
 from tester_spin.models import GameTestResult
 from tester_spin.providers.bgaming import execution as _execution
+from tester_spin.providers.bgaming import hyperhive as _hyperhive
 from tester_spin.providers.bgaming import runtime as _runtime
 
 
@@ -21,6 +23,7 @@ _LOCAL = threading.local()
 _ORIGINAL_DISCOVER_PROFILE = _execution.discover_profile
 _ORIGINAL_DISCOVER_PURCHASE_MODES = _execution.discover_purchase_modes
 _ORIGINAL_RESOLVE_BASE_BET = _execution.resolve_base_bet
+_ORIGINAL_HYPERHIVE_RPC = _hyperhive._rpc
 _INSTALLED = False
 
 
@@ -124,7 +127,8 @@ def wager_plan_from_init(data: dict[str, Any]) -> WagerPlan:
                 and float(default_raw) > 0
                 else None
             )
-            available = _positive_numbers(config.get("bet_limits"))
+            advertised_limits = _positive_numbers(config.get("bet_limits"))
+            available = list(advertised_limits)
             if not available and default_bet is not None:
                 available = [default_bet]
             coverage_bet = min(available) if available else default_bet
@@ -142,7 +146,7 @@ def wager_plan_from_init(data: dict[str, Any]) -> WagerPlan:
                 balance=balance,
                 source=(
                     "result.config.bet_limits:min"
-                    if _positive_numbers(config.get("bet_limits"))
+                    if advertised_limits
                     else "result.config.default_bet"
                 ),
             )
@@ -156,6 +160,40 @@ def resolve_coverage_bet(data: dict[str, Any]) -> tuple[int | float | None, str]
         value = plan.coverage_bet
         return (int(value) if value.is_integer() else value), plan.source
     return _ORIGINAL_RESOLVE_BASE_BET(data)
+
+
+def prepare_hyperhive_init_for_coverage(
+    data: dict[str, Any],
+) -> tuple[dict[str, Any], WagerPlan]:
+    """Return a copy whose execution default is the provider-advertised minimum.
+
+    The original provider response is never mutated. The raw response is kept
+    separately and restored to init-response.json after the run, so lowering the
+    coverage wager cannot contaminate evidence or future emulation contracts.
+    """
+    plan = wager_plan_from_init(data)
+    adjusted = copy.deepcopy(data)
+    if plan.coverage_bet is None:
+        return adjusted, plan
+    result = adjusted.get("result")
+    config = result.get("config") if isinstance(result, dict) else None
+    if not isinstance(config, dict):
+        return adjusted, plan
+    value = plan.coverage_bet
+    config["default_bet"] = int(value) if value.is_integer() else value
+    return adjusted, plan
+
+
+def _hyperhive_rpc_policy(*args, **kwargs):
+    response, payload, data = _ORIGINAL_HYPERHIVE_RPC(*args, **kwargs)
+    method = str(args[1] if len(args) > 1 else kwargs.get("method") or "")
+    if method != "init" or not bool(getattr(_LOCAL, "coverage_active", False)):
+        return response, payload, data
+
+    _LOCAL.hyperhive_raw_init = copy.deepcopy(data)
+    adjusted, plan = prepare_hyperhive_init_for_coverage(data)
+    _LOCAL.hyperhive_wager_plan = plan
+    return response, payload, adjusted
 
 
 def scoped_choice_domains(
@@ -212,10 +250,16 @@ def _discover_purchase_modes_policy(data: dict[str, Any]) -> list[dict[str, Any]
 
 def begin_policy_run() -> None:
     _LOCAL.client_purchase_features = None
+    _LOCAL.coverage_active = True
+    _LOCAL.hyperhive_raw_init = None
+    _LOCAL.hyperhive_wager_plan = None
 
 
 def end_policy_run() -> None:
     _LOCAL.client_purchase_features = None
+    _LOCAL.coverage_active = False
+    _LOCAL.hyperhive_raw_init = None
+    _LOCAL.hyperhive_wager_plan = None
 
 
 def install_policy(exhaustive_module: Any) -> None:
@@ -227,6 +271,7 @@ def install_policy(exhaustive_module: Any) -> None:
     _execution.discover_profile = _discover_profile_policy
     _execution.discover_purchase_modes = _discover_purchase_modes_policy
     _execution.resolve_base_bet = resolve_coverage_bet
+    _hyperhive._rpc = _hyperhive_rpc_policy
 
     original_choice_domains = exhaustive_module._choice_domains
 
@@ -269,7 +314,7 @@ def _append_unproven_advertised_purchases(
     result: GameTestResult,
     init_data: dict[str, Any],
     profile: dict[str, Any],
-) -> None:
+) -> list[str]:
     advertised = _runtime.discover_purchase_modes(init_data)
     client_raw = profile.get("purchase_features")
     client_features = {
@@ -281,6 +326,7 @@ def _append_unproven_advertised_purchases(
         for item in result.discovered_modes
         if isinstance(item, dict)
     }
+    unresolved: list[str] = []
     for mode in advertised:
         name = str(mode.get("name") or "")
         mode_id = _mode_id(mode)
@@ -309,6 +355,8 @@ def _append_unproven_advertised_purchases(
             }
         )
         existing.add(mode_id)
+        unresolved.append(mode_id)
+    return unresolved
 
 
 def _estimated_purchase_costs(
@@ -337,18 +385,112 @@ def _estimated_purchase_costs(
     return out
 
 
+def _restore_hyperhive_init_evidence(root: Path) -> None:
+    raw = getattr(_LOCAL, "hyperhive_raw_init", None)
+    if not isinstance(raw, dict):
+        return
+    init_path = _root_or_first(root, "init-response.json")
+    if init_path is None:
+        return
+    safe_raw = _hyperhive._safe_json(raw)
+    init_path.write_text(
+        json.dumps(safe_raw, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+
+def _write_path_catalog(root: Path, result: GameTestResult) -> None:
+    paths: list[dict[str, Any]] = []
+    for mode in result.discovered_modes:
+        if not isinstance(mode, dict):
+            continue
+        mode_id = str(mode.get("id") or "")
+        attempts = [
+            attempt
+            for attempt in result.attempts
+            if str(attempt.mode_id or "").split("__", 1)[0] == mode_id
+        ]
+        paths.append(
+            {
+                "id": mode_id,
+                "kind": str(mode.get("kind") or ""),
+                "branch_signature": str(mode.get("branch_signature") or ""),
+                "executable": mode.get("executable"),
+                "coverage_required": bool(mode.get("coverage_required")),
+                "required_options": list(mode.get("required_options") or []),
+                "covered_options": list(mode.get("covered_options") or []),
+                "attempts_observed": len(attempts),
+                "terminal_successes": sum(
+                    1 for attempt in attempts if attempt.ok and attempt.terminal
+                ),
+                "wire_steps": sum(int(attempt.wire_steps or 0) for attempt in attempts),
+                "artifacts": [
+                    str(attempt.artifact_dir)
+                    for attempt in attempts
+                    if str(attempt.artifact_dir or "")
+                ],
+            }
+        )
+
+    payload = {
+        "schema": "tester-spin/bgaming-path-catalog/v1",
+        "phase": "coverage",
+        "provider": result.provider,
+        "game": {
+            "slug": result.slug,
+            "name": result.game_name,
+            "symbol": result.symbol,
+        },
+        "semantics": {
+            "path_completeness": (
+                "Every provider/client-demonstrated executable branch must be traversed."
+            ),
+            "rng_completeness": (
+                "Observed random outcomes are samples, not proof that every RNG outcome exists or was exhausted."
+            ),
+            "future_sampling_unit": (
+                "Repeat each executable path independently; do not multiply unrelated modes by a scoped selector."
+            ),
+        },
+        "paths": paths,
+    }
+    (root / "path-catalog.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+
 def finalize_policy_artifacts(result: GameTestResult) -> GameTestResult:
     root = Path(str(result.run_dir or ""))
     if not root.is_dir():
         return result
+
+    # HyperHive executes with a lowered copy of config.default_bet, but evidence
+    # must remain byte-semantically faithful to the provider response.
+    _restore_hyperhive_init_evidence(root)
 
     init_path = _root_or_first(root, "init-response.json")
     profile_path = _root_or_first(root, "profile.json")
     init_data = _read_json(init_path) if init_path is not None else {}
     profile = _read_json(profile_path) if profile_path is not None else {}
 
+    unresolved: list[str] = []
     if init_data:
-        _append_unproven_advertised_purchases(result, init_data, profile)
+        unresolved = _append_unproven_advertised_purchases(
+            result,
+            init_data,
+            profile,
+        )
+    if unresolved:
+        if result.status == "OK":
+            result.status = "PARCIAL"
+        message = (
+            "BGaming compras anunciadas sin wire cliente demostrado: "
+            + ", ".join(unresolved[:20])
+            + "."
+        )
+        if message not in str(result.error or ""):
+            result.error = (str(result.error or "").strip() + " " + message).strip()
 
     plans: list[dict[str, Any]] = []
     seen: set[str] = set()
@@ -397,6 +539,8 @@ def finalize_policy_artifacts(result: GameTestResult) -> GameTestResult:
             encoding="utf-8",
         )
 
+    _write_path_catalog(root, result)
+
     # Persist the post-policy result so emulation/export tooling sees the same
     # discovered-mode set returned to the scheduler.
     (root / "result.json").write_text(
@@ -413,6 +557,7 @@ __all__ = [
     "end_policy_run",
     "finalize_policy_artifacts",
     "install_policy",
+    "prepare_hyperhive_init_for_coverage",
     "resolve_coverage_bet",
     "scoped_choice_domains",
     "wager_plan_from_init",
