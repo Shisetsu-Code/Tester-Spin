@@ -5,6 +5,7 @@ import queue
 import subprocess
 import sys
 import threading
+import tkinter as tk
 from pathlib import Path
 from typing import Any
 
@@ -45,6 +46,7 @@ class HARToolTesterSpinApp(CurrentTesterSpinApp):
     def __init__(self) -> None:
         self._ui_first_total = 0
         self._ui_first_done = 0
+        self._ui_first_active = False
         super().__init__()
         # run.py enters through this application layer. New providers are only
         # registered here; their protocol implementations remain isolated under
@@ -71,6 +73,15 @@ class HARToolTesterSpinApp(CurrentTesterSpinApp):
         )
         self.open_har_folder_btn.pack(side="left", padx=(8, 0))
 
+        self.ui_first_sessions_var = tk.StringVar(self, value="3")
+        ttk.Label(folder_button.master, text="Sesiones UI:").pack(side="left", padx=(14, 4))
+        self.ui_first_sessions_entry = ttk.Entry(
+            folder_button.master,
+            textvariable=self.ui_first_sessions_var,
+            width=4,
+        )
+        self.ui_first_sessions_entry.pack(side="left")
+
         self.ui_first_btn = ttk.Button(
             folder_button.master,
             text="UI FIRST: DESCUBRIR",
@@ -82,6 +93,8 @@ class HARToolTesterSpinApp(CurrentTesterSpinApp):
         super()._set_busy(busy)
         if hasattr(self, "ui_first_btn"):
             self.ui_first_btn.configure(state="disabled" if busy else "normal")
+        if hasattr(self, "ui_first_sessions_entry"):
+            self.ui_first_sessions_entry.configure(state="disabled" if busy else "normal")
         if hasattr(self, "open_har_folder_btn"):
             self.open_har_folder_btn.configure(state="disabled" if busy else "normal")
 
@@ -112,19 +125,22 @@ class HARToolTesterSpinApp(CurrentTesterSpinApp):
             return
         try:
             timeout_s = max(8.0, float(self.timeout_var.get()))
+            max_sessions = max(1, min(8, int(self.ui_first_sessions_var.get())))
         except ValueError:
-            messagebox.showerror("Tester-Spin", "Timeout debe ser numérico.")
+            messagebox.showerror("Tester-Spin", "Timeout y Sesiones UI deben ser numéricos.")
             return
 
         self._stop_event = threading.Event()
         self._ui_first_total = len(games)
         self._ui_first_done = 0
+        self._ui_first_active = True
         self._set_busy(True)
         self.status_var.set(f"UI First 0/{len(games)}...")
         self.progress.stop()
         self.progress.configure(mode="determinate", maximum=max(1, len(games)), value=0)
         self._append_log(
-            f"=== UI FIRST: proveedor=BGaming, juegos={len(games)}, modo separado del farming HTTP ==="
+            f"=== UI FIRST: proveedor=BGaming, juegos={len(games)}, sesiones/rama={max_sessions}, "
+            "modo separado del farming HTTP ==="
         )
 
         def worker() -> None:
@@ -140,6 +156,7 @@ class HARToolTesterSpinApp(CurrentTesterSpinApp):
                         timeout_s=timeout_s,
                         stop_event=self._stop_event,
                         progress=lambda message: self._events.put(("log", message)),
+                        max_sessions=max_sessions,
                     )
                     self._events.put(("ui_first_result", (game, result)))
                 self._events.put(("ui_first_done", None))
@@ -150,13 +167,22 @@ class HARToolTesterSpinApp(CurrentTesterSpinApp):
         self._worker.start()
 
     def _drain_events(self) -> None:
+        """Preserve UI-first progress ordering.
+
+        The previous implementation removed custom events first and requeued normal
+        log events, which could display FIN before an earlier path line. While UI
+        First owns the app, consume log/custom events in FIFO order here and defer
+        only unrelated base-app events.
+        """
         deferred: list[tuple[str, object]] = []
         while True:
             try:
                 kind, value = self._events.get_nowait()
             except queue.Empty:
                 break
-            if kind == "ui_first_result":
+            if self._ui_first_active and kind == "log":
+                self._append_log(str(value))
+            elif kind == "ui_first_result":
                 game, result = value  # type: ignore[misc]
                 self._ui_first_done += 1
                 self.progress.configure(value=self._ui_first_done)
@@ -167,6 +193,7 @@ class HARToolTesterSpinApp(CurrentTesterSpinApp):
                     f"ready_for_farming={result.ready_for_farming}"
                 )
             elif kind == "ui_first_done":
+                self._ui_first_active = False
                 self._set_busy(False)
                 self.progress.configure(value=self._ui_first_done)
                 self.status_var.set(
@@ -175,6 +202,9 @@ class HARToolTesterSpinApp(CurrentTesterSpinApp):
                 self._append_log(
                     "=== UI FIRST FIN: el modo HTTP/exhaustive no fue ejecutado ni modificado ==="
                 )
+            elif kind == "error" and self._ui_first_active:
+                self._ui_first_active = False
+                deferred.append((kind, value))
             else:
                 deferred.append((kind, value))
         for event in deferred:
