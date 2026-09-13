@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-13T10:26:56+00:00",
-  "source_commit": "7ec75b8f3e5b7e6692dde9e0aa5020d5fc2f582e",
+  "published_at": "2026-09-13T12:48:35+00:00",
+  "source_commit": "299ba3374f3740551aa66a66eabf02c0d7ba03ad",
   "provider": "bgaming",
   "game": {
     "slug": "dusty-duel",
@@ -107,11 +107,11 @@
         "covered_options": []
       }
     ],
-    "started_at": "2026-09-13T10:26:52+00:00",
-    "finished_at": "2026-09-13T10:26:56+00:00",
-    "elapsed_ms": 4250.0,
+    "started_at": "2026-09-13T12:48:31+00:00",
+    "finished_at": "2026-09-13T12:48:35+00:00",
+    "elapsed_ms": 4092.999999999847,
     "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_CHANCE, PURCHASE_FREESPIN_BUY_LEVEL_0, PURCHASE_FREESPIN_BUY_LEVEL_1, PURCHASE_FREESPIN_BUY_LEVEL_2. Cobertura de ramificaciones pendiente: PURCHASE_FREESPIN_CHANCE -> ['PURCHASE_FREESPIN_CHANCE']; PURCHASE_FREESPIN_BUY_LEVEL_0 -> ['PURCHASE_FREESPIN_BUY_LEVEL_0']; PURCHASE_FREESPIN_BUY_LEVEL_1 -> ['PURCHASE_FREESPIN_BUY_LEVEL_1']; PURCHASE_FREESPIN_BUY_LEVEL_2 -> ['PURCHASE_FREESPIN_BUY_LEVEL_2'].",
-    "run_dir": "2026-09-13_07-26-52-bgaming-http-api-v2",
+    "run_dir": "2026-09-13_09-48-31-bgaming-http-api-v2",
     "attempts": [
       {
         "number": 1,
@@ -121,7 +121,7 @@
         "provider_bl": null,
         "provider_pur": null,
         "status_code": 200,
-        "elapsed_ms": 343.0000000007567,
+        "elapsed_ms": 515.0000000003274,
         "symbol": "DustyDuel",
         "endpoint": "https://demo.bgaming-network.com/api/DustyDuel/3799768/<session>",
         "na": "closed",
@@ -129,12 +129,563 @@
         "wire_steps": 1,
         "warning": "",
         "error": "",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-13_07-26-52-bgaming-http-api-v2\\SPIN\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-13_09-48-31-bgaming-http-api-v2\\SPIN\\attempt-001"
       }
-    ]
+    ],
+    "samples_per_path": 1
   },
-  "artifact_bytes_embedded": 49436,
+  "artifact_bytes_embedded": 48058,
   "artifacts": {
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 1895,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "dusty-duel",
+        "branch_points": [
+          {
+            "source": "discovered_modes",
+            "mode_id": "PURCHASE_FREESPIN_CHANCE",
+            "signature": "PURCHASE_FREESPIN_CHANCE",
+            "required": [
+              "PURCHASE_FREESPIN_CHANCE"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_FREESPIN_CHANCE"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          },
+          {
+            "source": "discovered_modes",
+            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+            "signature": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+            "required": [
+              "PURCHASE_FREESPIN_BUY_LEVEL_0"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_FREESPIN_BUY_LEVEL_0"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          },
+          {
+            "source": "discovered_modes",
+            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+            "signature": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+            "required": [
+              "PURCHASE_FREESPIN_BUY_LEVEL_1"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_FREESPIN_BUY_LEVEL_1"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          },
+          {
+            "source": "discovered_modes",
+            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
+            "signature": "PURCHASE_FREESPIN_BUY_LEVEL_2",
+            "required": [
+              "PURCHASE_FREESPIN_BUY_LEVEL_2"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_FREESPIN_BUY_LEVEL_2"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          }
+        ],
+        "complete": false,
+        "missing_count": 4
+      }
+    },
+    "profile.json": {
+      "encoding": "json",
+      "bytes": 3453,
+      "value": {
+        "schema": "tester-spin/bgaming-profile/v1",
+        "capability_version": 2,
+        "family": "api-v2",
+        "confidence": 1.0,
+        "evidence": [
+          "init.options",
+          "init.api_version=2",
+          "persisted.validated",
+          "refresh:purchase-contract-missing"
+        ],
+        "spin_options": {},
+        "command_options": {},
+        "request_extra_data": {},
+        "spin_option_choices": {},
+        "effective_bet_selector": "",
+        "effective_bet_multipliers": {},
+        "dynamic_purchased_feature": false,
+        "purchase_feature_level_supported": false,
+        "purchase_features": [],
+        "rows_required": false,
+        "line_count": 0,
+        "variable_layout": false,
+        "allowed_continuations": [
+          "close",
+          "freespin",
+          "play_bonus",
+          "play_preselection_game",
+          "preselection_game",
+          "respin"
+        ],
+        "source": "https://boost2.bgaming-network.com/wrapper.js",
+        "bundle_sha256": "038a073a88d2236e50d0ca24190ccce2e190ed820fa2e4fd2bdc37ecaa09a138",
+        "discovery_diagnostics": [
+          {
+            "kind": "loader",
+            "url": "https://cdn.bgaming-network.com/html/DustyDuel/loader.js",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "kind": "script-skip",
+            "url": "https://www.googletagmanager.com/gtag/js",
+            "reason": "third-party-origin"
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DustyDuel/bundle.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DustyDuel/bundle.js",
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/wrapper.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 160620,
+            "contract_score": 24,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/analytics/amplitude.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 5312,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://replays.bgaming-network.com/replays.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 6770,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DustyDuel/loader.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 831,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/:()=>!K(globalThis.navigator.sendBeacon),ArrayBuffer:()=>!K(globalThis.Uint8Array),Set:()=>!K(globalThis.Set),atob:()=>!K(globalThis.atob)},ls=`https:/polyfill-fastly.io/v3/polyfill.min.js",
+            "status": 403,
+            "ok": false,
+            "error": "HTTPError: 403 Client Error: Forbidden for url: https://boost2.bgaming-network.com/:()=%3E!K(globalThis.navigator.sendBeacon),ArrayBuffer:()=%3E!K(globalThis.Uint8Array),Set:()=%3E!K(globalThis.Set),atob:()=%3E!K(globalThis.atob)%7D,ls=%60https:/polyfill-fastly.io/v3/polyfill.min.js?version=3.111.0&features=$%7BObject.keys(as).join(",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/assets/index-A4sXS9vu.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/assets/index-A4sXS9vu.js",
+            "depth": 1
+          }
+        ],
+        "validated": true
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 4374,
+      "value": {
+        "provider": "bgaming",
+        "slug": "dusty-duel",
+        "game_name": "Dusty Duel",
+        "game_url": "https://demo.bgaming-network.com/play/DustyDuel/FUN?server=demo",
+        "requested_spins": 1,
+        "successful_spins": 1,
+        "failed_spins": 0,
+        "status": "PARCIAL",
+        "symbol": "DustyDuel",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": true,
+            "wire_command": "spin"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_CHANCE",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": false,
+            "executable": false,
+            "coverage_required": true,
+            "discovery_state": "ADVERTISED_ONLY",
+            "wire_command": "spin",
+            "purchased_feature": "freespin_chance",
+            "purchased_feature_level": null,
+            "feature_multiplier": 40,
+            "base_multiplier": 20,
+            "cost_multiplier": 2.0,
+            "source": "init.feature_multipliers;wire-unproven",
+            "required_options": [
+              "PURCHASE_FREESPIN_CHANCE"
+            ],
+            "covered_options": []
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": false,
+            "executable": false,
+            "coverage_required": true,
+            "discovery_state": "ADVERTISED_ONLY",
+            "wire_command": "spin",
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "0",
+            "feature_multiplier": 2000,
+            "base_multiplier": 20,
+            "cost_multiplier": 100.0,
+            "source": "init.feature_multipliers;wire-unproven",
+            "required_options": [
+              "PURCHASE_FREESPIN_BUY_LEVEL_0"
+            ],
+            "covered_options": []
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": false,
+            "executable": false,
+            "coverage_required": true,
+            "discovery_state": "ADVERTISED_ONLY",
+            "wire_command": "spin",
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "1",
+            "feature_multiplier": 4000,
+            "base_multiplier": 20,
+            "cost_multiplier": 200.0,
+            "source": "init.feature_multipliers;wire-unproven",
+            "required_options": [
+              "PURCHASE_FREESPIN_BUY_LEVEL_1"
+            ],
+            "covered_options": []
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": false,
+            "executable": false,
+            "coverage_required": true,
+            "discovery_state": "ADVERTISED_ONLY",
+            "wire_command": "spin",
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "2",
+            "feature_multiplier": 10000,
+            "base_multiplier": 20,
+            "cost_multiplier": 500.0,
+            "source": "init.feature_multipliers;wire-unproven",
+            "required_options": [
+              "PURCHASE_FREESPIN_BUY_LEVEL_2"
+            ],
+            "covered_options": []
+          }
+        ],
+        "started_at": "2026-09-13T12:48:31+00:00",
+        "finished_at": "2026-09-13T12:48:35+00:00",
+        "elapsed_ms": 4092.999999999847,
+        "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_CHANCE, PURCHASE_FREESPIN_BUY_LEVEL_0, PURCHASE_FREESPIN_BUY_LEVEL_1, PURCHASE_FREESPIN_BUY_LEVEL_2. Cobertura de ramificaciones pendiente: PURCHASE_FREESPIN_CHANCE -> ['PURCHASE_FREESPIN_CHANCE']; PURCHASE_FREESPIN_BUY_LEVEL_0 -> ['PURCHASE_FREESPIN_BUY_LEVEL_0']; PURCHASE_FREESPIN_BUY_LEVEL_1 -> ['PURCHASE_FREESPIN_BUY_LEVEL_1']; PURCHASE_FREESPIN_BUY_LEVEL_2 -> ['PURCHASE_FREESPIN_BUY_LEVEL_2'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-13_09-48-31-bgaming-http-api-v2",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": true,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 515.0000000003274,
+            "symbol": "DustyDuel",
+            "endpoint": "https://demo.bgaming-network.com/api/DustyDuel/3799768/<session>",
+            "na": "closed",
+            "terminal": true,
+            "wire_steps": 1,
+            "warning": "",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-13_09-48-31-bgaming-http-api-v2\\SPIN\\attempt-001"
+          }
+        ],
+        "samples_per_path": 1
+      }
+    },
+    "sample-catalog.json": {
+      "encoding": "json",
+      "bytes": 2487,
+      "value": {
+        "schema": "tester-spin/sample-catalog/v2",
+        "provider": "bgaming",
+        "game": "dusty-duel",
+        "scope": "observed_paths_only",
+        "samples_per_path": 1,
+        "groups": [
+          {
+            "id": "a179acbfa9295736f1e930b5ce3d37a237f56d86b16cce5a1bfd01dd210dd41a",
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "choices": [],
+            "validated_samples": 1,
+            "samples": [
+              {
+                "attempt": 1,
+                "artifact_dir": "SPIN/attempt-001",
+                "validated": true,
+                "terminal": true,
+                "observed_state_sequence": [
+                  [
+                    {
+                      "field": "$.flow.state",
+                      "value": "closed"
+                    },
+                    {
+                      "field": "$.flow.command",
+                      "value": "spin"
+                    }
+                  ]
+                ],
+                "evidence": [
+                  {
+                    "path": "SPIN/attempt-001/request.json",
+                    "sha256": "91ddb1c9f78a0da5cbd769bd676321e70349d5423593e3b8584469c971e1c16e",
+                    "bytes": 125
+                  },
+                  {
+                    "path": "SPIN/attempt-001/response.json",
+                    "sha256": "e862f29e5d4b4981512fc519657f30aa73d0492127375d29da5cbdf7b7016212",
+                    "bytes": 503
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "91ddb1c9f78a0da5cbd769bd676321e70349d5423593e3b8584469c971e1c16e",
+                    "bytes": 125
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "e862f29e5d4b4981512fc519657f30aa73d0492127375d29da5cbdf7b7016212",
+                    "bytes": 503
+                  }
+                ]
+              }
+            ],
+            "missing_samples": 0
+          }
+        ],
+        "observed_state_types": [
+          {
+            "id": "ed49600f5050b30d6fbaf9ebe020002d45a8e2dfec92172a5b89a1701378a61f",
+            "observed_tags": [
+              {
+                "field": "$.flow.state",
+                "value": "closed"
+              },
+              {
+                "field": "$.flow.command",
+                "value": "spin"
+              }
+            ],
+            "evidence": [
+              {
+                "attempt": 1,
+                "mode_id": "SPIN",
+                "path": "SPIN/attempt-001/response.json"
+              },
+              {
+                "attempt": 1,
+                "mode_id": "SPIN",
+                "path": "SPIN/attempt-001/step-001-response.json"
+              }
+            ]
+          }
+        ],
+        "diagnostics": [],
+        "observed_paths_sampled": true
+      }
+    },
+    "SPIN/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 473,
+      "value": {
+        "round_id": 17298248231,
+        "last_action_id": "17298248231_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 20,
+        "win": 0,
+        "balance_total": 99980,
+        "screen_sha256": "",
+        "storage_seed": 18537,
+        "storage_mode": "0",
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "40044e4e685fefe6",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 20.0,
+        "expected_outcome_bet": 20.0
+      }
+    },
+    "SPIN/attempt-001/request.json": {
+      "encoding": "json",
+      "bytes": 125,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 20
+        },
+        "extra_data": {
+          "round_series_id": 1789303712151
+        }
+      }
+    },
+    "SPIN/attempt-001/response.json": {
+      "encoding": "json",
+      "bytes": 503,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 20,
+          "win": 0,
+          "wins": [],
+          "storage": {
+            "seed": 18537,
+            "mode": "0"
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 99980
+        },
+        "flow": {
+          "round_id": 17298248231,
+          "last_action_id": "17298248231_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {}
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-proof.json": {
+      "encoding": "json",
+      "bytes": 473,
+      "value": {
+        "round_id": 17298248231,
+        "last_action_id": "17298248231_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 20,
+        "win": 0,
+        "balance_total": 99980,
+        "screen_sha256": "",
+        "storage_seed": 18537,
+        "storage_mode": "0",
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "40044e4e685fefe6",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 20.0,
+        "expected_outcome_bet": 20.0
+      }
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 125,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 20
+        },
+        "extra_data": {
+          "round_series_id": 1789303712151
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 503,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 20,
+          "win": 0,
+          "wins": [],
+          "storage": {
+            "seed": 18537,
+            "mode": "0"
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 99980
+        },
+        "flow": {
+          "round_id": 17298248231,
+          "last_action_id": "17298248231_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {}
+        }
+      }
+    },
     "backend-conformance.json": {
       "encoding": "json",
       "bytes": 1381,
@@ -146,8 +697,8 @@
           "name": "Dusty Duel",
           "identifier": "DustyDuel"
         },
-        "generated_at": "2026-09-13T10:26:56+00:00",
-        "source_run": "2026-09-13_07-26-52-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T12:48:35+00:00",
+        "source_run": "2026-09-13_09-48-31-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -195,8 +746,8 @@
           "name": "Dusty Duel",
           "identifier": "DustyDuel"
         },
-        "generated_at": "2026-09-13T10:26:56+00:00",
-        "source_run": "2026-09-13_07-26-52-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T12:48:35+00:00",
+        "source_run": "2026-09-13_09-48-31-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -249,17 +800,17 @@
           "title": "Dusty Duel",
           "currency": "FUN",
           "balance_polling_interval": 30000,
-          "cache_id": "d8c2d27a8850d25b1c9e6bb5f582fd3ce0e0afcaf594ece5c2bff6d431616dd4",
-          "cache_player_id": "fadf27546e2c90c50a78b66489fa9759f903b3ee2ad5c163183ac264ffc99e64",
+          "cache_id": "6c723ac182eabd555eeb627ba61a0fbcf8145af0fafa3296e6f11941773b2324",
+          "cache_player_id": "fb8d85b1e41c49d65269ba62cec5d4f348811d28c9a409aac851991e08b93b5f",
           "api": "https://demo.bgaming-network.com/api/DustyDuel/3799768/<session>",
           "rules_url": "https://rules.bgaming-network.com/en/DustyDuel.json",
           "deposit_url": null,
           "games_page_url": "https://www.bgaming.com/games.html",
           "history_url": null,
-          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09a4e-4191-7b92-9ba3-44f45f6b2b64/launch",
-          "game_page_url": "https://demo.bgaming-network.com/games/DustyDuel/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY2MjQ1MTl9LCJleHAiOjE4MDQ5MzM2MTV9.0lTeoec_q8UTXXmW10Pd3hShQbiStg_6K1cZ_jSJnKE",
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09acf-f34a-7e81-b8e6-9f82e95334aa/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/DustyDuel/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY3MTE1MDN9LCJleHAiOjE4MDQ5NDIxMTR9.sadr_sBuNIkdxCBMBq384tRhwynEJCwE4qXguVc10WM",
           "websocket_url": "wss://demo.bgaming-network.com:443/cable",
-          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=DustyDuel&play_token=01a09a4e-4191-7b92-9ba3-44f45f6b2b64&server_id=demo",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=DustyDuel&play_token=01a09acf-f34a-7e81-b8e6-9f82e95334aa&server_id=demo",
           "ui": {
             "home_button": true,
             "full_screen_prompt": true,
@@ -293,7 +844,7 @@
           "custom": {},
           "actual_currency_rate": 0.0,
           "sound_enabled": true,
-          "games_loader_source": "https://cdn.bgaming-network.com/html/DustyDuel/loader.js?1789295215",
+          "games_loader_source": "https://cdn.bgaming-network.com/html/DustyDuel/loader.js?1789303714",
           "game_bundle_source": "https://cdn.bgaming-network.com/html/DustyDuel/bundle.js",
           "provable_fair": {
             "verify_url": "https://demo.bgaming-network.com/api/games/verify"
@@ -346,7 +897,7 @@
             }
           },
           "lobby_v2_options": {
-            "player_id": 345374206,
+            "player_id": 345461099,
             "lobby_enabled": false,
             "drops_enabled": false,
             "drops_token": "<redacted>",
@@ -376,7 +927,7 @@
             "return": null,
             "history": {
               "text": null,
-              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzNzQyMDYsImd0X2lkIjozNzk5NzY4fSwiZXhwIjoxODA0OTMzNjE1fQ.Fgk-mpV5pb29jIAainocQ6kSQMPlcf_dxXvTpPG1B18",
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDU0NjEwOTksImd0X2lkIjozNzk5NzY4fSwiZXhwIjoxODA0OTQyMTE0fQ.bIcJGKt4irY3TmW1P08iijRZMYJ1syVqQ4tLrD8iwSE",
               "mode": "open"
             }
           },
@@ -415,7 +966,7 @@
           "pre_bet_balance_validation": false,
           "available_games_to_switch": []
         },
-        "round_series_id": 1789295212996
+        "round_series_id": 1789303712151
       }
     },
     "emulation-contract.json": {
@@ -429,8 +980,8 @@
           "name": "Dusty Duel",
           "identifier": "DustyDuel"
         },
-        "generated_at": "2026-09-13T10:26:56+00:00",
-        "source_run": "2026-09-13_07-26-52-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T12:48:35+00:00",
+        "source_run": "2026-09-13_09-48-31-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -660,7 +1211,7 @@
       "value": {
         "command": "init",
         "extra_data": {
-          "round_series_id": 1789295212996
+          "round_series_id": 1789303712151
         }
       }
     },
@@ -709,7 +1260,7 @@
             "exponent": 2
           },
           "screen": [],
-          "default_seed": 2270,
+          "default_seed": 2344,
           "feature_options": {
             "feature_multipliers": {
               "base_bet": 20,
@@ -755,8 +1306,8 @@
           "name": "Dusty Duel",
           "identifier": "DustyDuel"
         },
-        "generated_at": "2026-09-13T10:26:56+00:00",
-        "source_run": "2026-09-13_07-26-52-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T12:48:35+00:00",
+        "source_run": "2026-09-13_09-48-31-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -830,7 +1381,7 @@
             "terminal_successes": 1,
             "wire_steps": 1,
             "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-13_07-26-52-bgaming-http-api-v2\\SPIN\\attempt-001"
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-13_09-48-31-bgaming-http-api-v2\\SPIN\\attempt-001"
             ]
           },
           {
@@ -896,183 +1447,6 @@
         ]
       }
     },
-    "path-coverage.json": {
-      "encoding": "json",
-      "bytes": 1535,
-      "value": {
-        "schema": "tester-spin/path-coverage/v1",
-        "provider": "bgaming",
-        "game": "dusty-duel",
-        "branch_points": [
-          {
-            "source": "discovered_modes",
-            "mode_id": "PURCHASE_FREESPIN_CHANCE",
-            "signature": "PURCHASE_FREESPIN_CHANCE",
-            "required": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "covered": [],
-            "missing": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "complete": false
-          },
-          {
-            "source": "discovered_modes",
-            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "signature": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "required": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_0"
-            ],
-            "covered": [],
-            "missing": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_0"
-            ],
-            "complete": false
-          },
-          {
-            "source": "discovered_modes",
-            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "signature": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "required": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_1"
-            ],
-            "covered": [],
-            "missing": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_1"
-            ],
-            "complete": false
-          },
-          {
-            "source": "discovered_modes",
-            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "signature": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "required": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_2"
-            ],
-            "covered": [],
-            "missing": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_2"
-            ],
-            "complete": false
-          }
-        ],
-        "complete": false,
-        "missing_count": 4
-      }
-    },
-    "profile.json": {
-      "encoding": "json",
-      "bytes": 3453,
-      "value": {
-        "schema": "tester-spin/bgaming-profile/v1",
-        "capability_version": 2,
-        "family": "api-v2",
-        "confidence": 1.0,
-        "evidence": [
-          "init.options",
-          "init.api_version=2",
-          "persisted.validated",
-          "refresh:purchase-contract-missing"
-        ],
-        "spin_options": {},
-        "command_options": {},
-        "request_extra_data": {},
-        "spin_option_choices": {},
-        "effective_bet_selector": "",
-        "effective_bet_multipliers": {},
-        "dynamic_purchased_feature": false,
-        "purchase_feature_level_supported": false,
-        "purchase_features": [],
-        "rows_required": false,
-        "line_count": 0,
-        "variable_layout": false,
-        "allowed_continuations": [
-          "close",
-          "freespin",
-          "play_bonus",
-          "play_preselection_game",
-          "preselection_game",
-          "respin"
-        ],
-        "source": "https://boost2.bgaming-network.com/wrapper.js",
-        "bundle_sha256": "038a073a88d2236e50d0ca24190ccce2e190ed820fa2e4fd2bdc37ecaa09a138",
-        "discovery_diagnostics": [
-          {
-            "kind": "loader",
-            "url": "https://cdn.bgaming-network.com/html/DustyDuel/loader.js",
-            "status": 200,
-            "ok": true
-          },
-          {
-            "kind": "script-skip",
-            "url": "https://www.googletagmanager.com/gtag/js",
-            "reason": "third-party-origin"
-          },
-          {
-            "kind": "bundle",
-            "url": "https://cdn.bgaming-network.com/html/DustyDuel/bundle.js",
-            "status": 404,
-            "ok": false,
-            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DustyDuel/bundle.js",
-            "depth": 0
-          },
-          {
-            "kind": "bundle",
-            "url": "https://boost2.bgaming-network.com/wrapper.js",
-            "status": 200,
-            "ok": true,
-            "bytes": 160620,
-            "contract_score": 24,
-            "depth": 0
-          },
-          {
-            "kind": "bundle",
-            "url": "https://boost2.bgaming-network.com/analytics/amplitude.js",
-            "status": 200,
-            "ok": true,
-            "bytes": 5312,
-            "contract_score": 0,
-            "depth": 0
-          },
-          {
-            "kind": "bundle",
-            "url": "https://replays.bgaming-network.com/replays.js",
-            "status": 200,
-            "ok": true,
-            "bytes": 6770,
-            "contract_score": 0,
-            "depth": 0
-          },
-          {
-            "kind": "bundle",
-            "url": "https://cdn.bgaming-network.com/html/DustyDuel/loader.js",
-            "status": 200,
-            "ok": true,
-            "bytes": 831,
-            "contract_score": 0,
-            "depth": 0
-          },
-          {
-            "kind": "bundle",
-            "url": "https://boost2.bgaming-network.com/:()=>!K(globalThis.navigator.sendBeacon),ArrayBuffer:()=>!K(globalThis.Uint8Array),Set:()=>!K(globalThis.Set),atob:()=>!K(globalThis.atob)},ls=`https:/polyfill-fastly.io/v3/polyfill.min.js",
-            "status": 403,
-            "ok": false,
-            "error": "HTTPError: 403 Client Error: Forbidden for url: https://boost2.bgaming-network.com/:()=%3E!K(globalThis.navigator.sendBeacon),ArrayBuffer:()=%3E!K(globalThis.Uint8Array),Set:()=%3E!K(globalThis.Set),atob:()=%3E!K(globalThis.atob)%7D,ls=%60https:/polyfill-fastly.io/v3/polyfill.min.js?version=3.111.0&features=$%7BObject.keys(as).join(",
-            "depth": 1
-          },
-          {
-            "kind": "bundle",
-            "url": "https://cdn.bgaming-network.com/assets/index-A4sXS9vu.js",
-            "status": 404,
-            "ok": false,
-            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/assets/index-A4sXS9vu.js",
-            "depth": 1
-          }
-        ],
-        "validated": true
-      }
-    },
     "protocol-contract.json": {
       "encoding": "json",
       "bytes": 6433,
@@ -1084,8 +1458,8 @@
           "name": "Dusty Duel",
           "identifier": "DustyDuel"
         },
-        "generated_at": "2026-09-13T10:26:56+00:00",
-        "source_run": "2026-09-13_07-26-52-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T12:48:35+00:00",
+        "source_run": "2026-09-13_09-48-31-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -1365,7 +1739,7 @@
                 "last_action_id": {
                   "type": "string",
                   "observed_enum": [
-                    "17296981298_1"
+                    "17298248231_1"
                   ]
                 },
                 "purchased_feature": {
@@ -1461,417 +1835,6 @@
         ]
       }
     },
-    "result.json": {
-      "encoding": "json",
-      "bytes": 4337,
-      "value": {
-        "provider": "bgaming",
-        "slug": "dusty-duel",
-        "game_name": "Dusty Duel",
-        "game_url": "https://demo.bgaming-network.com/play/DustyDuel/FUN?server=demo",
-        "requested_spins": 1,
-        "successful_spins": 1,
-        "failed_spins": 0,
-        "status": "PARCIAL",
-        "symbol": "DustyDuel",
-        "discovered_modes": [
-          {
-            "id": "SPIN",
-            "kind": "SPIN",
-            "observed": true,
-            "wire_command": "spin"
-          },
-          {
-            "id": "PURCHASE_FREESPIN_CHANCE",
-            "kind": "PURCHASE",
-            "observed": true,
-            "client_observed": false,
-            "executable": false,
-            "coverage_required": true,
-            "discovery_state": "ADVERTISED_ONLY",
-            "wire_command": "spin",
-            "purchased_feature": "freespin_chance",
-            "purchased_feature_level": null,
-            "feature_multiplier": 40,
-            "base_multiplier": 20,
-            "cost_multiplier": 2.0,
-            "source": "init.feature_multipliers;wire-unproven",
-            "required_options": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "covered_options": []
-          },
-          {
-            "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "kind": "PURCHASE",
-            "observed": true,
-            "client_observed": false,
-            "executable": false,
-            "coverage_required": true,
-            "discovery_state": "ADVERTISED_ONLY",
-            "wire_command": "spin",
-            "purchased_feature": "freespin_buy",
-            "purchased_feature_level": "0",
-            "feature_multiplier": 2000,
-            "base_multiplier": 20,
-            "cost_multiplier": 100.0,
-            "source": "init.feature_multipliers;wire-unproven",
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_0"
-            ],
-            "covered_options": []
-          },
-          {
-            "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "kind": "PURCHASE",
-            "observed": true,
-            "client_observed": false,
-            "executable": false,
-            "coverage_required": true,
-            "discovery_state": "ADVERTISED_ONLY",
-            "wire_command": "spin",
-            "purchased_feature": "freespin_buy",
-            "purchased_feature_level": "1",
-            "feature_multiplier": 4000,
-            "base_multiplier": 20,
-            "cost_multiplier": 200.0,
-            "source": "init.feature_multipliers;wire-unproven",
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_1"
-            ],
-            "covered_options": []
-          },
-          {
-            "id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "kind": "PURCHASE",
-            "observed": true,
-            "client_observed": false,
-            "executable": false,
-            "coverage_required": true,
-            "discovery_state": "ADVERTISED_ONLY",
-            "wire_command": "spin",
-            "purchased_feature": "freespin_buy",
-            "purchased_feature_level": "2",
-            "feature_multiplier": 10000,
-            "base_multiplier": 20,
-            "cost_multiplier": 500.0,
-            "source": "init.feature_multipliers;wire-unproven",
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_2"
-            ],
-            "covered_options": []
-          }
-        ],
-        "started_at": "2026-09-13T10:26:52+00:00",
-        "finished_at": "2026-09-13T10:26:56+00:00",
-        "elapsed_ms": 4250.0,
-        "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_CHANCE, PURCHASE_FREESPIN_BUY_LEVEL_0, PURCHASE_FREESPIN_BUY_LEVEL_1, PURCHASE_FREESPIN_BUY_LEVEL_2. Cobertura de ramificaciones pendiente: PURCHASE_FREESPIN_CHANCE -> ['PURCHASE_FREESPIN_CHANCE']; PURCHASE_FREESPIN_BUY_LEVEL_0 -> ['PURCHASE_FREESPIN_BUY_LEVEL_0']; PURCHASE_FREESPIN_BUY_LEVEL_1 -> ['PURCHASE_FREESPIN_BUY_LEVEL_1']; PURCHASE_FREESPIN_BUY_LEVEL_2 -> ['PURCHASE_FREESPIN_BUY_LEVEL_2'].",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-13_07-26-52-bgaming-http-api-v2",
-        "attempts": [
-          {
-            "number": 1,
-            "ok": true,
-            "mode_id": "SPIN",
-            "mode_kind": "SPIN",
-            "provider_bl": null,
-            "provider_pur": null,
-            "status_code": 200,
-            "elapsed_ms": 343.0000000007567,
-            "symbol": "DustyDuel",
-            "endpoint": "https://demo.bgaming-network.com/api/DustyDuel/3799768/<session>",
-            "na": "closed",
-            "terminal": true,
-            "wire_steps": 1,
-            "warning": "",
-            "error": "",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-13_07-26-52-bgaming-http-api-v2\\SPIN\\attempt-001"
-          }
-        ]
-      }
-    },
-    "sampling-plan.json": {
-      "encoding": "json",
-      "bytes": 4262,
-      "value": {
-        "schema": "tester-spin/path-sampling-plan/v1",
-        "provider": "bgaming",
-        "game": {
-          "slug": "dusty-duel",
-          "name": "Dusty Duel",
-          "symbol": "DustyDuel"
-        },
-        "source_status": "PARCIAL",
-        "phase": "coverage",
-        "semantics": {
-          "coverage_goal": "Traverse every provider/client-demonstrated executable path, using fresh sessions whenever the protocol consumes state.",
-          "sampling_unit": "One normalized path/branch. Future high-volume runs repeat each sampling-ready path independently instead of multiplying unrelated selectors.",
-          "outcome_policy": "Provider-specific request/response evidence classifies observed outcome families. Observed counts are samples and are never RNG probabilities.",
-          "repetitions_per_path": null
-        },
-        "summary": {
-          "paths": 5,
-          "sampling_ready": 1,
-          "unresolved": 4
-        },
-        "paths": [
-          {
-            "path_id": "SPIN",
-            "mode_id": "SPIN",
-            "kind": "SPIN",
-            "branch_signature": "",
-            "wire_command": "spin",
-            "executable": true,
-            "coverage_required": false,
-            "required_options": [],
-            "covered_options": [],
-            "missing_options": [],
-            "sampling_ready": true,
-            "observed_attempts": 1,
-            "terminal_successes": 1,
-            "failed_attempts": 0,
-            "wire_steps_observed": 1,
-            "observed_terminal_markers": [
-              "closed"
-            ],
-            "evidence": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-13_07-26-52-bgaming-http-api-v2\\SPIN\\attempt-001"
-            ]
-          },
-          {
-            "path_id": "PURCHASE_FREESPIN_CHANCE",
-            "mode_id": "PURCHASE_FREESPIN_CHANCE",
-            "kind": "PURCHASE",
-            "branch_signature": "",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "required_options": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "covered_options": [],
-            "missing_options": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "sampling_ready": false,
-            "observed_attempts": 0,
-            "terminal_successes": 0,
-            "failed_attempts": 0,
-            "wire_steps_observed": 0,
-            "observed_terminal_markers": [],
-            "evidence": []
-          },
-          {
-            "path_id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "kind": "PURCHASE",
-            "branch_signature": "",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_0"
-            ],
-            "covered_options": [],
-            "missing_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_0"
-            ],
-            "sampling_ready": false,
-            "observed_attempts": 0,
-            "terminal_successes": 0,
-            "failed_attempts": 0,
-            "wire_steps_observed": 0,
-            "observed_terminal_markers": [],
-            "evidence": []
-          },
-          {
-            "path_id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "kind": "PURCHASE",
-            "branch_signature": "",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_1"
-            ],
-            "covered_options": [],
-            "missing_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_1"
-            ],
-            "sampling_ready": false,
-            "observed_attempts": 0,
-            "terminal_successes": 0,
-            "failed_attempts": 0,
-            "wire_steps_observed": 0,
-            "observed_terminal_markers": [],
-            "evidence": []
-          },
-          {
-            "path_id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "kind": "PURCHASE",
-            "branch_signature": "",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_2"
-            ],
-            "covered_options": [],
-            "missing_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_2"
-            ],
-            "sampling_ready": false,
-            "observed_attempts": 0,
-            "terminal_successes": 0,
-            "failed_attempts": 0,
-            "wire_steps_observed": 0,
-            "observed_terminal_markers": [],
-            "evidence": []
-          }
-        ]
-      }
-    },
-    "SPIN/attempt-001/remote-proof.json": {
-      "encoding": "json",
-      "bytes": 473,
-      "value": {
-        "round_id": 17296981298,
-        "last_action_id": "17296981298_1",
-        "flow_state": "closed",
-        "flow_command": "spin",
-        "purchased_feature": "",
-        "bet": 20,
-        "win": 0,
-        "balance_total": 99980,
-        "screen_sha256": "",
-        "storage_seed": 30167,
-        "storage_mode": "0",
-        "freespins_issued": null,
-        "freespins_left": null,
-        "response_sha256": "8c2b0b369c21c44c",
-        "mode_id": "SPIN",
-        "step": 1,
-        "expected_debit": 20.0,
-        "expected_outcome_bet": 20.0
-      }
-    },
-    "SPIN/attempt-001/request.json": {
-      "encoding": "json",
-      "bytes": 125,
-      "value": {
-        "command": "spin",
-        "options": {
-          "bet": 20
-        },
-        "extra_data": {
-          "round_series_id": 1789295212996
-        }
-      }
-    },
-    "SPIN/attempt-001/response.json": {
-      "encoding": "json",
-      "bytes": 503,
-      "value": {
-        "api_version": "2",
-        "outcome": {
-          "screen": null,
-          "special_symbols": null,
-          "bet": 20,
-          "win": 0,
-          "wins": [],
-          "storage": {
-            "seed": 30167,
-            "mode": "0"
-          }
-        },
-        "balance": {
-          "game": 0,
-          "wallet": 99980
-        },
-        "flow": {
-          "round_id": 17296981298,
-          "last_action_id": "17296981298_1",
-          "state": "closed",
-          "command": "spin",
-          "available_actions": [
-            "init",
-            "spin"
-          ],
-          "purchased_feature": {}
-        }
-      }
-    },
-    "SPIN/attempt-001/step-001-proof.json": {
-      "encoding": "json",
-      "bytes": 473,
-      "value": {
-        "round_id": 17296981298,
-        "last_action_id": "17296981298_1",
-        "flow_state": "closed",
-        "flow_command": "spin",
-        "purchased_feature": "",
-        "bet": 20,
-        "win": 0,
-        "balance_total": 99980,
-        "screen_sha256": "",
-        "storage_seed": 30167,
-        "storage_mode": "0",
-        "freespins_issued": null,
-        "freespins_left": null,
-        "response_sha256": "8c2b0b369c21c44c",
-        "mode_id": "SPIN",
-        "step": 1,
-        "expected_debit": 20.0,
-        "expected_outcome_bet": 20.0
-      }
-    },
-    "SPIN/attempt-001/step-001-request.json": {
-      "encoding": "json",
-      "bytes": 125,
-      "value": {
-        "command": "spin",
-        "options": {
-          "bet": 20
-        },
-        "extra_data": {
-          "round_series_id": 1789295212996
-        }
-      }
-    },
-    "SPIN/attempt-001/step-001-response.json": {
-      "encoding": "json",
-      "bytes": 503,
-      "value": {
-        "api_version": "2",
-        "outcome": {
-          "screen": null,
-          "special_symbols": null,
-          "bet": 20,
-          "win": 0,
-          "wins": [],
-          "storage": {
-            "seed": 30167,
-            "mode": "0"
-          }
-        },
-        "balance": {
-          "game": 0,
-          "wallet": 99980
-        },
-        "flow": {
-          "round_id": 17296981298,
-          "last_action_id": "17296981298_1",
-          "state": "closed",
-          "command": "spin",
-          "available_actions": [
-            "init",
-            "spin"
-          ],
-          "purchased_feature": {}
-        }
-      }
-    },
     "state-machine.json": {
       "encoding": "json",
       "bytes": 1071,
@@ -1883,8 +1846,8 @@
           "name": "Dusty Duel",
           "identifier": "DustyDuel"
         },
-        "generated_at": "2026-09-13T10:26:56+00:00",
-        "source_run": "2026-09-13_07-26-52-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T12:48:35+00:00",
+        "source_run": "2026-09-13_09-48-31-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
