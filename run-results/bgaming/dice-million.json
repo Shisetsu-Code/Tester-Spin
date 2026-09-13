@@ -1,0 +1,3990 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T12:42:59+00:00",
+  "source_commit": "299ba3374f3740551aa66a66eabf02c0d7ba03ad",
+  "provider": "bgaming",
+  "game": {
+    "slug": "dice-million",
+    "name": "Dice Million",
+    "symbol": "DiceMillion",
+    "url": "https://demo.bgaming-network.com/play/DiceMillion/FUN?server=demo"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "dice-million",
+    "game_name": "Dice Million",
+    "game_url": "https://demo.bgaming-network.com/play/DiceMillion/FUN?server=demo",
+    "requested_spins": 1,
+    "successful_spins": 0,
+    "failed_spins": 1,
+    "status": "PARCIAL",
+    "symbol": "DiceMillion",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": true,
+        "wire_command": "spin"
+      },
+      {
+        "id": "CLOSE",
+        "kind": "CONTINUATION",
+        "observed": true,
+        "wire_command": "close"
+      }
+    ],
+    "started_at": "2026-09-13T12:42:45+00:00",
+    "finished_at": "2026-09-13T12:42:59+00:00",
+    "elapsed_ms": 14000.0,
+    "error": "BGaming respondió 1/1 intentos; modos terminales validados=0/1. Diagnóstico: close sin outcome",
+    "run_dir": "2026-09-13_09-42-45-bgaming-http-api-v2",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": false,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": 200,
+        "elapsed_ms": 608.9999999999236,
+        "symbol": "DiceMillion",
+        "endpoint": "https://demo.bgaming-network.com/api/DiceMillion/2367069/<session>",
+        "na": "closed",
+        "terminal": true,
+        "wire_steps": 2,
+        "warning": "close sin outcome",
+        "error": "",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dice Million\\tests\\2026-09-13_09-42-45-bgaming-http-api-v2\\SPIN\\attempt-001"
+      }
+    ],
+    "samples_per_path": 1
+  },
+  "artifact_bytes_embedded": 77433,
+  "artifacts": {
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 169,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "dice-million",
+        "branch_points": [],
+        "complete": true,
+        "missing_count": 0
+      }
+    },
+    "profile.json": {
+      "encoding": "json",
+      "bytes": 11309,
+      "value": {
+        "schema": "tester-spin/bgaming-profile/v1",
+        "capability_version": 2,
+        "family": "api-v2",
+        "confidence": 1.0,
+        "evidence": [
+          "init.options",
+          "init.api_version=2",
+          "persisted.validated"
+        ],
+        "spin_options": {},
+        "command_options": {},
+        "request_extra_data": {},
+        "spin_option_choices": {},
+        "effective_bet_selector": "",
+        "effective_bet_multipliers": {},
+        "dynamic_purchased_feature": true,
+        "purchase_feature_level_supported": true,
+        "purchase_features": [],
+        "rows_required": false,
+        "line_count": 0,
+        "variable_layout": false,
+        "allowed_continuations": [
+          "close",
+          "freespin",
+          "play_bonus",
+          "play_preselection_game",
+          "preselection_game",
+          "respin"
+        ],
+        "source": "persisted-validated-profile",
+        "bundle_sha256": "012a428bcd0b480f4270e845b08bfc3f8581669a02b4fe9c65c298101be8f3e6",
+        "discovery_diagnostics": [
+          {
+            "kind": "loader",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/loader.js",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "kind": "script-skip",
+            "url": "https://www.googletagmanager.com/gtag/js",
+            "reason": "third-party-origin"
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/bundle.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 1402337,
+            "contract_score": 82,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/bundle.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/bundle.js",
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/wrapper.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 160620,
+            "contract_score": 24,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/analytics/amplitude.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 5312,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://replays.bgaming-network.com/replays.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 6770,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/loader.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 2023,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/bg.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/bg.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/de.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/de.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/el.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/el.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/en.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/en.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/es.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/es.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/fi.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/fi.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/fr.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/fr.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/id.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/id.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/it.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/it.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/ja.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/ja.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/kde.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/kde.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/ko.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/ko.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/nl.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/nl.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/nn.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/nn.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/pl.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/pl.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/pt.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/pt.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/ro.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/ro.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/ru.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/ru.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/ses.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/ses.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/sv.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/sv.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/th.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/th.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/tr.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/tr.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/vi.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/vi.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/zh.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/zh.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/config/webpack.debug.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/config/webpack.debug.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/config/webpack.prod.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/DiceMillion/v0.0.122_v14.19.2/config/webpack.prod.js",
+            "depth": 1
+          }
+        ],
+        "validated": false
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 1620,
+      "value": {
+        "provider": "bgaming",
+        "slug": "dice-million",
+        "game_name": "Dice Million",
+        "game_url": "https://demo.bgaming-network.com/play/DiceMillion/FUN?server=demo",
+        "requested_spins": 1,
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "PARCIAL",
+        "symbol": "DiceMillion",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": true,
+            "wire_command": "spin"
+          },
+          {
+            "id": "CLOSE",
+            "kind": "CONTINUATION",
+            "observed": true,
+            "wire_command": "close"
+          }
+        ],
+        "started_at": "2026-09-13T12:42:45+00:00",
+        "finished_at": "2026-09-13T12:42:59+00:00",
+        "elapsed_ms": 14000.0,
+        "error": "BGaming respondió 1/1 intentos; modos terminales validados=0/1. Diagnóstico: close sin outcome",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dice Million\\tests\\2026-09-13_09-42-45-bgaming-http-api-v2",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 608.9999999999236,
+            "symbol": "DiceMillion",
+            "endpoint": "https://demo.bgaming-network.com/api/DiceMillion/2367069/<session>",
+            "na": "closed",
+            "terminal": true,
+            "wire_steps": 2,
+            "warning": "close sin outcome",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dice Million\\tests\\2026-09-13_09-42-45-bgaming-http-api-v2\\SPIN\\attempt-001"
+          }
+        ],
+        "samples_per_path": 1
+      }
+    },
+    "sample-catalog.json": {
+      "encoding": "json",
+      "bytes": 3658,
+      "value": {
+        "schema": "tester-spin/sample-catalog/v2",
+        "provider": "bgaming",
+        "game": "dice-million",
+        "scope": "observed_paths_only",
+        "samples_per_path": 1,
+        "groups": [
+          {
+            "id": "a179acbfa9295736f1e930b5ce3d37a237f56d86b16cce5a1bfd01dd210dd41a",
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "choices": [],
+            "validated_samples": 0,
+            "samples": [
+              {
+                "attempt": 1,
+                "artifact_dir": "SPIN/attempt-001",
+                "validated": false,
+                "terminal": true,
+                "observed_state_sequence": [
+                  [
+                    {
+                      "field": "$.flow.state",
+                      "value": "gamble"
+                    },
+                    {
+                      "field": "$.flow.command",
+                      "value": "spin"
+                    }
+                  ],
+                  [
+                    {
+                      "field": "$.flow.state",
+                      "value": "closed"
+                    },
+                    {
+                      "field": "$.flow.command",
+                      "value": "close"
+                    }
+                  ]
+                ],
+                "evidence": [
+                  {
+                    "path": "SPIN/attempt-001/request.json",
+                    "sha256": "46330b75941d2e73872f3749b129587eeeb6230104922ad2275f816672cedf11",
+                    "bytes": 125
+                  },
+                  {
+                    "path": "SPIN/attempt-001/response.json",
+                    "sha256": "8b85fae5d05d650a0804c3798ca8ae0a6726be3c35f06899d0bd5600d9bfd1a8",
+                    "bytes": 4032
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "46330b75941d2e73872f3749b129587eeeb6230104922ad2275f816672cedf11",
+                    "bytes": 125
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "8b85fae5d05d650a0804c3798ca8ae0a6726be3c35f06899d0bd5600d9bfd1a8",
+                    "bytes": 4032
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-002-request.json",
+                    "sha256": "45c9e9db7bdf470c40b1ee6d4b7c15fc50a2de25857b44c85ea08c87dc82766c",
+                    "bytes": 89
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-002-response.json",
+                    "sha256": "be49129489ece580b7b050381d7c2378d966b9850e881b84fddc0946d69d9391",
+                    "bytes": 288
+                  }
+                ]
+              }
+            ],
+            "missing_samples": 1
+          }
+        ],
+        "observed_state_types": [
+          {
+            "id": "ee08d4f0ecf34dfc9ef8c120d45965c24edd6af9bc59cb4aa230d08e4b0c3957",
+            "observed_tags": [
+              {
+                "field": "$.flow.state",
+                "value": "gamble"
+              },
+              {
+                "field": "$.flow.command",
+                "value": "spin"
+              }
+            ],
+            "evidence": [
+              {
+                "attempt": 1,
+                "mode_id": "SPIN",
+                "path": "SPIN/attempt-001/response.json"
+              },
+              {
+                "attempt": 1,
+                "mode_id": "SPIN",
+                "path": "SPIN/attempt-001/step-001-response.json"
+              }
+            ]
+          },
+          {
+            "id": "ff13bdb83e296a1db7b39227f0f8fc0750ddbd72ecbf5e89b8bd61628b1a7ed8",
+            "observed_tags": [
+              {
+                "field": "$.flow.state",
+                "value": "closed"
+              },
+              {
+                "field": "$.flow.command",
+                "value": "close"
+              }
+            ],
+            "evidence": [
+              {
+                "attempt": 1,
+                "mode_id": "SPIN",
+                "path": "SPIN/attempt-001/step-002-response.json"
+              }
+            ]
+          }
+        ],
+        "diagnostics": [],
+        "observed_paths_sampled": false
+      }
+    },
+    "SPIN/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 444,
+      "value": {
+        "round_id": 17298197858,
+        "last_action_id": "17298197858_1",
+        "flow_state": "closed",
+        "flow_command": "close",
+        "purchased_feature": "",
+        "bet": null,
+        "win": null,
+        "balance_total": 100028,
+        "screen_sha256": "",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "caf22e7e29da77bf",
+        "mode_id": "SPIN",
+        "step": 2,
+        "expected_debit": 0
+      }
+    },
+    "SPIN/attempt-001/request.json": {
+      "encoding": "json",
+      "bytes": 125,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 20
+        },
+        "extra_data": {
+          "round_series_id": 1789303366573
+        }
+      }
+    },
+    "SPIN/attempt-001/response.json": {
+      "encoding": "json",
+      "bytes": 4032,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": [
+            [
+              "5",
+              "5",
+              "4",
+              "4"
+            ],
+            [
+              "7",
+              "0",
+              "6",
+              "6"
+            ],
+            [
+              "7",
+              "7",
+              "5",
+              "5"
+            ],
+            [
+              "6",
+              "4",
+              "4",
+              "4"
+            ],
+            [
+              "4",
+              "10",
+              "5",
+              "5"
+            ]
+          ],
+          "special_symbols": {
+            "wild": {
+              "0": [
+                [
+                  1,
+                  1
+                ]
+              ]
+            },
+            "scatter": {
+              "10": [
+                [
+                  4,
+                  1
+                ]
+              ]
+            }
+          },
+          "bet": 20,
+          "win": 48,
+          "wins": [
+            [
+              "line",
+              2,
+              [
+                0,
+                0,
+                2
+              ],
+              12
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                0,
+                3
+              ],
+              14
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                1,
+                2
+              ],
+              16
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                2,
+                3
+              ],
+              22
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                1,
+                2
+              ],
+              25
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                1,
+                2
+              ],
+              31
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                2,
+                2
+              ],
+              34
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                1,
+                2
+              ],
+              38
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                1,
+                3
+              ],
+              46
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                3,
+                3
+              ],
+              50
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                0,
+                2
+              ],
+              53
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                2,
+                3
+              ],
+              58
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                1,
+                2
+              ],
+              60
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                1,
+                3
+              ],
+              62
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                0,
+                3
+              ],
+              64
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                0,
+                3
+              ],
+              67
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                1,
+                2
+              ],
+              69
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                0,
+                2
+              ],
+              70
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                1,
+                3
+              ],
+              72
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                2,
+                2
+              ],
+              76
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                2,
+                3
+              ],
+              80
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                2,
+                3
+              ],
+              90
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                3,
+                3
+              ],
+              94
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                3,
+                2
+              ],
+              96
+            ]
+          ],
+          "storage": null
+        },
+        "balance": {
+          "game": 48,
+          "wallet": 99980
+        },
+        "flow": {
+          "round_id": 17298197858,
+          "last_action_id": "17298197858_1",
+          "state": "gamble",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "gamble",
+            "close"
+          ]
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-proof.json": {
+      "encoding": "json",
+      "bytes": 487,
+      "value": {
+        "round_id": 17298197858,
+        "last_action_id": "17298197858_1",
+        "flow_state": "gamble",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 20,
+        "win": 48,
+        "balance_total": 100028,
+        "screen_sha256": "5ee92ad01dfe",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "dd70b4405d36a7e3",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 20.0,
+        "expected_outcome_bet": 20.0
+      }
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 125,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 20
+        },
+        "extra_data": {
+          "round_series_id": 1789303366573
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 4032,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": [
+            [
+              "5",
+              "5",
+              "4",
+              "4"
+            ],
+            [
+              "7",
+              "0",
+              "6",
+              "6"
+            ],
+            [
+              "7",
+              "7",
+              "5",
+              "5"
+            ],
+            [
+              "6",
+              "4",
+              "4",
+              "4"
+            ],
+            [
+              "4",
+              "10",
+              "5",
+              "5"
+            ]
+          ],
+          "special_symbols": {
+            "wild": {
+              "0": [
+                [
+                  1,
+                  1
+                ]
+              ]
+            },
+            "scatter": {
+              "10": [
+                [
+                  4,
+                  1
+                ]
+              ]
+            }
+          },
+          "bet": 20,
+          "win": 48,
+          "wins": [
+            [
+              "line",
+              2,
+              [
+                0,
+                0,
+                2
+              ],
+              12
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                0,
+                3
+              ],
+              14
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                1,
+                2
+              ],
+              16
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                2,
+                3
+              ],
+              22
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                1,
+                2
+              ],
+              25
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                1,
+                2
+              ],
+              31
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                2,
+                2
+              ],
+              34
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                1,
+                2
+              ],
+              38
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                1,
+                3
+              ],
+              46
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                3,
+                3
+              ],
+              50
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                0,
+                2
+              ],
+              53
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                2,
+                3
+              ],
+              58
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                1,
+                2
+              ],
+              60
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                1,
+                3
+              ],
+              62
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                0,
+                3
+              ],
+              64
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                0,
+                3
+              ],
+              67
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                1,
+                2
+              ],
+              69
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                0,
+                2
+              ],
+              70
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                1,
+                3
+              ],
+              72
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                2,
+                2
+              ],
+              76
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                2,
+                3
+              ],
+              80
+            ],
+            [
+              "line",
+              2,
+              [
+                1,
+                2,
+                3
+              ],
+              90
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                3,
+                3
+              ],
+              94
+            ],
+            [
+              "line",
+              2,
+              [
+                0,
+                3,
+                2
+              ],
+              96
+            ]
+          ],
+          "storage": null
+        },
+        "balance": {
+          "game": 48,
+          "wallet": 99980
+        },
+        "flow": {
+          "round_id": 17298197858,
+          "last_action_id": "17298197858_1",
+          "state": "gamble",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "gamble",
+            "close"
+          ]
+        }
+      }
+    },
+    "SPIN/attempt-001/step-002-proof.json": {
+      "encoding": "json",
+      "bytes": 444,
+      "value": {
+        "round_id": 17298197858,
+        "last_action_id": "17298197858_1",
+        "flow_state": "closed",
+        "flow_command": "close",
+        "purchased_feature": "",
+        "bet": null,
+        "win": null,
+        "balance_total": 100028,
+        "screen_sha256": "",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "caf22e7e29da77bf",
+        "mode_id": "SPIN",
+        "step": 2,
+        "expected_debit": 0
+      }
+    },
+    "SPIN/attempt-001/step-002-request.json": {
+      "encoding": "json",
+      "bytes": 89,
+      "value": {
+        "command": "close",
+        "extra_data": {
+          "round_series_id": 1789303366573
+        }
+      }
+    },
+    "SPIN/attempt-001/step-002-response.json": {
+      "encoding": "json",
+      "bytes": 288,
+      "value": {
+        "api_version": "2",
+        "balance": {
+          "game": 48,
+          "wallet": 99980
+        },
+        "flow": {
+          "round_id": 17298197858,
+          "last_action_id": "17298197858_1",
+          "state": "closed",
+          "command": "close",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 1864,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "dice-million",
+          "name": "Dice Million",
+          "identifier": "DiceMillion"
+        },
+        "generated_at": "2026-09-13T12:42:59+00:00",
+        "source_run": "2026-09-13_09-42-45-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [
+          {
+            "id": "CASE_0001",
+            "source_state": "FLOW:gamble",
+            "request_contract": "CLOSE",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "accepted_outcome": "CLOSE__TO__READY",
+            "expected_target_state": "READY",
+            "response_schema": "response-schemas/close__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-002-request.json"
+            ]
+          },
+          {
+            "id": "CASE_0002",
+            "source_state": "READY",
+            "request_contract": "SPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "accepted_outcome": "SPIN__TO__FLOW_GAMBLE",
+            "expected_target_state": "FLOW:gamble",
+            "response_schema": "response-schemas/spin__to__flow_gamble.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 1782,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "dice-million",
+          "name": "Dice Million",
+          "identifier": "DiceMillion"
+        },
+        "generated_at": "2026-09-13T12:42:59+00:00",
+        "source_run": "2026-09-13_09-42-45-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {
+          "FLOW:gamble": {
+            "CLOSE": {
+              "wire_action": "close",
+              "selector_domains_observed": {},
+              "selector_vectors_observed": [
+                {}
+              ],
+              "outcomes": [
+                {
+                  "id": "CLOSE__TO__READY",
+                  "target_state": [
+                    "READY"
+                  ],
+                  "response_schema": "response-schemas/close__to__ready.json",
+                  "terminal_observed": true,
+                  "math_probability_known": false
+                }
+              ]
+            }
+          },
+          "READY": {
+            "SPIN": {
+              "wire_action": "spin",
+              "selector_domains_observed": {},
+              "selector_vectors_observed": [
+                {}
+              ],
+              "outcomes": [
+                {
+                  "id": "SPIN__TO__FLOW_GAMBLE",
+                  "target_state": [
+                    "FLOW:gamble"
+                  ],
+                  "response_schema": "response-schemas/spin__to__flow_gamble.json",
+                  "terminal_observed": false,
+                  "math_probability_known": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "bootstrap.json": {
+      "encoding": "json",
+      "bytes": 6036,
+      "value": {
+        "identifier": "DiceMillion",
+        "launch_url": "https://demo.bgaming-network.com/games/DiceMillion/FUN",
+        "api_url": "https://demo.bgaming-network.com/api/DiceMillion/2367069/<session>",
+        "options": {
+          "env": "production",
+          "csrfTokenHeaderName": "X-CSRF-Token",
+          "csrfTokenHeaderValue": "<redacted>",
+          "play_token": "<redacted>",
+          "game": "slots/dice_million",
+          "identifier": "DiceMillion",
+          "title": "Dice Million",
+          "currency": "FUN",
+          "balance_polling_interval": 30000,
+          "cache_id": "8574beb29b937fd9429d900cf16a1b6374448f620c268cd1076b1be6a91a3b92",
+          "cache_player_id": "fd5712d45950b3981c78597788446e9b78a5b2769390d7b726f29b29532011b3",
+          "api": "https://demo.bgaming-network.com/api/DiceMillion/2367069/<session>",
+          "rules_url": "https://rules.bgaming-network.com/en/DiceMillion.json",
+          "deposit_url": null,
+          "games_page_url": "https://www.bgaming.com/games.html",
+          "history_url": null,
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09aca-ad5a-713a-a11a-2411417864e0/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/DiceMillion/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY3MDc4MDd9LCJleHAiOjE4MDQ5NDE3Njl9.vdQwzu-SWROJmmU-Tk-LSA6C_M3xDbmdiH6j7vYv1Hg",
+          "websocket_url": "wss://demo.bgaming-network.com:443/cable",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=DiceMillion&play_token=01a09aca-ad5a-713a-a11a-2411417864e0&server_id=demo",
+          "ui": {
+            "home_button": true,
+            "full_screen_prompt": true,
+            "logo": "standard",
+            "skin": "basic",
+            "skins": [
+              "basic"
+            ],
+            "brand_logo": null,
+            "brand": {
+              "name": "",
+              "logo": null,
+              "logo_in_game": null
+            },
+            "autospins_dialog": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "gamble_enabled": true,
+            "show_rtp_in_rules": true
+          },
+          "resources_path": "https://cdn.bgaming-network.com/html/DiceMillion",
+          "custom": {},
+          "actual_currency_rate": 0.0,
+          "sound_enabled": true,
+          "games_loader_source": "https://cdn.bgaming-network.com/html/DiceMillion/loader.js?1789303369",
+          "game_bundle_source": "https://cdn.bgaming-network.com/html/DiceMillion/bundle.js",
+          "provable_fair": {
+            "verify_url": "https://demo.bgaming-network.com/api/games/verify"
+          },
+          "math": {
+            "rtp": {
+              "main": 97.34
+            },
+            "gamble_limit": 3000,
+            "max_multiplier": 3000.0,
+            "max_win_freq": 4775000
+          },
+          "rules": {
+            "min_bet": 20,
+            "max_bet": 1500,
+            "currency": {
+              "code": "FUN",
+              "symbol": "FUN",
+              "subunits": 100,
+              "exponent": 2
+            }
+          },
+          "version": "1.0.0",
+          "growthbook_flags": {
+            "tech_lobby_widget_position": {
+              "value": {
+                "desktop": "bottom",
+                "portrait": "top",
+                "landscape": "top"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "growth_drop_init_popup_ui": {
+              "value": {
+                "id": 602,
+                "value": "A"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            }
+          },
+          "lobby_v2_options": {
+            "player_id": 345457408,
+            "lobby_enabled": false,
+            "drops_enabled": false,
+            "drops_token": "<redacted>",
+            "drops_api_url": "https://drops.bgaming-network.com/api/v1/",
+            "profile_enabled": false,
+            "profile_api_url": "https://loyalty-core.shared.bgaming-system.com/api/v1",
+            "profile_token": "<redacted>",
+            "gamelist_enabled": false,
+            "gamelist_api_url": "https://gamelist.bgaming-network.com",
+            "gamelist_token": "<redacted>",
+            "challenges_enabled": false,
+            "challenges_api_url": "https://challenges.bgaming-network.com/",
+            "challenges_token": "<redacted>",
+            "challenges_fe_script_url": "https://brush.bgaming-network.com/",
+            "quests_enabled": false,
+            "quests_api_url": null,
+            "quests_token": "<redacted>",
+            "shop_enabled": false,
+            "shop_api_url": "",
+            "shop_token": "<redacted>",
+            "growth_fe_url": ""
+          },
+          "server_id": "demo",
+          "locale": "en",
+          "actions": {
+            "deposit": null,
+            "return": null,
+            "history": {
+              "text": null,
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDU0NTc0MDgsImd0X2lkIjoyMzY3MDY5fSwiZXhwIjoxODA0OTQxNzY5fQ.YvigDmLCuPJZqyoNSTxQJV07NTFaNJ4Jm4SGl-VBH6Q",
+              "mode": "open"
+            }
+          },
+          "show_paytable": false,
+          "license_rules": {
+            "rules_section": {
+              "show_license_requirements": false,
+              "license_requirement_show_purchase": false,
+              "license_requirement_show_autoplay": false,
+              "license_requirement_show_quick_spins": false,
+              "license_requirement_show_autospin_confirmation": false,
+              "license_requirement_reset_autospin": false,
+              "show_rtp": [
+                "main_rtp",
+                "chance_rtp",
+                "bonus_rtp"
+              ],
+              "show_gamble_round": true,
+              "show_min_max": false,
+              "show_max_win_frequency": false,
+              "show_max_multiplier": true,
+              "show_max_win_rules_text": null
+            },
+            "screen_section": {
+              "show_rtp_on_main_screen": false,
+              "show_max_win_frequency_on_main_screen": false,
+              "show_max_multiplier_on_main_screen": false
+            },
+            "lines_count": "60"
+          },
+          "open_page_method": "redirect",
+          "reset_bet_to_default": false,
+          "enable_chinese_logos": false,
+          "enable_quick_spins_by_default": null,
+          "purchased_feature_limit": null,
+          "pre_bet_balance_validation": false,
+          "available_games_to_switch": []
+        },
+        "round_series_id": 1789303366573
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 4197,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "dice-million",
+          "name": "Dice Million",
+          "identifier": "DiceMillion"
+        },
+        "generated_at": "2026-09-13T12:42:59+00:00",
+        "source_run": "2026-09-13_09-42-45-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "CLOSE",
+            "transport": "HTTP_JSON",
+            "wire_action": "close",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "close"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          },
+          {
+            "id": "SPIN",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bet"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "CLOSE",
+            "kind": "CONTINUATION",
+            "wire_command": "close",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {
+          "FLOW:gamble": {
+            "CLOSE": [
+              "CLOSE__TO__READY"
+            ]
+          },
+          "READY": {
+            "SPIN": [
+              "SPIN__TO__FLOW_GAMBLE"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 88,
+      "value": {
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789303366573
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 18232,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            20,
+            50,
+            100,
+            150,
+            200,
+            250,
+            300,
+            350,
+            400,
+            450,
+            500,
+            1500
+          ],
+          "default_bet": 20,
+          "paytable": {
+            "1": [
+              0,
+              10,
+              50,
+              200,
+              3000
+            ],
+            "2": [
+              0,
+              0,
+              40,
+              100,
+              500
+            ],
+            "3": [
+              0,
+              0,
+              40,
+              100,
+              500
+            ],
+            "4": [
+              0,
+              0,
+              20,
+              50,
+              200
+            ],
+            "5": [
+              0,
+              0,
+              10,
+              30,
+              100
+            ],
+            "6": [
+              0,
+              0,
+              10,
+              30,
+              100
+            ],
+            "7": [
+              0,
+              0,
+              10,
+              30,
+              100
+            ],
+            "8": [
+              0,
+              0,
+              10,
+              30,
+              100
+            ],
+            "9": [
+              0,
+              0,
+              3,
+              20,
+              100
+            ],
+            "10": [
+              0,
+              0,
+              20,
+              0,
+              0
+            ]
+          },
+          "paytables": {
+            "1": {
+              "default": [
+                0,
+                10,
+                50,
+                200,
+                3000
+              ]
+            },
+            "2": {
+              "default": [
+                0,
+                0,
+                40,
+                100,
+                500
+              ]
+            },
+            "3": {
+              "default": [
+                0,
+                0,
+                40,
+                100,
+                500
+              ]
+            },
+            "4": {
+              "default": [
+                0,
+                0,
+                20,
+                50,
+                200
+              ]
+            },
+            "5": {
+              "default": [
+                0,
+                0,
+                10,
+                30,
+                100
+              ]
+            },
+            "6": {
+              "default": [
+                0,
+                0,
+                10,
+                30,
+                100
+              ]
+            },
+            "7": {
+              "default": [
+                0,
+                0,
+                10,
+                30,
+                100
+              ]
+            },
+            "8": {
+              "default": [
+                0,
+                0,
+                10,
+                30,
+                100
+              ]
+            },
+            "9": {
+              "scatter": [
+                0,
+                0,
+                3,
+                20,
+                100
+              ]
+            },
+            "10": {
+              "scatter": [
+                0,
+                0,
+                20,
+                0,
+                0
+              ]
+            }
+          },
+          "special_symbols": [
+            {
+              "kind": "wild",
+              "symbol": "0"
+            },
+            {
+              "kind": "scatter",
+              "symbol": "9"
+            },
+            {
+              "kind": "scatter",
+              "symbol": "10"
+            }
+          ],
+          "lines": [
+            [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              3,
+              3,
+              3,
+              3
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              2,
+              3,
+              3,
+              3,
+              2
+            ],
+            [
+              2,
+              1,
+              2,
+              1,
+              2
+            ],
+            [
+              1,
+              2,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              3,
+              2,
+              3,
+              2,
+              3
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              3,
+              3,
+              2,
+              3,
+              3
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              3,
+              3,
+              1,
+              3,
+              3
+            ],
+            [
+              0,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              3,
+              3,
+              0,
+              3,
+              3
+            ],
+            [
+              1,
+              1,
+              2,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              1,
+              2,
+              2
+            ],
+            [
+              0,
+              3,
+              0,
+              3,
+              0
+            ],
+            [
+              3,
+              0,
+              3,
+              0,
+              3
+            ],
+            [
+              1,
+              0,
+              1,
+              0,
+              1
+            ],
+            [
+              2,
+              3,
+              2,
+              3,
+              2
+            ],
+            [
+              1,
+              2,
+              3,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              0,
+              1,
+              2
+            ],
+            [
+              1,
+              0,
+              1,
+              2,
+              3
+            ],
+            [
+              0,
+              1,
+              2,
+              3,
+              2
+            ],
+            [
+              1,
+              1,
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              1,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              3,
+              2
+            ],
+            [
+              2,
+              2,
+              2,
+              1,
+              2
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              2,
+              2,
+              2
+            ],
+            [
+              2,
+              2,
+              1,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              3,
+              3,
+              3
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              1,
+              1,
+              2
+            ],
+            [
+              1,
+              1,
+              0,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              3,
+              2,
+              2
+            ],
+            [
+              0,
+              1,
+              2,
+              3,
+              3
+            ],
+            [
+              3,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1,
+              1
+            ],
+            [
+              3,
+              3,
+              2,
+              2,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              3,
+              3,
+              3,
+              2,
+              3
+            ],
+            [
+              0,
+              0,
+              1,
+              2,
+              3
+            ],
+            [
+              3,
+              3,
+              2,
+              1,
+              0
+            ],
+            [
+              1,
+              1,
+              3,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              0,
+              2,
+              2
+            ],
+            [
+              0,
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              3,
+              2,
+              2,
+              2,
+              3
+            ],
+            [
+              0,
+              3,
+              3,
+              2,
+              1
+            ],
+            [
+              3,
+              0,
+              0,
+              1,
+              2
+            ],
+            [
+              2,
+              3,
+              1,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              2,
+              1,
+              3
+            ],
+            [
+              0,
+              2,
+              0,
+              3,
+              1
+            ],
+            [
+              3,
+              1,
+              3,
+              0,
+              2
+            ],
+            [
+              1,
+              2,
+              0,
+              1,
+              3
+            ],
+            [
+              2,
+              1,
+              3,
+              2,
+              0
+            ],
+            [
+              1,
+              2,
+              3,
+              0,
+              1
+            ],
+            [
+              2,
+              1,
+              0,
+              3,
+              2
+            ],
+            [
+              1,
+              1,
+              2,
+              0,
+              3
+            ],
+            [
+              2,
+              2,
+              1,
+              3,
+              0
+            ],
+            [
+              1,
+              1,
+              3,
+              2,
+              0
+            ],
+            [
+              2,
+              2,
+              0,
+              1,
+              3
+            ],
+            [
+              0,
+              0,
+              3,
+              1,
+              2
+            ],
+            [
+              3,
+              3,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              3,
+              0,
+              1,
+              2
+            ],
+            [
+              1,
+              0,
+              3,
+              2,
+              1
+            ],
+            [
+              2,
+              3,
+              2,
+              1,
+              0
+            ],
+            [
+              0,
+              1,
+              2,
+              2,
+              3
+            ],
+            [
+              0,
+              0,
+              2,
+              3,
+              1
+            ],
+            [
+              3,
+              3,
+              1,
+              0,
+              2
+            ],
+            [
+              0,
+              1,
+              3,
+              2,
+              0
+            ],
+            [
+              3,
+              2,
+              0,
+              1,
+              3
+            ],
+            [
+              0,
+              2,
+              1,
+              3,
+              1
+            ],
+            [
+              3,
+              1,
+              2,
+              0,
+              2
+            ],
+            [
+              0,
+              2,
+              2,
+              3,
+              1
+            ],
+            [
+              3,
+              1,
+              1,
+              0,
+              2
+            ],
+            [
+              2,
+              3,
+              3,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              2,
+              3
+            ],
+            [
+              0,
+              2,
+              3,
+              3,
+              1
+            ],
+            [
+              3,
+              1,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              3,
+              0,
+              2,
+              1
+            ],
+            [
+              3,
+              0,
+              3,
+              1,
+              2
+            ],
+            [
+              1,
+              3,
+              0,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              3,
+              1,
+              3
+            ],
+            [
+              1,
+              3,
+              1,
+              0,
+              2
+            ],
+            [
+              2,
+              0,
+              2,
+              3,
+              1
+            ],
+            [
+              0,
+              3,
+              1,
+              2,
+              1
+            ],
+            [
+              3,
+              0,
+              2,
+              1,
+              2
+            ],
+            [
+              1,
+              2,
+              3,
+              3,
+              0
+            ],
+            [
+              2,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              1,
+              2,
+              1,
+              0,
+              3
+            ],
+            [
+              2,
+              1,
+              2,
+              3,
+              0
+            ],
+            [
+              0,
+              3,
+              3,
+              1,
+              2
+            ],
+            [
+              3,
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2,
+              1,
+              2
+            ],
+            [
+              3,
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              1,
+              2,
+              0,
+              0,
+              3
+            ],
+            [
+              2,
+              1,
+              3,
+              3,
+              0
+            ]
+          ],
+          "reels": {
+            "main": [
+              [
+                "6",
+                "6",
+                "6",
+                "6",
+                "3",
+                "3",
+                "8",
+                "8",
+                "8",
+                "8",
+                "9",
+                "7",
+                "7",
+                "8",
+                "8",
+                "6",
+                "6",
+                "6",
+                "6",
+                "10",
+                "8",
+                "8",
+                "9",
+                "7",
+                "7",
+                "7",
+                "7",
+                "6",
+                "6",
+                "4",
+                "4",
+                "4",
+                "4",
+                "7",
+                "7",
+                "7",
+                "7",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "7",
+                "2",
+                "2",
+                "2",
+                "2",
+                "8",
+                "8",
+                "8",
+                "8",
+                "7",
+                "7",
+                "3",
+                "3",
+                "3",
+                "3",
+                "6",
+                "6",
+                "6",
+                "6",
+                "5",
+                "5",
+                "10",
+                "6",
+                "6",
+                "6",
+                "6",
+                "1",
+                "1",
+                "1",
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "8",
+                "8",
+                "8",
+                "8",
+                "5",
+                "5",
+                "5",
+                "5",
+                "4",
+                "4",
+                "4",
+                "4",
+                "5",
+                "5",
+                "8",
+                "8",
+                "5",
+                "5",
+                "8",
+                "8",
+                "9",
+                "7",
+                "7",
+                "6",
+                "6",
+                "6",
+                "6",
+                "8"
+              ],
+              [
+                "6",
+                "6",
+                "6",
+                "6",
+                "9",
+                "7",
+                "7",
+                "1",
+                "1",
+                "7",
+                "7",
+                "1",
+                "1",
+                "1",
+                "1",
+                "7",
+                "7",
+                "1",
+                "1",
+                "5",
+                "5",
+                "5",
+                "5",
+                "9",
+                "6",
+                "6",
+                "6",
+                "6",
+                "8",
+                "8",
+                "8",
+                "8",
+                "7",
+                "7",
+                "8",
+                "8",
+                "8",
+                "8",
+                "7",
+                "7",
+                "7",
+                "7",
+                "8",
+                "8",
+                "8",
+                "8",
+                "5",
+                "5",
+                "5",
+                "5",
+                "4",
+                "4",
+                "4",
+                "4",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "7",
+                "7",
+                "7",
+                "8",
+                "8",
+                "8",
+                "8",
+                "4",
+                "4",
+                "4",
+                "4",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "6",
+                "6",
+                "6",
+                "6",
+                "9",
+                "7",
+                "5",
+                "0"
+              ],
+              [
+                "1",
+                "1",
+                "1",
+                "1",
+                "9",
+                "8",
+                "8",
+                "8",
+                "8",
+                "10",
+                "6",
+                "6",
+                "6",
+                "6",
+                "5",
+                "5",
+                "5",
+                "6",
+                "8",
+                "8",
+                "8",
+                "8",
+                "8",
+                "8",
+                "8",
+                "10",
+                "7",
+                "7",
+                "7",
+                "7",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "7",
+                "7",
+                "7",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "2",
+                "2",
+                "3",
+                "3",
+                "3",
+                "3",
+                "3",
+                "9",
+                "8",
+                "8",
+                "8",
+                "8",
+                "7",
+                "7",
+                "7",
+                "7",
+                "5",
+                "5",
+                "5",
+                "5",
+                "5",
+                "5",
+                "9",
+                "6",
+                "6",
+                "6",
+                "6",
+                "8",
+                "8",
+                "8",
+                "8",
+                "8",
+                "8",
+                "8",
+                "8",
+                "7",
+                "7",
+                "7",
+                "7",
+                "5",
+                "5",
+                "5",
+                "4",
+                "4",
+                "4",
+                "4",
+                "7",
+                "0"
+              ],
+              [
+                "1",
+                "1",
+                "1",
+                "1",
+                "9",
+                "7",
+                "7",
+                "7",
+                "7",
+                "9",
+                "2",
+                "2",
+                "2",
+                "2",
+                "5",
+                "5",
+                "5",
+                "5",
+                "9",
+                "7",
+                "7",
+                "7",
+                "7",
+                "7",
+                "6",
+                "6",
+                "6",
+                "6",
+                "4",
+                "4",
+                "4",
+                "4",
+                "4",
+                "4",
+                "4",
+                "4",
+                "8",
+                "8",
+                "8",
+                "8",
+                "6",
+                "6",
+                "6",
+                "6",
+                "8",
+                "8",
+                "8",
+                "8",
+                "3",
+                "3",
+                "3",
+                "3",
+                "6",
+                "6",
+                "6",
+                "6",
+                "3",
+                "3",
+                "3",
+                "3",
+                "0"
+              ],
+              [
+                "5",
+                "5",
+                "5",
+                "5",
+                "9",
+                "1",
+                "1",
+                "1",
+                "1",
+                "2",
+                "2",
+                "2",
+                "2",
+                "1",
+                "1",
+                "1",
+                "1",
+                "10",
+                "3",
+                "3",
+                "3",
+                "3",
+                "1",
+                "1",
+                "1",
+                "1",
+                "2",
+                "2",
+                "2",
+                "2",
+                "4",
+                "4",
+                "4",
+                "4",
+                "2",
+                "2",
+                "2",
+                "2",
+                "4",
+                "4",
+                "4",
+                "4",
+                "10",
+                "5",
+                "5",
+                "5",
+                "5",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "7",
+                "7",
+                "7",
+                "8",
+                "8",
+                "8",
+                "8"
+              ]
+            ]
+          },
+          "layout": {
+            "reels": 5,
+            "rows": 4
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [
+            [
+              "8",
+              "5",
+              "5",
+              "5"
+            ],
+            [
+              "3",
+              "3",
+              "3",
+              "3"
+            ],
+            [
+              "5",
+              "5",
+              "5",
+              "5"
+            ],
+            [
+              "7",
+              "7",
+              "9",
+              "2"
+            ],
+            [
+              "3",
+              "3",
+              "3",
+              "1"
+            ]
+          ],
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 2118,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "dice-million",
+          "name": "Dice Million",
+          "identifier": "DiceMillion"
+        },
+        "generated_at": "2026-09-13T12:42:59+00:00",
+        "source_run": "2026-09-13_09-42-45-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": [
+          {
+            "id": "CLOSE__TO__READY",
+            "kind": "CONTINUATION_RESULT",
+            "request_contract": "CLOSE",
+            "source_states": [
+              "FLOW:gamble"
+            ],
+            "target_states": [
+              "READY"
+            ],
+            "provider_states": [
+              "closed"
+            ],
+            "available_actions": [
+              "init",
+              "spin"
+            ],
+            "terminal_observed": true,
+            "observed_count": 1,
+            "response_schema": "response-schemas/close__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "SPIN/attempt-001/step-002-request.json"
+            ]
+          },
+          {
+            "id": "SPIN__TO__FLOW_GAMBLE",
+            "kind": "BASE_OR_FEATURE_ENTRY",
+            "request_contract": "SPIN",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "FLOW:gamble"
+            ],
+            "provider_states": [
+              "gamble"
+            ],
+            "available_actions": [
+              "close",
+              "gamble",
+              "init"
+            ],
+            "terminal_observed": false,
+            "observed_count": 1,
+            "response_schema": "response-schemas/spin__to__flow_gamble.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    },
+    "path-catalog.json": {
+      "encoding": "json",
+      "bytes": 1415,
+      "value": {
+        "schema": "tester-spin/bgaming-path-catalog/v1",
+        "phase": "coverage",
+        "provider": "bgaming",
+        "game": {
+          "slug": "dice-million",
+          "name": "Dice Million",
+          "symbol": "DiceMillion"
+        },
+        "semantics": {
+          "path_completeness": "Every provider/client-demonstrated executable branch must be traversed.",
+          "rng_completeness": "Observed random outcomes are samples, not proof that every RNG outcome exists or was exhausted.",
+          "future_sampling_unit": "Repeat each executable path independently; do not multiply unrelated modes by a scoped selector."
+        },
+        "paths": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "branch_signature": "",
+            "executable": null,
+            "coverage_required": false,
+            "required_options": [],
+            "covered_options": [],
+            "attempts_observed": 1,
+            "terminal_successes": 0,
+            "wire_steps": 2,
+            "artifacts": [
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dice Million\\tests\\2026-09-13_09-42-45-bgaming-http-api-v2\\SPIN\\attempt-001"
+            ]
+          },
+          {
+            "id": "CLOSE",
+            "kind": "CONTINUATION",
+            "branch_signature": "",
+            "executable": null,
+            "coverage_required": false,
+            "required_options": [],
+            "covered_options": [],
+            "attempts_observed": 0,
+            "terminal_successes": 0,
+            "wire_steps": 0,
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 4197,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "dice-million",
+          "name": "Dice Million",
+          "identifier": "DiceMillion"
+        },
+        "generated_at": "2026-09-13T12:42:59+00:00",
+        "source_run": "2026-09-13_09-42-45-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "CLOSE",
+            "transport": "HTTP_JSON",
+            "wire_action": "close",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "close"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          },
+          {
+            "id": "SPIN",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bet"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "CLOSE",
+            "kind": "CONTINUATION",
+            "wire_command": "close",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {
+          "FLOW:gamble": {
+            "CLOSE": [
+              "CLOSE__TO__READY"
+            ]
+          },
+          "READY": {
+            "SPIN": [
+              "SPIN__TO__FLOW_GAMBLE"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "response-schemas/close__to__ready.json": {
+      "encoding": "json",
+      "bytes": 1966,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "CLOSE__TO__READY",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "type": "string",
+              "observed_enum": [
+                "2"
+              ]
+            },
+            "balance": {
+              "type": "object",
+              "properties": {
+                "game": {
+                  "type": "integer"
+                },
+                "wallet": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "game",
+                "wallet"
+              ],
+              "additionalProperties": true
+            },
+            "flow": {
+              "type": "object",
+              "properties": {
+                "available_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "observed_enum": [
+                      "init",
+                      "spin"
+                    ]
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "close"
+                  ]
+                },
+                "last_action_id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "17298197858_1"
+                  ]
+                },
+                "round_id": {
+                  "type": "integer"
+                },
+                "state": {
+                  "type": "string",
+                  "observed_enum": [
+                    "closed"
+                  ]
+                }
+              },
+              "required": [
+                "available_actions",
+                "command",
+                "last_action_id",
+                "round_id",
+                "state"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "api_version",
+            "balance",
+            "flow"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.balance.wallet",
+          "$.flow.last_action_id",
+          "$.flow.round_id"
+        ]
+      }
+    },
+    "response-schemas/spin__to__flow_gamble.json": {
+      "encoding": "json",
+      "bytes": 6127,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "SPIN__TO__FLOW_GAMBLE",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "type": "string",
+              "observed_enum": [
+                "2"
+              ]
+            },
+            "balance": {
+              "type": "object",
+              "properties": {
+                "game": {
+                  "type": "integer"
+                },
+                "wallet": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "game",
+                "wallet"
+              ],
+              "additionalProperties": true
+            },
+            "flow": {
+              "type": "object",
+              "properties": {
+                "available_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "observed_enum": [
+                      "close",
+                      "gamble",
+                      "init"
+                    ]
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "last_action_id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "17298197858_1"
+                  ]
+                },
+                "round_id": {
+                  "type": "integer"
+                },
+                "state": {
+                  "type": "string",
+                  "observed_enum": [
+                    "gamble"
+                  ]
+                }
+              },
+              "required": [
+                "available_actions",
+                "command",
+                "last_action_id",
+                "round_id",
+                "state"
+              ],
+              "additionalProperties": true
+            },
+            "outcome": {
+              "type": "object",
+              "properties": {
+                "bet": {
+                  "type": "integer"
+                },
+                "screen": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "observed_enum": [
+                        "0",
+                        "10",
+                        "4",
+                        "5",
+                        "6",
+                        "7"
+                      ]
+                    }
+                  }
+                },
+                "special_symbols": {
+                  "type": "object",
+                  "properties": {
+                    "scatter": {
+                      "type": "object",
+                      "properties": {
+                        "10": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "10"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "wild": {
+                      "type": "object",
+                      "properties": {
+                        "0": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "0"
+                      ],
+                      "additionalProperties": true
+                    }
+                  },
+                  "required": [
+                    "scatter",
+                    "wild"
+                  ],
+                  "additionalProperties": true
+                },
+                "storage": {
+                  "type": "null"
+                },
+                "win": {
+                  "type": "integer"
+                },
+                "wins": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "array",
+                        "integer",
+                        "string"
+                      ],
+                      "items": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "bet",
+                "screen",
+                "special_symbols",
+                "storage",
+                "win",
+                "wins"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "api_version",
+            "balance",
+            "flow",
+            "outcome"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.balance.wallet",
+          "$.flow.last_action_id",
+          "$.flow.round_id",
+          "$.outcome.win",
+          "$.outcome.wins[0][0]",
+          "$.outcome.wins[0][1]",
+          "$.outcome.wins[0][2][0]",
+          "$.outcome.wins[0][2][1]",
+          "$.outcome.wins[0][2][2]",
+          "$.outcome.wins[0][3]",
+          "$.outcome.wins[1][0]",
+          "$.outcome.wins[1][1]",
+          "$.outcome.wins[1][2][0]",
+          "$.outcome.wins[1][2][1]",
+          "$.outcome.wins[1][2][2]",
+          "$.outcome.wins[1][3]",
+          "$.outcome.wins[2][0]",
+          "$.outcome.wins[2][1]",
+          "$.outcome.wins[2][2][0]",
+          "$.outcome.wins[2][2][1]",
+          "$.outcome.wins[2][2][2]",
+          "$.outcome.wins[2][3]",
+          "$.outcome.wins[3][0]",
+          "$.outcome.wins[3][1]",
+          "$.outcome.wins[3][2][0]",
+          "$.outcome.wins[3][2][1]",
+          "$.outcome.wins[3][2][2]",
+          "$.outcome.wins[3][3]",
+          "$.outcome.wins[4][0]",
+          "$.outcome.wins[4][1]",
+          "$.outcome.wins[4][2][0]",
+          "$.outcome.wins[4][2][1]",
+          "$.outcome.wins[4][2][2]",
+          "$.outcome.wins[4][3]",
+          "$.outcome.wins[5][0]",
+          "$.outcome.wins[5][1]",
+          "$.outcome.wins[5][2][0]",
+          "$.outcome.wins[5][2][1]",
+          "$.outcome.wins[5][2][2]",
+          "$.outcome.wins[5][3]",
+          "$.outcome.wins[6][0]",
+          "$.outcome.wins[6][1]",
+          "$.outcome.wins[6][2][0]",
+          "$.outcome.wins[6][2][1]",
+          "$.outcome.wins[6][2][2]",
+          "$.outcome.wins[6][3]",
+          "$.outcome.wins[7][0]",
+          "$.outcome.wins[7][1]",
+          "$.outcome.wins[7][2][0]",
+          "$.outcome.wins[7][2][1]",
+          "$.outcome.wins[7][2][2]",
+          "$.outcome.wins[7][3]"
+        ]
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 1641,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "dice-million",
+          "name": "Dice Million",
+          "identifier": "DiceMillion"
+        },
+        "generated_at": "2026-09-13T12:42:59+00:00",
+        "source_run": "2026-09-13_09-42-45-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {
+          "FLOW:gamble": {
+            "provider_states": [
+              "gamble"
+            ],
+            "allowed_wire_actions_observed": [
+              "close"
+            ],
+            "terminal_observed": false
+          },
+          "READY": {
+            "provider_states": [
+              "closed"
+            ],
+            "allowed_wire_actions_observed": [
+              "spin"
+            ],
+            "terminal_observed": true
+          }
+        },
+        "transitions": [
+          {
+            "source": "FLOW:gamble",
+            "request_contract": "CLOSE",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "outcome": "CLOSE__TO__READY",
+            "target": "READY",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-002-request.json"
+            ]
+          },
+          {
+            "source": "READY",
+            "request_contract": "SPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "outcome": "SPIN__TO__FLOW_GAMBLE",
+            "target": "FLOW:gamble",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    },
+    "wager-catalog.json": {
+      "encoding": "json",
+      "bytes": 948,
+      "value": {
+        "schema": "tester-spin/bgaming-wager-catalog/v1",
+        "policy": {
+          "coverage": "Use the minimum provider-advertised wager for exhaustive protocol/path traversal; never invent a lower wager.",
+          "sampling": "Preserve default and full wager domain so future statistical sampling can be scheduled independently per path.",
+          "purchase_identity": "purchased_feature and purchased_feature_level are scoped to PURCHASE_* modes and are not global spin-option dimensions."
+        },
+        "plans": [
+          {
+            "default_bet": 20.0,
+            "coverage_bet": 20.0,
+            "available_bets": [
+              20.0,
+              50.0,
+              100.0,
+              150.0,
+              200.0,
+              250.0,
+              300.0,
+              350.0,
+              400.0,
+              450.0,
+              500.0,
+              1500.0
+            ],
+            "balance": 100000.0,
+            "source": "options.available_bets:min",
+            "evidence": "init-response.json",
+            "purchase_costs": []
+          }
+        ]
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
