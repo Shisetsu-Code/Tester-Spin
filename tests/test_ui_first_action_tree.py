@@ -5,7 +5,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tester_spin.providers.bgaming.ui_first import _cluster_pointer_cells, is_provider_chrome_candidate
+from tester_spin.providers.bgaming.ui_first import (
+    _cluster_pointer_cells,
+    _pointer_probe_points,
+    is_provider_chrome_candidate,
+)
 from tester_spin.ui_action_tree import UIActionTree, persist_ui_action_tree
 
 
@@ -13,13 +17,29 @@ class UIActionTreeTests(unittest.TestCase):
     def test_provider_chrome_filter_does_not_hide_gameplay(self):
         self.assertTrue(is_provider_chrome_candidate({"kind": "dom", "text": "Sound settings"}))
         self.assertTrue(is_provider_chrome_candidate({"kind": "dom", "aria": "Paytable"}))
+        self.assertTrue(is_provider_chrome_candidate({"kind": "scene", "name": "volumeButton"}))
         self.assertFalse(is_provider_chrome_candidate({"kind": "dom", "text": "Spin"}))
-        self.assertFalse(is_provider_chrome_candidate({"kind": "dom", "text": "5 Free Spins"}))
-        self.assertFalse(is_provider_chrome_candidate({"kind": "canvas", "label": "unknown"}))
+        self.assertFalse(is_provider_chrome_candidate({"kind": "scene", "name": "bonusChoice", "text": "5 Free Spins"}))
+        self.assertFalse(is_provider_chrome_candidate({"kind": "canvas-probe", "label": "unknown"}))
 
     def test_pointer_cells_are_clustered_into_independent_controls(self):
         groups = _cluster_pointer_cells({(0, 0), (1, 0), (5, 3), (5, 4)}, 8, 6)
         self.assertEqual(sorted(len(group) for group in groups), [2, 2])
+
+    def test_full_canvas_pointer_is_not_collapsed_to_one_fake_button(self):
+        cols, rows = 14, 9
+        points, probing = _pointer_probe_points(
+            {(x, y) for x in range(cols) for y in range(rows)}, cols, rows
+        )
+        self.assertTrue(probing)
+        self.assertGreater(len(points), 8)
+        self.assertLessEqual(len(points), 28)
+        self.assertGreater(len({tuple(point) for point in points}), 8)
+
+    def test_small_pointer_cluster_remains_one_zone(self):
+        points, probing = _pointer_probe_points({(2, 2), (3, 2), (2, 3), (3, 3)}, 14, 9)
+        self.assertFalse(probing)
+        self.assertEqual(len(points), 1)
 
     def test_wire_observed_choice_resolves_advertised_action(self):
         tree = UIActionTree("bgaming", "fixture", "bgaming-live-ui")
@@ -40,7 +60,7 @@ class UIActionTreeTests(unittest.TestCase):
         tree = UIActionTree("bgaming", "adventures", "bgaming-live-ui")
         state = tree.state("select_bonus", ["init", "play_bonus_game"])
         tree.candidate(state, {
-            "kind": "canvas", "frame": 0, "signature": "choice-a", "label": "canvas interactive zone",
+            "kind": "canvas-zone", "frame": 0, "signature": "choice-a", "label": "canvas interactive zone",
             "role": "canvas-zone", "point": [0.4, 0.5],
         })
         data = tree.finalize(frontier_exhausted=True)
