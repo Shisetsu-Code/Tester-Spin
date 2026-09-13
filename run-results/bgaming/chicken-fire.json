@@ -1,0 +1,572 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T09:19:15+00:00",
+  "source_commit": "c98ad4264ce542a06a267e2e6a013bad3a6ce216",
+  "provider": "bgaming",
+  "game": {
+    "slug": "chicken-fire",
+    "name": "Chicken Fire",
+    "symbol": "ChickenFire",
+    "url": "https://demo.bgaming-network.com/play/ChickenFire/FUN"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "chicken-fire",
+    "game_name": "Chicken Fire",
+    "game_url": "https://demo.bgaming-network.com/play/ChickenFire/FUN",
+    "requested_spins": 1,
+    "successful_spins": 0,
+    "failed_spins": 1,
+    "status": "PARCIAL",
+    "symbol": "ChickenFire",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "CONTRACT_UNRESOLVED",
+        "wire_method": "play",
+        "request_options": {},
+        "source": "live-client-evidence-incomplete"
+      },
+      {
+        "id": "PURCHASE_BUY_BONUS",
+        "kind": "PURCHASE",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "BASE_CONTRACT_UNRESOLVED",
+        "wire_method": "play",
+        "request_options": {
+          "bet_type": "bet",
+          "purchased_feature": "buy_bonus"
+        },
+        "source": "game_bundle_source"
+      }
+    ],
+    "started_at": "2026-09-13T09:19:05+00:00",
+    "finished_at": "2026-09-13T09:19:14+00:00",
+    "elapsed_ms": 9625.0,
+    "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN']; PURCHASE_BUY_BONUS -> ['PURCHASE_BUY_BONUS'].",
+    "run_dir": "2026-09-13_06-19-05-bgaming-hyperhive-jsonrpc",
+    "attempts": []
+  },
+  "artifact_bytes_embedded": 12839,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 922,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "chicken-fire",
+          "name": "Chicken Fire",
+          "identifier": "ChickenFire"
+        },
+        "generated_at": "2026-09-13T09:19:14+00:00",
+        "source_run": "2026-09-13_06-19-05-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 706,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "chicken-fire",
+          "name": "Chicken Fire",
+          "identifier": "ChickenFire"
+        },
+        "generated_at": "2026-09-13T09:19:14+00:00",
+        "source_run": "2026-09-13_06-19-05-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "contract-diagnostic.json": {
+      "encoding": "json",
+      "bytes": 1159,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "script_urls": [
+          "https://chicken-fire.demo.bgaming-network.com/wg-boost/wrapper.js",
+          "https://chicken-fire.demo.bgaming-network.com/wg-boost/analytics/amplitude.js",
+          "https://chicken-fire.demo.bgaming-network.com/wg-replays/replays.js",
+          "https://chicken-fire.demo.bgaming-network.com/assets/index-CoAzB5sA.js"
+        ],
+        "bundle_sha256": "",
+        "engine_sha256": "3447e6d2577faf09770c691dff91c15e10106981158b523080c99ac887c2ca33",
+        "rpc_id_profile": "uuid",
+        "action_vocabulary": [
+          "addpath",
+          "arc",
+          "arcto",
+          "arctosvg",
+          "beziercurveto",
+          "chamferrect",
+          "circle",
+          "closepath",
+          "ellipse",
+          "fill",
+          "filletrect",
+          "lineto",
+          "moveto",
+          "poly",
+          "popfilter",
+          "popmaskbegin",
+          "popmaskend",
+          "pushfilter",
+          "pushmaskbegin",
+          "pushmaskend",
+          "quadraticcurveto",
+          "rect",
+          "regularpoly",
+          "roundpoly",
+          "roundrect",
+          "roundshape",
+          "startbatch",
+          "stroke",
+          "texture"
+        ],
+        "base_request": {},
+        "custom_req_profile": "",
+        "base_discovery_state": "CONTRACT_UNRESOLVED"
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 2439,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "chicken-fire",
+          "name": "Chicken Fire",
+          "identifier": "ChickenFire"
+        },
+        "generated_at": "2026-09-13T09:19:14+00:00",
+        "source_run": "2026-09-13_06-19-05-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 142,
+      "value": {
+        "id": "a3c4ac46-0cda-4e98-be08-b6c47110472d",
+        "jsonrpc": "2.0",
+        "method": "init",
+        "params": {
+          "token": "<redacted>"
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1617,
+      "value": {
+        "id": "a3c4ac46-0cda-4e98-be08-b6c47110472d",
+        "jsonrpc": "2.0",
+        "result": {
+          "freebets": null,
+          "currency": "FUN",
+          "currency_attributes": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "locale": "en",
+          "config": {
+            "rtp": "96",
+            "displayed_rtp": "95.90",
+            "bet_limits": [
+              100,
+              200,
+              300,
+              500,
+              1000,
+              2500,
+              5000,
+              10000
+            ],
+            "freebets_limits": [
+              100,
+              200,
+              300,
+              500,
+              1000,
+              2500,
+              5000,
+              10000
+            ],
+            "default_bet": 100,
+            "purchased_features": [
+              "buy_bonus",
+              "bonus_buy",
+              "freespin_buy",
+              "high_freespin_buy",
+              "buy_chance",
+              "bonus_chance",
+              "freespin_chance",
+              "buy_bonus_and_chance",
+              "freespin_and_bonus_chance"
+            ],
+            "autospin_variant": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "quick_spins_enabled": false
+          },
+          "state": null,
+          "urls": {
+            "deposit_url": null,
+            "return_url": null,
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzMzc1NjIsImd0X2lkIjozODI5NDIzfSwiZXhwIjoxODA0OTI5NTUzfQ.Ohgbrx38YhAbrZv68onqAILWK6AiqlSEajA6VWWO9fc"
+          },
+          "balance": 100000,
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 577,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "chicken-fire",
+          "name": "Chicken Fire",
+          "identifier": "ChickenFire"
+        },
+        "generated_at": "2026-09-13T09:19:14+00:00",
+        "source_run": "2026-09-13_06-19-05-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 767,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "chicken-fire",
+        "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false
+          },
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "PURCHASE_BUY_BONUS",
+            "signature": "PURCHASE_BUY_BONUS:UNEXECUTED",
+            "required": [
+              "PURCHASE_BUY_BONUS"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_BUY_BONUS"
+            ],
+            "complete": false
+          }
+        ],
+        "complete": false,
+        "missing_count": 2
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 2439,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "chicken-fire",
+          "name": "Chicken Fire",
+          "identifier": "ChickenFire"
+        },
+        "generated_at": "2026-09-13T09:19:14+00:00",
+        "source_run": "2026-09-13_06-19-05-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 1548,
+      "value": {
+        "provider": "bgaming",
+        "slug": "chicken-fire",
+        "game_name": "Chicken Fire",
+        "game_url": "https://demo.bgaming-network.com/play/ChickenFire/FUN",
+        "requested_spins": 1,
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "PARCIAL",
+        "symbol": "ChickenFire",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "CONTRACT_UNRESOLVED",
+            "wire_method": "play",
+            "request_options": {},
+            "source": "live-client-evidence-incomplete"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "BASE_CONTRACT_UNRESOLVED",
+            "wire_method": "play",
+            "request_options": {
+              "bet_type": "bet",
+              "purchased_feature": "buy_bonus"
+            },
+            "source": "game_bundle_source"
+          }
+        ],
+        "started_at": "2026-09-13T09:19:05+00:00",
+        "finished_at": "2026-09-13T09:19:14+00:00",
+        "elapsed_ms": 9625.0,
+        "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN']; PURCHASE_BUY_BONUS -> ['PURCHASE_BUY_BONUS'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Chicken Fire\\tests\\2026-09-13_06-19-05-bgaming-hyperhive-jsonrpc",
+        "attempts": []
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 523,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "chicken-fire",
+          "name": "Chicken Fire",
+          "identifier": "ChickenFire"
+        },
+        "generated_at": "2026-09-13T09:19:14+00:00",
+        "source_run": "2026-09-13_06-19-05-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {},
+        "transitions": []
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
