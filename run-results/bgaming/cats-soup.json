@@ -1,0 +1,3629 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T09:18:06+00:00",
+  "source_commit": "c98ad4264ce542a06a267e2e6a013bad3a6ce216",
+  "provider": "bgaming",
+  "game": {
+    "slug": "cats-soup",
+    "name": "Cat's Soup",
+    "symbol": "CatsSoup",
+    "url": "https://demo.bgaming-network.com/play/CatsSoup/FUN?server=demo"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "cats-soup",
+    "game_name": "Cat's Soup",
+    "game_url": "https://demo.bgaming-network.com/play/CatsSoup/FUN?server=demo",
+    "requested_spins": 2,
+    "successful_spins": 1,
+    "failed_spins": 1,
+    "status": "PARCIAL",
+    "symbol": "CatsSoup",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": true,
+        "wire_command": "spin"
+      },
+      {
+        "id": "PURCHASE_BONUS_BUY",
+        "kind": "PURCHASE",
+        "observed": true,
+        "client_observed": true,
+        "executable": true,
+        "discovery_state": "CLIENT_OBSERVED",
+        "wire_command": "spin",
+        "purchased_feature": "bonus_buy",
+        "purchased_feature_level": null,
+        "feature_multiplier": 1600,
+        "base_multiplier": 20,
+        "cost_multiplier": 80.0,
+        "source": "init.feature_multipliers+client"
+      },
+      {
+        "id": "PLAY_BONUS",
+        "kind": "CONTINUATION",
+        "observed": true,
+        "wire_command": "play_bonus"
+      }
+    ],
+    "started_at": "2026-09-13T09:17:44+00:00",
+    "finished_at": "2026-09-13T09:18:05+00:00",
+    "elapsed_ms": 20843.000000000757,
+    "error": "BGaming respondió 2/2 intentos; modos terminales validados=1/2. Compras probadas: bonus_buy x80. Cobertura requerida pendiente: CONTINUATION_PLAY_BONUS. Diagnóstico: continuación BGaming respondió HTTP 422; wire-shape no resuelto para play_bonus | estado final BGaming no terminal: state='play_bonus', actions=['init', 'play_bonus']",
+    "run_dir": "2026-09-13_06-17-44-bgaming-http-api-v2",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": true,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": 200,
+        "elapsed_ms": 296.9999999986612,
+        "symbol": "CatsSoup",
+        "endpoint": "https://demo.bgaming-network.com/api/CatsSoup/2272148/<session>",
+        "na": "closed",
+        "terminal": true,
+        "wire_steps": 1,
+        "warning": "",
+        "error": "",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Cat's Soup\\tests\\2026-09-13_06-17-44-bgaming-http-api-v2\\SPIN\\attempt-001"
+      },
+      {
+        "number": 1,
+        "ok": false,
+        "mode_id": "PURCHASE_BONUS_BUY",
+        "mode_kind": "PURCHASE",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": 200,
+        "elapsed_ms": 6578.000000001339,
+        "symbol": "CatsSoup",
+        "endpoint": "https://demo.bgaming-network.com/api/CatsSoup/2272148/<session>",
+        "na": "play_bonus",
+        "terminal": false,
+        "wire_steps": 1,
+        "warning": "continuación BGaming respondió HTTP 422; wire-shape no resuelto para play_bonus; estado final BGaming no terminal: state='play_bonus', actions=['init', 'play_bonus']",
+        "error": "",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Cat's Soup\\tests\\2026-09-13_06-17-44-bgaming-http-api-v2\\PURCHASE_BONUS_BUY\\attempt-001"
+      }
+    ]
+  },
+  "artifact_bytes_embedded": 77601,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 1987,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "cats-soup",
+          "name": "Cat's Soup",
+          "identifier": "CatsSoup"
+        },
+        "generated_at": "2026-09-13T09:18:05+00:00",
+        "source_run": "2026-09-13_06-17-44-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [
+          {
+            "id": "CASE_0001",
+            "source_state": "READY",
+            "request_contract": "SPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "accepted_outcome": "SPIN__TO__READY",
+            "expected_target_state": "READY",
+            "response_schema": "response-schemas/spin__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          },
+          {
+            "id": "CASE_0002",
+            "source_state": "READY",
+            "request_contract": "SPIN__PURCHASE_BONUS_BUY",
+            "request_selector_vectors_observed": [
+              {
+                "purchased_feature": "bonus_buy"
+              }
+            ],
+            "accepted_outcome": "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_PLAY_BONUS",
+            "expected_target_state": "FLOW:play_bonus",
+            "response_schema": "response-schemas/spin__purchase_bonus_buy__to__flow_play_bonus.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "PURCHASE_BONUS_BUY/attempt-001/step-001-request.json"
+            ]
+          }
+        ],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 1953,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "cats-soup",
+          "name": "Cat's Soup",
+          "identifier": "CatsSoup"
+        },
+        "generated_at": "2026-09-13T09:18:05+00:00",
+        "source_run": "2026-09-13_06-17-44-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {
+          "READY": {
+            "SPIN": {
+              "wire_action": "spin",
+              "selector_domains_observed": {},
+              "selector_vectors_observed": [
+                {}
+              ],
+              "outcomes": [
+                {
+                  "id": "SPIN__TO__READY",
+                  "target_state": [
+                    "READY"
+                  ],
+                  "response_schema": "response-schemas/spin__to__ready.json",
+                  "terminal_observed": true,
+                  "math_probability_known": false
+                }
+              ]
+            },
+            "SPIN__PURCHASE_BONUS_BUY": {
+              "wire_action": "spin",
+              "selector_domains_observed": {
+                "purchased_feature": [
+                  "bonus_buy"
+                ]
+              },
+              "selector_vectors_observed": [
+                {
+                  "purchased_feature": "bonus_buy"
+                }
+              ],
+              "outcomes": [
+                {
+                  "id": "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_PLAY_BONUS",
+                  "target_state": [
+                    "FLOW:play_bonus"
+                  ],
+                  "response_schema": "response-schemas/spin__purchase_bonus_buy__to__flow_play_bonus.json",
+                  "terminal_observed": false,
+                  "math_probability_known": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "bootstrap.json": {
+      "encoding": "json",
+      "bytes": 6452,
+      "value": {
+        "identifier": "CatsSoup",
+        "launch_url": "https://demo.bgaming-network.com/games/CatsSoup/FUN",
+        "api_url": "https://demo.bgaming-network.com/api/CatsSoup/2272148/<session>",
+        "options": {
+          "env": "production",
+          "csrfTokenHeaderName": "X-CSRF-Token",
+          "csrfTokenHeaderValue": "<redacted>",
+          "play_token": "<redacted>",
+          "game": "slots/cats_soup",
+          "identifier": "CatsSoup",
+          "title": "Cat's Soup",
+          "currency": "FUN",
+          "balance_polling_interval": 30000,
+          "cache_id": "47a71e0d29d1f92647a9c2dcfdec8062dddbe64407411477e7ff3e2961f069a2",
+          "cache_player_id": "236d4365a8a228bf23f758c29785e0b641e79c395d147b9c6c10f97fd66f68dc",
+          "api": "https://demo.bgaming-network.com/api/CatsSoup/2272148/<session>",
+          "rules_url": "https://rules.bgaming-network.com/en/CatsSoup.json",
+          "deposit_url": null,
+          "games_page_url": "https://www.bgaming.com/games.html",
+          "history_url": null,
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09a0e-f9a8-7833-8567-068bcfef3eea/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/CatsSoup/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY1ODcxMTJ9LCJleHAiOjE4MDQ5Mjk0Njh9.88UxeoVboqltdyYK5ce-5JJvHFvvzgM-rr9RJH5u79Q",
+          "websocket_url": "wss://demo.bgaming-network.com:443/cable",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=CatsSoup&play_token=01a09a0e-f9a8-7833-8567-068bcfef3eea&server_id=demo",
+          "ui": {
+            "home_button": true,
+            "full_screen_prompt": true,
+            "logo": "standard",
+            "skin": "basic",
+            "skins": [
+              "basic"
+            ],
+            "brand_logo": null,
+            "brand": {
+              "name": "",
+              "logo": null,
+              "logo_in_game": null
+            },
+            "autospins_dialog": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "gamble_enabled": true,
+            "show_rtp_in_rules": true
+          },
+          "resources_path": "https://cdn.bgaming-network.com/html/CatsSoup",
+          "custom": {},
+          "actual_currency_rate": 0.0,
+          "sound_enabled": true,
+          "games_loader_source": "https://cdn.bgaming-network.com/html/CatsSoup/loader.js?1789291068",
+          "game_bundle_source": "https://cdn.bgaming-network.com/html/CatsSoup/bundle.js",
+          "provable_fair": {
+            "verify_url": "https://demo.bgaming-network.com/api/games/verify"
+          },
+          "math": {
+            "rtp": {
+              "main": 98.06,
+              "bonus_buy": 98.06
+            },
+            "gamble_limit": 8000,
+            "max_multiplier": 8000.0
+          },
+          "rules": {
+            "min_bet": 20,
+            "max_bet": 3000,
+            "currency": {
+              "code": "FUN",
+              "symbol": "FUN",
+              "subunits": 100,
+              "exponent": 2
+            }
+          },
+          "version": "1.0.0",
+          "growthbook_flags": {
+            "tech_analytics": {
+              "value": true,
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "tech_lobby_widget_position": {
+              "value": {
+                "desktop": "bottom",
+                "portrait": "top",
+                "landscape": "top"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "tech_sentry_enabled": {
+              "value": true,
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "tech_sentry_dsn": {
+              "value": "https://825bff62c73b49919d014b83b408de0b@sentry.bgaming-system.com/12",
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "growth_drop_init_popup_ui": {
+              "value": {
+                "id": 602,
+                "value": "A"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            }
+          },
+          "lobby_v2_options": {
+            "player_id": 345336856,
+            "lobby_enabled": false,
+            "drops_enabled": false,
+            "drops_token": "<redacted>",
+            "drops_api_url": "https://drops.bgaming-network.com/api/v1/",
+            "profile_enabled": false,
+            "profile_api_url": "https://loyalty-core.shared.bgaming-system.com/api/v1",
+            "profile_token": "<redacted>",
+            "gamelist_enabled": false,
+            "gamelist_api_url": "https://gamelist.bgaming-network.com",
+            "gamelist_token": "<redacted>",
+            "challenges_enabled": false,
+            "challenges_api_url": "https://challenges.bgaming-network.com/",
+            "challenges_token": "<redacted>",
+            "challenges_fe_script_url": "https://brush.bgaming-network.com/",
+            "quests_enabled": false,
+            "quests_api_url": null,
+            "quests_token": "<redacted>",
+            "shop_enabled": false,
+            "shop_api_url": "",
+            "shop_token": "<redacted>",
+            "growth_fe_url": ""
+          },
+          "server_id": "demo",
+          "locale": "en",
+          "actions": {
+            "deposit": null,
+            "return": null,
+            "history": {
+              "text": null,
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzMzY4NTYsImd0X2lkIjoyMjcyMTQ4fSwiZXhwIjoxODA0OTI5NDY4fQ.4TzBmJDcRzGxDjdP6JK3l6B2kZ4ZI3VZswx1YmH89FA",
+              "mode": "open"
+            }
+          },
+          "show_paytable": false,
+          "license_rules": {
+            "rules_section": {
+              "show_license_requirements": false,
+              "license_requirement_show_purchase": false,
+              "license_requirement_show_autoplay": false,
+              "license_requirement_show_quick_spins": false,
+              "license_requirement_show_autospin_confirmation": false,
+              "license_requirement_reset_autospin": false,
+              "show_rtp": [
+                "main_rtp",
+                "chance_rtp",
+                "bonus_rtp"
+              ],
+              "show_gamble_round": true,
+              "show_min_max": false,
+              "show_max_win_frequency": false,
+              "show_max_multiplier": true,
+              "show_max_win_rules_text": null
+            },
+            "screen_section": {
+              "show_rtp_on_main_screen": false,
+              "show_max_win_frequency_on_main_screen": false,
+              "show_max_multiplier_on_main_screen": false
+            },
+            "lines_count": "60"
+          },
+          "open_page_method": "redirect",
+          "reset_bet_to_default": false,
+          "enable_chinese_logos": false,
+          "enable_quick_spins_by_default": null,
+          "purchased_feature_limit": null,
+          "pre_bet_balance_validation": false,
+          "available_games_to_switch": []
+        },
+        "round_series_id": 1789291065938
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 5283,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "cats-soup",
+          "name": "Cat's Soup",
+          "identifier": "CatsSoup"
+        },
+        "generated_at": "2026-09-13T09:18:05+00:00",
+        "source_run": "2026-09-13_06-17-44-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "SPIN",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bet"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          },
+          {
+            "id": "SPIN__PURCHASE_BONUS_BUY",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {
+              "purchased_feature": [
+                "bonus_buy"
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "purchased_feature": "bonus_buy"
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    },
+                    "purchased_feature": {
+                      "type": "string",
+                      "observed_enum": [
+                        "bonus_buy"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bet",
+                    "purchased_feature"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": "bonus_buy",
+            "purchased_feature_level": null,
+            "cost_multiplier": 80.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "init.feature_multipliers+client"
+          },
+          {
+            "id": "PLAY_BONUS",
+            "kind": "CONTINUATION",
+            "wire_command": "play_bonus",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {
+          "READY": {
+            "SPIN": [
+              "SPIN__TO__READY"
+            ],
+            "SPIN__PURCHASE_BONUS_BUY": [
+              "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_PLAY_BONUS"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 88,
+      "value": {
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789291065938
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 9205,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            20,
+            40,
+            60,
+            80,
+            100,
+            120,
+            160,
+            200,
+            240,
+            300,
+            400,
+            500,
+            700,
+            1000,
+            1500,
+            2000,
+            2500,
+            3000
+          ],
+          "default_bet": 200,
+          "paytable": {
+            "0": [
+              0,
+              0,
+              10
+            ],
+            "1": [
+              0,
+              0,
+              7
+            ],
+            "2": [
+              0,
+              0,
+              5
+            ],
+            "3": [
+              0,
+              0,
+              3
+            ],
+            "4": [
+              0,
+              0,
+              1
+            ],
+            "5": [
+              0,
+              0,
+              1
+            ],
+            "6": [
+              0,
+              0,
+              1
+            ]
+          },
+          "paytables": {
+            "0": {
+              "default": [
+                0,
+                0,
+                10
+              ]
+            },
+            "1": {
+              "default": [
+                0,
+                0,
+                7
+              ]
+            },
+            "2": {
+              "default": [
+                0,
+                0,
+                5
+              ]
+            },
+            "3": {
+              "default": [
+                0,
+                0,
+                3
+              ]
+            },
+            "4": {
+              "default": [
+                0,
+                0,
+                1
+              ]
+            },
+            "5": {
+              "default": [
+                0,
+                0,
+                1
+              ]
+            },
+            "6": {
+              "default": [
+                0,
+                0,
+                1
+              ]
+            }
+          },
+          "special_symbols": [
+            {
+              "kind": "wild",
+              "symbol": "0"
+            }
+          ],
+          "lines": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              2
+            ],
+            [
+              0,
+              1,
+              2
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "reels": {
+            "main": [
+              [
+                "6",
+                "1",
+                "4",
+                "0",
+                "6",
+                "2",
+                "5",
+                "1",
+                "6",
+                "3",
+                "4",
+                "5",
+                "0",
+                "6",
+                "4",
+                "3",
+                "6",
+                "4",
+                "2",
+                "5",
+                "0",
+                "4",
+                "1",
+                "5",
+                "6",
+                "1",
+                "4",
+                "0",
+                "5",
+                "3",
+                "6",
+                "2",
+                "5",
+                "0",
+                "6",
+                "3",
+                "4",
+                "5",
+                "2",
+                "6",
+                "0",
+                "5",
+                "3",
+                "4",
+                "2",
+                "5",
+                "3",
+                "4",
+                "1"
+              ],
+              [
+                "1",
+                "4",
+                "0",
+                "5",
+                "2",
+                "4",
+                "3",
+                "5",
+                "0",
+                "6",
+                "2",
+                "5",
+                "4",
+                "3",
+                "6",
+                "0",
+                "5",
+                "2",
+                "6",
+                "3",
+                "5",
+                "0",
+                "4",
+                "1",
+                "6",
+                "5",
+                "1",
+                "4",
+                "0",
+                "5",
+                "2",
+                "4",
+                "6",
+                "3",
+                "4",
+                "6",
+                "0",
+                "5",
+                "4",
+                "3",
+                "6",
+                "1",
+                "5",
+                "2",
+                "6",
+                "3",
+                "4",
+                "1",
+                "6"
+              ],
+              [
+                "6",
+                "1",
+                "4",
+                "0",
+                "6",
+                "2",
+                "5",
+                "1",
+                "6",
+                "3",
+                "4",
+                "5",
+                "0",
+                "6",
+                "4",
+                "3",
+                "6",
+                "4",
+                "2",
+                "5",
+                "0",
+                "4",
+                "1",
+                "5",
+                "6",
+                "1",
+                "4",
+                "0",
+                "5",
+                "3",
+                "6",
+                "2",
+                "5",
+                "0",
+                "6",
+                "3",
+                "4",
+                "5",
+                "2",
+                "6",
+                "0",
+                "5",
+                "3",
+                "4",
+                "2",
+                "5",
+                "3",
+                "4",
+                "1"
+              ]
+            ]
+          },
+          "layout": {
+            "reels": 3,
+            "rows": 3
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [
+            [
+              "5",
+              "0",
+              "6"
+            ],
+            [
+              "3",
+              "4",
+              "6"
+            ],
+            [
+              "4",
+              "5",
+              "2"
+            ]
+          ],
+          "feature_options": {
+            "feature_multipliers": {
+              "base_bet": 20,
+              "bonus_buy": 1600
+            },
+            "disabled_features": []
+          },
+          "base_bet": 20,
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "bet_to_multiplier_batch_state": {
+          "20": {
+            "set_bet": 20,
+            "multiplier": 2
+          },
+          "40": {
+            "set_bet": 40,
+            "multiplier": 2
+          },
+          "60": {
+            "set_bet": 60,
+            "multiplier": 2
+          },
+          "80": {
+            "set_bet": 80,
+            "multiplier": 2
+          },
+          "100": {
+            "set_bet": 100,
+            "multiplier": 2
+          },
+          "120": {
+            "set_bet": 120,
+            "multiplier": 2
+          },
+          "160": {
+            "set_bet": 160,
+            "multiplier": 2
+          },
+          "200": {
+            "set_bet": 200,
+            "multiplier": 2
+          },
+          "240": {
+            "set_bet": 240,
+            "multiplier": 2
+          },
+          "300": {
+            "set_bet": 300,
+            "multiplier": 2
+          },
+          "400": {
+            "set_bet": 400,
+            "multiplier": 2
+          },
+          "500": {
+            "set_bet": 500,
+            "multiplier": 2
+          },
+          "700": {
+            "set_bet": 700,
+            "multiplier": 2
+          },
+          "1000": {
+            "set_bet": 1000,
+            "multiplier": 2
+          },
+          "1500": {
+            "set_bet": 1500,
+            "multiplier": 2
+          },
+          "2000": {
+            "set_bet": 2000,
+            "multiplier": 2
+          },
+          "2500": {
+            "set_bet": 2500,
+            "multiplier": 2
+          },
+          "3000": {
+            "set_bet": 3000,
+            "multiplier": 2
+          }
+        },
+        "bet_to_recipe_batch_state": {
+          "20": {
+            "set_bet": 20,
+            "ingredients": [
+              "6",
+              "3",
+              "4"
+            ],
+            "next_recipe_in": 10
+          },
+          "40": {
+            "set_bet": 40,
+            "ingredients": [
+              "4",
+              "6",
+              "3"
+            ],
+            "next_recipe_in": 10
+          },
+          "60": {
+            "set_bet": 60,
+            "ingredients": [
+              "6",
+              "5",
+              "3"
+            ],
+            "next_recipe_in": 10
+          },
+          "80": {
+            "set_bet": 80,
+            "ingredients": [
+              "5",
+              "3",
+              "4"
+            ],
+            "next_recipe_in": 10
+          },
+          "100": {
+            "set_bet": 100,
+            "ingredients": [
+              "5",
+              "3",
+              "6"
+            ],
+            "next_recipe_in": 10
+          },
+          "120": {
+            "set_bet": 120,
+            "ingredients": [
+              "6",
+              "4",
+              "2"
+            ],
+            "next_recipe_in": 10
+          },
+          "160": {
+            "set_bet": 160,
+            "ingredients": [
+              "5",
+              "3",
+              "4"
+            ],
+            "next_recipe_in": 10
+          },
+          "200": {
+            "set_bet": 200,
+            "ingredients": [
+              "6",
+              "4",
+              "2"
+            ],
+            "next_recipe_in": 10
+          },
+          "240": {
+            "set_bet": 240,
+            "ingredients": [
+              "6",
+              "4",
+              "1"
+            ],
+            "next_recipe_in": 10
+          },
+          "300": {
+            "set_bet": 300,
+            "ingredients": [
+              "5",
+              "6",
+              "3"
+            ],
+            "next_recipe_in": 10
+          },
+          "400": {
+            "set_bet": 400,
+            "ingredients": [
+              "6",
+              "5",
+              "1"
+            ],
+            "next_recipe_in": 10
+          },
+          "500": {
+            "set_bet": 500,
+            "ingredients": [
+              "6",
+              "3",
+              "4"
+            ],
+            "next_recipe_in": 10
+          },
+          "700": {
+            "set_bet": 700,
+            "ingredients": [
+              "6",
+              "5",
+              "3"
+            ],
+            "next_recipe_in": 10
+          },
+          "1000": {
+            "set_bet": 1000,
+            "ingredients": [
+              "6",
+              "3",
+              "5"
+            ],
+            "next_recipe_in": 10
+          },
+          "1500": {
+            "set_bet": 1500,
+            "ingredients": [
+              "5",
+              "4",
+              "3"
+            ],
+            "next_recipe_in": 10
+          },
+          "2000": {
+            "set_bet": 2000,
+            "ingredients": [
+              "5",
+              "6",
+              "3"
+            ],
+            "next_recipe_in": 10
+          },
+          "2500": {
+            "set_bet": 2500,
+            "ingredients": [
+              "5",
+              "3",
+              "6"
+            ],
+            "next_recipe_in": 10
+          },
+          "3000": {
+            "set_bet": 3000,
+            "ingredients": [
+              "6",
+              "5",
+              "1"
+            ],
+            "next_recipe_in": 10
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "last-refresh-init-request.json": {
+      "encoding": "json",
+      "bytes": 88,
+      "value": {
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789291080190
+        }
+      }
+    },
+    "last-refresh-init-response.json": {
+      "encoding": "json",
+      "bytes": 9205,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            20,
+            40,
+            60,
+            80,
+            100,
+            120,
+            160,
+            200,
+            240,
+            300,
+            400,
+            500,
+            700,
+            1000,
+            1500,
+            2000,
+            2500,
+            3000
+          ],
+          "default_bet": 200,
+          "paytable": {
+            "0": [
+              0,
+              0,
+              10
+            ],
+            "1": [
+              0,
+              0,
+              7
+            ],
+            "2": [
+              0,
+              0,
+              5
+            ],
+            "3": [
+              0,
+              0,
+              3
+            ],
+            "4": [
+              0,
+              0,
+              1
+            ],
+            "5": [
+              0,
+              0,
+              1
+            ],
+            "6": [
+              0,
+              0,
+              1
+            ]
+          },
+          "paytables": {
+            "0": {
+              "default": [
+                0,
+                0,
+                10
+              ]
+            },
+            "1": {
+              "default": [
+                0,
+                0,
+                7
+              ]
+            },
+            "2": {
+              "default": [
+                0,
+                0,
+                5
+              ]
+            },
+            "3": {
+              "default": [
+                0,
+                0,
+                3
+              ]
+            },
+            "4": {
+              "default": [
+                0,
+                0,
+                1
+              ]
+            },
+            "5": {
+              "default": [
+                0,
+                0,
+                1
+              ]
+            },
+            "6": {
+              "default": [
+                0,
+                0,
+                1
+              ]
+            }
+          },
+          "special_symbols": [
+            {
+              "kind": "wild",
+              "symbol": "0"
+            }
+          ],
+          "lines": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              2
+            ],
+            [
+              0,
+              1,
+              2
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "reels": {
+            "main": [
+              [
+                "6",
+                "1",
+                "4",
+                "0",
+                "6",
+                "2",
+                "5",
+                "1",
+                "6",
+                "3",
+                "4",
+                "5",
+                "0",
+                "6",
+                "4",
+                "3",
+                "6",
+                "4",
+                "2",
+                "5",
+                "0",
+                "4",
+                "1",
+                "5",
+                "6",
+                "1",
+                "4",
+                "0",
+                "5",
+                "3",
+                "6",
+                "2",
+                "5",
+                "0",
+                "6",
+                "3",
+                "4",
+                "5",
+                "2",
+                "6",
+                "0",
+                "5",
+                "3",
+                "4",
+                "2",
+                "5",
+                "3",
+                "4",
+                "1"
+              ],
+              [
+                "1",
+                "4",
+                "0",
+                "5",
+                "2",
+                "4",
+                "3",
+                "5",
+                "0",
+                "6",
+                "2",
+                "5",
+                "4",
+                "3",
+                "6",
+                "0",
+                "5",
+                "2",
+                "6",
+                "3",
+                "5",
+                "0",
+                "4",
+                "1",
+                "6",
+                "5",
+                "1",
+                "4",
+                "0",
+                "5",
+                "2",
+                "4",
+                "6",
+                "3",
+                "4",
+                "6",
+                "0",
+                "5",
+                "4",
+                "3",
+                "6",
+                "1",
+                "5",
+                "2",
+                "6",
+                "3",
+                "4",
+                "1",
+                "6"
+              ],
+              [
+                "6",
+                "1",
+                "4",
+                "0",
+                "6",
+                "2",
+                "5",
+                "1",
+                "6",
+                "3",
+                "4",
+                "5",
+                "0",
+                "6",
+                "4",
+                "3",
+                "6",
+                "4",
+                "2",
+                "5",
+                "0",
+                "4",
+                "1",
+                "5",
+                "6",
+                "1",
+                "4",
+                "0",
+                "5",
+                "3",
+                "6",
+                "2",
+                "5",
+                "0",
+                "6",
+                "3",
+                "4",
+                "5",
+                "2",
+                "6",
+                "0",
+                "5",
+                "3",
+                "4",
+                "2",
+                "5",
+                "3",
+                "4",
+                "1"
+              ]
+            ]
+          },
+          "layout": {
+            "reels": 3,
+            "rows": 3
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [
+            [
+              "5",
+              "2",
+              "6"
+            ],
+            [
+              "6",
+              "0",
+              "5"
+            ],
+            [
+              "1",
+              "6",
+              "3"
+            ]
+          ],
+          "feature_options": {
+            "feature_multipliers": {
+              "base_bet": 20,
+              "bonus_buy": 1600
+            },
+            "disabled_features": []
+          },
+          "base_bet": 20,
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "bet_to_multiplier_batch_state": {
+          "20": {
+            "set_bet": 20,
+            "multiplier": 2
+          },
+          "40": {
+            "set_bet": 40,
+            "multiplier": 2
+          },
+          "60": {
+            "set_bet": 60,
+            "multiplier": 2
+          },
+          "80": {
+            "set_bet": 80,
+            "multiplier": 2
+          },
+          "100": {
+            "set_bet": 100,
+            "multiplier": 2
+          },
+          "120": {
+            "set_bet": 120,
+            "multiplier": 2
+          },
+          "160": {
+            "set_bet": 160,
+            "multiplier": 2
+          },
+          "200": {
+            "set_bet": 200,
+            "multiplier": 2
+          },
+          "240": {
+            "set_bet": 240,
+            "multiplier": 2
+          },
+          "300": {
+            "set_bet": 300,
+            "multiplier": 2
+          },
+          "400": {
+            "set_bet": 400,
+            "multiplier": 2
+          },
+          "500": {
+            "set_bet": 500,
+            "multiplier": 2
+          },
+          "700": {
+            "set_bet": 700,
+            "multiplier": 2
+          },
+          "1000": {
+            "set_bet": 1000,
+            "multiplier": 2
+          },
+          "1500": {
+            "set_bet": 1500,
+            "multiplier": 2
+          },
+          "2000": {
+            "set_bet": 2000,
+            "multiplier": 2
+          },
+          "2500": {
+            "set_bet": 2500,
+            "multiplier": 2
+          },
+          "3000": {
+            "set_bet": 3000,
+            "multiplier": 2
+          }
+        },
+        "bet_to_recipe_batch_state": {
+          "20": {
+            "set_bet": 20,
+            "ingredients": [
+              "6",
+              "3",
+              "4"
+            ],
+            "next_recipe_in": 10
+          },
+          "40": {
+            "set_bet": 40,
+            "ingredients": [
+              "6",
+              "1",
+              "4"
+            ],
+            "next_recipe_in": 10
+          },
+          "60": {
+            "set_bet": 60,
+            "ingredients": [
+              "6",
+              "3",
+              "5"
+            ],
+            "next_recipe_in": 10
+          },
+          "80": {
+            "set_bet": 80,
+            "ingredients": [
+              "6",
+              "5",
+              "2"
+            ],
+            "next_recipe_in": 10
+          },
+          "100": {
+            "set_bet": 100,
+            "ingredients": [
+              "5",
+              "6",
+              "1"
+            ],
+            "next_recipe_in": 10
+          },
+          "120": {
+            "set_bet": 120,
+            "ingredients": [
+              "5",
+              "6",
+              "3"
+            ],
+            "next_recipe_in": 10
+          },
+          "160": {
+            "set_bet": 160,
+            "ingredients": [
+              "6",
+              "4",
+              "3"
+            ],
+            "next_recipe_in": 10
+          },
+          "200": {
+            "set_bet": 200,
+            "ingredients": [
+              "6",
+              "1",
+              "4"
+            ],
+            "next_recipe_in": 10
+          },
+          "240": {
+            "set_bet": 240,
+            "ingredients": [
+              "5",
+              "3",
+              "4"
+            ],
+            "next_recipe_in": 10
+          },
+          "300": {
+            "set_bet": 300,
+            "ingredients": [
+              "5",
+              "3",
+              "6"
+            ],
+            "next_recipe_in": 10
+          },
+          "400": {
+            "set_bet": 400,
+            "ingredients": [
+              "4",
+              "6",
+              "3"
+            ],
+            "next_recipe_in": 10
+          },
+          "500": {
+            "set_bet": 500,
+            "ingredients": [
+              "4",
+              "5",
+              "3"
+            ],
+            "next_recipe_in": 10
+          },
+          "700": {
+            "set_bet": 700,
+            "ingredients": [
+              "5",
+              "4",
+              "3"
+            ],
+            "next_recipe_in": 10
+          },
+          "1000": {
+            "set_bet": 1000,
+            "ingredients": [
+              "6",
+              "1",
+              "4"
+            ],
+            "next_recipe_in": 10
+          },
+          "1500": {
+            "set_bet": 1500,
+            "ingredients": [
+              "6",
+              "4",
+              "1"
+            ],
+            "next_recipe_in": 10
+          },
+          "2000": {
+            "set_bet": 2000,
+            "ingredients": [
+              "6",
+              "1",
+              "5"
+            ],
+            "next_recipe_in": 10
+          },
+          "2500": {
+            "set_bet": 2500,
+            "ingredients": [
+              "4",
+              "6",
+              "3"
+            ],
+            "next_recipe_in": 10
+          },
+          "3000": {
+            "set_bet": 3000,
+            "ingredients": [
+              "6",
+              "1",
+              "4"
+            ],
+            "next_recipe_in": 10
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 2173,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "cats-soup",
+          "name": "Cat's Soup",
+          "identifier": "CatsSoup"
+        },
+        "generated_at": "2026-09-13T09:18:05+00:00",
+        "source_run": "2026-09-13_06-17-44-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": [
+          {
+            "id": "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_PLAY_BONUS",
+            "kind": "PURCHASE_RESULT",
+            "request_contract": "SPIN__PURCHASE_BONUS_BUY",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "FLOW:play_bonus"
+            ],
+            "provider_states": [
+              "play_bonus"
+            ],
+            "available_actions": [
+              "init",
+              "play_bonus"
+            ],
+            "terminal_observed": false,
+            "observed_count": 1,
+            "response_schema": "response-schemas/spin__purchase_bonus_buy__to__flow_play_bonus.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "PURCHASE_BONUS_BUY/attempt-001/step-001-request.json"
+            ]
+          },
+          {
+            "id": "SPIN__TO__READY",
+            "kind": "BASE_OR_FEATURE_ENTRY",
+            "request_contract": "SPIN",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "READY"
+            ],
+            "provider_states": [
+              "closed"
+            ],
+            "available_actions": [
+              "init",
+              "spin"
+            ],
+            "terminal_observed": true,
+            "observed_count": 1,
+            "response_schema": "response-schemas/spin__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 166,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "cats-soup",
+        "branch_points": [],
+        "complete": true,
+        "missing_count": 0
+      }
+    },
+    "profile.json": {
+      "encoding": "json",
+      "bytes": 11123,
+      "value": {
+        "schema": "tester-spin/bgaming-profile/v1",
+        "capability_version": 2,
+        "family": "api-v2",
+        "confidence": 1.0,
+        "evidence": [
+          "init.options",
+          "init.api_version=2"
+        ],
+        "spin_options": {},
+        "command_options": {},
+        "request_extra_data": {},
+        "spin_option_choices": {},
+        "effective_bet_selector": "",
+        "effective_bet_multipliers": {},
+        "dynamic_purchased_feature": true,
+        "purchase_feature_level_supported": true,
+        "purchase_features": [
+          "bonus_buy"
+        ],
+        "rows_required": false,
+        "line_count": 0,
+        "variable_layout": false,
+        "allowed_continuations": [
+          "close",
+          "freespin",
+          "play_bonus",
+          "play_preselection_game",
+          "preselection_game",
+          "respin"
+        ],
+        "source": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/bundle.js",
+        "bundle_sha256": "737d67b63278d82e57d6bf8c6a9196f0a4a5a8b5c110cd3b30058ff6ec875cfd",
+        "discovery_diagnostics": [
+          {
+            "kind": "loader",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/loader.js",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "kind": "script-skip",
+            "url": "https://www.googletagmanager.com/gtag/js",
+            "reason": "third-party-origin"
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/bundle.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 1699496,
+            "contract_score": 82,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/bundle.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/bundle.js",
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/wrapper.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 160620,
+            "contract_score": 24,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/analytics/amplitude.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 5312,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://replays.bgaming-network.com/replays.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 6770,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/loader.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 1558,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/bg.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/bg.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/de.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/de.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/el.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/el.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/en.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/en.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/es.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/es.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/fi.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/fi.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/fr.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/fr.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/id.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/id.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/it.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/it.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/ja.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/ja.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/kde.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/kde.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/ko.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/ko.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/nl.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/nl.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/nn.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/nn.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/pl.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/pl.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/pt.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/pt.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/ro.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/ro.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/ru.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/ru.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/ses.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/ses.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/sv.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/sv.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/th.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/th.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/tr.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/tr.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/vi.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/vi.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/zh.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/zh.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/config/webpack.debug.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/config/webpack.debug.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/config/webpack.prod.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/CatsSoup/v0.0.41_v14.19.2/config/webpack.prod.js",
+            "depth": 1
+          }
+        ],
+        "validated": false
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 5283,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "cats-soup",
+          "name": "Cat's Soup",
+          "identifier": "CatsSoup"
+        },
+        "generated_at": "2026-09-13T09:18:05+00:00",
+        "source_run": "2026-09-13_06-17-44-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "SPIN",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bet"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          },
+          {
+            "id": "SPIN__PURCHASE_BONUS_BUY",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {
+              "purchased_feature": [
+                "bonus_buy"
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "purchased_feature": "bonus_buy"
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    },
+                    "purchased_feature": {
+                      "type": "string",
+                      "observed_enum": [
+                        "bonus_buy"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bet",
+                    "purchased_feature"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": "bonus_buy",
+            "purchased_feature_level": null,
+            "cost_multiplier": 80.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "init.feature_multipliers+client"
+          },
+          {
+            "id": "PLAY_BONUS",
+            "kind": "CONTINUATION",
+            "wire_command": "play_bonus",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {
+          "READY": {
+            "SPIN": [
+              "SPIN__TO__READY"
+            ],
+            "SPIN__PURCHASE_BONUS_BUY": [
+              "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_PLAY_BONUS"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "PURCHASE_BONUS_BUY/attempt-001/http-play_bonus-422.json": {
+      "encoding": "json",
+      "bytes": 193,
+      "value": {
+        "status": 422,
+        "content_type": "application/json; charset=utf-8",
+        "json": {
+          "errors": [
+            {
+              "code": 203,
+              "desc": "invalid_options"
+            }
+          ]
+        }
+      }
+    },
+    "PURCHASE_BONUS_BUY/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 517,
+      "value": {
+        "round_id": 17296407136,
+        "last_action_id": "17296407136_1",
+        "flow_state": "play_bonus",
+        "flow_command": "spin",
+        "purchased_feature": "bonus_buy",
+        "bet": 200,
+        "win": 0,
+        "balance_total": 84000,
+        "screen_sha256": "895f003f0297",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "af0d409f31258f75",
+        "mode_id": "PURCHASE_BONUS_BUY",
+        "step": 1,
+        "expected_debit": 16000.0,
+        "expected_outcome_bet": 200.0
+      }
+    },
+    "PURCHASE_BONUS_BUY/attempt-001/request.json": {
+      "encoding": "json",
+      "bytes": 165,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 200,
+          "purchased_feature": "bonus_buy"
+        },
+        "extra_data": {
+          "round_series_id": 1789291080190
+        }
+      }
+    },
+    "PURCHASE_BONUS_BUY/attempt-001/response.json": {
+      "encoding": "json",
+      "bytes": 1069,
+      "value": {
+        "api_version": "2",
+        "features": {
+          "multiplier_batch_state": {
+            "bet": 200,
+            "multiplier": 2
+          },
+          "recipe_batch_state": {
+            "ingredients": [
+              "6",
+              "1",
+              "4"
+            ],
+            "next_recipe_in": 10
+          },
+          "bonus_data": {
+            "wins": [],
+            "prizes_data": {
+              "all": [],
+              "new": {},
+              "rest": []
+            }
+          }
+        },
+        "outcome": {
+          "screen": [
+            [
+              "5",
+              "6",
+              "1"
+            ],
+            [
+              "6",
+              "1",
+              "5"
+            ],
+            [
+              "6",
+              "4",
+              "2"
+            ]
+          ],
+          "special_symbols": {},
+          "bet": 200,
+          "win": 0,
+          "wins": [],
+          "storage": null
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 84000
+        },
+        "flow": {
+          "round_id": 17296407136,
+          "last_action_id": "17296407136_1",
+          "state": "play_bonus",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "play_bonus"
+          ],
+          "purchased_feature": {
+            "name": "bonus_buy"
+          }
+        }
+      }
+    },
+    "PURCHASE_BONUS_BUY/attempt-001/step-001-proof.json": {
+      "encoding": "json",
+      "bytes": 517,
+      "value": {
+        "round_id": 17296407136,
+        "last_action_id": "17296407136_1",
+        "flow_state": "play_bonus",
+        "flow_command": "spin",
+        "purchased_feature": "bonus_buy",
+        "bet": 200,
+        "win": 0,
+        "balance_total": 84000,
+        "screen_sha256": "895f003f0297",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "af0d409f31258f75",
+        "mode_id": "PURCHASE_BONUS_BUY",
+        "step": 1,
+        "expected_debit": 16000.0,
+        "expected_outcome_bet": 200.0
+      }
+    },
+    "PURCHASE_BONUS_BUY/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 165,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 200,
+          "purchased_feature": "bonus_buy"
+        },
+        "extra_data": {
+          "round_series_id": 1789291080190
+        }
+      }
+    },
+    "PURCHASE_BONUS_BUY/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 1069,
+      "value": {
+        "api_version": "2",
+        "features": {
+          "multiplier_batch_state": {
+            "bet": 200,
+            "multiplier": 2
+          },
+          "recipe_batch_state": {
+            "ingredients": [
+              "6",
+              "1",
+              "4"
+            ],
+            "next_recipe_in": 10
+          },
+          "bonus_data": {
+            "wins": [],
+            "prizes_data": {
+              "all": [],
+              "new": {},
+              "rest": []
+            }
+          }
+        },
+        "outcome": {
+          "screen": [
+            [
+              "5",
+              "6",
+              "1"
+            ],
+            [
+              "6",
+              "1",
+              "5"
+            ],
+            [
+              "6",
+              "4",
+              "2"
+            ]
+          ],
+          "special_symbols": {},
+          "bet": 200,
+          "win": 0,
+          "wins": [],
+          "storage": null
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 84000
+        },
+        "flow": {
+          "round_id": 17296407136,
+          "last_action_id": "17296407136_1",
+          "state": "play_bonus",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "play_bonus"
+          ],
+          "purchased_feature": {
+            "name": "bonus_buy"
+          }
+        }
+      }
+    },
+    "response-schemas/spin__purchase_bonus_buy__to__flow_play_bonus.json": {
+      "encoding": "json",
+      "bytes": 6114,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_PLAY_BONUS",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "type": "string",
+              "observed_enum": [
+                "2"
+              ]
+            },
+            "balance": {
+              "type": "object",
+              "properties": {
+                "game": {
+                  "type": "integer"
+                },
+                "wallet": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "game",
+                "wallet"
+              ],
+              "additionalProperties": true
+            },
+            "features": {
+              "type": "object",
+              "properties": {
+                "bonus_data": {
+                  "type": "object",
+                  "properties": {
+                    "prizes_data": {
+                      "type": "object",
+                      "properties": {
+                        "all": {
+                          "type": "array",
+                          "items": {}
+                        },
+                        "new": {
+                          "type": "object",
+                          "properties": {},
+                          "required": [],
+                          "additionalProperties": true
+                        },
+                        "rest": {
+                          "type": "array",
+                          "items": {}
+                        }
+                      },
+                      "required": [
+                        "all",
+                        "new",
+                        "rest"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "wins": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  },
+                  "required": [
+                    "prizes_data",
+                    "wins"
+                  ],
+                  "additionalProperties": true
+                },
+                "multiplier_batch_state": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    },
+                    "multiplier": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bet",
+                    "multiplier"
+                  ],
+                  "additionalProperties": true
+                },
+                "recipe_batch_state": {
+                  "type": "object",
+                  "properties": {
+                    "ingredients": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "observed_enum": [
+                          "1",
+                          "4",
+                          "6"
+                        ]
+                      }
+                    },
+                    "next_recipe_in": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "ingredients",
+                    "next_recipe_in"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "bonus_data",
+                "multiplier_batch_state",
+                "recipe_batch_state"
+              ],
+              "additionalProperties": true
+            },
+            "flow": {
+              "type": "object",
+              "properties": {
+                "available_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "observed_enum": [
+                      "init",
+                      "play_bonus"
+                    ]
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "last_action_id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "17296407136_1"
+                  ]
+                },
+                "purchased_feature": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "observed_enum": [
+                        "bonus_buy"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "additionalProperties": true
+                },
+                "round_id": {
+                  "type": "integer"
+                },
+                "state": {
+                  "type": "string",
+                  "observed_enum": [
+                    "play_bonus"
+                  ]
+                }
+              },
+              "required": [
+                "available_actions",
+                "command",
+                "last_action_id",
+                "purchased_feature",
+                "round_id",
+                "state"
+              ],
+              "additionalProperties": true
+            },
+            "outcome": {
+              "type": "object",
+              "properties": {
+                "bet": {
+                  "type": "integer"
+                },
+                "screen": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "observed_enum": [
+                        "1",
+                        "2",
+                        "4",
+                        "5",
+                        "6"
+                      ]
+                    }
+                  }
+                },
+                "special_symbols": {
+                  "type": "object",
+                  "properties": {},
+                  "required": [],
+                  "additionalProperties": true
+                },
+                "storage": {
+                  "type": "null"
+                },
+                "win": {
+                  "type": "integer"
+                },
+                "wins": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "bet",
+                "screen",
+                "special_symbols",
+                "storage",
+                "win",
+                "wins"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "api_version",
+            "balance",
+            "features",
+            "flow",
+            "outcome"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.balance.wallet",
+          "$.flow.last_action_id",
+          "$.flow.round_id",
+          "$.outcome.win"
+        ]
+      }
+    },
+    "response-schemas/spin__to__ready.json": {
+      "encoding": "json",
+      "bytes": 6281,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "SPIN__TO__READY",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "type": "string",
+              "observed_enum": [
+                "2"
+              ]
+            },
+            "balance": {
+              "type": "object",
+              "properties": {
+                "game": {
+                  "type": "integer"
+                },
+                "wallet": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "game",
+                "wallet"
+              ],
+              "additionalProperties": true
+            },
+            "features": {
+              "type": "object",
+              "properties": {
+                "multiplier_batch_state": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    },
+                    "multiplier": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bet",
+                    "multiplier"
+                  ],
+                  "additionalProperties": true
+                },
+                "previous_multiplier_batch_state": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    },
+                    "multiplier": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bet",
+                    "multiplier"
+                  ],
+                  "additionalProperties": true
+                },
+                "recipe_batch_state": {
+                  "type": "object",
+                  "properties": {
+                    "ingredients": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "observed_enum": [
+                          "2",
+                          "4",
+                          "6"
+                        ]
+                      }
+                    },
+                    "next_recipe_in": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "ingredients",
+                    "next_recipe_in"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "multiplier_batch_state",
+                "previous_multiplier_batch_state",
+                "recipe_batch_state"
+              ],
+              "additionalProperties": true
+            },
+            "flow": {
+              "type": "object",
+              "properties": {
+                "available_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "observed_enum": [
+                      "init",
+                      "spin"
+                    ]
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "last_action_id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "17296406905_1"
+                  ]
+                },
+                "purchased_feature": {
+                  "type": "object",
+                  "properties": {},
+                  "required": [],
+                  "additionalProperties": true
+                },
+                "round_id": {
+                  "type": "integer"
+                },
+                "state": {
+                  "type": "string",
+                  "observed_enum": [
+                    "closed"
+                  ]
+                }
+              },
+              "required": [
+                "available_actions",
+                "command",
+                "last_action_id",
+                "purchased_feature",
+                "round_id",
+                "state"
+              ],
+              "additionalProperties": true
+            },
+            "outcome": {
+              "type": "object",
+              "properties": {
+                "bet": {
+                  "type": "integer"
+                },
+                "screen": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "observed_enum": [
+                        "0",
+                        "1",
+                        "2",
+                        "4",
+                        "5",
+                        "6"
+                      ]
+                    }
+                  }
+                },
+                "special_symbols": {
+                  "type": "object",
+                  "properties": {
+                    "wild": {
+                      "type": "object",
+                      "properties": {
+                        "0": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "0"
+                      ],
+                      "additionalProperties": true
+                    }
+                  },
+                  "required": [
+                    "wild"
+                  ],
+                  "additionalProperties": true
+                },
+                "storage": {
+                  "type": "null"
+                },
+                "win": {
+                  "type": "integer"
+                },
+                "wins": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "array",
+                        "integer",
+                        "string"
+                      ],
+                      "items": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "bet",
+                "screen",
+                "special_symbols",
+                "storage",
+                "win",
+                "wins"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "api_version",
+            "balance",
+            "features",
+            "flow",
+            "outcome"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.balance.wallet",
+          "$.flow.last_action_id",
+          "$.flow.round_id",
+          "$.outcome.win",
+          "$.outcome.wins[0][0]",
+          "$.outcome.wins[0][1]",
+          "$.outcome.wins[0][2][0]",
+          "$.outcome.wins[0][2][1]",
+          "$.outcome.wins[0][2][2]",
+          "$.outcome.wins[0][3]"
+        ]
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 3105,
+      "value": {
+        "provider": "bgaming",
+        "slug": "cats-soup",
+        "game_name": "Cat's Soup",
+        "game_url": "https://demo.bgaming-network.com/play/CatsSoup/FUN?server=demo",
+        "requested_spins": 2,
+        "successful_spins": 1,
+        "failed_spins": 1,
+        "status": "PARCIAL",
+        "symbol": "CatsSoup",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": true,
+            "wire_command": "spin"
+          },
+          {
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": true,
+            "executable": true,
+            "discovery_state": "CLIENT_OBSERVED",
+            "wire_command": "spin",
+            "purchased_feature": "bonus_buy",
+            "purchased_feature_level": null,
+            "feature_multiplier": 1600,
+            "base_multiplier": 20,
+            "cost_multiplier": 80.0,
+            "source": "init.feature_multipliers+client"
+          },
+          {
+            "id": "PLAY_BONUS",
+            "kind": "CONTINUATION",
+            "observed": true,
+            "wire_command": "play_bonus"
+          }
+        ],
+        "started_at": "2026-09-13T09:17:44+00:00",
+        "finished_at": "2026-09-13T09:18:05+00:00",
+        "elapsed_ms": 20843.000000000757,
+        "error": "BGaming respondió 2/2 intentos; modos terminales validados=1/2. Compras probadas: bonus_buy x80. Cobertura requerida pendiente: CONTINUATION_PLAY_BONUS. Diagnóstico: continuación BGaming respondió HTTP 422; wire-shape no resuelto para play_bonus | estado final BGaming no terminal: state='play_bonus', actions=['init', 'play_bonus']",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Cat's Soup\\tests\\2026-09-13_06-17-44-bgaming-http-api-v2",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": true,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 296.9999999986612,
+            "symbol": "CatsSoup",
+            "endpoint": "https://demo.bgaming-network.com/api/CatsSoup/2272148/<session>",
+            "na": "closed",
+            "terminal": true,
+            "wire_steps": 1,
+            "warning": "",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Cat's Soup\\tests\\2026-09-13_06-17-44-bgaming-http-api-v2\\SPIN\\attempt-001"
+          },
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "PURCHASE_BONUS_BUY",
+            "mode_kind": "PURCHASE",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 6578.000000001339,
+            "symbol": "CatsSoup",
+            "endpoint": "https://demo.bgaming-network.com/api/CatsSoup/2272148/<session>",
+            "na": "play_bonus",
+            "terminal": false,
+            "wire_steps": 1,
+            "warning": "continuación BGaming respondió HTTP 422; wire-shape no resuelto para play_bonus; estado final BGaming no terminal: state='play_bonus', actions=['init', 'play_bonus']",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Cat's Soup\\tests\\2026-09-13_06-17-44-bgaming-http-api-v2\\PURCHASE_BONUS_BUY\\attempt-001"
+          }
+        ]
+      }
+    },
+    "SPIN/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 489,
+      "value": {
+        "round_id": 17296406905,
+        "last_action_id": "17296406905_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 200,
+        "win": 20,
+        "balance_total": 99820,
+        "screen_sha256": "54a89f8e8b38",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "c61eb959760e1229",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 200.0,
+        "expected_outcome_bet": 200.0
+      }
+    },
+    "SPIN/attempt-001/request.json": {
+      "encoding": "json",
+      "bytes": 126,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 200
+        },
+        "extra_data": {
+          "round_series_id": 1789291065938
+        }
+      }
+    },
+    "SPIN/attempt-001/response.json": {
+      "encoding": "json",
+      "bytes": 1223,
+      "value": {
+        "api_version": "2",
+        "features": {
+          "multiplier_batch_state": {
+            "bet": 200,
+            "multiplier": 2
+          },
+          "recipe_batch_state": {
+            "ingredients": [
+              "6",
+              "4",
+              "2"
+            ],
+            "next_recipe_in": 9
+          },
+          "previous_multiplier_batch_state": {
+            "bet": 200,
+            "multiplier": 2
+          }
+        },
+        "outcome": {
+          "screen": [
+            [
+              "5",
+              "1",
+              "6"
+            ],
+            [
+              "5",
+              "2",
+              "6"
+            ],
+            [
+              "0",
+              "6",
+              "4"
+            ]
+          ],
+          "special_symbols": {
+            "wild": {
+              "0": [
+                [
+                  2,
+                  0
+                ]
+              ]
+            }
+          },
+          "bet": 200,
+          "win": 20,
+          "wins": [
+            [
+              "line",
+              20,
+              [
+                0,
+                0,
+                0
+              ],
+              0
+            ]
+          ],
+          "storage": null
+        },
+        "balance": {
+          "game": 20,
+          "wallet": 99800
+        },
+        "flow": {
+          "round_id": 17296406905,
+          "last_action_id": "17296406905_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {}
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-proof.json": {
+      "encoding": "json",
+      "bytes": 489,
+      "value": {
+        "round_id": 17296406905,
+        "last_action_id": "17296406905_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 200,
+        "win": 20,
+        "balance_total": 99820,
+        "screen_sha256": "54a89f8e8b38",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "c61eb959760e1229",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 200.0,
+        "expected_outcome_bet": 200.0
+      }
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 126,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 200
+        },
+        "extra_data": {
+          "round_series_id": 1789291065938
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 1223,
+      "value": {
+        "api_version": "2",
+        "features": {
+          "multiplier_batch_state": {
+            "bet": 200,
+            "multiplier": 2
+          },
+          "recipe_batch_state": {
+            "ingredients": [
+              "6",
+              "4",
+              "2"
+            ],
+            "next_recipe_in": 9
+          },
+          "previous_multiplier_batch_state": {
+            "bet": 200,
+            "multiplier": 2
+          }
+        },
+        "outcome": {
+          "screen": [
+            [
+              "5",
+              "1",
+              "6"
+            ],
+            [
+              "5",
+              "2",
+              "6"
+            ],
+            [
+              "0",
+              "6",
+              "4"
+            ]
+          ],
+          "special_symbols": {
+            "wild": {
+              "0": [
+                [
+                  2,
+                  0
+                ]
+              ]
+            }
+          },
+          "bet": 200,
+          "win": 20,
+          "wins": [
+            [
+              "line",
+              20,
+              [
+                0,
+                0,
+                0
+              ],
+              0
+            ]
+          ],
+          "storage": null
+        },
+        "balance": {
+          "game": 20,
+          "wallet": 99800
+        },
+        "flow": {
+          "round_id": 17296406905,
+          "last_action_id": "17296406905_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {}
+        }
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 1724,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "cats-soup",
+          "name": "Cat's Soup",
+          "identifier": "CatsSoup"
+        },
+        "generated_at": "2026-09-13T09:18:05+00:00",
+        "source_run": "2026-09-13_06-17-44-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {
+          "FLOW:play_bonus": {
+            "provider_states": [
+              "play_bonus"
+            ],
+            "allowed_wire_actions_observed": [],
+            "terminal_observed": false
+          },
+          "READY": {
+            "provider_states": [
+              "closed"
+            ],
+            "allowed_wire_actions_observed": [
+              "spin"
+            ],
+            "terminal_observed": true
+          }
+        },
+        "transitions": [
+          {
+            "source": "READY",
+            "request_contract": "SPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "outcome": "SPIN__TO__READY",
+            "target": "READY",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          },
+          {
+            "source": "READY",
+            "request_contract": "SPIN__PURCHASE_BONUS_BUY",
+            "request_selector_vectors_observed": [
+              {
+                "purchased_feature": "bonus_buy"
+              }
+            ],
+            "outcome": "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_PLAY_BONUS",
+            "target": "FLOW:play_bonus",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "PURCHASE_BONUS_BUY/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
