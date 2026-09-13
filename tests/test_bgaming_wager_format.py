@@ -95,6 +95,23 @@ def test_generic_syntax_scanner_follows_forwarded_options_callsites() -> None:
     ]
 
 
+def test_response_and_config_command_objects_are_not_request_sinks() -> None:
+    source = (
+        'const initResponse={command:"init",options:{balance:x}};'
+        'const spinResponse={command:"spin",options:{'
+        'name:n,paytable:p,special_symbols:s,special_paytable:q,screen:r,skin:k}};'
+        'const nested={meta:{command:"select_bonus",options:{name:t}}};'
+        'api.request({command:"select_bonus",options:{name:t}});'
+    )
+    syntax = scan_request_syntax(source)
+    assert "init" not in syntax
+    assert "spin" not in syntax
+    assert syntax["select_bonus"]["option_fields"] == ["name"]
+    assert syntax["select_bonus"]["unresolved_variants"] == [
+        {"literal_options": {}, "unresolved_fields": ["name"]}
+    ]
+
+
 def test_command_inventory_links_known_wager_fields_without_ui() -> None:
     commands = discover_command_formats(_bundle(), _adventures_init())
     spin = next(row for row in commands if row["command"] == "spin")
@@ -118,10 +135,16 @@ def test_command_inventory_links_known_wager_fields_without_ui() -> None:
 
 
 def test_artifact_is_static_analysis_and_reports_remaining_unknowns() -> None:
-    payload = build_wager_format(_adventures_init(), _bundle(), source="https://cdn.invalid/game/bundle.js")
+    payload = build_wager_format(
+        _adventures_init(),
+        _bundle(),
+        source="https://cdn.invalid/game/bundle.js",
+    )
     assert payload["method"] == "har+init+client-request-syntax"
     assert "no browser UI" in payload["network_policy"]
     assert payload["coverage"]["commands"] >= 3
     assert payload["canonical_wager_domains"]["bet"]["values"] == [10, 20, 40, 100]
-    bonus = next(row for row in payload["commands"] if row["command"] == "play_bonus_game")
+    bonus = next(
+        row for row in payload["commands"] if row["command"] == "play_bonus_game"
+    )
     assert bonus["fields"]["index"]["domain_candidates"] == []
