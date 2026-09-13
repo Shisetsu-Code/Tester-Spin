@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import os
+import queue
 import subprocess
 import sys
+import threading
 from pathlib import Path
 from typing import Any
 
@@ -38,9 +40,11 @@ def _find_button_by_text(root: Any, text: str):
 
 
 class HARToolTesterSpinApp(CurrentTesterSpinApp):
-    """Current GUI plus direct access to per-game HAR diagnostics."""
+    """Current GUI plus HAR diagnostics and isolated UI-first discovery."""
 
     def __init__(self) -> None:
+        self._ui_first_total = 0
+        self._ui_first_done = 0
         super().__init__()
         # run.py enters through this application layer. New providers are only
         # registered here; their protocol implementations remain isolated under
@@ -67,6 +71,23 @@ class HARToolTesterSpinApp(CurrentTesterSpinApp):
         )
         self.open_har_folder_btn.pack(side="left", padx=(8, 0))
 
+        self.ui_first_btn = ttk.Button(
+            folder_button.master,
+            text="UI FIRST: DESCUBRIR",
+            command=self._ui_first_selected,
+        )
+        self.ui_first_btn.pack(side="left", padx=(8, 0))
+
+    def _set_busy(self, busy: bool) -> None:
+        super()._set_busy(busy)
+        if hasattr(self, "ui_first_btn"):
+            self.ui_first_btn.configure(state="disabled" if busy else "normal")
+        if hasattr(self, "open_har_folder_btn"):
+            self.open_har_folder_btn.configure(state="disabled" if busy else "normal")
+
+    def _selected_games(self) -> list[Game]:
+        return [self._games[iid] for iid in self.tree.selection() if iid in self._games]
+
     def _selected_game_for_har(self) -> Game | None:
         selection = list(self.tree.selection())
         if not selection:
@@ -74,6 +95,91 @@ class HARToolTesterSpinApp(CurrentTesterSpinApp):
         focused = str(self.tree.focus() or "")
         iid = focused if focused in selection else selection[0]
         return self._games.get(iid)
+
+    def _ui_first_selected(self) -> None:
+        if self._worker and self._worker.is_alive():
+            return
+        games = self._selected_games()
+        if not games:
+            messagebox.showinfo("Tester-Spin", "Seleccioná al menos un juego para UI First.")
+            return
+        provider = self._provider()
+        if provider.key != "bgaming":
+            messagebox.showinfo(
+                "Tester-Spin",
+                "UI First está aislado por proveedor. En esta iteración sólo BGaming tiene adaptador UI First.",
+            )
+            return
+        try:
+            timeout_s = max(8.0, float(self.timeout_var.get()))
+        except ValueError:
+            messagebox.showerror("Tester-Spin", "Timeout debe ser numérico.")
+            return
+
+        self._stop_event = threading.Event()
+        self._ui_first_total = len(games)
+        self._ui_first_done = 0
+        self._set_busy(True)
+        self.status_var.set(f"UI First 0/{len(games)}...")
+        self.progress.stop()
+        self.progress.configure(mode="determinate", maximum=max(1, len(games)), value=0)
+        self._append_log(
+            f"=== UI FIRST: proveedor=BGaming, juegos={len(games)}, modo separado del farming HTTP ==="
+        )
+
+        def worker() -> None:
+            from tester_spin.providers.bgaming.ui_first import discover_game_ui_first
+
+            try:
+                for game in games:
+                    if self._stop_event.is_set():
+                        break
+                    result = discover_game_ui_first(
+                        provider,
+                        game,
+                        timeout_s=timeout_s,
+                        stop_event=self._stop_event,
+                        progress=lambda message: self._events.put(("log", message)),
+                    )
+                    self._events.put(("ui_first_result", (game, result)))
+                self._events.put(("ui_first_done", None))
+            except Exception as exc:
+                self._events.put(("error", f"UI First: {type(exc).__name__}: {exc}"))
+
+        self._worker = threading.Thread(target=worker, daemon=True, name="bgaming-ui-first")
+        self._worker.start()
+
+    def _drain_events(self) -> None:
+        deferred: list[tuple[str, object]] = []
+        while True:
+            try:
+                kind, value = self._events.get_nowait()
+            except queue.Empty:
+                break
+            if kind == "ui_first_result":
+                game, result = value  # type: ignore[misc]
+                self._ui_first_done += 1
+                self.progress.configure(value=self._ui_first_done)
+                self.status_var.set(f"UI First {self._ui_first_done}/{self._ui_first_total}...")
+                self._append_log(
+                    f"[{game.name}] UI FIRST {result.status}: states={result.states}, "
+                    f"actions={result.actions}, unresolved={result.unresolved}, "
+                    f"ready_for_farming={result.ready_for_farming}"
+                )
+            elif kind == "ui_first_done":
+                self._set_busy(False)
+                self.progress.configure(value=self._ui_first_done)
+                self.status_var.set(
+                    f"UI First terminado: {self._ui_first_done}/{self._ui_first_total}"
+                )
+                self._append_log(
+                    "=== UI FIRST FIN: el modo HTTP/exhaustive no fue ejecutado ni modificado ==="
+                )
+            else:
+                deferred.append((kind, value))
+        for event in deferred:
+            self._events.put(event)
+        super()._drain_events()
 
     def _open_selected_har_folder(self) -> None:
         game = self._selected_game_for_har()
