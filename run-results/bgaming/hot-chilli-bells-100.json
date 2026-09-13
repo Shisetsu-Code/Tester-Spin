@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-13T09:56:49+00:00",
-  "source_commit": "e6fb9803a301fa12d1eda2d3b8d4f2a8b881ba2a",
+  "published_at": "2026-09-13T13:07:48+00:00",
+  "source_commit": "299ba3374f3740551aa66a66eabf02c0d7ba03ad",
   "provider": "bgaming",
   "game": {
     "slug": "hot-chilli-bells-100",
@@ -14,9 +14,9 @@
     "slug": "hot-chilli-bells-100",
     "game_name": "Hot Chilli \nBells 100",
     "game_url": "https://demo.bgaming-network.com/play/HotChilliBells100/FUN?server=demo",
-    "requested_spins": 3,
-    "successful_spins": 2,
-    "failed_spins": 1,
+    "requested_spins": 1,
+    "successful_spins": 1,
+    "failed_spins": 0,
     "status": "PARCIAL",
     "symbol": "HotChilliBells100",
     "discovered_modes": [
@@ -31,43 +31,47 @@
         "kind": "PURCHASE",
         "observed": true,
         "client_observed": false,
-        "executable": true,
-        "discovery_state": "SERVER_ADVERTISED_PROBE",
+        "executable": false,
+        "coverage_required": true,
+        "discovery_state": "ADVERTISED_ONLY",
         "wire_command": "spin",
         "purchased_feature": "bonus_buy",
         "purchased_feature_level": null,
         "feature_multiplier": 1200,
         "base_multiplier": 20,
         "cost_multiplier": 60.0,
-        "source": "init.feature_multipliers+provider-probe"
+        "source": "init.feature_multipliers;wire-unproven",
+        "required_options": [
+          "PURCHASE_BONUS_BUY"
+        ],
+        "covered_options": []
       },
       {
         "id": "PURCHASE_BONUS_CHANCE",
         "kind": "PURCHASE",
         "observed": true,
         "client_observed": false,
-        "executable": true,
-        "discovery_state": "SERVER_ADVERTISED_PROBE",
+        "executable": false,
+        "coverage_required": true,
+        "discovery_state": "ADVERTISED_ONLY",
         "wire_command": "spin",
         "purchased_feature": "bonus_chance",
         "purchased_feature_level": null,
         "feature_multiplier": 30,
         "base_multiplier": 20,
         "cost_multiplier": 1.5,
-        "source": "init.feature_multipliers+provider-probe"
-      },
-      {
-        "id": "RESPIN",
-        "kind": "CONTINUATION",
-        "observed": true,
-        "wire_command": "respin"
+        "source": "init.feature_multipliers;wire-unproven",
+        "required_options": [
+          "PURCHASE_BONUS_CHANCE"
+        ],
+        "covered_options": []
       }
     ],
-    "started_at": "2026-09-13T09:56:39+00:00",
-    "finished_at": "2026-09-13T09:56:49+00:00",
-    "elapsed_ms": 9639.999999999418,
-    "error": "BGaming respondió 3/3 intentos; modos terminales validados=2/3. Compras probadas: bonus_buy x60, bonus_chance x1.5. Cobertura requerida pendiente: CONTINUATION_RESPIN. Diagnóstico: continuación BGaming respondió HTTP 422; wire-shape no resuelto para respin | estado final BGaming no terminal: state='respin', actions=['init', 'respin']",
-    "run_dir": "2026-09-13_06-56-39-bgaming-http-api-v2",
+    "started_at": "2026-09-13T13:07:43+00:00",
+    "finished_at": "2026-09-13T13:07:47+00:00",
+    "elapsed_ms": 4359.999999999673,
+    "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_BONUS_BUY, PURCHASE_BONUS_CHANCE. Cobertura de ramificaciones pendiente: PURCHASE_BONUS_BUY -> ['PURCHASE_BONUS_BUY']; PURCHASE_BONUS_CHANCE -> ['PURCHASE_BONUS_CHANCE'].",
+    "run_dir": "2026-09-13_10-07-43-bgaming-http-api-v2",
     "attempts": [
       {
         "number": 1,
@@ -77,7 +81,7 @@
         "provider_bl": null,
         "provider_pur": null,
         "status_code": 200,
-        "elapsed_ms": 297.0000000022992,
+        "elapsed_ms": 327.9999999995198,
         "symbol": "HotChilliBells100",
         "endpoint": "https://demo.bgaming-network.com/api/HotChilliBells100/2773060/<session>",
         "na": "closed",
@@ -85,1009 +89,61 @@
         "wire_steps": 1,
         "warning": "",
         "error": "",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli _Bells 100\\tests\\2026-09-13_06-56-39-bgaming-http-api-v2\\SPIN\\attempt-001"
-      },
-      {
-        "number": 1,
-        "ok": false,
-        "mode_id": "PURCHASE_BONUS_BUY",
-        "mode_kind": "PURCHASE",
-        "provider_bl": null,
-        "provider_pur": null,
-        "status_code": 200,
-        "elapsed_ms": 3937.999999998283,
-        "symbol": "HotChilliBells100",
-        "endpoint": "https://demo.bgaming-network.com/api/HotChilliBells100/2773060/<session>",
-        "na": "respin",
-        "terminal": false,
-        "wire_steps": 1,
-        "warning": "continuación BGaming respondió HTTP 422; wire-shape no resuelto para respin; estado final BGaming no terminal: state='respin', actions=['init', 'respin']",
-        "error": "",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli _Bells 100\\tests\\2026-09-13_06-56-39-bgaming-http-api-v2\\PURCHASE_BONUS_BUY\\attempt-001"
-      },
-      {
-        "number": 1,
-        "ok": true,
-        "mode_id": "PURCHASE_BONUS_CHANCE",
-        "mode_kind": "PURCHASE",
-        "provider_bl": null,
-        "provider_pur": null,
-        "status_code": 200,
-        "elapsed_ms": 1687.0000000017171,
-        "symbol": "HotChilliBells100",
-        "endpoint": "https://demo.bgaming-network.com/api/HotChilliBells100/2773060/<session>",
-        "na": "closed",
-        "terminal": true,
-        "wire_steps": 1,
-        "warning": "",
-        "error": "",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli _Bells 100\\tests\\2026-09-13_06-56-39-bgaming-http-api-v2\\PURCHASE_BONUS_CHANCE\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli _Bells 100\\tests\\2026-09-13_10-07-43-bgaming-http-api-v2\\SPIN\\attempt-001"
       }
-    ]
+    ],
+    "samples_per_path": 1
   },
-  "artifact_bytes_embedded": 60507,
+  "artifact_bytes_embedded": 40398,
   "artifacts": {
-    "backend-conformance.json": {
-      "encoding": "json",
-      "bytes": 2600,
-      "value": {
-        "schema": "tester-spin/bgaming-backend-conformance/v1",
-        "provider": "bgaming",
-        "game": {
-          "slug": "hot-chilli-bells-100",
-          "name": "Hot Chilli \nBells 100",
-          "identifier": "HotChilliBells100"
-        },
-        "generated_at": "2026-09-13T09:56:49+00:00",
-        "source_run": "2026-09-13_06-56-39-bgaming-http-api-v2",
-        "runtime_families": [
-          "api-v2"
-        ],
-        "authority_order": [
-          "RUNTIME_OBSERVED",
-          "CLIENT_CONTRACT",
-          "PROVIDER_METADATA",
-          "INFERENCE"
-        ],
-        "wire_replay_complete": false,
-        "cases": [
-          {
-            "id": "CASE_0001",
-            "source_state": "READY",
-            "request_contract": "SPIN",
-            "request_selector_vectors_observed": [
-              {}
-            ],
-            "accepted_outcome": "SPIN__TO__READY",
-            "expected_target_state": "READY",
-            "response_schema": "response-schemas/spin__to__ready.json",
-            "authority": "RUNTIME_OBSERVED",
-            "evidence": [
-              "SPIN/attempt-001/step-001-request.json"
-            ]
-          },
-          {
-            "id": "CASE_0002",
-            "source_state": "READY",
-            "request_contract": "SPIN__PURCHASE_BONUS_BUY",
-            "request_selector_vectors_observed": [
-              {
-                "purchased_feature": "bonus_buy"
-              }
-            ],
-            "accepted_outcome": "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_RESPIN",
-            "expected_target_state": "FLOW:respin",
-            "response_schema": "response-schemas/spin__purchase_bonus_buy__to__flow_respin.json",
-            "authority": "RUNTIME_OBSERVED",
-            "evidence": [
-              "PURCHASE_BONUS_BUY/attempt-001/step-001-request.json"
-            ]
-          },
-          {
-            "id": "CASE_0003",
-            "source_state": "READY",
-            "request_contract": "SPIN__PURCHASE_BONUS_CHANCE",
-            "request_selector_vectors_observed": [
-              {
-                "purchased_feature": "bonus_chance"
-              }
-            ],
-            "accepted_outcome": "SPIN__PURCHASE_BONUS_CHANCE__TO__READY",
-            "expected_target_state": "READY",
-            "response_schema": "response-schemas/spin__purchase_bonus_chance__to__ready.json",
-            "authority": "RUNTIME_OBSERVED",
-            "evidence": [
-              "PURCHASE_BONUS_CHANCE/attempt-001/step-001-request.json"
-            ]
-          }
-        ],
-        "rules": [
-          "A backend response must match the response schema for the selected outcome.",
-          "The response must move the session to the documented target state.",
-          "Every request contract valid in a source state must be dispatchable.",
-          "Observed counts must never be interpreted as RNG probabilities.",
-          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
-        ]
-      }
-    },
-    "backend-response-plan.json": {
-      "encoding": "json",
-      "bytes": 2681,
-      "value": {
-        "schema": "tester-spin/bgaming-backend-response-plan/v1",
-        "provider": "bgaming",
-        "game": {
-          "slug": "hot-chilli-bells-100",
-          "name": "Hot Chilli \nBells 100",
-          "identifier": "HotChilliBells100"
-        },
-        "generated_at": "2026-09-13T09:56:49+00:00",
-        "source_run": "2026-09-13_06-56-39-bgaming-http-api-v2",
-        "runtime_families": [
-          "api-v2"
-        ],
-        "authority_order": [
-          "RUNTIME_OBSERVED",
-          "CLIENT_CONTRACT",
-          "PROVIDER_METADATA",
-          "INFERENCE"
-        ],
-        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
-        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
-        "states": {
-          "READY": {
-            "SPIN": {
-              "wire_action": "spin",
-              "selector_domains_observed": {},
-              "selector_vectors_observed": [
-                {}
-              ],
-              "outcomes": [
-                {
-                  "id": "SPIN__TO__READY",
-                  "target_state": [
-                    "READY"
-                  ],
-                  "response_schema": "response-schemas/spin__to__ready.json",
-                  "terminal_observed": true,
-                  "math_probability_known": false
-                }
-              ]
-            },
-            "SPIN__PURCHASE_BONUS_BUY": {
-              "wire_action": "spin",
-              "selector_domains_observed": {
-                "purchased_feature": [
-                  "bonus_buy"
-                ]
-              },
-              "selector_vectors_observed": [
-                {
-                  "purchased_feature": "bonus_buy"
-                }
-              ],
-              "outcomes": [
-                {
-                  "id": "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_RESPIN",
-                  "target_state": [
-                    "FLOW:respin"
-                  ],
-                  "response_schema": "response-schemas/spin__purchase_bonus_buy__to__flow_respin.json",
-                  "terminal_observed": false,
-                  "math_probability_known": false
-                }
-              ]
-            },
-            "SPIN__PURCHASE_BONUS_CHANCE": {
-              "wire_action": "spin",
-              "selector_domains_observed": {
-                "purchased_feature": [
-                  "bonus_chance"
-                ]
-              },
-              "selector_vectors_observed": [
-                {
-                  "purchased_feature": "bonus_chance"
-                }
-              ],
-              "outcomes": [
-                {
-                  "id": "SPIN__PURCHASE_BONUS_CHANCE__TO__READY",
-                  "target_state": [
-                    "READY"
-                  ],
-                  "response_schema": "response-schemas/spin__purchase_bonus_chance__to__ready.json",
-                  "terminal_observed": true,
-                  "math_probability_known": false
-                }
-              ]
-            }
-          }
-        }
-      }
-    },
-    "bootstrap.json": {
-      "encoding": "json",
-      "bytes": 6324,
-      "value": {
-        "identifier": "HotChilliBells100",
-        "launch_url": "https://demo.bgaming-network.com/games/HotChilliBells100/FUN",
-        "api_url": "https://demo.bgaming-network.com/api/HotChilliBells100/2773060/<session>",
-        "options": {
-          "env": "production",
-          "csrfTokenHeaderName": "X-CSRF-Token",
-          "csrfTokenHeaderValue": "<redacted>",
-          "play_token": "<redacted>",
-          "game": "slots/hot_chilli_bells100",
-          "identifier": "HotChilliBells100",
-          "title": "Hot Chilli Bells 100",
-          "currency": "FUN",
-          "balance_polling_interval": 30000,
-          "cache_id": "52a951cf0490efd27659dbd9013ae8686dae72ded21425a77c5a6cdacb5e7446",
-          "cache_player_id": "cfb1a95c0635d25f37bf18fc9f449d1cc087032f4ced7ac06d906a3e871fd550",
-          "api": "https://demo.bgaming-network.com/api/HotChilliBells100/2773060/<session>",
-          "rules_url": "https://rules.bgaming-network.com/en/HotChilliBells100.json",
-          "deposit_url": null,
-          "games_page_url": "https://www.bgaming.com/games.html",
-          "history_url": null,
-          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09a32-98f7-7145-a719-06df5233cf2b/launch",
-          "game_page_url": "https://demo.bgaming-network.com/games/HotChilliBells100/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY2MDc4NDZ9LCJleHAiOjE4MDQ5MzE4MDJ9.xMwtQSEDbmEUjmxSSyhfD_GcCbm9E-zAdZA2gBXR7Cg",
-          "websocket_url": "wss://demo.bgaming-network.com:443/cable",
-          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=HotChilliBells100&play_token=01a09a32-98f7-7145-a719-06df5233cf2b&server_id=demo",
-          "ui": {
-            "home_button": true,
-            "full_screen_prompt": true,
-            "logo": "standard",
-            "skin": "basic",
-            "skins": [
-              "basic",
-              "xmas"
-            ],
-            "brand_logo": null,
-            "brand": {
-              "name": "",
-              "logo": null,
-              "logo_in_game": null
-            },
-            "autospins_dialog": "standard",
-            "autospin_values": [
-              "10",
-              "25",
-              "50",
-              "100",
-              "250",
-              "500",
-              "750",
-              "1000",
-              "∞"
-            ],
-            "gamble_enabled": true,
-            "show_rtp_in_rules": true
-          },
-          "resources_path": "https://cdn.bgaming-network.com/html/HotChilliBells100",
-          "custom": {},
-          "actual_currency_rate": 0.0,
-          "sound_enabled": true,
-          "games_loader_source": "https://cdn.bgaming-network.com/html/HotChilliBells100/loader.js?1789293402",
-          "game_bundle_source": "https://cdn.bgaming-network.com/html/HotChilliBells100/bundle.js",
-          "provable_fair": {
-            "verify_url": "https://demo.bgaming-network.com/api/games/verify"
-          },
-          "math": {
-            "rtp": {
-              "main": 97.0,
-              "bonus_chance": 97.0,
-              "bonus_buy": 97.0
-            },
-            "gamble_limit": 5000,
-            "max_multiplier": 5000.0,
-            "max_win_freq": 11363636
-          },
-          "rules": {
-            "min_bet": 20,
-            "max_bet": 7500,
-            "currency": {
-              "code": "FUN",
-              "symbol": "FUN",
-              "subunits": 100,
-              "exponent": 2
-            }
-          },
-          "version": "1.0.0",
-          "growthbook_flags": {
-            "tech_analytics": {
-              "value": true,
-              "variation_id": "forced",
-              "experiment_key": null
-            },
-            "tech_lobby_widget_position": {
-              "value": {
-                "desktop": "bottom",
-                "portrait": "bottom",
-                "landscape": "top"
-              },
-              "variation_id": "forced",
-              "experiment_key": null
-            },
-            "growth_drop_init_popup_ui": {
-              "value": {
-                "id": 602,
-                "value": "A"
-              },
-              "variation_id": "forced",
-              "experiment_key": null
-            }
-          },
-          "lobby_v2_options": {
-            "player_id": 345357554,
-            "lobby_enabled": false,
-            "drops_enabled": false,
-            "drops_token": "<redacted>",
-            "drops_api_url": "https://drops.bgaming-network.com/api/v1/",
-            "profile_enabled": false,
-            "profile_api_url": "https://loyalty-core.shared.bgaming-system.com/api/v1",
-            "profile_token": "<redacted>",
-            "gamelist_enabled": false,
-            "gamelist_api_url": "https://gamelist.bgaming-network.com",
-            "gamelist_token": "<redacted>",
-            "challenges_enabled": false,
-            "challenges_api_url": "https://challenges.bgaming-network.com/",
-            "challenges_token": "<redacted>",
-            "challenges_fe_script_url": "https://brush.bgaming-network.com/",
-            "quests_enabled": false,
-            "quests_api_url": null,
-            "quests_token": "<redacted>",
-            "shop_enabled": false,
-            "shop_api_url": "",
-            "shop_token": "<redacted>",
-            "growth_fe_url": ""
-          },
-          "server_id": "demo",
-          "locale": "en",
-          "actions": {
-            "deposit": null,
-            "return": null,
-            "history": {
-              "text": null,
-              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzNTc1NTQsImd0X2lkIjoyNzczMDYwfSwiZXhwIjoxODA0OTMxODAyfQ._NjG_UivoiA5xssb84-bhj3e4H8yOT_NJve_Rb8jvyU",
-              "mode": "open"
-            }
-          },
-          "show_paytable": false,
-          "license_rules": {
-            "rules_section": {
-              "show_license_requirements": false,
-              "license_requirement_show_purchase": false,
-              "license_requirement_show_autoplay": false,
-              "license_requirement_show_quick_spins": false,
-              "license_requirement_show_autospin_confirmation": false,
-              "license_requirement_reset_autospin": false,
-              "show_rtp": [
-                "main_rtp",
-                "chance_rtp",
-                "bonus_rtp"
-              ],
-              "show_gamble_round": true,
-              "show_min_max": false,
-              "show_max_win_frequency": false,
-              "show_max_multiplier": true,
-              "show_max_win_rules_text": null
-            },
-            "screen_section": {
-              "show_rtp_on_main_screen": false,
-              "show_max_win_frequency_on_main_screen": false,
-              "show_max_multiplier_on_main_screen": false
-            },
-            "lines_count": "60"
-          },
-          "open_page_method": "redirect",
-          "reset_bet_to_default": false,
-          "enable_chinese_logos": false,
-          "enable_quick_spins_by_default": null,
-          "purchased_feature_limit": null,
-          "pre_bet_balance_validation": false,
-          "available_games_to_switch": []
-        },
-        "round_series_id": 1789293400397
-      }
-    },
-    "emulation-contract.json": {
-      "encoding": "json",
-      "bytes": 7530,
-      "value": {
-        "schema": "tester-spin/bgaming-emulation-contract/v1",
-        "provider": "bgaming",
-        "game": {
-          "slug": "hot-chilli-bells-100",
-          "name": "Hot Chilli \nBells 100",
-          "identifier": "HotChilliBells100"
-        },
-        "generated_at": "2026-09-13T09:56:49+00:00",
-        "source_run": "2026-09-13_06-56-39-bgaming-http-api-v2",
-        "runtime_families": [
-          "api-v2"
-        ],
-        "authority_order": [
-          "RUNTIME_OBSERVED",
-          "CLIENT_CONTRACT",
-          "PROVIDER_METADATA",
-          "INFERENCE"
-        ],
-        "status": "PARCIAL",
-        "wire_replay_complete": false,
-        "math_model_complete": false,
-        "rng_probabilities_known": false,
-        "request_contracts": [
-          {
-            "id": "SPIN",
-            "transport": "HTTP_JSON",
-            "wire_action": "spin",
-            "selector_domains_observed": {},
-            "selector_vectors_observed": [
-              {}
-            ],
-            "authority": "RUNTIME_OBSERVED",
-            "sample_count": 1,
-            "request_schema": {
-              "type": "object",
-              "properties": {
-                "command": {
-                  "type": "string",
-                  "observed_enum": [
-                    "spin"
-                  ]
-                },
-                "extra_data": {
-                  "type": "object",
-                  "properties": {
-                    "round_series_id": {
-                      "type": "integer"
-                    }
-                  },
-                  "required": [
-                    "round_series_id"
-                  ],
-                  "additionalProperties": true
-                },
-                "options": {
-                  "type": "object",
-                  "properties": {
-                    "bet": {
-                      "type": "integer"
-                    }
-                  },
-                  "required": [
-                    "bet"
-                  ],
-                  "additionalProperties": true
-                }
-              },
-              "required": [
-                "command",
-                "extra_data",
-                "options"
-              ],
-              "additionalProperties": true
-            },
-            "dynamic_paths": [
-              "$.extra_data.round_series_id"
-            ]
-          },
-          {
-            "id": "SPIN__PURCHASE_BONUS_BUY",
-            "transport": "HTTP_JSON",
-            "wire_action": "spin",
-            "selector_domains_observed": {
-              "purchased_feature": [
-                "bonus_buy"
-              ]
-            },
-            "selector_vectors_observed": [
-              {
-                "purchased_feature": "bonus_buy"
-              }
-            ],
-            "authority": "RUNTIME_OBSERVED",
-            "sample_count": 1,
-            "request_schema": {
-              "type": "object",
-              "properties": {
-                "command": {
-                  "type": "string",
-                  "observed_enum": [
-                    "spin"
-                  ]
-                },
-                "extra_data": {
-                  "type": "object",
-                  "properties": {
-                    "round_series_id": {
-                      "type": "integer"
-                    }
-                  },
-                  "required": [
-                    "round_series_id"
-                  ],
-                  "additionalProperties": true
-                },
-                "options": {
-                  "type": "object",
-                  "properties": {
-                    "bet": {
-                      "type": "integer"
-                    },
-                    "purchased_feature": {
-                      "type": "string",
-                      "observed_enum": [
-                        "bonus_buy"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "bet",
-                    "purchased_feature"
-                  ],
-                  "additionalProperties": true
-                }
-              },
-              "required": [
-                "command",
-                "extra_data",
-                "options"
-              ],
-              "additionalProperties": true
-            },
-            "dynamic_paths": [
-              "$.extra_data.round_series_id"
-            ]
-          },
-          {
-            "id": "SPIN__PURCHASE_BONUS_CHANCE",
-            "transport": "HTTP_JSON",
-            "wire_action": "spin",
-            "selector_domains_observed": {
-              "purchased_feature": [
-                "bonus_chance"
-              ]
-            },
-            "selector_vectors_observed": [
-              {
-                "purchased_feature": "bonus_chance"
-              }
-            ],
-            "authority": "RUNTIME_OBSERVED",
-            "sample_count": 1,
-            "request_schema": {
-              "type": "object",
-              "properties": {
-                "command": {
-                  "type": "string",
-                  "observed_enum": [
-                    "spin"
-                  ]
-                },
-                "extra_data": {
-                  "type": "object",
-                  "properties": {
-                    "round_series_id": {
-                      "type": "integer"
-                    }
-                  },
-                  "required": [
-                    "round_series_id"
-                  ],
-                  "additionalProperties": true
-                },
-                "options": {
-                  "type": "object",
-                  "properties": {
-                    "bet": {
-                      "type": "integer"
-                    },
-                    "purchased_feature": {
-                      "type": "string",
-                      "observed_enum": [
-                        "bonus_chance"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "bet",
-                    "purchased_feature"
-                  ],
-                  "additionalProperties": true
-                }
-              },
-              "required": [
-                "command",
-                "extra_data",
-                "options"
-              ],
-              "additionalProperties": true
-            },
-            "dynamic_paths": [
-              "$.extra_data.round_series_id"
-            ]
-          }
-        ],
-        "modes": [
-          {
-            "id": "SPIN",
-            "kind": "SPIN",
-            "wire_command": "spin",
-            "executable": true,
-            "coverage_required": false,
-            "purchased_feature": null,
-            "purchased_feature_level": null,
-            "cost_multiplier": null,
-            "required_options": [],
-            "covered_options": [],
-            "source": null
-          },
-          {
-            "id": "PURCHASE_BONUS_BUY",
-            "kind": "PURCHASE",
-            "wire_command": "spin",
-            "executable": true,
-            "coverage_required": false,
-            "purchased_feature": "bonus_buy",
-            "purchased_feature_level": null,
-            "cost_multiplier": 60.0,
-            "required_options": [],
-            "covered_options": [],
-            "source": "init.feature_multipliers+provider-probe"
-          },
-          {
-            "id": "PURCHASE_BONUS_CHANCE",
-            "kind": "PURCHASE",
-            "wire_command": "spin",
-            "executable": true,
-            "coverage_required": false,
-            "purchased_feature": "bonus_chance",
-            "purchased_feature_level": null,
-            "cost_multiplier": 1.5,
-            "required_options": [],
-            "covered_options": [],
-            "source": "init.feature_multipliers+provider-probe"
-          },
-          {
-            "id": "RESPIN",
-            "kind": "CONTINUATION",
-            "wire_command": "respin",
-            "executable": true,
-            "coverage_required": false,
-            "purchased_feature": null,
-            "purchased_feature_level": null,
-            "cost_multiplier": null,
-            "required_options": [],
-            "covered_options": [],
-            "source": null
-          }
-        ],
-        "unresolved_modes": [],
-        "dispatch": {
-          "READY": {
-            "SPIN": [
-              "SPIN__TO__READY"
-            ],
-            "SPIN__PURCHASE_BONUS_BUY": [
-              "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_RESPIN"
-            ],
-            "SPIN__PURCHASE_BONUS_CHANCE": [
-              "SPIN__PURCHASE_BONUS_CHANCE__TO__READY"
-            ]
-          }
-        },
-        "artifacts": {
-          "state_machine": "state-machine.json",
-          "outcome_catalog": "outcome-catalog.json",
-          "backend_response_plan": "backend-response-plan.json",
-          "backend_conformance": "backend-conformance.json",
-          "response_schemas": "response-schemas/"
-        }
-      }
-    },
-    "init-request.json": {
-      "encoding": "json",
-      "bytes": 88,
-      "value": {
-        "command": "init",
-        "extra_data": {
-          "round_series_id": 1789293400397
-        }
-      }
-    },
-    "init-response.json": {
-      "encoding": "json",
-      "bytes": 1200,
-      "value": {
-        "api_version": "2",
-        "options": {
-          "available_bets": [
-            20,
-            40,
-            60,
-            80,
-            100,
-            120,
-            160,
-            200,
-            240,
-            300,
-            500,
-            700,
-            1000,
-            1500,
-            2000,
-            3000,
-            4000,
-            5000
-          ],
-          "default_bet": 200,
-          "paytable": {},
-          "paytables": {},
-          "special_symbols": [],
-          "lines": [],
-          "reels": {
-            "main": []
-          },
-          "layout": {
-            "reels": 1,
-            "rows": 1
-          },
-          "currency": {
-            "code": "FUN",
-            "symbol": "FUN",
-            "subunits": 100,
-            "exponent": 2
-          },
-          "screen": [],
-          "default_seed": 17757,
-          "feature_options": {
-            "feature_multipliers": {
-              "bonus_buy": 1200,
-              "bonus_chance": 30,
-              "base_bet": 20
-            },
-            "disabled_features": []
-          },
-          "digit_options": {
-            "bet": 2,
-            "paytable": 2,
-            "balance": 2
-          }
-        },
-        "balance": {
-          "game": 0,
-          "wallet": 100000
-        },
-        "flow": {
-          "round_id": null,
-          "last_action_id": null,
-          "state": "ready",
-          "command": "init",
-          "available_actions": [
-            "init",
-            "spin"
-          ]
-        }
-      }
-    },
-    "last-refresh-init-request.json": {
-      "encoding": "json",
-      "bytes": 88,
-      "value": {
-        "command": "init",
-        "extra_data": {
-          "round_series_id": 1789293408397
-        }
-      }
-    },
-    "last-refresh-init-response.json": {
-      "encoding": "json",
-      "bytes": 1200,
-      "value": {
-        "api_version": "2",
-        "options": {
-          "available_bets": [
-            20,
-            40,
-            60,
-            80,
-            100,
-            120,
-            160,
-            200,
-            240,
-            300,
-            500,
-            700,
-            1000,
-            1500,
-            2000,
-            3000,
-            4000,
-            5000
-          ],
-          "default_bet": 200,
-          "paytable": {},
-          "paytables": {},
-          "special_symbols": [],
-          "lines": [],
-          "reels": {
-            "main": []
-          },
-          "layout": {
-            "reels": 1,
-            "rows": 1
-          },
-          "currency": {
-            "code": "FUN",
-            "symbol": "FUN",
-            "subunits": 100,
-            "exponent": 2
-          },
-          "screen": [],
-          "default_seed": 22888,
-          "feature_options": {
-            "feature_multipliers": {
-              "bonus_buy": 1200,
-              "bonus_chance": 30,
-              "base_bet": 20
-            },
-            "disabled_features": []
-          },
-          "digit_options": {
-            "bet": 2,
-            "paytable": 2,
-            "balance": 2
-          }
-        },
-        "balance": {
-          "game": 0,
-          "wallet": 100000
-        },
-        "flow": {
-          "round_id": null,
-          "last_action_id": null,
-          "state": "ready",
-          "command": "init",
-          "available_actions": [
-            "init",
-            "spin"
-          ]
-        }
-      }
-    },
-    "outcome-catalog.json": {
-      "encoding": "json",
-      "bytes": 3005,
-      "value": {
-        "schema": "tester-spin/bgaming-outcome-catalog/v1",
-        "provider": "bgaming",
-        "game": {
-          "slug": "hot-chilli-bells-100",
-          "name": "Hot Chilli \nBells 100",
-          "identifier": "HotChilliBells100"
-        },
-        "generated_at": "2026-09-13T09:56:49+00:00",
-        "source_run": "2026-09-13_06-56-39-bgaming-http-api-v2",
-        "runtime_families": [
-          "api-v2"
-        ],
-        "authority_order": [
-          "RUNTIME_OBSERVED",
-          "CLIENT_CONTRACT",
-          "PROVIDER_METADATA",
-          "INFERENCE"
-        ],
-        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
-        "outcomes": [
-          {
-            "id": "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_RESPIN",
-            "kind": "PURCHASE_RESULT",
-            "request_contract": "SPIN__PURCHASE_BONUS_BUY",
-            "source_states": [
-              "READY"
-            ],
-            "target_states": [
-              "FLOW:respin"
-            ],
-            "provider_states": [
-              "respin"
-            ],
-            "available_actions": [
-              "init",
-              "respin"
-            ],
-            "terminal_observed": false,
-            "observed_count": 1,
-            "response_schema": "response-schemas/spin__purchase_bonus_buy__to__flow_respin.json",
-            "authority": "RUNTIME_OBSERVED",
-            "wire_known": true,
-            "state_transition_known": true,
-            "math_probability_known": false,
-            "probability": null,
-            "evidence": [
-              "PURCHASE_BONUS_BUY/attempt-001/step-001-request.json"
-            ]
-          },
-          {
-            "id": "SPIN__PURCHASE_BONUS_CHANCE__TO__READY",
-            "kind": "PURCHASE_RESULT",
-            "request_contract": "SPIN__PURCHASE_BONUS_CHANCE",
-            "source_states": [
-              "READY"
-            ],
-            "target_states": [
-              "READY"
-            ],
-            "provider_states": [
-              "closed"
-            ],
-            "available_actions": [
-              "init",
-              "spin"
-            ],
-            "terminal_observed": true,
-            "observed_count": 1,
-            "response_schema": "response-schemas/spin__purchase_bonus_chance__to__ready.json",
-            "authority": "RUNTIME_OBSERVED",
-            "wire_known": true,
-            "state_transition_known": true,
-            "math_probability_known": false,
-            "probability": null,
-            "evidence": [
-              "PURCHASE_BONUS_CHANCE/attempt-001/step-001-request.json"
-            ]
-          },
-          {
-            "id": "SPIN__TO__READY",
-            "kind": "BASE_OR_FEATURE_ENTRY",
-            "request_contract": "SPIN",
-            "source_states": [
-              "READY"
-            ],
-            "target_states": [
-              "READY"
-            ],
-            "provider_states": [
-              "closed"
-            ],
-            "available_actions": [
-              "init",
-              "spin"
-            ],
-            "terminal_observed": true,
-            "observed_count": 1,
-            "response_schema": "response-schemas/spin__to__ready.json",
-            "authority": "RUNTIME_OBSERVED",
-            "wire_known": true,
-            "state_transition_known": true,
-            "math_probability_known": false,
-            "probability": null,
-            "evidence": [
-              "SPIN/attempt-001/step-001-request.json"
-            ]
-          }
-        ]
-      }
-    },
     "path-coverage.json": {
       "encoding": "json",
-      "bytes": 177,
+      "bytes": 977,
       "value": {
         "schema": "tester-spin/path-coverage/v1",
         "provider": "bgaming",
         "game": "hot-chilli-bells-100",
-        "branch_points": [],
-        "complete": true,
-        "missing_count": 0
+        "branch_points": [
+          {
+            "source": "discovered_modes",
+            "mode_id": "PURCHASE_BONUS_BUY",
+            "signature": "PURCHASE_BONUS_BUY",
+            "required": [
+              "PURCHASE_BONUS_BUY"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_BONUS_BUY"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          },
+          {
+            "source": "discovered_modes",
+            "mode_id": "PURCHASE_BONUS_CHANCE",
+            "signature": "PURCHASE_BONUS_CHANCE",
+            "required": [
+              "PURCHASE_BONUS_CHANCE"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_BONUS_CHANCE"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          }
+        ],
+        "complete": false,
+        "missing_count": 2
       }
     },
     "profile.json": {
       "encoding": "json",
-      "bytes": 3416,
+      "bytes": 3415,
       "value": {
         "schema": "tester-spin/bgaming-profile/v1",
         "capability_version": 2,
@@ -1192,12 +248,613 @@
             "depth": 1
           }
         ],
-        "validated": false
+        "validated": true
       }
     },
-    "protocol-contract.json": {
+    "result.json": {
       "encoding": "json",
-      "bytes": 7530,
+      "bytes": 2909,
+      "value": {
+        "provider": "bgaming",
+        "slug": "hot-chilli-bells-100",
+        "game_name": "Hot Chilli \nBells 100",
+        "game_url": "https://demo.bgaming-network.com/play/HotChilliBells100/FUN?server=demo",
+        "requested_spins": 1,
+        "successful_spins": 1,
+        "failed_spins": 0,
+        "status": "PARCIAL",
+        "symbol": "HotChilliBells100",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": true,
+            "wire_command": "spin"
+          },
+          {
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": false,
+            "executable": false,
+            "coverage_required": true,
+            "discovery_state": "ADVERTISED_ONLY",
+            "wire_command": "spin",
+            "purchased_feature": "bonus_buy",
+            "purchased_feature_level": null,
+            "feature_multiplier": 1200,
+            "base_multiplier": 20,
+            "cost_multiplier": 60.0,
+            "source": "init.feature_multipliers;wire-unproven",
+            "required_options": [
+              "PURCHASE_BONUS_BUY"
+            ],
+            "covered_options": []
+          },
+          {
+            "id": "PURCHASE_BONUS_CHANCE",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": false,
+            "executable": false,
+            "coverage_required": true,
+            "discovery_state": "ADVERTISED_ONLY",
+            "wire_command": "spin",
+            "purchased_feature": "bonus_chance",
+            "purchased_feature_level": null,
+            "feature_multiplier": 30,
+            "base_multiplier": 20,
+            "cost_multiplier": 1.5,
+            "source": "init.feature_multipliers;wire-unproven",
+            "required_options": [
+              "PURCHASE_BONUS_CHANCE"
+            ],
+            "covered_options": []
+          }
+        ],
+        "started_at": "2026-09-13T13:07:43+00:00",
+        "finished_at": "2026-09-13T13:07:47+00:00",
+        "elapsed_ms": 4359.999999999673,
+        "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_BONUS_BUY, PURCHASE_BONUS_CHANCE. Cobertura de ramificaciones pendiente: PURCHASE_BONUS_BUY -> ['PURCHASE_BONUS_BUY']; PURCHASE_BONUS_CHANCE -> ['PURCHASE_BONUS_CHANCE'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli _Bells 100\\tests\\2026-09-13_10-07-43-bgaming-http-api-v2",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": true,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 327.9999999995198,
+            "symbol": "HotChilliBells100",
+            "endpoint": "https://demo.bgaming-network.com/api/HotChilliBells100/2773060/<session>",
+            "na": "closed",
+            "terminal": true,
+            "wire_steps": 1,
+            "warning": "",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli _Bells 100\\tests\\2026-09-13_10-07-43-bgaming-http-api-v2\\SPIN\\attempt-001"
+          }
+        ],
+        "samples_per_path": 1
+      }
+    },
+    "sample-catalog.json": {
+      "encoding": "json",
+      "bytes": 2497,
+      "value": {
+        "schema": "tester-spin/sample-catalog/v2",
+        "provider": "bgaming",
+        "game": "hot-chilli-bells-100",
+        "scope": "observed_paths_only",
+        "samples_per_path": 1,
+        "groups": [
+          {
+            "id": "a179acbfa9295736f1e930b5ce3d37a237f56d86b16cce5a1bfd01dd210dd41a",
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "choices": [],
+            "validated_samples": 1,
+            "samples": [
+              {
+                "attempt": 1,
+                "artifact_dir": "SPIN/attempt-001",
+                "validated": true,
+                "terminal": true,
+                "observed_state_sequence": [
+                  [
+                    {
+                      "field": "$.flow.state",
+                      "value": "closed"
+                    },
+                    {
+                      "field": "$.flow.command",
+                      "value": "spin"
+                    }
+                  ]
+                ],
+                "evidence": [
+                  {
+                    "path": "SPIN/attempt-001/request.json",
+                    "sha256": "3ff0b63f71f5642f7a36a556e99d5fe34c5a6e6384c2674824e112f3201f4c19",
+                    "bytes": 125
+                  },
+                  {
+                    "path": "SPIN/attempt-001/response.json",
+                    "sha256": "56b99a7380bcf591a254871d63435178484349137e3a0362158c90c9c8a04171",
+                    "bytes": 483
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "3ff0b63f71f5642f7a36a556e99d5fe34c5a6e6384c2674824e112f3201f4c19",
+                    "bytes": 125
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "56b99a7380bcf591a254871d63435178484349137e3a0362158c90c9c8a04171",
+                    "bytes": 483
+                  }
+                ]
+              }
+            ],
+            "missing_samples": 0
+          }
+        ],
+        "observed_state_types": [
+          {
+            "id": "ed49600f5050b30d6fbaf9ebe020002d45a8e2dfec92172a5b89a1701378a61f",
+            "observed_tags": [
+              {
+                "field": "$.flow.state",
+                "value": "closed"
+              },
+              {
+                "field": "$.flow.command",
+                "value": "spin"
+              }
+            ],
+            "evidence": [
+              {
+                "attempt": 1,
+                "mode_id": "SPIN",
+                "path": "SPIN/attempt-001/response.json"
+              },
+              {
+                "attempt": 1,
+                "mode_id": "SPIN",
+                "path": "SPIN/attempt-001/step-001-response.json"
+              }
+            ]
+          }
+        ],
+        "diagnostics": [],
+        "observed_paths_sampled": true
+      }
+    },
+    "SPIN/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 474,
+      "value": {
+        "round_id": 17298428387,
+        "last_action_id": "17298428387_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 20,
+        "win": 0,
+        "balance_total": 99980,
+        "screen_sha256": "",
+        "storage_seed": 29365,
+        "storage_mode": null,
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "0f7c8b869a225902",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 20.0,
+        "expected_outcome_bet": 20.0
+      }
+    },
+    "SPIN/attempt-001/request.json": {
+      "encoding": "json",
+      "bytes": 125,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 20
+        },
+        "extra_data": {
+          "round_series_id": 1789304864754
+        }
+      }
+    },
+    "SPIN/attempt-001/response.json": {
+      "encoding": "json",
+      "bytes": 483,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 20,
+          "win": 0,
+          "wins": [],
+          "storage": {
+            "seed": 29365
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 99980
+        },
+        "flow": {
+          "round_id": 17298428387,
+          "last_action_id": "17298428387_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {}
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-proof.json": {
+      "encoding": "json",
+      "bytes": 474,
+      "value": {
+        "round_id": 17298428387,
+        "last_action_id": "17298428387_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 20,
+        "win": 0,
+        "balance_total": 99980,
+        "screen_sha256": "",
+        "storage_seed": 29365,
+        "storage_mode": null,
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "0f7c8b869a225902",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 20.0,
+        "expected_outcome_bet": 20.0
+      }
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 125,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 20
+        },
+        "extra_data": {
+          "round_series_id": 1789304864754
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 483,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 20,
+          "win": 0,
+          "wins": [],
+          "storage": {
+            "seed": 29365
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 99980
+        },
+        "flow": {
+          "round_id": 17298428387,
+          "last_action_id": "17298428387_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {}
+        }
+      }
+    },
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 1411,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "hot-chilli-bells-100",
+          "name": "Hot Chilli \nBells 100",
+          "identifier": "HotChilliBells100"
+        },
+        "generated_at": "2026-09-13T13:07:48+00:00",
+        "source_run": "2026-09-13_10-07-43-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [
+          {
+            "id": "CASE_0001",
+            "source_state": "READY",
+            "request_contract": "SPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "accepted_outcome": "SPIN__TO__READY",
+            "expected_target_state": "READY",
+            "response_schema": "response-schemas/spin__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 1261,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "hot-chilli-bells-100",
+          "name": "Hot Chilli \nBells 100",
+          "identifier": "HotChilliBells100"
+        },
+        "generated_at": "2026-09-13T13:07:48+00:00",
+        "source_run": "2026-09-13_10-07-43-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {
+          "READY": {
+            "SPIN": {
+              "wire_action": "spin",
+              "selector_domains_observed": {},
+              "selector_vectors_observed": [
+                {}
+              ],
+              "outcomes": [
+                {
+                  "id": "SPIN__TO__READY",
+                  "target_state": [
+                    "READY"
+                  ],
+                  "response_schema": "response-schemas/spin__to__ready.json",
+                  "terminal_observed": true,
+                  "math_probability_known": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "bootstrap.json": {
+      "encoding": "json",
+      "bytes": 6324,
+      "value": {
+        "identifier": "HotChilliBells100",
+        "launch_url": "https://demo.bgaming-network.com/games/HotChilliBells100/FUN",
+        "api_url": "https://demo.bgaming-network.com/api/HotChilliBells100/2773060/<session>",
+        "options": {
+          "env": "production",
+          "csrfTokenHeaderName": "X-CSRF-Token",
+          "csrfTokenHeaderValue": "<redacted>",
+          "play_token": "<redacted>",
+          "game": "slots/hot_chilli_bells100",
+          "identifier": "HotChilliBells100",
+          "title": "Hot Chilli Bells 100",
+          "currency": "FUN",
+          "balance_polling_interval": 30000,
+          "cache_id": "53091cb79d9288972ecb6487e6e8a6d8cf06e9ab1141ad74171364ab7a8ae418",
+          "cache_player_id": "05894242233b46b38a600bc4450d2dc241666b044d5d7ed3f26802392c79f0c8",
+          "api": "https://demo.bgaming-network.com/api/HotChilliBells100/2773060/<session>",
+          "rules_url": "https://rules.bgaming-network.com/en/HotChilliBells100.json",
+          "deposit_url": null,
+          "games_page_url": "https://www.bgaming.com/games.html",
+          "history_url": null,
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09ae1-8979-7552-9ced-0b00e49e0b54/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/HotChilliBells100/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY3MjM2NDV9LCJleHAiOjE4MDQ5NDMyNjd9.vA8sHJU4_MLSkHEttZ4n42QFY-bj6et_YSBkD-CZ4JQ",
+          "websocket_url": "wss://demo.bgaming-network.com:443/cable",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=HotChilliBells100&play_token=01a09ae1-8979-7552-9ced-0b00e49e0b54&server_id=demo",
+          "ui": {
+            "home_button": true,
+            "full_screen_prompt": true,
+            "logo": "standard",
+            "skin": "basic",
+            "skins": [
+              "basic",
+              "xmas"
+            ],
+            "brand_logo": null,
+            "brand": {
+              "name": "",
+              "logo": null,
+              "logo_in_game": null
+            },
+            "autospins_dialog": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "gamble_enabled": true,
+            "show_rtp_in_rules": true
+          },
+          "resources_path": "https://cdn.bgaming-network.com/html/HotChilliBells100",
+          "custom": {},
+          "actual_currency_rate": 0.0,
+          "sound_enabled": true,
+          "games_loader_source": "https://cdn.bgaming-network.com/html/HotChilliBells100/loader.js?1789304867",
+          "game_bundle_source": "https://cdn.bgaming-network.com/html/HotChilliBells100/bundle.js",
+          "provable_fair": {
+            "verify_url": "https://demo.bgaming-network.com/api/games/verify"
+          },
+          "math": {
+            "rtp": {
+              "main": 97.0,
+              "bonus_chance": 97.0,
+              "bonus_buy": 97.0
+            },
+            "gamble_limit": 5000,
+            "max_multiplier": 5000.0,
+            "max_win_freq": 11363636
+          },
+          "rules": {
+            "min_bet": 20,
+            "max_bet": 7500,
+            "currency": {
+              "code": "FUN",
+              "symbol": "FUN",
+              "subunits": 100,
+              "exponent": 2
+            }
+          },
+          "version": "1.0.0",
+          "growthbook_flags": {
+            "tech_analytics": {
+              "value": true,
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "tech_lobby_widget_position": {
+              "value": {
+                "desktop": "bottom",
+                "portrait": "bottom",
+                "landscape": "top"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "growth_drop_init_popup_ui": {
+              "value": {
+                "id": 602,
+                "value": "A"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            }
+          },
+          "lobby_v2_options": {
+            "player_id": 345473234,
+            "lobby_enabled": false,
+            "drops_enabled": false,
+            "drops_token": "<redacted>",
+            "drops_api_url": "https://drops.bgaming-network.com/api/v1/",
+            "profile_enabled": false,
+            "profile_api_url": "https://loyalty-core.shared.bgaming-system.com/api/v1",
+            "profile_token": "<redacted>",
+            "gamelist_enabled": false,
+            "gamelist_api_url": "https://gamelist.bgaming-network.com",
+            "gamelist_token": "<redacted>",
+            "challenges_enabled": false,
+            "challenges_api_url": "https://challenges.bgaming-network.com/",
+            "challenges_token": "<redacted>",
+            "challenges_fe_script_url": "https://brush.bgaming-network.com/",
+            "quests_enabled": false,
+            "quests_api_url": null,
+            "quests_token": "<redacted>",
+            "shop_enabled": false,
+            "shop_api_url": "",
+            "shop_token": "<redacted>",
+            "growth_fe_url": ""
+          },
+          "server_id": "demo",
+          "locale": "en",
+          "actions": {
+            "deposit": null,
+            "return": null,
+            "history": {
+              "text": null,
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDU0NzMyMzQsImd0X2lkIjoyNzczMDYwfSwiZXhwIjoxODA0OTQzMjY3fQ.m2l18eMZ6D3w5QTDbHi79J9ZpymrEhhxi1mwPAwqeFI",
+              "mode": "open"
+            }
+          },
+          "show_paytable": false,
+          "license_rules": {
+            "rules_section": {
+              "show_license_requirements": false,
+              "license_requirement_show_purchase": false,
+              "license_requirement_show_autoplay": false,
+              "license_requirement_show_quick_spins": false,
+              "license_requirement_show_autospin_confirmation": false,
+              "license_requirement_reset_autospin": false,
+              "show_rtp": [
+                "main_rtp",
+                "chance_rtp",
+                "bonus_rtp"
+              ],
+              "show_gamble_round": true,
+              "show_min_max": false,
+              "show_max_win_frequency": false,
+              "show_max_multiplier": true,
+              "show_max_win_rules_text": null
+            },
+            "screen_section": {
+              "show_rtp_on_main_screen": false,
+              "show_max_win_frequency_on_main_screen": false,
+              "show_max_multiplier_on_main_screen": false
+            },
+            "lines_count": "60"
+          },
+          "open_page_method": "redirect",
+          "reset_bet_to_default": false,
+          "enable_chinese_logos": false,
+          "enable_quick_spins_by_default": null,
+          "purchased_feature_limit": null,
+          "pre_bet_balance_validation": false,
+          "available_games_to_switch": []
+        },
+        "round_series_id": 1789304864754
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 4535,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -1206,8 +863,8 @@
           "name": "Hot Chilli \nBells 100",
           "identifier": "HotChilliBells100"
         },
-        "generated_at": "2026-09-13T09:56:49+00:00",
-        "source_run": "2026-09-13_06-56-39-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T13:07:48+00:00",
+        "source_run": "2026-09-13_10-07-43-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -1276,88 +933,343 @@
             "dynamic_paths": [
               "$.extra_data.round_series_id"
             ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
           },
           {
-            "id": "SPIN__PURCHASE_BONUS_BUY",
-            "transport": "HTTP_JSON",
-            "wire_action": "spin",
-            "selector_domains_observed": {
-              "purchased_feature": [
-                "bonus_buy"
-              ]
-            },
-            "selector_vectors_observed": [
-              {
-                "purchased_feature": "bonus_buy"
-              }
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": true,
+            "purchased_feature": "bonus_buy",
+            "purchased_feature_level": null,
+            "cost_multiplier": 60.0,
+            "required_options": [
+              "PURCHASE_BONUS_BUY"
             ],
-            "authority": "RUNTIME_OBSERVED",
-            "sample_count": 1,
-            "request_schema": {
-              "type": "object",
-              "properties": {
-                "command": {
-                  "type": "string",
-                  "observed_enum": [
-                    "spin"
-                  ]
-                },
-                "extra_data": {
-                  "type": "object",
-                  "properties": {
-                    "round_series_id": {
-                      "type": "integer"
-                    }
-                  },
-                  "required": [
-                    "round_series_id"
-                  ],
-                  "additionalProperties": true
-                },
-                "options": {
-                  "type": "object",
-                  "properties": {
-                    "bet": {
-                      "type": "integer"
-                    },
-                    "purchased_feature": {
-                      "type": "string",
-                      "observed_enum": [
-                        "bonus_buy"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "bet",
-                    "purchased_feature"
-                  ],
-                  "additionalProperties": true
-                }
-              },
-              "required": [
-                "command",
-                "extra_data",
-                "options"
-              ],
-              "additionalProperties": true
+            "covered_options": [],
+            "source": "init.feature_multipliers;wire-unproven"
+          },
+          {
+            "id": "PURCHASE_BONUS_CHANCE",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": true,
+            "purchased_feature": "bonus_chance",
+            "purchased_feature_level": null,
+            "cost_multiplier": 1.5,
+            "required_options": [
+              "PURCHASE_BONUS_CHANCE"
+            ],
+            "covered_options": [],
+            "source": "init.feature_multipliers;wire-unproven"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": true,
+            "purchased_feature": "bonus_buy",
+            "purchased_feature_level": null,
+            "cost_multiplier": 60.0,
+            "required_options": [
+              "PURCHASE_BONUS_BUY"
+            ],
+            "covered_options": [],
+            "source": "init.feature_multipliers;wire-unproven"
+          },
+          {
+            "id": "PURCHASE_BONUS_CHANCE",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": true,
+            "purchased_feature": "bonus_chance",
+            "purchased_feature_level": null,
+            "cost_multiplier": 1.5,
+            "required_options": [
+              "PURCHASE_BONUS_CHANCE"
+            ],
+            "covered_options": [],
+            "source": "init.feature_multipliers;wire-unproven"
+          }
+        ],
+        "dispatch": {
+          "READY": {
+            "SPIN": [
+              "SPIN__TO__READY"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 88,
+      "value": {
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789304864754
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1199,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            20,
+            40,
+            60,
+            80,
+            100,
+            120,
+            160,
+            200,
+            240,
+            300,
+            500,
+            700,
+            1000,
+            1500,
+            2000,
+            3000,
+            4000,
+            5000
+          ],
+          "default_bet": 200,
+          "paytable": {},
+          "paytables": {},
+          "special_symbols": [],
+          "lines": [],
+          "reels": {
+            "main": []
+          },
+          "layout": {
+            "reels": 1,
+            "rows": 1
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [],
+          "default_seed": 1072,
+          "feature_options": {
+            "feature_multipliers": {
+              "bonus_buy": 1200,
+              "bonus_chance": 30,
+              "base_bet": 20
             },
-            "dynamic_paths": [
-              "$.extra_data.round_series_id"
+            "disabled_features": []
+          },
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 1356,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "hot-chilli-bells-100",
+          "name": "Hot Chilli \nBells 100",
+          "identifier": "HotChilliBells100"
+        },
+        "generated_at": "2026-09-13T13:07:48+00:00",
+        "source_run": "2026-09-13_10-07-43-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": [
+          {
+            "id": "SPIN__TO__READY",
+            "kind": "BASE_OR_FEATURE_ENTRY",
+            "request_contract": "SPIN",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "READY"
+            ],
+            "provider_states": [
+              "closed"
+            ],
+            "available_actions": [
+              "init",
+              "spin"
+            ],
+            "terminal_observed": true,
+            "observed_count": 1,
+            "response_schema": "response-schemas/spin__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    },
+    "path-catalog.json": {
+      "encoding": "json",
+      "bytes": 1880,
+      "value": {
+        "schema": "tester-spin/bgaming-path-catalog/v1",
+        "phase": "coverage",
+        "provider": "bgaming",
+        "game": {
+          "slug": "hot-chilli-bells-100",
+          "name": "Hot Chilli \nBells 100",
+          "symbol": "HotChilliBells100"
+        },
+        "semantics": {
+          "path_completeness": "Every provider/client-demonstrated executable branch must be traversed.",
+          "rng_completeness": "Observed random outcomes are samples, not proof that every RNG outcome exists or was exhausted.",
+          "future_sampling_unit": "Repeat each executable path independently; do not multiply unrelated modes by a scoped selector."
+        },
+        "paths": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "branch_signature": "",
+            "executable": null,
+            "coverage_required": false,
+            "required_options": [],
+            "covered_options": [],
+            "attempts_observed": 1,
+            "terminal_successes": 1,
+            "wire_steps": 1,
+            "artifacts": [
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli _Bells 100\\tests\\2026-09-13_10-07-43-bgaming-http-api-v2\\SPIN\\attempt-001"
             ]
           },
           {
-            "id": "SPIN__PURCHASE_BONUS_CHANCE",
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "PURCHASE",
+            "branch_signature": "",
+            "executable": false,
+            "coverage_required": true,
+            "required_options": [
+              "PURCHASE_BONUS_BUY"
+            ],
+            "covered_options": [],
+            "attempts_observed": 0,
+            "terminal_successes": 0,
+            "wire_steps": 0,
+            "artifacts": []
+          },
+          {
+            "id": "PURCHASE_BONUS_CHANCE",
+            "kind": "PURCHASE",
+            "branch_signature": "",
+            "executable": false,
+            "coverage_required": true,
+            "required_options": [
+              "PURCHASE_BONUS_CHANCE"
+            ],
+            "covered_options": [],
+            "attempts_observed": 0,
+            "terminal_successes": 0,
+            "wire_steps": 0,
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 4535,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "hot-chilli-bells-100",
+          "name": "Hot Chilli \nBells 100",
+          "identifier": "HotChilliBells100"
+        },
+        "generated_at": "2026-09-13T13:07:48+00:00",
+        "source_run": "2026-09-13_10-07-43-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "SPIN",
             "transport": "HTTP_JSON",
             "wire_action": "spin",
-            "selector_domains_observed": {
-              "purchased_feature": [
-                "bonus_chance"
-              ]
-            },
+            "selector_domains_observed": {},
             "selector_vectors_observed": [
-              {
-                "purchased_feature": "bonus_chance"
-              }
+              {}
             ],
             "authority": "RUNTIME_OBSERVED",
             "sample_count": 1,
@@ -1387,17 +1299,10 @@
                   "properties": {
                     "bet": {
                       "type": "integer"
-                    },
-                    "purchased_feature": {
-                      "type": "string",
-                      "observed_enum": [
-                        "bonus_chance"
-                      ]
                     }
                   },
                   "required": [
-                    "bet",
-                    "purchased_feature"
+                    "bet"
                   ],
                   "additionalProperties": true
                 }
@@ -1432,53 +1337,69 @@
             "id": "PURCHASE_BONUS_BUY",
             "kind": "PURCHASE",
             "wire_command": "spin",
-            "executable": true,
-            "coverage_required": false,
+            "executable": false,
+            "coverage_required": true,
             "purchased_feature": "bonus_buy",
             "purchased_feature_level": null,
             "cost_multiplier": 60.0,
-            "required_options": [],
+            "required_options": [
+              "PURCHASE_BONUS_BUY"
+            ],
             "covered_options": [],
-            "source": "init.feature_multipliers+provider-probe"
+            "source": "init.feature_multipliers;wire-unproven"
           },
           {
             "id": "PURCHASE_BONUS_CHANCE",
             "kind": "PURCHASE",
             "wire_command": "spin",
-            "executable": true,
-            "coverage_required": false,
+            "executable": false,
+            "coverage_required": true,
             "purchased_feature": "bonus_chance",
             "purchased_feature_level": null,
             "cost_multiplier": 1.5,
-            "required_options": [],
+            "required_options": [
+              "PURCHASE_BONUS_CHANCE"
+            ],
             "covered_options": [],
-            "source": "init.feature_multipliers+provider-probe"
-          },
-          {
-            "id": "RESPIN",
-            "kind": "CONTINUATION",
-            "wire_command": "respin",
-            "executable": true,
-            "coverage_required": false,
-            "purchased_feature": null,
-            "purchased_feature_level": null,
-            "cost_multiplier": null,
-            "required_options": [],
-            "covered_options": [],
-            "source": null
+            "source": "init.feature_multipliers;wire-unproven"
           }
         ],
-        "unresolved_modes": [],
+        "unresolved_modes": [
+          {
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": true,
+            "purchased_feature": "bonus_buy",
+            "purchased_feature_level": null,
+            "cost_multiplier": 60.0,
+            "required_options": [
+              "PURCHASE_BONUS_BUY"
+            ],
+            "covered_options": [],
+            "source": "init.feature_multipliers;wire-unproven"
+          },
+          {
+            "id": "PURCHASE_BONUS_CHANCE",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": true,
+            "purchased_feature": "bonus_chance",
+            "purchased_feature_level": null,
+            "cost_multiplier": 1.5,
+            "required_options": [
+              "PURCHASE_BONUS_CHANCE"
+            ],
+            "covered_options": [],
+            "source": "init.feature_multipliers;wire-unproven"
+          }
+        ],
         "dispatch": {
           "READY": {
             "SPIN": [
               "SPIN__TO__READY"
-            ],
-            "SPIN__PURCHASE_BONUS_BUY": [
-              "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_RESPIN"
-            ],
-            "SPIN__PURCHASE_BONUS_CHANCE": [
-              "SPIN__PURCHASE_BONUS_CHANCE__TO__READY"
             ]
           }
         },
@@ -1489,656 +1410,6 @@
           "backend_conformance": "backend-conformance.json",
           "response_schemas": "response-schemas/"
         }
-      }
-    },
-    "PURCHASE_BONUS_BUY/attempt-001/http-respin-422.json": {
-      "encoding": "json",
-      "bytes": 193,
-      "value": {
-        "status": 422,
-        "content_type": "application/json; charset=utf-8",
-        "json": {
-          "errors": [
-            {
-              "code": 203,
-              "desc": "invalid_options"
-            }
-          ]
-        }
-      }
-    },
-    "PURCHASE_BONUS_BUY/attempt-001/remote-proof.json": {
-      "encoding": "json",
-      "bytes": 507,
-      "value": {
-        "round_id": 17296716800,
-        "last_action_id": "17296716800_1",
-        "flow_state": "respin",
-        "flow_command": "spin",
-        "purchased_feature": "bonus_buy",
-        "bet": 200,
-        "win": 8410,
-        "balance_total": 96410,
-        "screen_sha256": "",
-        "storage_seed": 2023898,
-        "storage_mode": null,
-        "freespins_issued": null,
-        "freespins_left": null,
-        "response_sha256": "6eb4622f4747ac07",
-        "mode_id": "PURCHASE_BONUS_BUY",
-        "step": 1,
-        "expected_debit": 12000.0,
-        "expected_outcome_bet": 200.0
-      }
-    },
-    "PURCHASE_BONUS_BUY/attempt-001/request.json": {
-      "encoding": "json",
-      "bytes": 165,
-      "value": {
-        "command": "spin",
-        "options": {
-          "bet": 200,
-          "purchased_feature": "bonus_buy"
-        },
-        "extra_data": {
-          "round_series_id": 1789293404339
-        }
-      }
-    },
-    "PURCHASE_BONUS_BUY/attempt-001/response.json": {
-      "encoding": "json",
-      "bytes": 631,
-      "value": {
-        "api_version": "2",
-        "features": {
-          "bonus_data": {
-            "respins_issued": 6,
-            "respins_left": 6
-          }
-        },
-        "outcome": {
-          "screen": null,
-          "special_symbols": null,
-          "bet": 200,
-          "win": 8410,
-          "wins": [],
-          "storage": {
-            "seed": 2023898
-          }
-        },
-        "balance": {
-          "game": 8410,
-          "wallet": 88000
-        },
-        "flow": {
-          "round_id": 17296716800,
-          "last_action_id": "17296716800_1",
-          "state": "respin",
-          "command": "spin",
-          "available_actions": [
-            "init",
-            "respin"
-          ],
-          "purchased_feature": {
-            "name": "bonus_buy"
-          }
-        }
-      }
-    },
-    "PURCHASE_BONUS_BUY/attempt-001/step-001-proof.json": {
-      "encoding": "json",
-      "bytes": 507,
-      "value": {
-        "round_id": 17296716800,
-        "last_action_id": "17296716800_1",
-        "flow_state": "respin",
-        "flow_command": "spin",
-        "purchased_feature": "bonus_buy",
-        "bet": 200,
-        "win": 8410,
-        "balance_total": 96410,
-        "screen_sha256": "",
-        "storage_seed": 2023898,
-        "storage_mode": null,
-        "freespins_issued": null,
-        "freespins_left": null,
-        "response_sha256": "6eb4622f4747ac07",
-        "mode_id": "PURCHASE_BONUS_BUY",
-        "step": 1,
-        "expected_debit": 12000.0,
-        "expected_outcome_bet": 200.0
-      }
-    },
-    "PURCHASE_BONUS_BUY/attempt-001/step-001-request.json": {
-      "encoding": "json",
-      "bytes": 165,
-      "value": {
-        "command": "spin",
-        "options": {
-          "bet": 200,
-          "purchased_feature": "bonus_buy"
-        },
-        "extra_data": {
-          "round_series_id": 1789293404339
-        }
-      }
-    },
-    "PURCHASE_BONUS_BUY/attempt-001/step-001-response.json": {
-      "encoding": "json",
-      "bytes": 631,
-      "value": {
-        "api_version": "2",
-        "features": {
-          "bonus_data": {
-            "respins_issued": 6,
-            "respins_left": 6
-          }
-        },
-        "outcome": {
-          "screen": null,
-          "special_symbols": null,
-          "bet": 200,
-          "win": 8410,
-          "wins": [],
-          "storage": {
-            "seed": 2023898
-          }
-        },
-        "balance": {
-          "game": 8410,
-          "wallet": 88000
-        },
-        "flow": {
-          "round_id": 17296716800,
-          "last_action_id": "17296716800_1",
-          "state": "respin",
-          "command": "spin",
-          "available_actions": [
-            "init",
-            "respin"
-          ],
-          "purchased_feature": {
-            "name": "bonus_buy"
-          }
-        }
-      }
-    },
-    "PURCHASE_BONUS_CHANCE/attempt-001/remote-proof.json": {
-      "encoding": "json",
-      "bytes": 505,
-      "value": {
-        "round_id": 17296717357,
-        "last_action_id": "17296717357_1",
-        "flow_state": "closed",
-        "flow_command": "spin",
-        "purchased_feature": "bonus_chance",
-        "bet": 200,
-        "win": 0,
-        "balance_total": 99700,
-        "screen_sha256": "",
-        "storage_seed": 2782,
-        "storage_mode": null,
-        "freespins_issued": null,
-        "freespins_left": null,
-        "response_sha256": "cfde51a26625320e",
-        "mode_id": "PURCHASE_BONUS_CHANCE",
-        "step": 1,
-        "expected_debit": 300.0,
-        "expected_outcome_bet": 200.0
-      }
-    },
-    "PURCHASE_BONUS_CHANCE/attempt-001/request.json": {
-      "encoding": "json",
-      "bytes": 168,
-      "value": {
-        "command": "spin",
-        "options": {
-          "bet": 200,
-          "purchased_feature": "bonus_chance"
-        },
-        "extra_data": {
-          "round_series_id": 1789293408397
-        }
-      }
-    },
-    "PURCHASE_BONUS_CHANCE/attempt-001/response.json": {
-      "encoding": "json",
-      "bytes": 519,
-      "value": {
-        "api_version": "2",
-        "outcome": {
-          "screen": null,
-          "special_symbols": null,
-          "bet": 200,
-          "win": 0,
-          "wins": [],
-          "storage": {
-            "seed": 2782
-          }
-        },
-        "balance": {
-          "game": 0,
-          "wallet": 99700
-        },
-        "flow": {
-          "round_id": 17296717357,
-          "last_action_id": "17296717357_1",
-          "state": "closed",
-          "command": "spin",
-          "available_actions": [
-            "init",
-            "spin"
-          ],
-          "purchased_feature": {
-            "name": "bonus_chance"
-          }
-        }
-      }
-    },
-    "PURCHASE_BONUS_CHANCE/attempt-001/step-001-proof.json": {
-      "encoding": "json",
-      "bytes": 505,
-      "value": {
-        "round_id": 17296717357,
-        "last_action_id": "17296717357_1",
-        "flow_state": "closed",
-        "flow_command": "spin",
-        "purchased_feature": "bonus_chance",
-        "bet": 200,
-        "win": 0,
-        "balance_total": 99700,
-        "screen_sha256": "",
-        "storage_seed": 2782,
-        "storage_mode": null,
-        "freespins_issued": null,
-        "freespins_left": null,
-        "response_sha256": "cfde51a26625320e",
-        "mode_id": "PURCHASE_BONUS_CHANCE",
-        "step": 1,
-        "expected_debit": 300.0,
-        "expected_outcome_bet": 200.0
-      }
-    },
-    "PURCHASE_BONUS_CHANCE/attempt-001/step-001-request.json": {
-      "encoding": "json",
-      "bytes": 168,
-      "value": {
-        "command": "spin",
-        "options": {
-          "bet": 200,
-          "purchased_feature": "bonus_chance"
-        },
-        "extra_data": {
-          "round_series_id": 1789293408397
-        }
-      }
-    },
-    "PURCHASE_BONUS_CHANCE/attempt-001/step-001-response.json": {
-      "encoding": "json",
-      "bytes": 519,
-      "value": {
-        "api_version": "2",
-        "outcome": {
-          "screen": null,
-          "special_symbols": null,
-          "bet": 200,
-          "win": 0,
-          "wins": [],
-          "storage": {
-            "seed": 2782
-          }
-        },
-        "balance": {
-          "game": 0,
-          "wallet": 99700
-        },
-        "flow": {
-          "round_id": 17296717357,
-          "last_action_id": "17296717357_1",
-          "state": "closed",
-          "command": "spin",
-          "available_actions": [
-            "init",
-            "spin"
-          ],
-          "purchased_feature": {
-            "name": "bonus_chance"
-          }
-        }
-      }
-    },
-    "response-schemas/spin__purchase_bonus_buy__to__flow_respin.json": {
-      "encoding": "json",
-      "bytes": 4087,
-      "value": {
-        "schema": "tester-spin/observed-json-shape/v1",
-        "provider": "bgaming",
-        "outcome_id": "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_RESPIN",
-        "authority": "RUNTIME_OBSERVED",
-        "sample_count": 1,
-        "json_schema": {
-          "type": "object",
-          "properties": {
-            "api_version": {
-              "type": "string",
-              "observed_enum": [
-                "2"
-              ]
-            },
-            "balance": {
-              "type": "object",
-              "properties": {
-                "game": {
-                  "type": "integer"
-                },
-                "wallet": {
-                  "type": "integer"
-                }
-              },
-              "required": [
-                "game",
-                "wallet"
-              ],
-              "additionalProperties": true
-            },
-            "features": {
-              "type": "object",
-              "properties": {
-                "bonus_data": {
-                  "type": "object",
-                  "properties": {
-                    "respins_issued": {
-                      "type": "integer"
-                    },
-                    "respins_left": {
-                      "type": "integer"
-                    }
-                  },
-                  "required": [
-                    "respins_issued",
-                    "respins_left"
-                  ],
-                  "additionalProperties": true
-                }
-              },
-              "required": [
-                "bonus_data"
-              ],
-              "additionalProperties": true
-            },
-            "flow": {
-              "type": "object",
-              "properties": {
-                "available_actions": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "observed_enum": [
-                      "init",
-                      "respin"
-                    ]
-                  }
-                },
-                "command": {
-                  "type": "string",
-                  "observed_enum": [
-                    "spin"
-                  ]
-                },
-                "last_action_id": {
-                  "type": "string",
-                  "observed_enum": [
-                    "17296716800_1"
-                  ]
-                },
-                "purchased_feature": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "observed_enum": [
-                        "bonus_buy"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "name"
-                  ],
-                  "additionalProperties": true
-                },
-                "round_id": {
-                  "type": "integer"
-                },
-                "state": {
-                  "type": "string",
-                  "observed_enum": [
-                    "respin"
-                  ]
-                }
-              },
-              "required": [
-                "available_actions",
-                "command",
-                "last_action_id",
-                "purchased_feature",
-                "round_id",
-                "state"
-              ],
-              "additionalProperties": true
-            },
-            "outcome": {
-              "type": "object",
-              "properties": {
-                "bet": {
-                  "type": "integer"
-                },
-                "screen": {
-                  "type": "null"
-                },
-                "special_symbols": {
-                  "type": "null"
-                },
-                "storage": {
-                  "type": "object",
-                  "properties": {
-                    "seed": {
-                      "type": "integer"
-                    }
-                  },
-                  "required": [
-                    "seed"
-                  ],
-                  "additionalProperties": true
-                },
-                "win": {
-                  "type": "integer"
-                },
-                "wins": {
-                  "type": "array",
-                  "items": {}
-                }
-              },
-              "required": [
-                "bet",
-                "screen",
-                "special_symbols",
-                "storage",
-                "win",
-                "wins"
-              ],
-              "additionalProperties": true
-            }
-          },
-          "required": [
-            "api_version",
-            "balance",
-            "features",
-            "flow",
-            "outcome"
-          ],
-          "additionalProperties": true
-        },
-        "dynamic_paths": [
-          "$.balance.wallet",
-          "$.flow.last_action_id",
-          "$.flow.round_id",
-          "$.outcome.storage.seed",
-          "$.outcome.win"
-        ]
-      }
-    },
-    "response-schemas/spin__purchase_bonus_chance__to__ready.json": {
-      "encoding": "json",
-      "bytes": 3437,
-      "value": {
-        "schema": "tester-spin/observed-json-shape/v1",
-        "provider": "bgaming",
-        "outcome_id": "SPIN__PURCHASE_BONUS_CHANCE__TO__READY",
-        "authority": "RUNTIME_OBSERVED",
-        "sample_count": 1,
-        "json_schema": {
-          "type": "object",
-          "properties": {
-            "api_version": {
-              "type": "string",
-              "observed_enum": [
-                "2"
-              ]
-            },
-            "balance": {
-              "type": "object",
-              "properties": {
-                "game": {
-                  "type": "integer"
-                },
-                "wallet": {
-                  "type": "integer"
-                }
-              },
-              "required": [
-                "game",
-                "wallet"
-              ],
-              "additionalProperties": true
-            },
-            "flow": {
-              "type": "object",
-              "properties": {
-                "available_actions": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "observed_enum": [
-                      "init",
-                      "spin"
-                    ]
-                  }
-                },
-                "command": {
-                  "type": "string",
-                  "observed_enum": [
-                    "spin"
-                  ]
-                },
-                "last_action_id": {
-                  "type": "string",
-                  "observed_enum": [
-                    "17296717357_1"
-                  ]
-                },
-                "purchased_feature": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "observed_enum": [
-                        "bonus_chance"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "name"
-                  ],
-                  "additionalProperties": true
-                },
-                "round_id": {
-                  "type": "integer"
-                },
-                "state": {
-                  "type": "string",
-                  "observed_enum": [
-                    "closed"
-                  ]
-                }
-              },
-              "required": [
-                "available_actions",
-                "command",
-                "last_action_id",
-                "purchased_feature",
-                "round_id",
-                "state"
-              ],
-              "additionalProperties": true
-            },
-            "outcome": {
-              "type": "object",
-              "properties": {
-                "bet": {
-                  "type": "integer"
-                },
-                "screen": {
-                  "type": "null"
-                },
-                "special_symbols": {
-                  "type": "null"
-                },
-                "storage": {
-                  "type": "object",
-                  "properties": {
-                    "seed": {
-                      "type": "integer"
-                    }
-                  },
-                  "required": [
-                    "seed"
-                  ],
-                  "additionalProperties": true
-                },
-                "win": {
-                  "type": "integer"
-                },
-                "wins": {
-                  "type": "array",
-                  "items": {}
-                }
-              },
-              "required": [
-                "bet",
-                "screen",
-                "special_symbols",
-                "storage",
-                "win",
-                "wins"
-              ],
-              "additionalProperties": true
-            }
-          },
-          "required": [
-            "api_version",
-            "balance",
-            "flow",
-            "outcome"
-          ],
-          "additionalProperties": true
-        },
-        "dynamic_paths": [
-          "$.balance.wallet",
-          "$.flow.last_action_id",
-          "$.flow.round_id",
-          "$.outcome.storage.seed",
-          "$.outcome.win"
-        ]
       }
     },
     "response-schemas/spin__to__ready.json": {
@@ -2197,7 +1468,7 @@
                 "last_action_id": {
                   "type": "string",
                   "observed_enum": [
-                    "17296716588_1"
+                    "17298428387_1"
                   ]
                 },
                 "purchased_feature": {
@@ -2286,267 +1557,9 @@
         ]
       }
     },
-    "result.json": {
-      "encoding": "json",
-      "bytes": 4382,
-      "value": {
-        "provider": "bgaming",
-        "slug": "hot-chilli-bells-100",
-        "game_name": "Hot Chilli \nBells 100",
-        "game_url": "https://demo.bgaming-network.com/play/HotChilliBells100/FUN?server=demo",
-        "requested_spins": 3,
-        "successful_spins": 2,
-        "failed_spins": 1,
-        "status": "PARCIAL",
-        "symbol": "HotChilliBells100",
-        "discovered_modes": [
-          {
-            "id": "SPIN",
-            "kind": "SPIN",
-            "observed": true,
-            "wire_command": "spin"
-          },
-          {
-            "id": "PURCHASE_BONUS_BUY",
-            "kind": "PURCHASE",
-            "observed": true,
-            "client_observed": false,
-            "executable": true,
-            "discovery_state": "SERVER_ADVERTISED_PROBE",
-            "wire_command": "spin",
-            "purchased_feature": "bonus_buy",
-            "purchased_feature_level": null,
-            "feature_multiplier": 1200,
-            "base_multiplier": 20,
-            "cost_multiplier": 60.0,
-            "source": "init.feature_multipliers+provider-probe"
-          },
-          {
-            "id": "PURCHASE_BONUS_CHANCE",
-            "kind": "PURCHASE",
-            "observed": true,
-            "client_observed": false,
-            "executable": true,
-            "discovery_state": "SERVER_ADVERTISED_PROBE",
-            "wire_command": "spin",
-            "purchased_feature": "bonus_chance",
-            "purchased_feature_level": null,
-            "feature_multiplier": 30,
-            "base_multiplier": 20,
-            "cost_multiplier": 1.5,
-            "source": "init.feature_multipliers+provider-probe"
-          },
-          {
-            "id": "RESPIN",
-            "kind": "CONTINUATION",
-            "observed": true,
-            "wire_command": "respin"
-          }
-        ],
-        "started_at": "2026-09-13T09:56:39+00:00",
-        "finished_at": "2026-09-13T09:56:49+00:00",
-        "elapsed_ms": 9639.999999999418,
-        "error": "BGaming respondió 3/3 intentos; modos terminales validados=2/3. Compras probadas: bonus_buy x60, bonus_chance x1.5. Cobertura requerida pendiente: CONTINUATION_RESPIN. Diagnóstico: continuación BGaming respondió HTTP 422; wire-shape no resuelto para respin | estado final BGaming no terminal: state='respin', actions=['init', 'respin']",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli _Bells 100\\tests\\2026-09-13_06-56-39-bgaming-http-api-v2",
-        "attempts": [
-          {
-            "number": 1,
-            "ok": true,
-            "mode_id": "SPIN",
-            "mode_kind": "SPIN",
-            "provider_bl": null,
-            "provider_pur": null,
-            "status_code": 200,
-            "elapsed_ms": 297.0000000022992,
-            "symbol": "HotChilliBells100",
-            "endpoint": "https://demo.bgaming-network.com/api/HotChilliBells100/2773060/<session>",
-            "na": "closed",
-            "terminal": true,
-            "wire_steps": 1,
-            "warning": "",
-            "error": "",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli _Bells 100\\tests\\2026-09-13_06-56-39-bgaming-http-api-v2\\SPIN\\attempt-001"
-          },
-          {
-            "number": 1,
-            "ok": false,
-            "mode_id": "PURCHASE_BONUS_BUY",
-            "mode_kind": "PURCHASE",
-            "provider_bl": null,
-            "provider_pur": null,
-            "status_code": 200,
-            "elapsed_ms": 3937.999999998283,
-            "symbol": "HotChilliBells100",
-            "endpoint": "https://demo.bgaming-network.com/api/HotChilliBells100/2773060/<session>",
-            "na": "respin",
-            "terminal": false,
-            "wire_steps": 1,
-            "warning": "continuación BGaming respondió HTTP 422; wire-shape no resuelto para respin; estado final BGaming no terminal: state='respin', actions=['init', 'respin']",
-            "error": "",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli _Bells 100\\tests\\2026-09-13_06-56-39-bgaming-http-api-v2\\PURCHASE_BONUS_BUY\\attempt-001"
-          },
-          {
-            "number": 1,
-            "ok": true,
-            "mode_id": "PURCHASE_BONUS_CHANCE",
-            "mode_kind": "PURCHASE",
-            "provider_bl": null,
-            "provider_pur": null,
-            "status_code": 200,
-            "elapsed_ms": 1687.0000000017171,
-            "symbol": "HotChilliBells100",
-            "endpoint": "https://demo.bgaming-network.com/api/HotChilliBells100/2773060/<session>",
-            "na": "closed",
-            "terminal": true,
-            "wire_steps": 1,
-            "warning": "",
-            "error": "",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Hot Chilli _Bells 100\\tests\\2026-09-13_06-56-39-bgaming-http-api-v2\\PURCHASE_BONUS_CHANCE\\attempt-001"
-          }
-        ]
-      }
-    },
-    "SPIN/attempt-001/remote-proof.json": {
-      "encoding": "json",
-      "bytes": 475,
-      "value": {
-        "round_id": 17296716588,
-        "last_action_id": "17296716588_1",
-        "flow_state": "closed",
-        "flow_command": "spin",
-        "purchased_feature": "",
-        "bet": 200,
-        "win": 0,
-        "balance_total": 99800,
-        "screen_sha256": "",
-        "storage_seed": 802,
-        "storage_mode": null,
-        "freespins_issued": null,
-        "freespins_left": null,
-        "response_sha256": "df98e2e99cb8ee13",
-        "mode_id": "SPIN",
-        "step": 1,
-        "expected_debit": 200.0,
-        "expected_outcome_bet": 200.0
-      }
-    },
-    "SPIN/attempt-001/request.json": {
-      "encoding": "json",
-      "bytes": 126,
-      "value": {
-        "command": "spin",
-        "options": {
-          "bet": 200
-        },
-        "extra_data": {
-          "round_series_id": 1789293400397
-        }
-      }
-    },
-    "SPIN/attempt-001/response.json": {
-      "encoding": "json",
-      "bytes": 482,
-      "value": {
-        "api_version": "2",
-        "outcome": {
-          "screen": null,
-          "special_symbols": null,
-          "bet": 200,
-          "win": 0,
-          "wins": [],
-          "storage": {
-            "seed": 802
-          }
-        },
-        "balance": {
-          "game": 0,
-          "wallet": 99800
-        },
-        "flow": {
-          "round_id": 17296716588,
-          "last_action_id": "17296716588_1",
-          "state": "closed",
-          "command": "spin",
-          "available_actions": [
-            "init",
-            "spin"
-          ],
-          "purchased_feature": {}
-        }
-      }
-    },
-    "SPIN/attempt-001/step-001-proof.json": {
-      "encoding": "json",
-      "bytes": 475,
-      "value": {
-        "round_id": 17296716588,
-        "last_action_id": "17296716588_1",
-        "flow_state": "closed",
-        "flow_command": "spin",
-        "purchased_feature": "",
-        "bet": 200,
-        "win": 0,
-        "balance_total": 99800,
-        "screen_sha256": "",
-        "storage_seed": 802,
-        "storage_mode": null,
-        "freespins_issued": null,
-        "freespins_left": null,
-        "response_sha256": "df98e2e99cb8ee13",
-        "mode_id": "SPIN",
-        "step": 1,
-        "expected_debit": 200.0,
-        "expected_outcome_bet": 200.0
-      }
-    },
-    "SPIN/attempt-001/step-001-request.json": {
-      "encoding": "json",
-      "bytes": 126,
-      "value": {
-        "command": "spin",
-        "options": {
-          "bet": 200
-        },
-        "extra_data": {
-          "round_series_id": 1789293400397
-        }
-      }
-    },
-    "SPIN/attempt-001/step-001-response.json": {
-      "encoding": "json",
-      "bytes": 482,
-      "value": {
-        "api_version": "2",
-        "outcome": {
-          "screen": null,
-          "special_symbols": null,
-          "bet": 200,
-          "win": 0,
-          "wins": [],
-          "storage": {
-            "seed": 802
-          }
-        },
-        "balance": {
-          "game": 0,
-          "wallet": 99800
-        },
-        "flow": {
-          "round_id": 17296716588,
-          "last_action_id": "17296716588_1",
-          "state": "closed",
-          "command": "spin",
-          "available_actions": [
-            "init",
-            "spin"
-          ],
-          "purchased_feature": {}
-        }
-      }
-    },
     "state-machine.json": {
       "encoding": "json",
-      "bytes": 2215,
+      "bytes": 1101,
       "value": {
         "schema": "tester-spin/bgaming-state-machine/v1",
         "provider": "bgaming",
@@ -2555,8 +1568,8 @@
           "name": "Hot Chilli \nBells 100",
           "identifier": "HotChilliBells100"
         },
-        "generated_at": "2026-09-13T09:56:49+00:00",
-        "source_run": "2026-09-13_06-56-39-bgaming-http-api-v2",
+        "generated_at": "2026-09-13T13:07:48+00:00",
+        "source_run": "2026-09-13_10-07-43-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -2568,13 +1581,6 @@
         ],
         "initial_state": "READY",
         "states": {
-          "FLOW:respin": {
-            "provider_states": [
-              "respin"
-            ],
-            "allowed_wire_actions_observed": [],
-            "terminal_observed": false
-          },
           "READY": {
             "provider_states": [
               "closed"
@@ -2599,37 +1605,62 @@
             "evidence": [
               "SPIN/attempt-001/step-001-request.json"
             ]
-          },
+          }
+        ]
+      }
+    },
+    "wager-catalog.json": {
+      "encoding": "json",
+      "bytes": 1548,
+      "value": {
+        "schema": "tester-spin/bgaming-wager-catalog/v1",
+        "policy": {
+          "coverage": "Use the minimum provider-advertised wager for exhaustive protocol/path traversal; never invent a lower wager.",
+          "sampling": "Preserve default and full wager domain so future statistical sampling can be scheduled independently per path.",
+          "purchase_identity": "purchased_feature and purchased_feature_level are scoped to PURCHASE_* modes and are not global spin-option dimensions."
+        },
+        "plans": [
           {
-            "source": "READY",
-            "request_contract": "SPIN__PURCHASE_BONUS_BUY",
-            "request_selector_vectors_observed": [
-              {
-                "purchased_feature": "bonus_buy"
-              }
+            "default_bet": 200.0,
+            "coverage_bet": 20.0,
+            "available_bets": [
+              20.0,
+              40.0,
+              60.0,
+              80.0,
+              100.0,
+              120.0,
+              160.0,
+              200.0,
+              240.0,
+              300.0,
+              500.0,
+              700.0,
+              1000.0,
+              1500.0,
+              2000.0,
+              3000.0,
+              4000.0,
+              5000.0
             ],
-            "outcome": "SPIN__PURCHASE_BONUS_BUY__TO__FLOW_RESPIN",
-            "target": "FLOW:respin",
-            "observed_count": 1,
-            "authority": "RUNTIME_OBSERVED",
-            "evidence": [
-              "PURCHASE_BONUS_BUY/attempt-001/step-001-request.json"
-            ]
-          },
-          {
-            "source": "READY",
-            "request_contract": "SPIN__PURCHASE_BONUS_CHANCE",
-            "request_selector_vectors_observed": [
+            "balance": 100000.0,
+            "source": "options.available_bets:min",
+            "evidence": "init-response.json",
+            "purchase_costs": [
               {
-                "purchased_feature": "bonus_chance"
+                "mode_id": "PURCHASE_BONUS_BUY",
+                "purchased_feature": "bonus_buy",
+                "purchased_feature_level": null,
+                "cost_multiplier": 60.0,
+                "estimated_debit_at_coverage_bet": 1200.0
+              },
+              {
+                "mode_id": "PURCHASE_BONUS_CHANCE",
+                "purchased_feature": "bonus_chance",
+                "purchased_feature_level": null,
+                "cost_multiplier": 1.5,
+                "estimated_debit_at_coverage_bet": 30.0
               }
-            ],
-            "outcome": "SPIN__PURCHASE_BONUS_CHANCE__TO__READY",
-            "target": "READY",
-            "observed_count": 1,
-            "authority": "RUNTIME_OBSERVED",
-            "evidence": [
-              "PURCHASE_BONUS_CHANCE/attempt-001/step-001-request.json"
             ]
           }
         ]
