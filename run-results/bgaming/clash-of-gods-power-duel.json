@@ -1,0 +1,554 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T09:19:23+00:00",
+  "source_commit": "c98ad4264ce542a06a267e2e6a013bad3a6ce216",
+  "provider": "bgaming",
+  "game": {
+    "slug": "clash-of-gods-power-duel",
+    "name": "Clash of Gods Power Duel",
+    "symbol": "ClashofGodsAnubisvsHades",
+    "url": "https://demo.bgaming-network.com/play/ClashofGodsAnubisvsHades/FUN"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "clash-of-gods-power-duel",
+    "game_name": "Clash of Gods Power Duel",
+    "game_url": "https://demo.bgaming-network.com/play/ClashofGodsAnubisvsHades/FUN",
+    "requested_spins": 1,
+    "successful_spins": 0,
+    "failed_spins": 1,
+    "status": "ERROR",
+    "symbol": "ClashofGodsAnubisvsHades",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "REJECTED_51100",
+        "wire_method": "play",
+        "request_options": {
+          "bet_type": "default",
+          "fe_exponent": 2,
+          "feature_buy": null,
+          "buyBonusModeMultiplier": 1
+        },
+        "source": "selected-har"
+      }
+    ],
+    "started_at": "2026-09-13T09:19:15+00:00",
+    "finished_at": "2026-09-13T09:19:23+00:00",
+    "elapsed_ms": 8140.999999999622,
+    "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+    "run_dir": "2026-09-13_06-19-15-bgaming-hyperhive-jsonrpc",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": false,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": null,
+        "elapsed_ms": 420.9999999984575,
+        "symbol": "ClashofGodsAnubisvsHades",
+        "endpoint": "https://clashof-gods-anubisvs-hades.demo.bgaming-network.com/api",
+        "na": "",
+        "terminal": false,
+        "wire_steps": 0,
+        "warning": "",
+        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Clash of Gods Power Duel\\tests\\2026-09-13_06-19-15-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+      }
+    ]
+  },
+  "artifact_bytes_embedded": 11880,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 959,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "clash-of-gods-power-duel",
+          "name": "Clash of Gods Power Duel",
+          "identifier": "ClashofGodsAnubisvsHades"
+        },
+        "generated_at": "2026-09-13T09:19:23+00:00",
+        "source_run": "2026-09-13_06-19-15-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 743,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "clash-of-gods-power-duel",
+          "name": "Clash of Gods Power Duel",
+          "identifier": "ClashofGodsAnubisvsHades"
+        },
+        "generated_at": "2026-09-13T09:19:23+00:00",
+        "source_run": "2026-09-13_06-19-15-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "contract-diagnostic.json": {
+      "encoding": "json",
+      "bytes": 801,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "script_urls": [
+          "https://clashof-gods-anubisvs-hades.demo.bgaming-network.com/wg-boost/wrapper.js",
+          "https://clashof-gods-anubisvs-hades.demo.bgaming-network.com/wg-boost/analytics/amplitude.js",
+          "https://clashof-gods-anubisvs-hades.demo.bgaming-network.com/wg-replays/replays.js",
+          "https://clashof-gods-anubisvs-hades.demo.bgaming-network.com/bundle.js"
+        ],
+        "bundle_sha256": "",
+        "engine_sha256": "10c25e33edb5e783086f859ce4dd98fda4cf2136e2fd77949f86ffd5f3e11252",
+        "rpc_id_profile": "zero",
+        "action_vocabulary": [],
+        "base_request": {
+          "bet_type": "default",
+          "fe_exponent": 2,
+          "feature_buy": null,
+          "buyBonusModeMultiplier": 1
+        },
+        "custom_req_profile": "",
+        "base_discovery_state": "HAR_OBSERVED"
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 1692,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "clash-of-gods-power-duel",
+          "name": "Clash of Gods Power Duel",
+          "identifier": "ClashofGodsAnubisvsHades"
+        },
+        "generated_at": "2026-09-13T09:19:23+00:00",
+        "source_run": "2026-09-13_06-19-15-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "selected-har"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "selected-har"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 105,
+      "value": {
+        "id": 0,
+        "jsonrpc": "2.0",
+        "method": "init",
+        "params": {
+          "token": "<redacted>"
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1851,
+      "value": {
+        "id": 0,
+        "jsonrpc": "2.0",
+        "result": {
+          "freebets": null,
+          "currency": "FUN",
+          "currency_attributes": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "locale": "en",
+          "config": {
+            "rtp": "96.50",
+            "displayed_rtp": "96.50",
+            "bet_limits": [
+              10,
+              20,
+              30,
+              50,
+              70,
+              100,
+              150,
+              200,
+              250,
+              300,
+              400,
+              500,
+              600,
+              800,
+              1000,
+              1500,
+              2000,
+              2500
+            ],
+            "freebets_limits": [
+              10,
+              20,
+              30,
+              50,
+              70,
+              100,
+              150,
+              200,
+              250,
+              300,
+              400,
+              500,
+              600,
+              800,
+              1000,
+              1500,
+              2000,
+              2500
+            ],
+            "default_bet": 200,
+            "purchased_features": [
+              "buy_bonus",
+              "bonus_buy",
+              "freespin_buy",
+              "high_freespin_buy",
+              "buy_chance",
+              "bonus_chance",
+              "freespin_chance",
+              "buy_bonus_and_chance",
+              "freespin_and_bonus_chance"
+            ],
+            "autospin_variant": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "quick_spins_enabled": false
+          },
+          "state": null,
+          "urls": {
+            "deposit_url": null,
+            "return_url": null,
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzMzc2NDgsImd0X2lkIjo0Mjc1MTY3fSwiZXhwIjoxODA0OTI5NTY0fQ.g6-Y58xxO2kgCz9U8guWeboQeCNXEV5IYDFi0VED9nU"
+          },
+          "balance": 100000,
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 614,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "clash-of-gods-power-duel",
+          "name": "Clash of Gods Power Duel",
+          "identifier": "ClashofGodsAnubisvsHades"
+        },
+        "generated_at": "2026-09-13T09:19:23+00:00",
+        "source_run": "2026-09-13_06-19-15-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 454,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "clash-of-gods-power-duel",
+        "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false
+          }
+        ],
+        "complete": false,
+        "missing_count": 1
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 1692,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "clash-of-gods-power-duel",
+          "name": "Clash of Gods Power Duel",
+          "identifier": "ClashofGodsAnubisvsHades"
+        },
+        "generated_at": "2026-09-13T09:19:23+00:00",
+        "source_run": "2026-09-13_06-19-15-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "selected-har"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "selected-har"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 1976,
+      "value": {
+        "provider": "bgaming",
+        "slug": "clash-of-gods-power-duel",
+        "game_name": "Clash of Gods Power Duel",
+        "game_url": "https://demo.bgaming-network.com/play/ClashofGodsAnubisvsHades/FUN",
+        "requested_spins": 1,
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "ERROR",
+        "symbol": "ClashofGodsAnubisvsHades",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "REJECTED_51100",
+            "wire_method": "play",
+            "request_options": {
+              "bet_type": "default",
+              "fe_exponent": 2,
+              "feature_buy": null,
+              "buyBonusModeMultiplier": 1
+            },
+            "source": "selected-har"
+          }
+        ],
+        "started_at": "2026-09-13T09:19:15+00:00",
+        "finished_at": "2026-09-13T09:19:23+00:00",
+        "elapsed_ms": 8140.999999999622,
+        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Clash of Gods Power Duel\\tests\\2026-09-13_06-19-15-bgaming-hyperhive-jsonrpc",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": null,
+            "elapsed_ms": 420.9999999984575,
+            "symbol": "ClashofGodsAnubisvsHades",
+            "endpoint": "https://clashof-gods-anubisvs-hades.demo.bgaming-network.com/api",
+            "na": "",
+            "terminal": false,
+            "wire_steps": 0,
+            "warning": "",
+            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Clash of Gods Power Duel\\tests\\2026-09-13_06-19-15-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+          }
+        ]
+      }
+    },
+    "SPIN/attempt-001/rpc-error-request.json": {
+      "encoding": "json",
+      "bytes": 297,
+      "value": {
+        "id": 0,
+        "jsonrpc": "2.0",
+        "method": "play",
+        "params": {
+          "token": "<redacted>",
+          "req": {
+            "bet": 200,
+            "bet_type": "default",
+            "fe_exponent": 2,
+            "feature_buy": null,
+            "buyBonusModeMultiplier": 1
+          },
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "SPIN/attempt-001/rpc-error-response.json": {
+      "encoding": "json",
+      "bytes": 136,
+      "value": {
+        "id": "x",
+        "jsonrpc": "2.0",
+        "error": {
+          "code": 51100,
+          "message": "Something went wrong. Refresh the page."
+        }
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 560,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "clash-of-gods-power-duel",
+          "name": "Clash of Gods Power Duel",
+          "identifier": "ClashofGodsAnubisvsHades"
+        },
+        "generated_at": "2026-09-13T09:19:23+00:00",
+        "source_run": "2026-09-13_06-19-15-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {},
+        "transitions": []
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
