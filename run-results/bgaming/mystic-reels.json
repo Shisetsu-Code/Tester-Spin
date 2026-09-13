@@ -1,0 +1,491 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T09:34:55+00:00",
+  "source_commit": "c98ad4264ce542a06a267e2e6a013bad3a6ce216",
+  "provider": "bgaming",
+  "game": {
+    "slug": "mystic-reels",
+    "name": "Mystic Reels",
+    "symbol": "MysticReels",
+    "url": "https://demo.bgaming-network.com/play/MysticReels/FUN"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "mystic-reels",
+    "game_name": "Mystic Reels",
+    "game_url": "https://demo.bgaming-network.com/play/MysticReels/FUN",
+    "requested_spins": 1,
+    "successful_spins": 0,
+    "failed_spins": 1,
+    "status": "PARCIAL",
+    "symbol": "MysticReels",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "CONTRACT_UNRESOLVED",
+        "wire_method": "play",
+        "request_options": {
+          "bet_type": "bet"
+        },
+        "source": "live-client-evidence-incomplete"
+      }
+    ],
+    "started_at": "2026-09-13T09:34:31+00:00",
+    "finished_at": "2026-09-13T09:34:54+00:00",
+    "elapsed_ms": 23765.99999999962,
+    "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
+    "run_dir": "2026-09-13_06-34-31-bgaming-hyperhive-jsonrpc",
+    "attempts": []
+  },
+  "artifact_bytes_embedded": 11041,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 922,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "mystic-reels",
+          "name": "Mystic Reels",
+          "identifier": "MysticReels"
+        },
+        "generated_at": "2026-09-13T09:34:54+00:00",
+        "source_run": "2026-09-13_06-34-31-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 706,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "mystic-reels",
+          "name": "Mystic Reels",
+          "identifier": "MysticReels"
+        },
+        "generated_at": "2026-09-13T09:34:54+00:00",
+        "source_run": "2026-09-13_06-34-31-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "contract-diagnostic.json": {
+      "encoding": "json",
+      "bytes": 1636,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "script_urls": [
+          "https://mystic-reels.demo.bgaming-network.com/wg-boost/wrapper.js",
+          "https://mystic-reels.demo.bgaming-network.com/wg-boost/analytics/amplitude.js",
+          "https://mystic-reels.demo.bgaming-network.com/wg-replays/replays.js",
+          "https://mystic-reels.demo.bgaming-network.com/build/pixi.min.js",
+          "https://mystic-reels.demo.bgaming-network.com/build/bpDepsLibs.js",
+          "https://mystic-reels.demo.bgaming-network.com/build/particle-emitter.js",
+          "https://mystic-reels.demo.bgaming-network.com/build/bpPlatformBGaming.js",
+          "https://mystic-reels.demo.bgaming-network.com/build/platformBGaming.js",
+          "https://mystic-reels.demo.bgaming-network.com/build/bpClientLibs.js",
+          "https://mystic-reels.demo.bgaming-network.com/build/all.js"
+        ],
+        "bundle_sha256": "",
+        "engine_sha256": "237fdb26fc4f63cfa6c82ed9e024bf609dcf44b8136257d0dc1caecfbdb8587c",
+        "rpc_id_profile": "zero",
+        "action_vocabulary": [
+          "addpath",
+          "arc",
+          "arcto",
+          "arctosvg",
+          "beziercurveto",
+          "chamferrect",
+          "circle",
+          "closepath",
+          "ellipse",
+          "fill",
+          "filletrect",
+          "lineto",
+          "moveto",
+          "poly",
+          "popfilter",
+          "popmaskbegin",
+          "popmaskend",
+          "pushfilter",
+          "pushmaskbegin",
+          "pushmaskend",
+          "quadraticcurveto",
+          "rect",
+          "regularpoly",
+          "roundpoly",
+          "roundrect",
+          "roundshape",
+          "startbatch",
+          "stroke",
+          "texture"
+        ],
+        "base_request": {
+          "bet_type": "bet"
+        },
+        "custom_req_profile": "",
+        "base_discovery_state": "CONTRACT_UNRESOLVED"
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 1695,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "mystic-reels",
+          "name": "Mystic Reels",
+          "identifier": "MysticReels"
+        },
+        "generated_at": "2026-09-13T09:34:54+00:00",
+        "source_run": "2026-09-13_06-34-31-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 105,
+      "value": {
+        "id": 0,
+        "jsonrpc": "2.0",
+        "method": "init",
+        "params": {
+          "token": "<redacted>"
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1580,
+      "value": {
+        "id": 0,
+        "jsonrpc": "2.0",
+        "result": {
+          "freebets": null,
+          "currency": "FUN",
+          "currency_attributes": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "locale": "en",
+          "config": {
+            "rtp": "96",
+            "displayed_rtp": "96.00",
+            "bet_limits": [
+              100,
+              200,
+              300,
+              500,
+              1000,
+              2500,
+              5000,
+              10000
+            ],
+            "freebets_limits": [
+              100,
+              200,
+              300,
+              500,
+              1000,
+              2500,
+              5000,
+              10000
+            ],
+            "default_bet": 100,
+            "purchased_features": [
+              "buy_bonus",
+              "bonus_buy",
+              "freespin_buy",
+              "high_freespin_buy",
+              "buy_chance",
+              "bonus_chance",
+              "freespin_chance",
+              "buy_bonus_and_chance",
+              "freespin_and_bonus_chance"
+            ],
+            "autospin_variant": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "quick_spins_enabled": false
+          },
+          "state": null,
+          "urls": {
+            "deposit_url": null,
+            "return_url": null,
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzNDU5NDgsImd0X2lkIjo0MjY3NTg1fSwiZXhwIjoxODA0OTMwNDg1fQ.JNMIPwk_PwXywnKKtZubA5VtFeddcCHGcWUi6-B6VKE"
+          },
+          "balance": 100000,
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 577,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "mystic-reels",
+          "name": "Mystic Reels",
+          "identifier": "MysticReels"
+        },
+        "generated_at": "2026-09-13T09:34:54+00:00",
+        "source_run": "2026-09-13_06-34-31-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 442,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "mystic-reels",
+        "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false
+          }
+        ],
+        "complete": false,
+        "missing_count": 1
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 1695,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "mystic-reels",
+          "name": "Mystic Reels",
+          "identifier": "MysticReels"
+        },
+        "generated_at": "2026-09-13T09:34:54+00:00",
+        "source_run": "2026-09-13_06-34-31-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 1160,
+      "value": {
+        "provider": "bgaming",
+        "slug": "mystic-reels",
+        "game_name": "Mystic Reels",
+        "game_url": "https://demo.bgaming-network.com/play/MysticReels/FUN",
+        "requested_spins": 1,
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "PARCIAL",
+        "symbol": "MysticReels",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "CONTRACT_UNRESOLVED",
+            "wire_method": "play",
+            "request_options": {
+              "bet_type": "bet"
+            },
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "started_at": "2026-09-13T09:34:31+00:00",
+        "finished_at": "2026-09-13T09:34:54+00:00",
+        "elapsed_ms": 23765.99999999962,
+        "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Mystic Reels\\tests\\2026-09-13_06-34-31-bgaming-hyperhive-jsonrpc",
+        "attempts": []
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 523,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "mystic-reels",
+          "name": "Mystic Reels",
+          "identifier": "MysticReels"
+        },
+        "generated_at": "2026-09-13T09:34:54+00:00",
+        "source_run": "2026-09-13_06-34-31-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {},
+        "transitions": []
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
