@@ -2,9 +2,20 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
+from pathlib import Path
+import threading
+import time
 from typing import Any
 
+from tester_spin.models import Game, utc_now_iso
+from tester_spin.providers.base import Progress
+from tester_spin.providers.bgaming.assisted_browser import run_assisted_browser
+from tester_spin.providers.bgaming.wager_format import (
+    _resolve_launch,
+    analyze_game_wager_format,
+)
 from tester_spin.structure.normalization import sanitize
+from tester_spin.structure.persistence import atomic_write
 
 SCHEMA = "tester-spin/bgaming-assisted-resolution/v1"
 
@@ -31,6 +42,14 @@ class AssistedResolutionResult:
             "completed": self.completed,
             "error": self.error,
         }
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return value if isinstance(value, dict) else {}
 
 
 def unresolved_targets(payload: dict[str, Any]) -> list[dict[str, Any]]:
@@ -78,7 +97,13 @@ def _unique_json_values(values: list[Any]) -> list[Any]:
     return result
 
 
-def merge_assisted_captures(payload: dict[str, Any], captures: list[dict[str, Any]], *, completed: bool, session_id: str) -> tuple[dict[str, Any], int]:
+def merge_assisted_captures(
+    payload: dict[str, Any],
+    captures: list[dict[str, Any]],
+    *,
+    completed: bool,
+    session_id: str,
+) -> tuple[dict[str, Any], int]:
     merged = json.loads(json.dumps(payload, ensure_ascii=False)) if payload else {}
     commands = merged.get("commands")
     commands = commands if isinstance(commands, list) else []
@@ -92,52 +117,96 @@ def merge_assisted_captures(payload: dict[str, Any], captures: list[dict[str, An
         relevant = [value for value in captures if str(value.get("command") or "") == command_name]
         if not relevant:
             continue
+
         assisted_variants = row.setdefault("assisted_variants", [])
         if not isinstance(assisted_variants, list):
             assisted_variants = []
             row["assisted_variants"] = assisted_variants
-        seen = {json.dumps(value, ensure_ascii=False, sort_keys=True) for value in assisted_variants if isinstance(value, dict)}
+        seen = {
+            json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+            for value in assisted_variants
+            if isinstance(value, dict)
+        }
         for capture in relevant:
             options = capture.get("options")
             if not isinstance(options, dict):
                 continue
-            variant = {"options": sanitize(options), "source": "assisted-runtime-observation", "evidence": "USER_ASSISTED_RUNTIME"}
-            marker = json.dumps(variant, ensure_ascii=False, sort_keys=True)
+            variant = {
+                "options": sanitize(options),
+                "source": "assisted-runtime-observation",
+                "evidence": "USER_ASSISTED_RUNTIME",
+            }
+            marker = json.dumps(variant, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
             if marker not in seen:
                 seen.add(marker)
                 assisted_variants.append(variant)
+
         if not completed:
             continue
+
         fields = row.get("fields")
         if not isinstance(fields, dict):
             continue
         for field_name, field_row in fields.items():
             if not isinstance(field_row, dict) or not bool(field_row.get("unresolved_in_client")):
                 continue
-            values = []
+            values: list[Any] = []
             for capture in relevant:
                 options = capture.get("options")
-                if isinstance(options, dict) and field_name in options:
-                    value = options[field_name]
-                    if value is None or isinstance(value, (str, int, float, bool)):
-                        values.append(value)
+                if not isinstance(options, dict) or field_name not in options:
+                    continue
+                value = options[field_name]
+                if value is None or isinstance(value, (str, int, float, bool)):
+                    values.append(value)
             values = _unique_json_values(values)
             if not values:
                 continue
+
             candidates = field_row.setdefault("domain_candidates", [])
             if not isinstance(candidates, list):
                 candidates = []
                 field_row["domain_candidates"] = candidates
-            candidates.append({"values": sanitize(values), "source": "assisted-runtime-observation", "authority": "assisted-user-reviewed", "complete": True})
+            candidate = {
+                "values": sanitize(values),
+                "source": "assisted-runtime-observation",
+                "authority": "assisted-user-reviewed",
+                "complete": True,
+            }
+            marker = json.dumps(candidate, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+            existing = {
+                json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+                for value in candidates
+                if isinstance(value, dict)
+            }
+            if marker not in existing:
+                candidates.append(candidate)
             field_row["assisted_user_reviewed"] = True
             resolved_fields += 1
 
     assisted = merged.setdefault("assisted_resolution", {})
-    sessions = assisted.setdefault("sessions", []) if isinstance(assisted, dict) else []
-    if isinstance(sessions, list):
-        sessions.append({"schema": SCHEMA, "session_id": session_id, "completed_by_user": bool(completed), "captures": captures})
+    if not isinstance(assisted, dict):
+        assisted = {}
+        merged["assisted_resolution"] = assisted
+    sessions = assisted.setdefault("sessions", [])
+    if not isinstance(sessions, list):
+        sessions = []
+        assisted["sessions"] = sessions
+    sessions.append(
+        {
+            "schema": SCHEMA,
+            "session_id": session_id,
+            "finished_at": utc_now_iso(),
+            "completed_by_user": bool(completed),
+            "captures": captures,
+        }
+    )
+    assisted["last_session_id"] = session_id
+    assisted["last_completed_by_user"] = bool(completed)
 
     coverage = merged.setdefault("coverage", {})
+    if not isinstance(coverage, dict):
+        coverage = {}
+        merged["coverage"] = coverage
     unresolved = 0
     reviewed = 0
     for row in commands:
@@ -151,10 +220,119 @@ def merge_assisted_captures(payload: dict[str, Any], captures: list[dict[str, An
                 reviewed += 1
             if bool(field_row.get("unresolved_in_client")) and not list(field_row.get("domain_candidates") or []):
                 unresolved += 1
-    if isinstance(coverage, dict):
-        coverage["unresolved_fields_without_domain"] = unresolved
-        coverage["assisted_user_reviewed_fields"] = reviewed
+    coverage["unresolved_fields_without_domain"] = unresolved
+    coverage["assisted_user_reviewed_fields"] = reviewed
     return merged, resolved_fields
 
 
-__all__ = ["SCHEMA", "AssistedResolutionResult", "capture_matches_target", "merge_assisted_captures", "unresolved_targets"]
+def resolve_game_assisted(
+    provider: Any,
+    game: Game,
+    *,
+    timeout_s: float,
+    stop_event: threading.Event,
+    progress: Progress,
+) -> AssistedResolutionResult:
+    analysis_dir = provider.game_dir(game) / "analysis"
+    analysis_dir.mkdir(parents=True, exist_ok=True)
+    artifact = analysis_dir / "wager-format.json"
+
+    analyze_game_wager_format(provider, game, timeout_s=timeout_s, progress=progress)
+    payload = _read_json(artifact)
+    targets = unresolved_targets(payload)
+    if not targets:
+        progress(f"[{game.name}] ASISTIDO: no quedan campos unresolved; no se abre Chromium.")
+        return AssistedResolutionResult(
+            "READY",
+            game.slug,
+            artifact=str(artifact),
+            targets=0,
+            completed=True,
+        )
+
+    target_text = "; ".join(
+        f"{str(item.get('command') or '')}({', '.join(str(value) for value in item.get('fields') or [])})"
+        for item in targets
+    )
+    progress(f"[{game.name}] ASISTIDO: pendientes={target_text}.")
+
+    session, launch_url = _resolve_launch(provider, game, timeout_s)
+    if session is None or not launch_url:
+        return AssistedResolutionResult(
+            "SIN_DEMO",
+            game.slug,
+            artifact=str(artifact),
+            targets=len(targets),
+            error="No se pudo resolver demo fresco",
+        )
+    session.close()
+
+    captures, completed, browser_error = run_assisted_browser(
+        game_name=game.name,
+        launch_url=launch_url,
+        targets=targets,
+        timeout_s=timeout_s,
+        stop_event=stop_event,
+        progress=progress,
+        capture_matches=capture_matches_target,
+    )
+
+    stamp = time.strftime("%Y-%m-%d_%H-%M-%S")
+    run_dir = analysis_dir / "assisted-resolution" / stamp
+    run_dir.mkdir(parents=True, exist_ok=True)
+    session_artifact = run_dir / "session.json"
+    atomic_write(
+        session_artifact,
+        {
+            "schema": SCHEMA,
+            "game": game.slug,
+            "targets": targets,
+            "captures": captures,
+            "completed_by_user": completed,
+            "browser_error": browser_error,
+            "finished_at": utc_now_iso(),
+        },
+    )
+
+    merged, resolved_fields = merge_assisted_captures(
+        payload,
+        captures,
+        completed=completed,
+        session_id=stamp,
+    )
+    atomic_write(artifact, merged)
+    remaining = unresolved_targets(merged)
+
+    if completed and not remaining:
+        status = "READY"
+    elif captures:
+        status = "PARCIAL"
+    else:
+        status = "CANCELADO"
+
+    progress(
+        f"[{game.name}] ASISTIDO {status}: capturas={len(captures)}, "
+        f"campos_resueltos={resolved_fields}, "
+        f"pendientes={sum(len(item.get('fields') or []) for item in remaining)}; "
+        f"artifact={session_artifact}"
+    )
+    return AssistedResolutionResult(
+        status,
+        game.slug,
+        artifact=str(artifact),
+        targets=len(targets),
+        captures=len(captures),
+        resolved_fields=resolved_fields,
+        completed=completed,
+        error=browser_error,
+    )
+
+
+__all__ = [
+    "SCHEMA",
+    "AssistedResolutionResult",
+    "capture_matches_target",
+    "merge_assisted_captures",
+    "resolve_game_assisted",
+    "unresolved_targets",
+]
