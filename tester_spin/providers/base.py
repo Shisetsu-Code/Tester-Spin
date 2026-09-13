@@ -78,17 +78,35 @@ class ProviderAdapter(ABC):
         *,
         progress: Progress,
     ) -> GameTestResult:
-        """Apply provider-neutral completeness gates after the adapter finishes.
+        """Apply completeness gates and emit a provider-neutral sampling plan.
 
         An adapter owns the wire protocol and is the only layer allowed to execute
         provider-specific continuations. The neutral finalizer verifies that any
         selectable branch exposed by adapter metadata or persisted JSON evidence was
         actually covered. Unknown wire contracts therefore stay PARCIAL instead of
         being silently reported as OK.
+
+        After the gate, a sampling-plan artifact records normalized executable
+        paths. It does not execute more wagers and does not infer RNG probabilities;
+        it is the stable input for a future high-volume "hundreds per path" phase.
         """
         from tester_spin.providers.path_coverage import enforce_complete_path_coverage
+        from tester_spin.providers.sampling_plan import write_sampling_plan
 
-        return enforce_complete_path_coverage(result, progress=progress)
+        result = enforce_complete_path_coverage(result, progress=progress)
+        try:
+            path = write_sampling_plan(result)
+        except Exception as exc:
+            progress(
+                f"[{result.game_name}] sampling-plan ERROR: "
+                f"{type(exc).__name__}: {exc}"
+            )
+            return result
+        if path is not None:
+            progress(
+                f"[{result.game_name}] sampling-plan: rutas normalizadas guardadas."
+            )
+        return result
 
     @abstractmethod
     def crawl_catalog(
