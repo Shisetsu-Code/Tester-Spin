@@ -5,7 +5,6 @@ import queue
 import subprocess
 import sys
 import threading
-import tkinter as tk
 from pathlib import Path
 from typing import Any
 
@@ -41,12 +40,12 @@ def _find_button_by_text(root: Any, text: str):
 
 
 class HARToolTesterSpinApp(CurrentTesterSpinApp):
-    """Current GUI plus HAR diagnostics and isolated UI-first discovery."""
+    """Current GUI plus HAR diagnostics and cheap provider-local format analysis."""
 
     def __init__(self) -> None:
-        self._ui_first_total = 0
-        self._ui_first_done = 0
-        self._ui_first_active = False
+        self._wager_format_total = 0
+        self._wager_format_done = 0
+        self._wager_format_active = False
         super().__init__()
         # run.py enters through this application layer. New providers are only
         # registered here; their protocol implementations remain isolated under
@@ -73,28 +72,17 @@ class HARToolTesterSpinApp(CurrentTesterSpinApp):
         )
         self.open_har_folder_btn.pack(side="left", padx=(8, 0))
 
-        self.ui_first_sessions_var = tk.StringVar(self, value="3")
-        ttk.Label(folder_button.master, text="Sesiones UI:").pack(side="left", padx=(14, 4))
-        self.ui_first_sessions_entry = ttk.Entry(
+        self.wager_format_btn = ttk.Button(
             folder_button.master,
-            textvariable=self.ui_first_sessions_var,
-            width=4,
+            text="ANALIZAR FORMATO",
+            command=self._analyze_wager_format_selected,
         )
-        self.ui_first_sessions_entry.pack(side="left")
-
-        self.ui_first_btn = ttk.Button(
-            folder_button.master,
-            text="UI FIRST: DESCUBRIR",
-            command=self._ui_first_selected,
-        )
-        self.ui_first_btn.pack(side="left", padx=(8, 0))
+        self.wager_format_btn.pack(side="left", padx=(8, 0))
 
     def _set_busy(self, busy: bool) -> None:
         super()._set_busy(busy)
-        if hasattr(self, "ui_first_btn"):
-            self.ui_first_btn.configure(state="disabled" if busy else "normal")
-        if hasattr(self, "ui_first_sessions_entry"):
-            self.ui_first_sessions_entry.configure(state="disabled" if busy else "normal")
+        if hasattr(self, "wager_format_btn"):
+            self.wager_format_btn.configure(state="disabled" if busy else "normal")
         if hasattr(self, "open_har_folder_btn"):
             self.open_har_folder_btn.configure(state="disabled" if busy else "normal")
 
@@ -109,102 +97,107 @@ class HARToolTesterSpinApp(CurrentTesterSpinApp):
         iid = focused if focused in selection else selection[0]
         return self._games.get(iid)
 
-    def _ui_first_selected(self) -> None:
+    def _analyze_wager_format_selected(self) -> None:
         if self._worker and self._worker.is_alive():
             return
         games = self._selected_games()
         if not games:
-            messagebox.showinfo("Tester-Spin", "Seleccioná al menos un juego para UI First.")
+            messagebox.showinfo(
+                "Tester-Spin",
+                "Seleccioná al menos un juego para analizar el formato.",
+            )
             return
         provider = self._provider()
         if provider.key != "bgaming":
             messagebox.showinfo(
                 "Tester-Spin",
-                "UI First está aislado por proveedor. En esta iteración sólo BGaming tiene adaptador UI First.",
+                "Analizar Formato está aislado por proveedor. En esta iteración sólo BGaming tiene este analizador.",
             )
             return
         try:
             timeout_s = max(8.0, float(self.timeout_var.get()))
-            max_sessions = max(1, min(8, int(self.ui_first_sessions_var.get())))
         except ValueError:
-            messagebox.showerror("Tester-Spin", "Timeout y Sesiones UI deben ser numéricos.")
+            messagebox.showerror("Tester-Spin", "Timeout debe ser numérico.")
             return
 
         self._stop_event = threading.Event()
-        self._ui_first_total = len(games)
-        self._ui_first_done = 0
-        self._ui_first_active = True
+        self._wager_format_total = len(games)
+        self._wager_format_done = 0
+        self._wager_format_active = True
         self._set_busy(True)
-        self.status_var.set(f"UI First 0/{len(games)}...")
+        self.status_var.set(f"Formato 0/{len(games)}...")
         self.progress.stop()
         self.progress.configure(mode="determinate", maximum=max(1, len(games)), value=0)
         self._append_log(
-            f"=== UI FIRST: proveedor=BGaming, juegos={len(games)}, sesiones/rama={max_sessions}, "
-            "modo separado del farming HTTP ==="
+            f"=== FORMATO BGAMING: juegos={len(games)}; bootstrap + init + scripts oficiales; "
+            "SIN spins, compras ni Chromium ==="
         )
 
         def worker() -> None:
-            from tester_spin.providers.bgaming.ui_first import discover_game_ui_first
+            from tester_spin.providers.bgaming.wager_format import analyze_game_wager_format
 
             try:
                 for game in games:
                     if self._stop_event.is_set():
                         break
-                    result = discover_game_ui_first(
+                    result = analyze_game_wager_format(
                         provider,
                         game,
                         timeout_s=timeout_s,
-                        stop_event=self._stop_event,
                         progress=lambda message: self._events.put(("log", message)),
-                        max_sessions=max_sessions,
                     )
-                    self._events.put(("ui_first_result", (game, result)))
-                self._events.put(("ui_first_done", None))
+                    self._events.put(("wager_format_result", (game, result)))
+                self._events.put(("wager_format_done", None))
             except Exception as exc:
-                self._events.put(("error", f"UI First: {type(exc).__name__}: {exc}"))
+                self._events.put(
+                    ("wager_format_error", f"Analizar Formato: {type(exc).__name__}: {exc}")
+                )
 
-        self._worker = threading.Thread(target=worker, daemon=True, name="bgaming-ui-first")
+        self._worker = threading.Thread(
+            target=worker,
+            daemon=True,
+            name="bgaming-wager-format",
+        )
         self._worker.start()
 
     def _drain_events(self) -> None:
-        """Preserve UI-first progress ordering.
-
-        The previous implementation removed custom events first and requeued normal
-        log events, which could display FIN before an earlier path line. While UI
-        First owns the app, consume log/custom events in FIFO order here and defer
-        only unrelated base-app events.
-        """
+        """Consume format-analysis events in FIFO order while it owns the GUI."""
         deferred: list[tuple[str, object]] = []
         while True:
             try:
                 kind, value = self._events.get_nowait()
             except queue.Empty:
                 break
-            if self._ui_first_active and kind == "log":
+            if self._wager_format_active and kind == "log":
                 self._append_log(str(value))
-            elif kind == "ui_first_result":
+            elif kind == "wager_format_result":
                 game, result = value  # type: ignore[misc]
-                self._ui_first_done += 1
-                self.progress.configure(value=self._ui_first_done)
-                self.status_var.set(f"UI First {self._ui_first_done}/{self._ui_first_total}...")
-                self._append_log(
-                    f"[{game.name}] UI FIRST {result.status}: states={result.states}, "
-                    f"actions={result.actions}, unresolved={result.unresolved}, "
-                    f"ready_for_farming={result.ready_for_farming}"
-                )
-            elif kind == "ui_first_done":
-                self._ui_first_active = False
-                self._set_busy(False)
-                self.progress.configure(value=self._ui_first_done)
+                self._wager_format_done += 1
+                self.progress.configure(value=self._wager_format_done)
                 self.status_var.set(
-                    f"UI First terminado: {self._ui_first_done}/{self._ui_first_total}"
+                    f"Formato {self._wager_format_done}/{self._wager_format_total}..."
                 )
                 self._append_log(
-                    "=== UI FIRST FIN: el modo HTTP/exhaustive no fue ejecutado ni modificado ==="
+                    f"[{game.name}] FORMATO {result.status}: commands={result.commands}, "
+                    f"domains={result.domains}, unresolved={result.unresolved}; "
+                    f"artifact={result.artifact}"
                 )
-            elif kind == "error" and self._ui_first_active:
-                self._ui_first_active = False
-                deferred.append((kind, value))
+            elif kind == "wager_format_done":
+                self._wager_format_active = False
+                self._set_busy(False)
+                self.progress.configure(value=self._wager_format_done)
+                self.status_var.set(
+                    f"Formato terminado: {self._wager_format_done}/{self._wager_format_total}"
+                )
+                self._append_log(
+                    "=== FORMATO FIN: no se ejecutaron spins, compras ni UI del juego ==="
+                )
+            elif kind == "wager_format_error":
+                self._wager_format_active = False
+                self._set_busy(False)
+                self.status_var.set("Error analizando formato")
+                self._append_log(str(value))
+                messagebox.showerror("Tester-Spin", str(value))
             else:
                 deferred.append((kind, value))
         for event in deferred:
