@@ -9,6 +9,7 @@ from tester_spin.models import GameTestResult
 from tester_spin.providers.bgaming_path_policy import (
     RESERVED_PURCHASE_OPTION_FIELDS,
     finalize_policy_artifacts,
+    prepare_hyperhive_init_for_coverage,
     resolve_coverage_bet,
     scoped_choice_domains,
     wager_plan_from_init,
@@ -30,7 +31,7 @@ class BGamingPathPolicyTests(unittest.TestCase):
         self.assertEqual(plan.available_bets, [20.0, 40.0, 100.0, 200.0])
         self.assertEqual(resolve_coverage_bet(init_data), (20, "options.available_bets:min"))
 
-    def test_hyperhive_catalog_keeps_default_but_selects_minimum_limit(self) -> None:
+    def test_hyperhive_uses_minimum_without_mutating_provider_init(self) -> None:
         init_data = {
             "result": {
                 "config": {
@@ -40,10 +41,12 @@ class BGamingPathPolicyTests(unittest.TestCase):
                 "balance": 100000,
             }
         }
-        plan = wager_plan_from_init(init_data)
+        adjusted, plan = prepare_hyperhive_init_for_coverage(init_data)
         self.assertEqual(plan.default_bet, 200.0)
         self.assertEqual(plan.coverage_bet, 20.0)
         self.assertEqual(plan.source, "result.config.bet_limits:min")
+        self.assertEqual(adjusted["result"]["config"]["default_bet"], 20)
+        self.assertEqual(init_data["result"]["config"]["default_bet"], 200)
 
     def test_purchase_identity_and_level_are_not_global_cartesian_dimensions(self) -> None:
         profile = {
@@ -72,7 +75,7 @@ class BGamingPathPolicyTests(unittest.TestCase):
             {"purchased_feature", "purchased_feature_level"},
         )
 
-    def test_unproven_server_purchase_is_catalogued_not_marked_executable(self) -> None:
+    def test_unproven_server_purchase_is_catalogued_not_executed(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             init_data = {
@@ -129,6 +132,8 @@ class BGamingPathPolicyTests(unittest.TestCase):
             self.assertFalse(unresolved["executable"])
             self.assertTrue(unresolved["coverage_required"])
             self.assertEqual(unresolved["discovery_state"], "ADVERTISED_ONLY")
+            self.assertEqual(result.status, "PARCIAL")
+            self.assertIn("PURCHASE_FREESPIN_BUY", result.error)
 
             catalog = json.loads(
                 (root / "wager-catalog.json").read_text(encoding="utf-8")
@@ -142,6 +147,14 @@ class BGamingPathPolicyTests(unittest.TestCase):
                 costs["PURCHASE_BONUS_BUY"]["estimated_debit_at_coverage_bet"],
                 2000.0,
             )
+
+            paths = json.loads(
+                (root / "path-catalog.json").read_text(encoding="utf-8")
+            )
+            path_ids = {item["id"] for item in paths["paths"]}
+            self.assertIn("PURCHASE_BONUS_BUY", path_ids)
+            self.assertIn("PURCHASE_FREESPIN_BUY", path_ids)
+            self.assertEqual(paths["phase"], "coverage")
 
 
 if __name__ == "__main__":
