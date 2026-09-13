@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import deque
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 import hashlib
 import json
@@ -16,7 +17,7 @@ import requests
 from tester_spin.models import Game, utc_now_iso
 from tester_spin.providers.base import Progress
 from tester_spin.providers.bgaming.har_capture import _is_bgaming_state_post
-from tester_spin.providers.bgaming.runtime import is_demo_url, resolve_fresh_demo_url, sanitize_error_text
+from tester_spin.providers.bgaming.runtime import is_demo_url, resolve_fresh_demo_url
 from tester_spin.structure.persistence import atomic_write
 from tester_spin.ui_action_tree import UIActionTree, persist_ui_action_tree
 
@@ -25,8 +26,8 @@ _DOM_SELECTOR = (
     "input[type='submit'],[data-tester-spin-interactive]"
 )
 _ENTRY = re.compile(r"^(play|play demo|start|continue|ok|accept|enter|tap to play)$", re.I)
-# Stable provider chrome that is useful to the human client but not part of the
-# wager/feature state machine we want to reconstruct.
+# Stable provider chrome. Named game controls (spin, buy, multiplier, cards, etc.)
+# are intentionally NOT listed here.
 _CHROME = re.compile(
     r"(?:sound|mute|volume|settings?|paytable|rules?|info|history|fullscreen|full screen|"
     r"language|help|home|menu|responsible|privacy|terms|turbo|autoplay|auto play)",
@@ -74,13 +75,15 @@ def _flow(response: Any) -> tuple[str, list[str]]:
 def _label(value: dict[str, Any]) -> str:
     return " ".join(
         str(value.get(name) or "").strip()
-        for name in ("text", "aria", "title", "role", "id", "class_name")
+        for name in ("text", "aria", "title", "label", "name", "role", "id", "class_name", "type")
         if str(value.get(name) or "").strip()
     )[:500]
 
 
 def is_provider_chrome_candidate(candidate: dict[str, Any]) -> bool:
-    if candidate.get("kind") != "dom":
+    # DOM and scene-graph nodes often expose stable semantic names. Canvas probes
+    # intentionally stay unknown until an interaction proves what they do.
+    if candidate.get("kind") not in {"dom", "scene"}:
         return False
     label = _label(candidate)
     return bool(label and _CHROME.search(label))
@@ -129,11 +132,134 @@ def _dom_candidates(page: Any) -> list[dict[str, Any]]:
                 ).hexdigest()[:20]
                 rows.append({
                     "kind": "dom", "frame": frame_index, "dom_index": index,
-                    "signature": signature, "label": _label(semantic), "role": str(raw.get("role") or raw.get("tag") or ""),
-                    **semantic,
+                    "signature": signature, "label": _label(semantic),
+                    "role": str(raw.get("role") or raw.get("tag") or ""), **semantic,
                 })
             except Exception:
                 continue
+    return rows
+
+
+def _scene_candidates(page: Any) -> list[dict[str, Any]]:
+    """Best-effort live scene-graph introspection.
+
+    BGaming titles commonly render controls inside Pixi/custom display trees, where
+    there is no DOM button at all. We inspect only object graphs already reachable
+    from window and only retain nodes that advertise interaction. Nothing found
+    here is execution authority until a real click produces a real wire edge.
+    """
+    rows: list[dict[str, Any]] = []
+    script = r"""() => {
+      const out = [];
+      const seen = new WeakSet();
+      const queue = [];
+      const push = (value, path, depth) => {
+        if (!value || (typeof value !== 'object' && typeof value !== 'function') || depth > 8) return;
+        if (seen.has(value)) return;
+        seen.add(value);
+        queue.push([value, path, depth]);
+      };
+      for (const name of Object.getOwnPropertyNames(window).slice(0, 700)) {
+        try {
+          const d = Object.getOwnPropertyDescriptor(window, name);
+          if (!d || !('value' in d)) continue;
+          const v = d.value;
+          if (!v || (typeof v !== 'object' && typeof v !== 'function')) continue;
+          if (Array.isArray(v.children) || v.stage || v.scene || v.root || v.app || v.application) {
+            push(v, 'window.' + name, 0);
+          }
+        } catch (_) {}
+      }
+      const canvas = document.querySelector('canvas');
+      const clientW = canvas ? (canvas.clientWidth || 0) : 0;
+      const clientH = canvas ? (canvas.clientHeight || 0) : 0;
+      const pixelW = canvas ? (canvas.width || clientW) : 0;
+      const pixelH = canvas ? (canvas.height || clientH) : 0;
+      let visited = 0;
+      while (queue.length && visited++ < 5000 && out.length < 160) {
+        const [obj, path, depth] = queue.shift();
+        try {
+          const eventMode = String(obj.eventMode || '');
+          const cursor = String(obj.cursor || obj.buttonMode && 'pointer' || '');
+          const ev = obj._events && typeof obj._events === 'object' ? Object.keys(obj._events) : [];
+          const interactive = obj.interactive === true || obj.buttonMode === true ||
+            eventMode === 'static' || eventMode === 'dynamic' || cursor === 'pointer' ||
+            ev.some(k => /click|tap|pointerdown|pointerup|pointertap/i.test(k));
+          const visible = obj.visible !== false && obj.renderable !== false && Number(obj.alpha ?? 1) > 0;
+          if (interactive && visible) {
+            let bounds = null;
+            try { if (typeof obj.getBounds === 'function') bounds = obj.getBounds(); } catch (_) {}
+            let point = null;
+            if (bounds && Number.isFinite(bounds.x) && Number.isFinite(bounds.y) &&
+                Number.isFinite(bounds.width) && Number.isFinite(bounds.height) &&
+                bounds.width > 2 && bounds.height > 2) {
+              const cx = bounds.x + bounds.width / 2;
+              const cy = bounds.y + bounds.height / 2;
+              let w = clientW, h = clientH;
+              if (!(cx >= 0 && cy >= 0 && cx <= clientW * 1.25 && cy <= clientH * 1.25)) {
+                w = pixelW; h = pixelH;
+              }
+              if (w > 0 && h > 0) {
+                const nx = cx / w, ny = cy / h;
+                if (nx >= 0 && nx <= 1 && ny >= 0 && ny <= 1) point = [nx, ny];
+              }
+            }
+            const textValue = typeof obj.text === 'string' ? obj.text : '';
+            out.push({
+              path,
+              name: String(obj.name || '').slice(0,120),
+              label: String(obj.label || obj.accessibleTitle || '').slice(0,160),
+              text: textValue.slice(0,160),
+              type: String(obj.constructor && obj.constructor.name || '').slice(0,80),
+              eventMode: eventMode.slice(0,40),
+              cursor: cursor.slice(0,40),
+              point,
+            });
+          }
+          const children = Array.isArray(obj.children) ? obj.children : [];
+          for (let i = 0; i < Math.min(children.length, 300); i++) {
+            const child = children[i];
+            const childName = child && (child.name || child.label || child.constructor && child.constructor.name) || i;
+            push(child, path + '.children[' + i + ']<' + String(childName).slice(0,60) + '>', depth + 1);
+          }
+          for (const key of ['stage','scene','root','app','application']) {
+            try {
+              const child = obj[key];
+              if (child && child !== obj) push(child, path + '.' + key, depth + 1);
+            } catch (_) {}
+          }
+        } catch (_) {}
+      }
+      return out;
+    }"""
+    for frame_index, frame in enumerate(list(page.frames)[:12]):
+        try:
+            found = frame.evaluate(script)
+        except Exception:
+            continue
+        if not isinstance(found, list):
+            continue
+        for raw in found:
+            if not isinstance(raw, dict):
+                continue
+            point = raw.get("point")
+            if not (isinstance(point, list) and len(point) == 2):
+                continue
+            semantic = {
+                "name": str(raw.get("name") or ""),
+                "label": str(raw.get("label") or ""),
+                "text": str(raw.get("text") or ""),
+                "type": str(raw.get("type") or ""),
+                "path": str(raw.get("path") or "")[:500],
+            }
+            signature = "scene:" + hashlib.sha256(
+                json.dumps([frame_index, semantic], ensure_ascii=False, sort_keys=True).encode("utf-8")
+            ).hexdigest()[:20]
+            rows.append({
+                "kind": "scene", "frame": frame_index, "canvas_index": 0,
+                "signature": signature, "label": _label(semantic), "role": "scene-node",
+                "point": [round(float(point[0]), 4), round(float(point[1]), 4)], **semantic,
+            })
     return rows
 
 
@@ -153,6 +279,38 @@ def _cluster_pointer_cells(cells: set[tuple[int, int]], cols: int, rows: int) ->
                     stack.append((nx, ny))
         groups.append(group)
     return groups
+
+
+def _pointer_probe_points(cells: set[tuple[int, int]], cols: int, rows: int) -> tuple[list[list[float]], bool]:
+    """Turn cursor evidence into candidate points.
+
+    A single huge pointer cluster is not one button; many canvas engines simply set
+    pointer on the whole surface. In that case emit a bounded probing lattice and
+    let real UI/wire effects classify the points.
+    """
+    if not cells:
+        return [], False
+    groups = _cluster_pointer_cells(cells, cols, rows)
+    largest = max((len(group) for group in groups), default=0)
+    non_informative = len(groups) == 1 and largest >= max(8, int(cols * rows * 0.35))
+    if non_informative:
+        result: list[list[float]] = []
+        probe_cols, probe_rows = 7, 4
+        for py in range(probe_rows):
+            for px in range(probe_cols):
+                nx = (px + 0.5) / probe_cols
+                ny = (py + 0.5) / probe_rows
+                gx = min(cols - 1, max(0, int(nx * cols)))
+                gy = min(rows - 1, max(0, int(ny * rows)))
+                if (gx, gy) in cells:
+                    result.append([round(nx, 4), round(ny, 4)])
+        return result[:28], True
+    result = []
+    for group in groups:
+        nx = sum((gx + 0.5) / cols for gx, _ in group) / len(group)
+        ny = sum((gy + 0.5) / rows for _, gy in group) / len(group)
+        result.append([round(nx, 4), round(ny, 4)])
+    return result, False
 
 
 def _canvas_candidates(page: Any, *, cols: int = 14, rows: int = 9) -> list[dict[str, Any]]:
@@ -177,21 +335,19 @@ def _canvas_candidates(page: Any, *, cols: int = 14, rows: int = 9) -> list[dict
                         x = box["x"] + (gx + 0.5) * box["width"] / cols
                         y = box["y"] + (gy + 0.5) * box["height"] / rows
                         page.mouse.move(x, y)
-                        page.wait_for_timeout(6)
+                        page.wait_for_timeout(4)
                         cursor = str(canvas.evaluate("el => getComputedStyle(el).cursor || el.style.cursor || ''") or "").lower()
                         if cursor in _POINTER_CURSORS:
                             active.add((gx, gy))
-                for group in _cluster_pointer_cells(active, cols, rows):
-                    if not group:
-                        continue
-                    nx = sum((gx + 0.5) / cols for gx, _ in group) / len(group)
-                    ny = sum((gy + 0.5) / rows for _, gy in group) / len(group)
-                    point = [round(nx, 3), round(ny, 3)]
-                    signature = f"canvas:{frame_index}:{canvas_index}:{point[0]:.3f}:{point[1]:.3f}"
+                points, probing = _pointer_probe_points(active, cols, rows)
+                for point in points:
+                    role = "canvas-probe" if probing else "canvas-zone"
+                    signature = f"{role}:{frame_index}:{canvas_index}:{point[0]:.4f}:{point[1]:.4f}"
                     result.append({
-                        "kind": "canvas", "frame": frame_index, "canvas_index": canvas_index,
-                        "signature": signature, "label": "canvas interactive zone", "role": "canvas-zone",
-                        "point": point,
+                        "kind": role, "frame": frame_index, "canvas_index": canvas_index,
+                        "signature": signature,
+                        "label": "canvas behavior probe" if probing else "canvas interactive zone",
+                        "role": role, "point": point,
                     })
             except Exception:
                 continue
@@ -201,13 +357,32 @@ def _canvas_candidates(page: Any, *, cols: int = 14, rows: int = 9) -> list[dict
 def scan_ui_candidates(page: Any) -> list[dict[str, Any]]:
     seen: set[str] = set()
     rows: list[dict[str, Any]] = []
-    for candidate in [*_dom_candidates(page), *_canvas_candidates(page)]:
+    semantic = [*_dom_candidates(page), *_scene_candidates(page)]
+    for candidate in semantic:
         signature = str(candidate.get("signature") or "")
-        if not signature or signature in seen:
+        if signature and signature not in seen:
+            seen.add(signature)
+            rows.append(candidate)
+    # Cursor probing is fallback evidence. Avoid duplicating a scene-graph hit at
+    # approximately the same location.
+    for candidate in _canvas_candidates(page):
+        point = candidate.get("point")
+        duplicate = False
+        if isinstance(point, list) and len(point) == 2:
+            for prior in rows:
+                p = prior.get("point")
+                if prior.get("frame") == candidate.get("frame") and isinstance(p, list) and len(p) == 2:
+                    if abs(float(p[0]) - float(point[0])) <= 0.035 and abs(float(p[1]) - float(point[1])) <= 0.035:
+                        duplicate = True
+                        break
+        if duplicate:
             continue
-        seen.add(signature)
-        rows.append(candidate)
-    return rows[:64]
+        signature = str(candidate.get("signature") or "")
+        if signature and signature not in seen:
+            seen.add(signature)
+            rows.append(candidate)
+    # Keep semantic candidates first; probes fill the remaining budget.
+    return rows[:96]
 
 
 def _install_dom_probe(context: Any) -> None:
@@ -246,14 +421,6 @@ def _dismiss_entry(page: Any) -> None:
             continue
 
 
-def _find_candidate(page: Any, wanted: dict[str, Any]) -> dict[str, Any] | None:
-    signature = str(wanted.get("signature") or "")
-    for candidate in scan_ui_candidates(page):
-        if candidate.get("signature") == signature:
-            return candidate
-    return None
-
-
 def _click_candidate(page: Any, candidate: dict[str, Any]) -> None:
     frame_index = int(candidate.get("frame") or 0)
     frames = list(page.frames)
@@ -264,7 +431,7 @@ def _click_candidate(page: Any, candidate: dict[str, Any]) -> None:
         locator = frame.locator(_DOM_SELECTOR).nth(int(candidate.get("dom_index") or 0))
         locator.click(timeout=1200, force=True)
         return
-    if candidate.get("kind") == "canvas":
+    if candidate.get("kind") in {"canvas-zone", "canvas-probe", "scene"}:
         canvas = frame.locator("canvas").nth(int(candidate.get("canvas_index") or 0))
         box = canvas.bounding_box(timeout=500)
         if not box:
@@ -286,16 +453,20 @@ def _session_launch_url(game: Game, timeout_s: float) -> str:
 
 
 def _run_path(
-    launch_url: str,
+    game: Game,
     path: tuple[dict[str, Any], ...],
-    tree: UIActionTree,
     *,
     timeout_s: float,
     headless: bool,
     stop_event: threading.Event,
-    progress: Progress,
-) -> tuple[str | None, list[dict[str, Any]], bool]:
+) -> tuple[UIActionTree, str | None, list[dict[str, Any]], bool]:
     from playwright.sync_api import sync_playwright
+
+    tree = UIActionTree("bgaming", game.slug, "bgaming-live-ui")
+    launch_url = _session_launch_url(game, timeout_s)
+    if not launch_url:
+        tree.unresolved("launch", "No fresh demo launch could be resolved for this session")
+        return tree, None, [], False
 
     events: list[dict[str, Any]] = []
     with sync_playwright() as playwright:
@@ -330,7 +501,7 @@ def _run_path(
             _dismiss_entry(page)
             page.wait_for_timeout(1200)
             if stop_event.is_set():
-                return None, [], False
+                return tree, None, [], False
 
             last_response = events[-1]["response"] if events else None
             server_state, available = _flow(last_response)
@@ -338,14 +509,14 @@ def _run_path(
             local_fp = "" if events else _candidate_fingerprint(current_candidates)
             state_id = tree.state(server_state, available, local_fingerprint=local_fp)
 
-            for depth, wanted in enumerate(path, start=1):
+            for wanted in path:
                 if stop_event.is_set():
-                    return state_id, [], False
+                    return tree, state_id, [], False
                 candidates = scan_ui_candidates(page)
                 found = next((value for value in candidates if value.get("signature") == wanted.get("signature")), None)
                 if found is None:
                     tree.unresolved(str(wanted.get("signature")), "UI candidate could not be replayed in fresh session")
-                    return state_id, candidates, False
+                    return tree, state_id, candidates, False
                 candidate_id = tree.candidate(state_id, found)
                 before_event_count = len(events)
                 before_fp = _candidate_fingerprint(candidates)
@@ -374,13 +545,26 @@ def _run_path(
                     state_id = next_state
                 else:
                     tree.mark_noise(candidate_id, "Interaction produced neither provider wire traffic nor a changed control surface")
-                    return state_id, after_candidates, False
+                    return tree, state_id, after_candidates, False
 
             final_candidates = scan_ui_candidates(page)
-            return state_id, final_candidates, True
+            return tree, state_id, final_candidates, True
         finally:
             context.close()
             browser.close()
+
+
+def _candidate_summary(candidates: list[dict[str, Any]]) -> str:
+    counts: dict[str, int] = {}
+    labels: list[str] = []
+    for value in candidates:
+        kind = str(value.get("kind") or "unknown")
+        counts[kind] = counts.get(kind, 0) + 1
+        label = str(value.get("label") or "").strip()
+        if label and label not in labels and label not in {"canvas behavior probe", "canvas interactive zone"}:
+            labels.append(label[:60])
+    kinds = ",".join(f"{key}={counts[key]}" for key in sorted(counts)) or "none"
+    return kinds + ("; labels=" + " | ".join(labels[:5]) if labels else "")
 
 
 def discover_game_ui_first(
@@ -392,12 +576,14 @@ def discover_game_ui_first(
     progress: Progress,
     max_paths: int = 64,
     max_depth: int = 10,
+    max_sessions: int = 3,
 ) -> DiscoveryResult:
-    """Explore one BGaming game strictly through fresh real-client sessions.
+    """Explore one BGaming game through independent real-client sessions.
 
-    Existing HTTP/exhaustive execution is intentionally untouched. Every branch is
-    replayed from a fresh browser session, so mutually exclusive choices can be
-    accumulated safely into one action tree.
+    UI First stays completely separate from HTTP/exhaustive farming. Mutually
+    exclusive branches are replayed from independent browser contexts/processes and
+    their evidence is merged only after each worker returns, so cookies/session ids
+    and round state are never shared between branches.
     """
     game_dir = provider.game_dir(game)
     artifact_dir = game_dir / "analysis" / "ui-first"
@@ -408,79 +594,115 @@ def discover_game_ui_first(
     summary_path = run_dir / "result.json"
     tree = UIActionTree("bgaming", game.slug, "bgaming-live-ui")
 
+    # Fail fast before spawning several browsers if no demo is resolvable at all.
     progress(f"[{game.name}] UI FIRST: resolviendo demo fresco...")
-    launch_url = _session_launch_url(game, timeout_s)
-    if not launch_url:
+    initial_launch = _session_launch_url(game, timeout_s)
+    if not initial_launch:
         result = DiscoveryResult("SIN_DEMO", game.slug, error="No se pudo resolver un launch demo fresco.")
         atomic_write(summary_path, result.to_dict())
         return result
 
     headless = os.environ.get("TESTER_SPIN_UI_FIRST_HEADLESS", "1").strip().lower() not in {"0", "false", "no"}
+    max_sessions = max(1, min(int(max_sessions), 8))
     queue: deque[tuple[dict[str, Any], ...]] = deque([tuple()])
     queued = {tuple()}
-    processed = 0
+    submitted = 0
+    completed = 0
     frontier_exhausted = True
 
-    progress(f"[{game.name}] UI FIRST: explorando cliente real; max_paths={max_paths}, max_depth={max_depth}, headless={headless}.")
-    while queue and not stop_event.is_set():
-        if processed >= max_paths:
-            frontier_exhausted = False
-            tree.unresolved("frontier", f"Exploration stopped at max_paths={max_paths}")
-            break
-        path = queue.popleft()
-        processed += 1
-        try:
-            state_id, candidates, replay_ok = _run_path(
-                launch_url, path, tree, timeout_s=timeout_s, headless=headless,
-                stop_event=stop_event, progress=progress,
-            )
-        except Exception as exc:
-            tree.unresolved("path:" + "/".join(str(item.get("signature")) for item in path),
-                            "Browser replay failed: " + type(exc).__name__)
-            progress(f"[{game.name}] UI FIRST path {processed}: {type(exc).__name__}")
-            continue
-        if state_id is None:
-            continue
-        progress(f"[{game.name}] UI FIRST path {processed}: depth={len(path)}, candidates={len(candidates)}")
-        if len(path) >= max_depth:
-            if candidates:
+    progress(
+        f"[{game.name}] UI FIRST: explorando cliente real; max_paths={max_paths}, max_depth={max_depth}, "
+        f"sessions={max_sessions}, headless={headless}."
+    )
+    with ThreadPoolExecutor(max_workers=max_sessions, thread_name_prefix="bgaming-ui-first") as pool:
+        while queue and not stop_event.is_set():
+            if submitted >= max_paths:
                 frontier_exhausted = False
-                tree.unresolved(state_id, f"UI depth guard reached ({max_depth})")
-            continue
-        for candidate in candidates:
-            cid = tree.candidate(state_id, candidate)
-            if is_provider_chrome_candidate(candidate):
-                tree.mark_provider_chrome(cid, "Known BGaming chrome/control unrelated to game-state wagering")
-                continue
-            row = tree.data["candidates"][cid]
-            if row.get("classification") in {"action", "local_action", "provider_chrome", "no_effect"}:
-                continue
-            next_path = (*path, candidate)
-            signature_path = tuple(str(item.get("signature")) for item in next_path)
-            if signature_path in queued:
-                continue
-            queued.add(signature_path)
-            queue.append(next_path)
+                tree.unresolved("frontier", f"Exploration stopped at max_paths={max_paths}")
+                break
+
+            batch: list[tuple[int, tuple[dict[str, Any], ...]]] = []
+            while queue and len(batch) < max_sessions and submitted < max_paths:
+                path = queue.popleft()
+                submitted += 1
+                batch.append((submitted, path))
+
+            futures = {
+                pool.submit(
+                    _run_path, game, path, timeout_s=timeout_s, headless=headless, stop_event=stop_event
+                ): (sequence, path)
+                for sequence, path in batch
+            }
+            for future in as_completed(futures):
+                sequence, path = futures[future]
+                completed += 1
+                try:
+                    fragment, state_id, candidates, replay_ok = future.result()
+                    tree.merge(fragment)
+                except Exception as exc:
+                    tree.unresolved(
+                        "path:" + "/".join(str(item.get("signature")) for item in path),
+                        "Browser replay failed: " + type(exc).__name__,
+                    )
+                    progress(f"[{game.name}] UI FIRST path {sequence}: {type(exc).__name__}")
+                    continue
+                if state_id is None:
+                    progress(f"[{game.name}] UI FIRST path {sequence}: no state; fresh launch unresolved")
+                    continue
+                state_row = tree.data["states"].get(state_id, {})
+                progress(
+                    f"[{game.name}] UI FIRST path {sequence}: depth={len(path)}, candidates={len(candidates)}, "
+                    f"state={state_row.get('server_state')}, actions={state_row.get('available_actions')}, "
+                    f"{_candidate_summary(candidates)}"
+                )
+                if len(path) >= max_depth:
+                    if candidates:
+                        frontier_exhausted = False
+                        tree.unresolved(state_id, f"UI depth guard reached ({max_depth})")
+                    continue
+                for candidate in candidates:
+                    cid = tree.candidate(state_id, candidate)
+                    if is_provider_chrome_candidate(candidate):
+                        tree.mark_provider_chrome(cid, "Known BGaming chrome/control unrelated to game-state wagering")
+                        continue
+                    row = tree.data["candidates"][cid]
+                    if row.get("classification") in {"action", "local_action", "provider_chrome", "no_effect"}:
+                        continue
+                    next_path = (*path, candidate)
+                    signature_path = tuple(str(item.get("signature")) for item in next_path)
+                    if signature_path in queued:
+                        continue
+                    queued.add(signature_path)
+                    queue.append(next_path)
 
     if stop_event.is_set():
         frontier_exhausted = False
         tree.unresolved("frontier", "Discovery stopped by user")
+    if queue:
+        frontier_exhausted = False
 
     payload = persist_ui_action_tree(
-        artifact_dir / "action-tree.json", tree, run_key=stamp, frontier_exhausted=frontier_exhausted and not queue
+        artifact_dir / "action-tree.json", tree, run_key=stamp,
+        frontier_exhausted=frontier_exhausted and not queue,
     )
     atomic_write(run_dir / "action-tree.json", payload)
     coverage = payload.get("coverage") or {}
+    active_unresolved = int(coverage.get("unresolved_server_actions") or 0) + int(coverage.get("untried") or 0)
+    if not coverage.get("frontier_exhausted"):
+        active_unresolved += 1
     result = DiscoveryResult(
         "READY" if coverage.get("ready_for_farming") else "PARCIAL",
         game.slug,
         artifact=str(artifact_dir / "action-tree.json"),
         states=int(coverage.get("states") or 0),
         actions=int(coverage.get("actions") or 0),
-        unresolved=int(coverage.get("unresolved_server_actions") or 0) + len(payload.get("unresolved") or {}),
+        unresolved=active_unresolved,
         ready_for_farming=bool(coverage.get("ready_for_farming")),
     )
-    atomic_write(summary_path, {**result.to_dict(), "finished_at": utc_now_iso(), "processed_paths": processed})
+    atomic_write(summary_path, {
+        **result.to_dict(), "finished_at": utc_now_iso(),
+        "submitted_paths": submitted, "completed_paths": completed, "max_sessions": max_sessions,
+    })
     progress(
         f"[{game.name}] UI FIRST {result.status}: states={result.states}, actions={result.actions}, "
         f"unresolved={result.unresolved}, ready_for_farming={result.ready_for_farming}."
@@ -488,4 +710,7 @@ def discover_game_ui_first(
     return result
 
 
-__all__ = ["DiscoveryResult", "discover_game_ui_first", "is_provider_chrome_candidate", "scan_ui_candidates"]
+__all__ = [
+    "DiscoveryResult", "discover_game_ui_first", "is_provider_chrome_candidate",
+    "scan_ui_candidates", "_cluster_pointer_cells", "_pointer_probe_points",
+]
