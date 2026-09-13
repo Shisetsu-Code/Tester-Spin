@@ -1,0 +1,1242 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T09:06:37+00:00",
+  "source_commit": "210300dc65a3673fe93c04009077090b7321c07c",
+  "provider": "bgaming",
+  "game": {
+    "slug": "aztecs-claw-wild-dice",
+    "name": "Aztec's Claw Wild Dice",
+    "symbol": "AztecsClawWildDice",
+    "url": "https://demo.bgaming-network.com/play/AztecsClawWildDice/FUN"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "aztecs-claw-wild-dice",
+    "game_name": "Aztec's Claw Wild Dice",
+    "game_url": "https://demo.bgaming-network.com/play/AztecsClawWildDice/FUN",
+    "requested_spins": 2,
+    "successful_spins": 1,
+    "failed_spins": 1,
+    "status": "PARCIAL",
+    "symbol": "AztecsClawWildDice",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": true,
+        "validated": true,
+        "executable": true,
+        "discovery_state": "VALIDATED",
+        "wire_method": "play",
+        "request_options": {
+          "bet_type": "bet"
+        },
+        "source": "selected-har"
+      },
+      {
+        "id": "PURCHASE_BUY_BONUS",
+        "kind": "PURCHASE",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "REJECTED_51100",
+        "wire_method": "play",
+        "request_options": {
+          "bet_type": "bet",
+          "purchased_feature": "buy_bonus"
+        },
+        "source": "game_bundle_source"
+      }
+    ],
+    "started_at": "2026-09-13T09:06:26+00:00",
+    "finished_at": "2026-09-13T09:06:37+00:00",
+    "elapsed_ms": 10500.0,
+    "error": "BGaming HyperHive respondió 1/2; modos validados=1/2. Errores: HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'} Cobertura de ramificaciones pendiente: PURCHASE_BUY_BONUS -> ['PURCHASE_BUY_BONUS'].",
+    "run_dir": "2026-09-13_06-06-26-bgaming-hyperhive-jsonrpc",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": true,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": 200,
+        "elapsed_ms": 437.0000000017171,
+        "symbol": "AztecsClawWildDice",
+        "endpoint": "https://aztecs-claw-wild-dice.demo.bgaming-network.com/api",
+        "na": "",
+        "terminal": true,
+        "wire_steps": 1,
+        "warning": "",
+        "error": "",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Aztec's Claw Wild Dice\\tests\\2026-09-13_06-06-26-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+      },
+      {
+        "number": 1,
+        "ok": false,
+        "mode_id": "PURCHASE_BUY_BONUS",
+        "mode_kind": "PURCHASE",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": null,
+        "elapsed_ms": 265.99999999962165,
+        "symbol": "AztecsClawWildDice",
+        "endpoint": "https://aztecs-claw-wild-dice.demo.bgaming-network.com/api",
+        "na": "",
+        "terminal": false,
+        "wire_steps": 0,
+        "warning": "",
+        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Aztec's Claw Wild Dice\\tests\\2026-09-13_06-06-26-bgaming-hyperhive-jsonrpc\\PURCHASE_BUY_BONUS\\attempt-001"
+      }
+    ]
+  },
+  "artifact_bytes_embedded": 27398,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 1452,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "aztecs-claw-wild-dice",
+          "name": "Aztec's Claw Wild Dice",
+          "identifier": "AztecsClawWildDice"
+        },
+        "generated_at": "2026-09-13T09:06:37+00:00",
+        "source_run": "2026-09-13_06-06-26-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [
+          {
+            "id": "CASE_0001",
+            "source_state": "READY",
+            "request_contract": "RPC_PLAY",
+            "request_selector_vectors_observed": [
+              {
+                "bet_type": "bet"
+              }
+            ],
+            "accepted_outcome": "RPC_PLAY__TO__READY",
+            "expected_target_state": "READY",
+            "response_schema": "response-schemas/rpc_play__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 1373,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "aztecs-claw-wild-dice",
+          "name": "Aztec's Claw Wild Dice",
+          "identifier": "AztecsClawWildDice"
+        },
+        "generated_at": "2026-09-13T09:06:37+00:00",
+        "source_run": "2026-09-13_06-06-26-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {
+          "READY": {
+            "RPC_PLAY": {
+              "wire_action": "play",
+              "selector_domains_observed": {
+                "bet_type": [
+                  "bet"
+                ]
+              },
+              "selector_vectors_observed": [
+                {
+                  "bet_type": "bet"
+                }
+              ],
+              "outcomes": [
+                {
+                  "id": "RPC_PLAY__TO__READY",
+                  "target_state": [
+                    "READY"
+                  ],
+                  "response_schema": "response-schemas/rpc_play__to__ready.json",
+                  "terminal_observed": true,
+                  "math_probability_known": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "contract-diagnostic.json": {
+      "encoding": "json",
+      "bytes": 733,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "script_urls": [
+          "https://aztecs-claw-wild-dice.demo.bgaming-network.com/wg-boost/wrapper.js",
+          "https://aztecs-claw-wild-dice.demo.bgaming-network.com/wg-boost/analytics/amplitude.js",
+          "https://aztecs-claw-wild-dice.demo.bgaming-network.com/wg-replays/replays.js",
+          "https://aztecs-claw-wild-dice.demo.bgaming-network.com/js/AZTECS_CLAW_WILD_DICE-30fb455c.js"
+        ],
+        "bundle_sha256": "",
+        "engine_sha256": "ec2c3cc21dd365168e2a5c4c6734e300b88b44d7fcab3c52cef982102cc9d8eb",
+        "rpc_id_profile": "uuid",
+        "action_vocabulary": [
+          "init"
+        ],
+        "base_request": {
+          "bet_type": "bet"
+        },
+        "custom_req_profile": "",
+        "base_discovery_state": "HAR_OBSERVED"
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 4278,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "aztecs-claw-wild-dice",
+          "name": "Aztec's Claw Wild Dice",
+          "identifier": "AztecsClawWildDice"
+        },
+        "generated_at": "2026-09-13T09:06:37+00:00",
+        "source_run": "2026-09-13_06-06-26-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "RPC_PLAY",
+            "transport": "HTTP_JSONRPC_2.0",
+            "wire_action": "play",
+            "selector_domains_observed": {
+              "bet_type": [
+                "bet"
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "bet_type": "bet"
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "7e7ccc70-0a1a-4ead-a884-820122169940"
+                  ]
+                },
+                "jsonrpc": {
+                  "type": "string",
+                  "observed_enum": [
+                    "2.0"
+                  ]
+                },
+                "method": {
+                  "type": "string",
+                  "observed_enum": [
+                    "play"
+                  ]
+                },
+                "params": {
+                  "type": "object",
+                  "properties": {
+                    "req": {
+                      "type": "object",
+                      "properties": {
+                        "bet": {
+                          "type": "integer"
+                        },
+                        "bet_type": {
+                          "type": "string",
+                          "observed_enum": [
+                            "bet"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "bet",
+                        "bet_type"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "token": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "req",
+                    "token"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "id",
+                "jsonrpc",
+                "method",
+                "params"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.id",
+              "$.params.token"
+            ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "selected-har"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "dispatch": {
+          "READY": {
+            "RPC_PLAY": [
+              "RPC_PLAY__TO__READY"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 142,
+      "value": {
+        "id": "8d10a84d-f3d4-4ed1-bf12-acca6dd6eb1d",
+        "jsonrpc": "2.0",
+        "method": "init",
+        "params": {
+          "token": "<redacted>"
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1610,
+      "value": {
+        "id": "8d10a84d-f3d4-4ed1-bf12-acca6dd6eb1d",
+        "jsonrpc": "2.0",
+        "result": {
+          "freebets": null,
+          "currency": "FUN",
+          "currency_attributes": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "locale": "en",
+          "config": {
+            "rtp": "96",
+            "displayed_rtp": "96.10",
+            "bet_limits": [
+              20,
+              40,
+              60,
+              80,
+              100,
+              140,
+              200,
+              300,
+              400,
+              500,
+              700,
+              1000,
+              1500,
+              2000,
+              2500,
+              3000,
+              4000
+            ],
+            "freebets_limits": [
+              20,
+              40,
+              60,
+              80,
+              100,
+              140,
+              200,
+              300,
+              400,
+              500,
+              700,
+              1000,
+              1500,
+              2000,
+              2500,
+              3000,
+              4000
+            ],
+            "default_bet": 100,
+            "purchased_features": [],
+            "autospin_variant": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "quick_spins_enabled": false
+          },
+          "state": null,
+          "urls": {
+            "deposit_url": null,
+            "return_url": null,
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzMzA4NjIsImd0X2lkIjo0MzY1Mzk5fSwiZXhwIjoxODA0OTI4Nzk2fQ.uLmNmLflDVCbVpzG-OGRp4aw01EmDKZD1Lbb2yMGEJ0"
+          },
+          "balance": 100000,
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 1316,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "aztecs-claw-wild-dice",
+          "name": "Aztec's Claw Wild Dice",
+          "identifier": "AztecsClawWildDice"
+        },
+        "generated_at": "2026-09-13T09:06:37+00:00",
+        "source_run": "2026-09-13_06-06-26-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": [
+          {
+            "id": "RPC_PLAY__TO__READY",
+            "kind": "BASE_OR_FEATURE_ENTRY",
+            "request_contract": "RPC_PLAY",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "READY"
+            ],
+            "provider_states": [
+              "final"
+            ],
+            "available_actions": [],
+            "terminal_observed": true,
+            "observed_count": 1,
+            "response_schema": "response-schemas/rpc_play__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 507,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "aztecs-claw-wild-dice",
+        "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "PURCHASE_BUY_BONUS",
+            "signature": "PURCHASE_BUY_BONUS:UNEXECUTED",
+            "required": [
+              "PURCHASE_BUY_BONUS"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_BUY_BONUS"
+            ],
+            "complete": false
+          }
+        ],
+        "complete": false,
+        "missing_count": 1
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 4278,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "aztecs-claw-wild-dice",
+          "name": "Aztec's Claw Wild Dice",
+          "identifier": "AztecsClawWildDice"
+        },
+        "generated_at": "2026-09-13T09:06:37+00:00",
+        "source_run": "2026-09-13_06-06-26-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "RPC_PLAY",
+            "transport": "HTTP_JSONRPC_2.0",
+            "wire_action": "play",
+            "selector_domains_observed": {
+              "bet_type": [
+                "bet"
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "bet_type": "bet"
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "7e7ccc70-0a1a-4ead-a884-820122169940"
+                  ]
+                },
+                "jsonrpc": {
+                  "type": "string",
+                  "observed_enum": [
+                    "2.0"
+                  ]
+                },
+                "method": {
+                  "type": "string",
+                  "observed_enum": [
+                    "play"
+                  ]
+                },
+                "params": {
+                  "type": "object",
+                  "properties": {
+                    "req": {
+                      "type": "object",
+                      "properties": {
+                        "bet": {
+                          "type": "integer"
+                        },
+                        "bet_type": {
+                          "type": "string",
+                          "observed_enum": [
+                            "bet"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "bet",
+                        "bet_type"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "token": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "req",
+                    "token"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "id",
+                "jsonrpc",
+                "method",
+                "params"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.id",
+              "$.params.token"
+            ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "selected-har"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "dispatch": {
+          "READY": {
+            "RPC_PLAY": [
+              "RPC_PLAY__TO__READY"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "PURCHASE_BUY_BONUS/attempt-001/rpc-error-request.json": {
+      "encoding": "json",
+      "bytes": 282,
+      "value": {
+        "id": "80d9ec74-b9ab-408a-a9a7-f7b6d7d7991a",
+        "jsonrpc": "2.0",
+        "method": "play",
+        "params": {
+          "token": "<redacted>",
+          "req": {
+            "bet": 100,
+            "bet_type": "bet",
+            "purchased_feature": "buy_bonus"
+          },
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "PURCHASE_BUY_BONUS/attempt-001/rpc-error-response.json": {
+      "encoding": "json",
+      "bytes": 136,
+      "value": {
+        "id": "x",
+        "jsonrpc": "2.0",
+        "error": {
+          "code": 51100,
+          "message": "Something went wrong. Refresh the page."
+        }
+      }
+    },
+    "response-schemas/rpc_play__to__ready.json": {
+      "encoding": "json",
+      "bytes": 4476,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "RPC_PLAY__TO__READY",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "observed_enum": [
+                "7e7ccc70-0a1a-4ead-a884-820122169940"
+              ]
+            },
+            "jsonrpc": {
+              "type": "string",
+              "observed_enum": [
+                "2.0"
+              ]
+            },
+            "result": {
+              "type": "object",
+              "properties": {
+                "balance": {
+                  "type": "integer"
+                },
+                "final": {
+                  "type": "boolean",
+                  "observed_values": [
+                    true
+                  ]
+                },
+                "freebets": {
+                  "type": "null"
+                },
+                "resp": {
+                  "type": "object",
+                  "properties": {
+                    "final_result": {
+                      "type": "boolean",
+                      "observed_values": [
+                        true
+                      ]
+                    },
+                    "game_type": {
+                      "type": "string",
+                      "observed_enum": [
+                        "AZTECS_CLAW_WILD_DICE"
+                      ]
+                    },
+                    "max_win": {
+                      "type": "boolean",
+                      "observed_values": [
+                        false
+                      ]
+                    },
+                    "multiplier": {
+                      "type": "integer"
+                    },
+                    "reels_result": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "win": {
+                      "type": "boolean",
+                      "observed_values": [
+                        true
+                      ]
+                    },
+                    "win_amount": {
+                      "type": "integer"
+                    },
+                    "win_lines": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "full_line": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          },
+                          "line": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          },
+                          "line_index": {
+                            "type": "integer"
+                          },
+                          "win_amount": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "full_line",
+                          "line",
+                          "line_index",
+                          "win_amount"
+                        ],
+                        "additionalProperties": true
+                      }
+                    },
+                    "win_type": {
+                      "type": "string",
+                      "observed_enum": [
+                        "DEFAULT"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "final_result",
+                    "game_type",
+                    "max_win",
+                    "multiplier",
+                    "reels_result",
+                    "win",
+                    "win_amount",
+                    "win_lines",
+                    "win_type"
+                  ],
+                  "additionalProperties": true
+                },
+                "state_lock": {
+                  "type": "string",
+                  "observed_enum": [
+                    "<redacted>"
+                  ]
+                }
+              },
+              "required": [
+                "balance",
+                "final",
+                "freebets",
+                "resp",
+                "state_lock"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "id",
+            "jsonrpc",
+            "result"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.id",
+          "$.result.balance",
+          "$.result.resp.max_win",
+          "$.result.resp.win",
+          "$.result.resp.win_amount",
+          "$.result.resp.win_lines[0].win_amount",
+          "$.result.resp.win_lines[1].win_amount",
+          "$.result.resp.win_lines[2].win_amount",
+          "$.result.resp.win_lines[3].win_amount",
+          "$.result.resp.win_type",
+          "$.result.state_lock"
+        ]
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 3023,
+      "value": {
+        "provider": "bgaming",
+        "slug": "aztecs-claw-wild-dice",
+        "game_name": "Aztec's Claw Wild Dice",
+        "game_url": "https://demo.bgaming-network.com/play/AztecsClawWildDice/FUN",
+        "requested_spins": 2,
+        "successful_spins": 1,
+        "failed_spins": 1,
+        "status": "PARCIAL",
+        "symbol": "AztecsClawWildDice",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": true,
+            "validated": true,
+            "executable": true,
+            "discovery_state": "VALIDATED",
+            "wire_method": "play",
+            "request_options": {
+              "bet_type": "bet"
+            },
+            "source": "selected-har"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "REJECTED_51100",
+            "wire_method": "play",
+            "request_options": {
+              "bet_type": "bet",
+              "purchased_feature": "buy_bonus"
+            },
+            "source": "game_bundle_source"
+          }
+        ],
+        "started_at": "2026-09-13T09:06:26+00:00",
+        "finished_at": "2026-09-13T09:06:37+00:00",
+        "elapsed_ms": 10500.0,
+        "error": "BGaming HyperHive respondió 1/2; modos validados=1/2. Errores: HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'} Cobertura de ramificaciones pendiente: PURCHASE_BUY_BONUS -> ['PURCHASE_BUY_BONUS'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Aztec's Claw Wild Dice\\tests\\2026-09-13_06-06-26-bgaming-hyperhive-jsonrpc",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": true,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 437.0000000017171,
+            "symbol": "AztecsClawWildDice",
+            "endpoint": "https://aztecs-claw-wild-dice.demo.bgaming-network.com/api",
+            "na": "",
+            "terminal": true,
+            "wire_steps": 1,
+            "warning": "",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Aztec's Claw Wild Dice\\tests\\2026-09-13_06-06-26-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+          },
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "PURCHASE_BUY_BONUS",
+            "mode_kind": "PURCHASE",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": null,
+            "elapsed_ms": 265.99999999962165,
+            "symbol": "AztecsClawWildDice",
+            "endpoint": "https://aztecs-claw-wild-dice.demo.bgaming-network.com/api",
+            "na": "",
+            "terminal": false,
+            "wire_steps": 0,
+            "warning": "",
+            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Aztec's Claw Wild Dice\\tests\\2026-09-13_06-06-26-bgaming-hyperhive-jsonrpc\\PURCHASE_BUY_BONUS\\attempt-001"
+          }
+        ]
+      }
+    },
+    "SPIN/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 407,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "mode_id": "SPIN",
+        "steps": 1,
+        "before_balance": 100000.0,
+        "observed_debit": 100.0,
+        "final": true,
+        "balance": 100090,
+        "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
+        "round_step": null,
+        "bet": null,
+        "total_win": null,
+        "freespins": null,
+        "next_action": null,
+        "table_sha256": "",
+        "response_sha256": "4a08d180125fb88b"
+      }
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 208,
+      "value": {
+        "id": "7e7ccc70-0a1a-4ead-a884-820122169940",
+        "jsonrpc": "2.0",
+        "method": "play",
+        "params": {
+          "token": "<redacted>",
+          "req": {
+            "bet": 100,
+            "bet_type": "bet"
+          }
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 2040,
+      "value": {
+        "id": "7e7ccc70-0a1a-4ead-a884-820122169940",
+        "jsonrpc": "2.0",
+        "result": {
+          "final": true,
+          "resp": {
+            "game_type": "AZTECS_CLAW_WILD_DICE",
+            "win": true,
+            "final_result": true,
+            "reels_result": [
+              [
+                5,
+                5,
+                5,
+                5
+              ],
+              [
+                5,
+                5,
+                5,
+                8
+              ],
+              [
+                5,
+                7,
+                2,
+                1
+              ],
+              [
+                5,
+                4,
+                5,
+                8
+              ],
+              [
+                2,
+                5,
+                7,
+                4
+              ]
+            ],
+            "win_amount": 190,
+            "win_type": "DEFAULT",
+            "win_lines": [
+              {
+                "line": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "full_line": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "line_index": 0,
+                "win_amount": 50
+              },
+              {
+                "line": [
+                  0,
+                  1,
+                  0
+                ],
+                "full_line": [
+                  0,
+                  1,
+                  0,
+                  1,
+                  0
+                ],
+                "line_index": 5,
+                "win_amount": 20
+              },
+              {
+                "line": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "full_line": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "line_index": 11,
+                "win_amount": 100
+              },
+              {
+                "line": [
+                  2,
+                  1,
+                  0
+                ],
+                "full_line": [
+                  2,
+                  1,
+                  0,
+                  1,
+                  2
+                ],
+                "line_index": 19,
+                "win_amount": 20
+              }
+            ],
+            "multiplier": 1,
+            "max_win": false
+          },
+          "balance": 100090,
+          "freebets": null,
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 1137,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "aztecs-claw-wild-dice",
+          "name": "Aztec's Claw Wild Dice",
+          "identifier": "AztecsClawWildDice"
+        },
+        "generated_at": "2026-09-13T09:06:37+00:00",
+        "source_run": "2026-09-13_06-06-26-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {
+          "READY": {
+            "provider_states": [
+              "final"
+            ],
+            "allowed_wire_actions_observed": [
+              "play"
+            ],
+            "terminal_observed": true
+          }
+        },
+        "transitions": [
+          {
+            "source": "READY",
+            "request_contract": "RPC_PLAY",
+            "request_selector_vectors_observed": [
+              {
+                "bet_type": "bet"
+              }
+            ],
+            "outcome": "RPC_PLAY__TO__READY",
+            "target": "READY",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
