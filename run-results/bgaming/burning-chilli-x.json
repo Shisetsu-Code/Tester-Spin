@@ -1,0 +1,2911 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T09:17:34+00:00",
+  "source_commit": "c98ad4264ce542a06a267e2e6a013bad3a6ce216",
+  "provider": "bgaming",
+  "game": {
+    "slug": "burning-chilli-x",
+    "name": "Burning Chilli X",
+    "symbol": "BurningChilliX",
+    "url": "https://demo.bgaming-network.com/play/BurningChilliX/FUN?server=demo"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "burning-chilli-x",
+    "game_name": "Burning Chilli X",
+    "game_url": "https://demo.bgaming-network.com/play/BurningChilliX/FUN?server=demo",
+    "requested_spins": 1,
+    "successful_spins": 0,
+    "failed_spins": 1,
+    "status": "PARCIAL",
+    "symbol": "BurningChilliX",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": true,
+        "wire_command": "spin"
+      }
+    ],
+    "started_at": "2026-09-13T09:17:19+00:00",
+    "finished_at": "2026-09-13T09:17:34+00:00",
+    "elapsed_ms": 14655.99999999904,
+    "error": "BGaming respondió 1/1 intentos; modos terminales validados=0/1. Diagnóstico: bet devuelta=120, esperada=40.0, solicitada=40 | balance inconsistente: actual=99880, esperado=99960.0, debito=40.0",
+    "run_dir": "2026-09-13_06-17-19-bgaming-http-api-v2",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": false,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": 200,
+        "elapsed_ms": 296.9999999986612,
+        "symbol": "BurningChilliX",
+        "endpoint": "https://demo.bgaming-network.com/api/BurningChilliX/2366937/<session>",
+        "na": "closed",
+        "terminal": true,
+        "wire_steps": 1,
+        "warning": "bet devuelta=120, esperada=40.0, solicitada=40; balance inconsistente: actual=99880, esperado=99960.0, debito=40.0",
+        "error": "",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Burning Chilli X\\tests\\2026-09-13_06-17-19-bgaming-http-api-v2\\SPIN\\attempt-001"
+      }
+    ]
+  },
+  "artifact_bytes_embedded": 57168,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 1432,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "burning-chilli-x",
+          "name": "Burning Chilli X",
+          "identifier": "BurningChilliX"
+        },
+        "generated_at": "2026-09-13T09:17:34+00:00",
+        "source_run": "2026-09-13_06-17-19-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [
+          {
+            "id": "CASE_0001",
+            "source_state": "READY",
+            "request_contract": "SPIN",
+            "request_selector_vectors_observed": [
+              {
+                "mode": "60"
+              }
+            ],
+            "accepted_outcome": "SPIN__TO__READY",
+            "expected_target_state": "READY",
+            "response_schema": "response-schemas/spin__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 1348,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "burning-chilli-x",
+          "name": "Burning Chilli X",
+          "identifier": "BurningChilliX"
+        },
+        "generated_at": "2026-09-13T09:17:34+00:00",
+        "source_run": "2026-09-13_06-17-19-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {
+          "READY": {
+            "SPIN": {
+              "wire_action": "spin",
+              "selector_domains_observed": {
+                "mode": [
+                  "60"
+                ]
+              },
+              "selector_vectors_observed": [
+                {
+                  "mode": "60"
+                }
+              ],
+              "outcomes": [
+                {
+                  "id": "SPIN__TO__READY",
+                  "target_state": [
+                    "READY"
+                  ],
+                  "response_schema": "response-schemas/spin__to__ready.json",
+                  "terminal_observed": true,
+                  "math_probability_known": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "bootstrap.json": {
+      "encoding": "json",
+      "bytes": 6356,
+      "value": {
+        "identifier": "BurningChilliX",
+        "launch_url": "https://demo.bgaming-network.com/games/BurningChilliX/FUN",
+        "api_url": "https://demo.bgaming-network.com/api/BurningChilliX/2366937/<session>",
+        "options": {
+          "env": "production",
+          "csrfTokenHeaderName": "X-CSRF-Token",
+          "csrfTokenHeaderValue": "<redacted>",
+          "play_token": "<redacted>",
+          "game": "slots/burning_chilli_x",
+          "identifier": "BurningChilliX",
+          "title": "Burning Chilli X",
+          "currency": "FUN",
+          "balance_polling_interval": 30000,
+          "cache_id": "4783eb643bd6f53068f6913b163e09a27689bed9bed3c9cb16afeff4a894dd8b",
+          "cache_player_id": "1e688761b7f4024fcd15ca123e3022a58206fb13db72ed03b6426850c2c00c01",
+          "api": "https://demo.bgaming-network.com/api/BurningChilliX/2366937/<session>",
+          "rules_url": "https://rules.bgaming-network.com/en/BurningChilliX.json",
+          "deposit_url": null,
+          "games_page_url": "https://www.bgaming.com/games.html",
+          "history_url": null,
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09a0e-979e-707d-884b-1cb28dbdc363/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/BurningChilliX/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY1ODY4NTR9LCJleHAiOjE4MDQ5Mjk0NDJ9.hJ6JT7GDxW7_C6EzWWBVfCbupgodKvF7blOFPJNeNMg",
+          "websocket_url": "wss://demo.bgaming-network.com:443/cable",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=BurningChilliX&play_token=01a09a0e-979e-707d-884b-1cb28dbdc363&server_id=demo",
+          "ui": {
+            "home_button": true,
+            "full_screen_prompt": true,
+            "logo": "standard",
+            "skin": "basic",
+            "skins": [
+              "basic"
+            ],
+            "brand_logo": null,
+            "brand": {
+              "name": "",
+              "logo": null,
+              "logo_in_game": null
+            },
+            "autospins_dialog": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "gamble_enabled": true,
+            "show_rtp_in_rules": true
+          },
+          "resources_path": "https://cdn.bgaming-network.com/html/BurningChilliX",
+          "custom": {},
+          "actual_currency_rate": 0.0,
+          "sound_enabled": true,
+          "games_loader_source": "https://cdn.bgaming-network.com/html/BurningChilliX/loader.js?1789291042",
+          "game_bundle_source": "https://cdn.bgaming-network.com/html/BurningChilliX/bundle.js",
+          "provable_fair": {
+            "verify_url": "https://demo.bgaming-network.com/api/games/verify"
+          },
+          "math": {
+            "rtp": {
+              "main": 97.0,
+              "lines_100": 97.15,
+              "lines_80": 97.15,
+              "lines_60": 97.16,
+              "lines_40": 97.16,
+              "lines_20": 97.16
+            },
+            "gamble_limit": 3000,
+            "max_multiplier": 3000.0,
+            "max_win_freq": 42847936739570
+          },
+          "rules": {
+            "min_bet": 20,
+            "max_bet": 25000,
+            "currency": {
+              "code": "FUN",
+              "symbol": "FUN",
+              "subunits": 100,
+              "exponent": 2
+            }
+          },
+          "version": "2.0.0",
+          "growthbook_flags": {
+            "tech_analytics": {
+              "value": true,
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "tech_lobby_widget_position": {
+              "value": {
+                "desktop": "bottom",
+                "portrait": "top",
+                "landscape": "middle"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "growth_drop_init_popup_ui": {
+              "value": {
+                "id": 602,
+                "value": "A"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            }
+          },
+          "lobby_v2_options": {
+            "player_id": 345336598,
+            "lobby_enabled": false,
+            "drops_enabled": false,
+            "drops_token": "<redacted>",
+            "drops_api_url": "https://drops.bgaming-network.com/api/v1/",
+            "profile_enabled": false,
+            "profile_api_url": "https://loyalty-core.shared.bgaming-system.com/api/v1",
+            "profile_token": "<redacted>",
+            "gamelist_enabled": false,
+            "gamelist_api_url": "https://gamelist.bgaming-network.com",
+            "gamelist_token": "<redacted>",
+            "challenges_enabled": false,
+            "challenges_api_url": "https://challenges.bgaming-network.com/",
+            "challenges_token": "<redacted>",
+            "challenges_fe_script_url": "https://brush.bgaming-network.com/",
+            "quests_enabled": false,
+            "quests_api_url": null,
+            "quests_token": "<redacted>",
+            "shop_enabled": false,
+            "shop_api_url": "",
+            "shop_token": "<redacted>",
+            "growth_fe_url": ""
+          },
+          "server_id": "demo",
+          "locale": "en",
+          "actions": {
+            "deposit": null,
+            "return": null,
+            "history": {
+              "text": null,
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzMzY1OTgsImd0X2lkIjoyMzY2OTM3fSwiZXhwIjoxODA0OTI5NDQyfQ.MNVU68pbIVRWrJhDgTGUS7bmuzlmIXoLiPRIlSSv9Hs",
+              "mode": "open"
+            }
+          },
+          "show_paytable": false,
+          "license_rules": {
+            "rules_section": {
+              "show_license_requirements": false,
+              "license_requirement_show_purchase": false,
+              "license_requirement_show_autoplay": false,
+              "license_requirement_show_quick_spins": false,
+              "license_requirement_show_autospin_confirmation": false,
+              "license_requirement_reset_autospin": false,
+              "show_rtp": [
+                "main_rtp",
+                "chance_rtp",
+                "bonus_rtp"
+              ],
+              "show_gamble_round": true,
+              "show_min_max": false,
+              "show_max_win_frequency": false,
+              "show_max_multiplier": true,
+              "show_max_win_rules_text": null
+            },
+            "screen_section": {
+              "show_rtp_on_main_screen": false,
+              "show_max_win_frequency_on_main_screen": false,
+              "show_max_multiplier_on_main_screen": false
+            },
+            "lines_count": "60"
+          },
+          "open_page_method": "redirect",
+          "reset_bet_to_default": false,
+          "enable_chinese_logos": false,
+          "enable_quick_spins_by_default": null,
+          "purchased_feature_limit": null,
+          "pre_bet_balance_validation": false,
+          "available_games_to_switch": []
+        },
+        "round_series_id": 1789291040814
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 3011,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "burning-chilli-x",
+          "name": "Burning Chilli X",
+          "identifier": "BurningChilliX"
+        },
+        "generated_at": "2026-09-13T09:17:34+00:00",
+        "source_run": "2026-09-13_06-17-19-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "SPIN",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {
+              "mode": [
+                "60"
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "mode": "60"
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    },
+                    "mode": {
+                      "type": "string",
+                      "observed_enum": [
+                        "60"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bet",
+                    "mode"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {
+          "READY": {
+            "SPIN": [
+              "SPIN__TO__READY"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 88,
+      "value": {
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789291040814
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 17776,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            20,
+            40,
+            60,
+            80,
+            100,
+            160,
+            200,
+            300,
+            500,
+            700,
+            1000,
+            2000,
+            3000,
+            5000
+          ],
+          "default_bet": 40,
+          "paytable": {
+            "0": [
+              0,
+              0,
+              100,
+              400,
+              3000
+            ],
+            "1": [
+              0,
+              0,
+              40,
+              100,
+              400
+            ],
+            "2": [
+              0,
+              0,
+              20,
+              40,
+              300
+            ],
+            "3": [
+              0,
+              0,
+              20,
+              40,
+              300
+            ],
+            "4": [
+              0,
+              0,
+              10,
+              20,
+              100
+            ],
+            "5": [
+              0,
+              0,
+              10,
+              20,
+              100
+            ],
+            "6": [
+              0,
+              0,
+              4,
+              10,
+              50
+            ],
+            "7": [
+              0,
+              0,
+              2,
+              10,
+              250
+            ]
+          },
+          "paytables": {
+            "0": {
+              "default": [
+                0,
+                0,
+                100,
+                400,
+                3000
+              ]
+            },
+            "1": {
+              "default": [
+                0,
+                0,
+                40,
+                100,
+                400
+              ]
+            },
+            "2": {
+              "default": [
+                0,
+                0,
+                20,
+                40,
+                300
+              ]
+            },
+            "3": {
+              "default": [
+                0,
+                0,
+                20,
+                40,
+                300
+              ]
+            },
+            "4": {
+              "default": [
+                0,
+                0,
+                10,
+                20,
+                100
+              ]
+            },
+            "5": {
+              "default": [
+                0,
+                0,
+                10,
+                20,
+                100
+              ]
+            },
+            "6": {
+              "default": [
+                0,
+                0,
+                4,
+                10,
+                50
+              ]
+            },
+            "7": {
+              "scatter": [
+                0,
+                0,
+                2,
+                10,
+                250
+              ]
+            }
+          },
+          "special_symbols": [
+            {
+              "kind": "wild",
+              "symbol": "0"
+            },
+            {
+              "kind": "scatter",
+              "symbol": "7"
+            }
+          ],
+          "lines": [
+            [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              3,
+              3,
+              3,
+              3
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              2,
+              3,
+              3,
+              3,
+              2
+            ],
+            [
+              2,
+              1,
+              2,
+              1,
+              2
+            ],
+            [
+              1,
+              2,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              3,
+              2,
+              3,
+              2,
+              3
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              3,
+              3,
+              2,
+              3,
+              3
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              3,
+              3,
+              1,
+              3,
+              3
+            ],
+            [
+              0,
+              0,
+              3,
+              0,
+              0
+            ],
+            [
+              3,
+              3,
+              0,
+              3,
+              3
+            ],
+            [
+              1,
+              1,
+              2,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              1,
+              2,
+              2
+            ],
+            [
+              0,
+              3,
+              0,
+              3,
+              0
+            ],
+            [
+              3,
+              0,
+              3,
+              0,
+              3
+            ],
+            [
+              1,
+              0,
+              1,
+              0,
+              1
+            ],
+            [
+              2,
+              3,
+              2,
+              3,
+              2
+            ],
+            [
+              1,
+              2,
+              3,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              0,
+              1,
+              2
+            ],
+            [
+              1,
+              0,
+              1,
+              2,
+              3
+            ],
+            [
+              0,
+              1,
+              2,
+              3,
+              2
+            ],
+            [
+              1,
+              1,
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              1,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              3,
+              2
+            ],
+            [
+              2,
+              2,
+              2,
+              1,
+              2
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              2,
+              2,
+              2
+            ],
+            [
+              2,
+              2,
+              1,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              3,
+              3,
+              3
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              1,
+              1,
+              2
+            ],
+            [
+              1,
+              1,
+              0,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              3,
+              2,
+              2
+            ],
+            [
+              0,
+              1,
+              2,
+              3,
+              3
+            ],
+            [
+              3,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1,
+              1
+            ],
+            [
+              3,
+              3,
+              2,
+              2,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              3,
+              3,
+              3,
+              2,
+              3
+            ],
+            [
+              0,
+              0,
+              1,
+              2,
+              3
+            ],
+            [
+              3,
+              3,
+              2,
+              1,
+              0
+            ],
+            [
+              1,
+              1,
+              3,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              0,
+              2,
+              2
+            ],
+            [
+              0,
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              3,
+              2,
+              2,
+              2,
+              3
+            ],
+            [
+              0,
+              3,
+              3,
+              2,
+              1
+            ],
+            [
+              3,
+              0,
+              0,
+              1,
+              2
+            ],
+            [
+              2,
+              3,
+              1,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              2,
+              1,
+              3
+            ],
+            [
+              0,
+              2,
+              0,
+              3,
+              1
+            ],
+            [
+              3,
+              1,
+              3,
+              0,
+              2
+            ],
+            [
+              1,
+              2,
+              0,
+              1,
+              3
+            ],
+            [
+              2,
+              1,
+              3,
+              2,
+              0
+            ],
+            [
+              1,
+              2,
+              3,
+              0,
+              1
+            ],
+            [
+              2,
+              1,
+              0,
+              3,
+              2
+            ],
+            [
+              1,
+              1,
+              2,
+              0,
+              3
+            ],
+            [
+              2,
+              2,
+              1,
+              3,
+              0
+            ],
+            [
+              1,
+              1,
+              3,
+              2,
+              0
+            ],
+            [
+              2,
+              2,
+              0,
+              1,
+              3
+            ],
+            [
+              0,
+              0,
+              3,
+              1,
+              2
+            ],
+            [
+              3,
+              3,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              3,
+              0,
+              1,
+              2
+            ],
+            [
+              1,
+              0,
+              3,
+              2,
+              1
+            ],
+            [
+              2,
+              3,
+              2,
+              1,
+              0
+            ],
+            [
+              0,
+              1,
+              2,
+              2,
+              3
+            ],
+            [
+              0,
+              0,
+              2,
+              3,
+              1
+            ],
+            [
+              3,
+              3,
+              1,
+              0,
+              2
+            ],
+            [
+              0,
+              1,
+              3,
+              2,
+              0
+            ],
+            [
+              3,
+              2,
+              0,
+              1,
+              3
+            ],
+            [
+              0,
+              2,
+              1,
+              3,
+              1
+            ],
+            [
+              3,
+              1,
+              2,
+              0,
+              1
+            ],
+            [
+              0,
+              2,
+              2,
+              3,
+              1
+            ],
+            [
+              3,
+              1,
+              1,
+              0,
+              2
+            ],
+            [
+              2,
+              3,
+              3,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              2,
+              3
+            ],
+            [
+              0,
+              2,
+              3,
+              3,
+              1
+            ],
+            [
+              3,
+              1,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              3,
+              0,
+              2,
+              1
+            ],
+            [
+              3,
+              0,
+              3,
+              1,
+              2
+            ],
+            [
+              1,
+              3,
+              0,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              3,
+              1,
+              3
+            ],
+            [
+              1,
+              3,
+              1,
+              0,
+              2
+            ],
+            [
+              2,
+              0,
+              2,
+              3,
+              1
+            ],
+            [
+              0,
+              3,
+              1,
+              2,
+              1
+            ],
+            [
+              3,
+              0,
+              2,
+              1,
+              2
+            ],
+            [
+              1,
+              2,
+              3,
+              3,
+              0
+            ],
+            [
+              2,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              1,
+              2,
+              1,
+              0,
+              3
+            ],
+            [
+              2,
+              1,
+              2,
+              3,
+              0
+            ],
+            [
+              0,
+              3,
+              3,
+              1,
+              2
+            ],
+            [
+              3,
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2,
+              1,
+              2
+            ],
+            [
+              3,
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              1,
+              2,
+              0,
+              0,
+              3
+            ],
+            [
+              2,
+              1,
+              3,
+              3,
+              0
+            ]
+          ],
+          "reels": {
+            "main": [
+              [
+                "2",
+                "1",
+                "1",
+                "1",
+                "1",
+                "6",
+                "6",
+                "6",
+                "6",
+                "3",
+                "3",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "0",
+                "0",
+                "0",
+                "0",
+                "5",
+                "5",
+                "5",
+                "5",
+                "1",
+                "1",
+                "1",
+                "1",
+                "4",
+                "4",
+                "4",
+                "4",
+                "2",
+                "2",
+                "2",
+                "2",
+                "4",
+                "4",
+                "4",
+                "4",
+                "0",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "7",
+                "1",
+                "1",
+                "1",
+                "1",
+                "6",
+                "6",
+                "6",
+                "6",
+                "5",
+                "5",
+                "5",
+                "5",
+                "3",
+                "3",
+                "3",
+                "3",
+                "0",
+                "0",
+                "0",
+                "3",
+                "3",
+                "3",
+                "3",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "2",
+                "2",
+                "2",
+                "2",
+                "5",
+                "5",
+                "5",
+                "5",
+                "4",
+                "4",
+                "4",
+                "4",
+                "2",
+                "2",
+                "2"
+              ],
+              [
+                "4",
+                "3",
+                "3",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "3",
+                "3",
+                "3",
+                "3",
+                "4",
+                "4",
+                "4",
+                "4",
+                "0",
+                "0",
+                "0",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "6",
+                "6",
+                "6",
+                "6",
+                "2",
+                "2",
+                "2",
+                "2",
+                "0",
+                "0",
+                "2",
+                "2",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "1",
+                "1",
+                "1",
+                "1",
+                "5",
+                "5",
+                "5",
+                "5",
+                "1",
+                "1",
+                "1",
+                "1",
+                "5",
+                "5",
+                "5",
+                "5",
+                "0",
+                "0",
+                "0",
+                "5",
+                "5",
+                "5",
+                "5",
+                "3",
+                "3",
+                "3",
+                "3",
+                "7",
+                "4",
+                "4",
+                "4",
+                "4",
+                "1",
+                "1",
+                "1",
+                "1",
+                "6",
+                "6",
+                "6",
+                "6",
+                "2",
+                "2",
+                "2",
+                "2",
+                "4",
+                "4",
+                "4"
+              ],
+              [
+                "4",
+                "0",
+                "0",
+                "0",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "3",
+                "3",
+                "3",
+                "3",
+                "4",
+                "4",
+                "4",
+                "4",
+                "2",
+                "2",
+                "2",
+                "2",
+                "0",
+                "0",
+                "6",
+                "6",
+                "6",
+                "1",
+                "1",
+                "1",
+                "1",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "1",
+                "1",
+                "1",
+                "2",
+                "2",
+                "2",
+                "2",
+                "5",
+                "5",
+                "5",
+                "5",
+                "0",
+                "0",
+                "0",
+                "5",
+                "5",
+                "5",
+                "7",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "3",
+                "6",
+                "6",
+                "6",
+                "1",
+                "1",
+                "1",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "2",
+                "4",
+                "4"
+              ],
+              [
+                "2",
+                "4",
+                "4",
+                "4",
+                "0",
+                "0",
+                "0",
+                "0",
+                "5",
+                "5",
+                "5",
+                "1",
+                "1",
+                "1",
+                "1",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "3",
+                "3",
+                "6",
+                "6",
+                "6",
+                "6",
+                "2",
+                "2",
+                "2",
+                "0",
+                "0",
+                "6",
+                "6",
+                "6",
+                "3",
+                "3",
+                "3",
+                "4",
+                "4",
+                "4",
+                "4",
+                "1",
+                "1",
+                "1",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "2",
+                "2",
+                "0",
+                "0",
+                "0",
+                "5",
+                "5",
+                "5",
+                "7",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "3",
+                "6",
+                "6",
+                "6",
+                "1",
+                "1",
+                "1",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2"
+              ],
+              [
+                "4",
+                "3",
+                "3",
+                "3",
+                "3",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "0",
+                "0",
+                "0",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "2",
+                "2",
+                "2",
+                "0",
+                "0",
+                "6",
+                "6",
+                "6",
+                "1",
+                "1",
+                "1",
+                "1",
+                "7",
+                "6",
+                "6",
+                "6",
+                "6",
+                "1",
+                "1",
+                "1",
+                "7",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "2",
+                "2",
+                "5",
+                "5",
+                "5",
+                "0",
+                "0",
+                "0",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "3",
+                "6",
+                "6",
+                "6",
+                "1",
+                "1",
+                "1",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "2",
+                "4",
+                "4"
+              ]
+            ]
+          },
+          "layout": {
+            "reels": 5,
+            "rows": 4
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [
+            [
+              "2",
+              "1",
+              "1",
+              "1"
+            ],
+            [
+              "5",
+              "5",
+              "5",
+              "3"
+            ],
+            [
+              "3",
+              "4",
+              "4",
+              "4"
+            ],
+            [
+              "3",
+              "3",
+              "3",
+              "6"
+            ],
+            [
+              "0",
+              "0",
+              "0",
+              "4"
+            ]
+          ],
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 1343,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "burning-chilli-x",
+          "name": "Burning Chilli X",
+          "identifier": "BurningChilliX"
+        },
+        "generated_at": "2026-09-13T09:17:34+00:00",
+        "source_run": "2026-09-13_06-17-19-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": [
+          {
+            "id": "SPIN__TO__READY",
+            "kind": "BASE_OR_FEATURE_ENTRY",
+            "request_contract": "SPIN",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "READY"
+            ],
+            "provider_states": [
+              "closed"
+            ],
+            "available_actions": [
+              "init",
+              "spin"
+            ],
+            "terminal_observed": true,
+            "observed_count": 1,
+            "response_schema": "response-schemas/spin__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 173,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "burning-chilli-x",
+        "branch_points": [],
+        "complete": true,
+        "missing_count": 0
+      }
+    },
+    "profile.json": {
+      "encoding": "json",
+      "bytes": 11526,
+      "value": {
+        "schema": "tester-spin/bgaming-profile/v1",
+        "capability_version": 2,
+        "family": "api-v2",
+        "confidence": 1.0,
+        "evidence": [
+          "init.options",
+          "init.api_version=2"
+        ],
+        "spin_options": {
+          "mode": "60"
+        },
+        "command_options": {},
+        "request_extra_data": {},
+        "spin_option_choices": {},
+        "effective_bet_selector": "",
+        "effective_bet_multipliers": {},
+        "dynamic_purchased_feature": true,
+        "purchase_feature_level_supported": true,
+        "purchase_features": [],
+        "rows_required": false,
+        "line_count": 0,
+        "variable_layout": false,
+        "allowed_continuations": [
+          "close",
+          "freespin",
+          "play_bonus",
+          "play_preselection_game",
+          "preselection_game",
+          "respin"
+        ],
+        "source": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/bundle.js",
+        "bundle_sha256": "27f8dd5bc2c5f99bc592b5ffcd52d685ce70fd64ba3e77732c798812854afa40",
+        "discovery_diagnostics": [
+          {
+            "kind": "loader",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/loader.js",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "kind": "script-skip",
+            "url": "https://www.googletagmanager.com/gtag/js",
+            "reason": "third-party-origin"
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/bundle.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 1343003,
+            "contract_score": 82,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/bundle.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/bundle.js",
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/wrapper.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 160620,
+            "contract_score": 24,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/analytics/amplitude.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 5312,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://replays.bgaming-network.com/replays.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 6770,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/loader.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 1585,
+            "contract_score": 0,
+            "depth": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/bg.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/bg.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/de.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/de.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/el.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/el.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/en.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/en.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/es.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/es.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/fi.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/fi.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/fr.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/fr.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/id.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/id.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/it.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/it.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/ja.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/ja.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/kde.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/kde.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/ko.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/ko.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/nl.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/nl.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/nn.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/nn.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/pl.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/pl.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/pt.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/pt.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/ro.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/ro.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/ru.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/ru.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/ses.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/ses.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/sv.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/sv.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/th.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/th.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/tr.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/tr.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/vi.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/vi.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/zh.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/zh.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/config/webpack.debug.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/config/webpack.debug.js",
+            "depth": 1
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/config/webpack.prod.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/BurningChilliX/v0.0.158_v14.19.2/config/webpack.prod.js",
+            "depth": 1
+          }
+        ],
+        "validated": false
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 3011,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "burning-chilli-x",
+          "name": "Burning Chilli X",
+          "identifier": "BurningChilliX"
+        },
+        "generated_at": "2026-09-13T09:17:34+00:00",
+        "source_run": "2026-09-13_06-17-19-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "SPIN",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {
+              "mode": [
+                "60"
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "mode": "60"
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    },
+                    "mode": {
+                      "type": "string",
+                      "observed_enum": [
+                        "60"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bet",
+                    "mode"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {
+          "READY": {
+            "SPIN": [
+              "SPIN__TO__READY"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "response-schemas/spin__to__ready.json": {
+      "encoding": "json",
+      "bytes": 4679,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "SPIN__TO__READY",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "type": "string",
+              "observed_enum": [
+                "2"
+              ]
+            },
+            "balance": {
+              "type": "object",
+              "properties": {
+                "game": {
+                  "type": "integer"
+                },
+                "wallet": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "game",
+                "wallet"
+              ],
+              "additionalProperties": true
+            },
+            "flow": {
+              "type": "object",
+              "properties": {
+                "available_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "observed_enum": [
+                      "init",
+                      "spin"
+                    ]
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "last_action_id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "17296403535_1"
+                  ]
+                },
+                "round_id": {
+                  "type": "integer"
+                },
+                "state": {
+                  "type": "string",
+                  "observed_enum": [
+                    "closed"
+                  ]
+                }
+              },
+              "required": [
+                "available_actions",
+                "command",
+                "last_action_id",
+                "round_id",
+                "state"
+              ],
+              "additionalProperties": true
+            },
+            "outcome": {
+              "type": "object",
+              "properties": {
+                "bet": {
+                  "type": "integer"
+                },
+                "screen": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "observed_enum": [
+                        "0",
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7"
+                      ]
+                    }
+                  }
+                },
+                "special_symbols": {
+                  "type": "object",
+                  "properties": {
+                    "scatter": {
+                      "type": "object",
+                      "properties": {
+                        "7": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "7"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "wild": {
+                      "type": "object",
+                      "properties": {
+                        "0": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "0"
+                      ],
+                      "additionalProperties": true
+                    }
+                  },
+                  "required": [
+                    "scatter",
+                    "wild"
+                  ],
+                  "additionalProperties": true
+                },
+                "storage": {
+                  "type": "object",
+                  "properties": {
+                    "mode": {
+                      "type": "string",
+                      "observed_enum": [
+                        "60"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "mode"
+                  ],
+                  "additionalProperties": true
+                },
+                "win": {
+                  "type": "integer"
+                },
+                "wins": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "bet",
+                "screen",
+                "special_symbols",
+                "storage",
+                "win",
+                "wins"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "api_version",
+            "balance",
+            "flow",
+            "outcome"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.balance.wallet",
+          "$.flow.last_action_id",
+          "$.flow.round_id",
+          "$.outcome.win"
+        ]
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 1703,
+      "value": {
+        "provider": "bgaming",
+        "slug": "burning-chilli-x",
+        "game_name": "Burning Chilli X",
+        "game_url": "https://demo.bgaming-network.com/play/BurningChilliX/FUN?server=demo",
+        "requested_spins": 1,
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "PARCIAL",
+        "symbol": "BurningChilliX",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": true,
+            "wire_command": "spin"
+          }
+        ],
+        "started_at": "2026-09-13T09:17:19+00:00",
+        "finished_at": "2026-09-13T09:17:34+00:00",
+        "elapsed_ms": 14655.99999999904,
+        "error": "BGaming respondió 1/1 intentos; modos terminales validados=0/1. Diagnóstico: bet devuelta=120, esperada=40.0, solicitada=40 | balance inconsistente: actual=99880, esperado=99960.0, debito=40.0",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Burning Chilli X\\tests\\2026-09-13_06-17-19-bgaming-http-api-v2",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 296.9999999986612,
+            "symbol": "BurningChilliX",
+            "endpoint": "https://demo.bgaming-network.com/api/BurningChilliX/2366937/<session>",
+            "na": "closed",
+            "terminal": true,
+            "wire_steps": 1,
+            "warning": "bet devuelta=120, esperada=40.0, solicitada=40; balance inconsistente: actual=99880, esperado=99960.0, debito=40.0",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Burning Chilli X\\tests\\2026-09-13_06-17-19-bgaming-http-api-v2\\SPIN\\attempt-001"
+          }
+        ]
+      }
+    },
+    "SPIN/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 486,
+      "value": {
+        "round_id": 17296403535,
+        "last_action_id": "17296403535_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 120,
+        "win": 0,
+        "balance_total": 99880,
+        "screen_sha256": "94b46c0c1ee4",
+        "storage_seed": null,
+        "storage_mode": "60",
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "e7b504e302afb9f7",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 40.0,
+        "expected_outcome_bet": 40.0
+      }
+    },
+    "SPIN/attempt-001/request.json": {
+      "encoding": "json",
+      "bytes": 144,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 40,
+          "mode": "60"
+        },
+        "extra_data": {
+          "round_series_id": 1789291040814
+        }
+      }
+    },
+    "SPIN/attempt-001/response.json": {
+      "encoding": "json",
+      "bytes": 1170,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": [
+            [
+              "4",
+              "4",
+              "4",
+              "7"
+            ],
+            [
+              "1",
+              "1",
+              "1",
+              "5"
+            ],
+            [
+              "2",
+              "2",
+              "0",
+              "0"
+            ],
+            [
+              "3",
+              "3",
+              "3",
+              "6"
+            ],
+            [
+              "2",
+              "2",
+              "2",
+              "0"
+            ]
+          ],
+          "special_symbols": {
+            "scatter": {
+              "7": [
+                [
+                  0,
+                  3
+                ]
+              ]
+            },
+            "wild": {
+              "0": [
+                [
+                  2,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  3
+                ]
+              ]
+            }
+          },
+          "bet": 120,
+          "win": 0,
+          "wins": [],
+          "storage": {
+            "mode": "60"
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 99880
+        },
+        "flow": {
+          "round_id": 17296403535,
+          "last_action_id": "17296403535_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-proof.json": {
+      "encoding": "json",
+      "bytes": 486,
+      "value": {
+        "round_id": 17296403535,
+        "last_action_id": "17296403535_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 120,
+        "win": 0,
+        "balance_total": 99880,
+        "screen_sha256": "94b46c0c1ee4",
+        "storage_seed": null,
+        "storage_mode": "60",
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "e7b504e302afb9f7",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 40.0,
+        "expected_outcome_bet": 40.0
+      }
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 144,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 40,
+          "mode": "60"
+        },
+        "extra_data": {
+          "round_series_id": 1789291040814
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 1170,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": [
+            [
+              "4",
+              "4",
+              "4",
+              "7"
+            ],
+            [
+              "1",
+              "1",
+              "1",
+              "5"
+            ],
+            [
+              "2",
+              "2",
+              "0",
+              "0"
+            ],
+            [
+              "3",
+              "3",
+              "3",
+              "6"
+            ],
+            [
+              "2",
+              "2",
+              "2",
+              "0"
+            ]
+          ],
+          "special_symbols": {
+            "scatter": {
+              "7": [
+                [
+                  0,
+                  3
+                ]
+              ]
+            },
+            "wild": {
+              "0": [
+                [
+                  2,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  3
+                ]
+              ]
+            }
+          },
+          "bet": 120,
+          "win": 0,
+          "wins": [],
+          "storage": {
+            "mode": "60"
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 99880
+        },
+        "flow": {
+          "round_id": 17296403535,
+          "last_action_id": "17296403535_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 1122,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "burning-chilli-x",
+          "name": "Burning Chilli X",
+          "identifier": "BurningChilliX"
+        },
+        "generated_at": "2026-09-13T09:17:34+00:00",
+        "source_run": "2026-09-13_06-17-19-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {
+          "READY": {
+            "provider_states": [
+              "closed"
+            ],
+            "allowed_wire_actions_observed": [
+              "spin"
+            ],
+            "terminal_observed": true
+          }
+        },
+        "transitions": [
+          {
+            "source": "READY",
+            "request_contract": "SPIN",
+            "request_selector_vectors_observed": [
+              {
+                "mode": "60"
+              }
+            ],
+            "outcome": "SPIN__TO__READY",
+            "target": "READY",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
