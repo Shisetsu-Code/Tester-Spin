@@ -1,0 +1,249 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T12:29:09+00:00",
+  "source_commit": "299ba3374f3740551aa66a66eabf02c0d7ba03ad",
+  "provider": "bgaming",
+  "game": {
+    "slug": "bonanza-billion-merge-up",
+    "name": "Bonanza Billion Merge Up™+",
+    "symbol": "",
+    "url": "https://bgaming.com/games/bonanza-billion-merge-up"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "bonanza-billion-merge-up",
+    "game_name": "Bonanza Billion Merge Up™+",
+    "game_url": "https://bgaming.com/games/bonanza-billion-merge-up",
+    "requested_spins": 1,
+    "successful_spins": 0,
+    "failed_spins": 1,
+    "status": "SIN_DEMO",
+    "symbol": "",
+    "discovered_modes": [],
+    "started_at": "2026-09-13T12:29:06+00:00",
+    "finished_at": "2026-09-13T12:29:07+00:00",
+    "elapsed_ms": 561.9999999998981,
+    "error": "BGaming: juego catalogado sin Play Demo resoluble.",
+    "run_dir": "2026-09-13_09-29-06-bgaming-http-api-v2",
+    "attempts": [],
+    "samples_per_path": 1
+  },
+  "artifact_bytes_embedded": 5602,
+  "artifacts": {
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 181,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "bonanza-billion-merge-up",
+        "branch_points": [],
+        "complete": true,
+        "missing_count": 0
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 715,
+      "value": {
+        "provider": "bgaming",
+        "slug": "bonanza-billion-merge-up",
+        "game_name": "Bonanza Billion Merge Up™+",
+        "game_url": "https://bgaming.com/games/bonanza-billion-merge-up",
+        "requested_spins": 1,
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "SIN_DEMO",
+        "symbol": "",
+        "discovered_modes": [],
+        "started_at": "2026-09-13T12:29:06+00:00",
+        "finished_at": "2026-09-13T12:29:07+00:00",
+        "elapsed_ms": 561.9999999998981,
+        "error": "BGaming: juego catalogado sin Play Demo resoluble.",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Bonanza Billion Merge Up™+\\tests\\2026-09-13_09-29-06-bgaming-http-api-v2",
+        "attempts": [],
+        "samples_per_path": 1
+      }
+    },
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 933,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "bonanza-billion-merge-up",
+          "name": "Bonanza Billion Merge Up™+",
+          "identifier": ""
+        },
+        "generated_at": "2026-09-13T12:29:07+00:00",
+        "source_run": "2026-09-13_09-29-06-bgaming-http-api-v2",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 717,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "bonanza-billion-merge-up",
+          "name": "Bonanza Billion Merge Up™+",
+          "identifier": ""
+        },
+        "generated_at": "2026-09-13T12:29:07+00:00",
+        "source_run": "2026-09-13_09-29-06-bgaming-http-api-v2",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 967,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "bonanza-billion-merge-up",
+          "name": "Bonanza Billion Merge Up™+",
+          "identifier": ""
+        },
+        "generated_at": "2026-09-13T12:29:07+00:00",
+        "source_run": "2026-09-13_09-29-06-bgaming-http-api-v2",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "SIN_DEMO",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [],
+        "unresolved_modes": [],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 588,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "bonanza-billion-merge-up",
+          "name": "Bonanza Billion Merge Up™+",
+          "identifier": ""
+        },
+        "generated_at": "2026-09-13T12:29:07+00:00",
+        "source_run": "2026-09-13_09-29-06-bgaming-http-api-v2",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 967,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "bonanza-billion-merge-up",
+          "name": "Bonanza Billion Merge Up™+",
+          "identifier": ""
+        },
+        "generated_at": "2026-09-13T12:29:07+00:00",
+        "source_run": "2026-09-13_09-29-06-bgaming-http-api-v2",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "SIN_DEMO",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [],
+        "unresolved_modes": [],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 534,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "bonanza-billion-merge-up",
+          "name": "Bonanza Billion Merge Up™+",
+          "identifier": ""
+        },
+        "generated_at": "2026-09-13T12:29:07+00:00",
+        "source_run": "2026-09-13_09-29-06-bgaming-http-api-v2",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {},
+        "transitions": []
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
