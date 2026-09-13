@@ -1,0 +1,660 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T09:07:54+00:00",
+  "source_commit": "210300dc65a3673fe93c04009077090b7321c07c",
+  "provider": "bgaming",
+  "game": {
+    "slug": "blackbeards-bounty",
+    "name": "Blackbeard's Bounty",
+    "symbol": "BlackbeardsBounty",
+    "url": "https://demo.bgaming-network.com/play/BlackbeardsBounty/FUN"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "blackbeards-bounty",
+    "game_name": "Blackbeard's Bounty",
+    "game_url": "https://demo.bgaming-network.com/play/BlackbeardsBounty/FUN",
+    "requested_spins": 1,
+    "successful_spins": 0,
+    "failed_spins": 1,
+    "status": "PARCIAL",
+    "symbol": "BlackbeardsBounty",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "CONTRACT_UNRESOLVED",
+        "wire_method": "play",
+        "request_options": {},
+        "source": "live-client-evidence-incomplete"
+      },
+      {
+        "id": "PURCHASE_BUY_BONUS_FREESPIN",
+        "kind": "PURCHASE",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "BASE_CONTRACT_UNRESOLVED",
+        "wire_method": "play",
+        "request_options": {
+          "bet_type": "bet",
+          "purchased_feature": "buy_bonus",
+          "bonus_multiplier_type": "freeSpin"
+        },
+        "source": "game_bundle_source"
+      },
+      {
+        "id": "PURCHASE_BUY_BONUS_RANDOM",
+        "kind": "PURCHASE",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "BASE_CONTRACT_UNRESOLVED",
+        "wire_method": "play",
+        "request_options": {
+          "bet_type": "bet",
+          "purchased_feature": "buy_bonus",
+          "bonus_multiplier_type": "freeSpinRandom"
+        },
+        "source": "game_bundle_source"
+      }
+    ],
+    "started_at": "2026-09-13T09:07:38+00:00",
+    "finished_at": "2026-09-13T09:07:53+00:00",
+    "elapsed_ms": 15030.99999999904,
+    "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN']; PURCHASE_BUY_BONUS_FREESPIN -> ['PURCHASE_BUY_BONUS_FREESPIN']; PURCHASE_BUY_BONUS_RANDOM -> ['PURCHASE_BUY_BONUS_RANDOM'].",
+    "run_dir": "2026-09-13_06-07-38-bgaming-hyperhive-jsonrpc",
+    "attempts": []
+  },
+  "artifact_bytes_embedded": 15315,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 941,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "blackbeards-bounty",
+          "name": "Blackbeard's Bounty",
+          "identifier": "BlackbeardsBounty"
+        },
+        "generated_at": "2026-09-13T09:07:53+00:00",
+        "source_run": "2026-09-13_06-07-38-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 725,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "blackbeards-bounty",
+          "name": "Blackbeard's Bounty",
+          "identifier": "BlackbeardsBounty"
+        },
+        "generated_at": "2026-09-13T09:07:53+00:00",
+        "source_run": "2026-09-13_06-07-38-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "contract-diagnostic.json": {
+      "encoding": "json",
+      "bytes": 759,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "script_urls": [
+          "https://blackbeards-bounty.demo.bgaming-network.com/wg-boost/wrapper.js",
+          "https://blackbeards-bounty.demo.bgaming-network.com/wg-boost/analytics/amplitude.js",
+          "https://blackbeards-bounty.demo.bgaming-network.com/wg-replays/replays.js",
+          "https://blackbeards-bounty.demo.bgaming-network.com/assets/index-BNm2kN82.js",
+          "https://blackbeards-bounty.demo.bgaming-network.com/assets/phaser-BhdgLZzI.js"
+        ],
+        "bundle_sha256": "",
+        "engine_sha256": "4f932861830e00e3e99a6388e1a52b2aaa4bcbd96a989dbe2fd6355dd08a15b1",
+        "rpc_id_profile": "zero",
+        "action_vocabulary": [],
+        "base_request": {},
+        "custom_req_profile": "",
+        "base_discovery_state": "CONTRACT_UNRESOLVED"
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 3234,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "blackbeards-bounty",
+          "name": "Blackbeard's Bounty",
+          "identifier": "BlackbeardsBounty"
+        },
+        "generated_at": "2026-09-13T09:07:53+00:00",
+        "source_run": "2026-09-13_06-07-38-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS_FREESPIN",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS_RANDOM",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS_FREESPIN",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS_RANDOM",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 105,
+      "value": {
+        "id": 0,
+        "jsonrpc": "2.0",
+        "method": "init",
+        "params": {
+          "token": "<redacted>"
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1846,
+      "value": {
+        "id": 0,
+        "jsonrpc": "2.0",
+        "result": {
+          "freebets": null,
+          "currency": "FUN",
+          "currency_attributes": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "locale": "en",
+          "config": {
+            "rtp": "96",
+            "displayed_rtp": "96.20",
+            "bet_limits": [
+              20,
+              40,
+              60,
+              80,
+              100,
+              120,
+              140,
+              160,
+              200,
+              240,
+              300,
+              340,
+              400,
+              500,
+              600,
+              800,
+              1000,
+              1200
+            ],
+            "freebets_limits": [
+              20,
+              40,
+              60,
+              80,
+              100,
+              120,
+              140,
+              160,
+              200,
+              240,
+              300,
+              340,
+              400,
+              500,
+              600,
+              800,
+              1000,
+              1200
+            ],
+            "default_bet": 100,
+            "purchased_features": [
+              "buy_bonus",
+              "bonus_buy",
+              "freespin_buy",
+              "high_freespin_buy",
+              "buy_chance",
+              "bonus_chance",
+              "freespin_chance",
+              "buy_bonus_and_chance",
+              "freespin_and_bonus_chance"
+            ],
+            "autospin_variant": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "quick_spins_enabled": false
+          },
+          "state": null,
+          "urls": {
+            "deposit_url": null,
+            "return_url": null,
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzMzE0NTksImd0X2lkIjo0MzY1NDA0fSwiZXhwIjoxODA0OTI4ODczfQ.TDa1xwbgO2-k8v6TotAF0jZtFef4H1BUHpFW3orB8I8"
+          },
+          "balance": 100000,
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 596,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "blackbeards-bounty",
+          "name": "Blackbeard's Bounty",
+          "identifier": "BlackbeardsBounty"
+        },
+        "generated_at": "2026-09-13T09:07:53+00:00",
+        "source_run": "2026-09-13_06-07-38-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 1162,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "blackbeards-bounty",
+        "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false
+          },
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "PURCHASE_BUY_BONUS_FREESPIN",
+            "signature": "PURCHASE_BUY_BONUS_FREESPIN:UNEXECUTED",
+            "required": [
+              "PURCHASE_BUY_BONUS_FREESPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_BUY_BONUS_FREESPIN"
+            ],
+            "complete": false
+          },
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "PURCHASE_BUY_BONUS_RANDOM",
+            "signature": "PURCHASE_BUY_BONUS_RANDOM:UNEXECUTED",
+            "required": [
+              "PURCHASE_BUY_BONUS_RANDOM"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_BUY_BONUS_RANDOM"
+            ],
+            "complete": false
+          }
+        ],
+        "complete": false,
+        "missing_count": 3
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 3234,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "blackbeards-bounty",
+          "name": "Blackbeard's Bounty",
+          "identifier": "BlackbeardsBounty"
+        },
+        "generated_at": "2026-09-13T09:07:53+00:00",
+        "source_run": "2026-09-13_06-07-38-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS_FREESPIN",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS_RANDOM",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS_FREESPIN",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS_RANDOM",
+            "kind": "PURCHASE",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 2171,
+      "value": {
+        "provider": "bgaming",
+        "slug": "blackbeards-bounty",
+        "game_name": "Blackbeard's Bounty",
+        "game_url": "https://demo.bgaming-network.com/play/BlackbeardsBounty/FUN",
+        "requested_spins": 1,
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "PARCIAL",
+        "symbol": "BlackbeardsBounty",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "CONTRACT_UNRESOLVED",
+            "wire_method": "play",
+            "request_options": {},
+            "source": "live-client-evidence-incomplete"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS_FREESPIN",
+            "kind": "PURCHASE",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "BASE_CONTRACT_UNRESOLVED",
+            "wire_method": "play",
+            "request_options": {
+              "bet_type": "bet",
+              "purchased_feature": "buy_bonus",
+              "bonus_multiplier_type": "freeSpin"
+            },
+            "source": "game_bundle_source"
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS_RANDOM",
+            "kind": "PURCHASE",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "BASE_CONTRACT_UNRESOLVED",
+            "wire_method": "play",
+            "request_options": {
+              "bet_type": "bet",
+              "purchased_feature": "buy_bonus",
+              "bonus_multiplier_type": "freeSpinRandom"
+            },
+            "source": "game_bundle_source"
+          }
+        ],
+        "started_at": "2026-09-13T09:07:38+00:00",
+        "finished_at": "2026-09-13T09:07:53+00:00",
+        "elapsed_ms": 15030.99999999904,
+        "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN']; PURCHASE_BUY_BONUS_FREESPIN -> ['PURCHASE_BUY_BONUS_FREESPIN']; PURCHASE_BUY_BONUS_RANDOM -> ['PURCHASE_BUY_BONUS_RANDOM'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Blackbeard's Bounty\\tests\\2026-09-13_06-07-38-bgaming-hyperhive-jsonrpc",
+        "attempts": []
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 542,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "blackbeards-bounty",
+          "name": "Blackbeard's Bounty",
+          "identifier": "BlackbeardsBounty"
+        },
+        "generated_at": "2026-09-13T09:07:53+00:00",
+        "source_run": "2026-09-13_06-07-38-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {},
+        "transitions": []
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
