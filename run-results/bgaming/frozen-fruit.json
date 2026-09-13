@@ -1,0 +1,7081 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-13T09:23:42+00:00",
+  "source_commit": "c98ad4264ce542a06a267e2e6a013bad3a6ce216",
+  "provider": "bgaming",
+  "game": {
+    "slug": "frozen-fruit",
+    "name": "Frozen Fruit",
+    "symbol": "FrozenFruit",
+    "url": "https://demo.bgaming-network.com/play/FrozenFruit/FUN?server=demo"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "frozen-fruit",
+    "game_name": "Frozen Fruit",
+    "game_url": "https://demo.bgaming-network.com/play/FrozenFruit/FUN?server=demo",
+    "requested_spins": 2,
+    "successful_spins": 2,
+    "failed_spins": 0,
+    "status": "PARCIAL",
+    "symbol": "FrozenFruit",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": true,
+        "wire_command": "spin"
+      },
+      {
+        "id": "PURCHASE_FREESPIN_BUY",
+        "kind": "PURCHASE",
+        "observed": true,
+        "client_observed": true,
+        "executable": true,
+        "discovery_state": "CLIENT_OBSERVED",
+        "wire_command": "spin",
+        "purchased_feature": "freespin_buy",
+        "purchased_feature_level": null,
+        "feature_multiplier": 80,
+        "base_multiplier": 1,
+        "cost_multiplier": 80.0,
+        "source": "init.feature_multipliers+client"
+      },
+      {
+        "id": "BUY_EXTRA_BONUS",
+        "kind": "FEATURE",
+        "observed": false,
+        "wire_command": "buy_extra_bonus"
+      },
+      {
+        "id": "FREESPIN",
+        "kind": "CONTINUATION",
+        "observed": true,
+        "wire_command": "freespin"
+      }
+    ],
+    "started_at": "2026-09-13T09:23:10+00:00",
+    "finished_at": "2026-09-13T09:23:42+00:00",
+    "elapsed_ms": 32077.9999999977,
+    "error": "Cobertura de ramificaciones pendiente: BUY_EXTRA_BONUS -> ['buy_extra_bonus'].",
+    "run_dir": "2026-09-13_06-23-10-bgaming-http-api-v2",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": true,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": 200,
+        "elapsed_ms": 327.9999999977008,
+        "symbol": "FrozenFruit",
+        "endpoint": "https://demo.bgaming-network.com/api/FrozenFruit/2763805/<session>",
+        "na": "closed",
+        "terminal": true,
+        "wire_steps": 1,
+        "warning": "",
+        "error": "",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Frozen Fruit\\tests\\2026-09-13_06-23-10-bgaming-http-api-v2\\SPIN\\attempt-001"
+      },
+      {
+        "number": 1,
+        "ok": true,
+        "mode_id": "PURCHASE_FREESPIN_BUY",
+        "mode_kind": "PURCHASE",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": 200,
+        "elapsed_ms": 2735.000000000582,
+        "symbol": "FrozenFruit",
+        "endpoint": "https://demo.bgaming-network.com/api/FrozenFruit/2763805/<session>",
+        "na": "closed",
+        "terminal": true,
+        "wire_steps": 5,
+        "warning": "",
+        "error": "",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Frozen Fruit\\tests\\2026-09-13_06-23-10-bgaming-http-api-v2\\PURCHASE_FREESPIN_BUY\\attempt-001"
+      }
+    ]
+  },
+  "artifact_bytes_embedded": 149298,
+  "artifacts": {
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 3146,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "frozen-fruit",
+          "name": "Frozen Fruit",
+          "identifier": "FrozenFruit"
+        },
+        "generated_at": "2026-09-13T09:23:42+00:00",
+        "source_run": "2026-09-13_06-23-10-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [
+          {
+            "id": "CASE_0001",
+            "source_state": "FLOW:freespins",
+            "request_contract": "FREESPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "accepted_outcome": "FREESPIN__TO__FLOW_FREESPINS",
+            "expected_target_state": "FLOW:freespins",
+            "response_schema": "response-schemas/freespin__to__flow_freespins.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-002-request.json",
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-003-request.json",
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-004-request.json"
+            ]
+          },
+          {
+            "id": "CASE_0002",
+            "source_state": "FLOW:freespins",
+            "request_contract": "FREESPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "accepted_outcome": "FREESPIN__TO__READY",
+            "expected_target_state": "READY",
+            "response_schema": "response-schemas/freespin__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-005-request.json"
+            ]
+          },
+          {
+            "id": "CASE_0003",
+            "source_state": "READY",
+            "request_contract": "SPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "accepted_outcome": "SPIN__TO__READY",
+            "expected_target_state": "READY",
+            "response_schema": "response-schemas/spin__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          },
+          {
+            "id": "CASE_0004",
+            "source_state": "READY",
+            "request_contract": "SPIN__PURCHASE_FREESPIN_BUY",
+            "request_selector_vectors_observed": [
+              {
+                "purchased_feature": "freespin_buy"
+              }
+            ],
+            "accepted_outcome": "SPIN__PURCHASE_FREESPIN_BUY__TO__FLOW_FREESPINS",
+            "expected_target_state": "FLOW:freespins",
+            "response_schema": "response-schemas/spin__purchase_freespin_buy__to__flow_freespins.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-001-request.json"
+            ]
+          }
+        ],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 2843,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "frozen-fruit",
+          "name": "Frozen Fruit",
+          "identifier": "FrozenFruit"
+        },
+        "generated_at": "2026-09-13T09:23:42+00:00",
+        "source_run": "2026-09-13_06-23-10-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {
+          "FLOW:freespins": {
+            "FREESPIN": {
+              "wire_action": "freespin",
+              "selector_domains_observed": {},
+              "selector_vectors_observed": [
+                {}
+              ],
+              "outcomes": [
+                {
+                  "id": "FREESPIN__TO__FLOW_FREESPINS",
+                  "target_state": [
+                    "FLOW:freespins"
+                  ],
+                  "response_schema": "response-schemas/freespin__to__flow_freespins.json",
+                  "terminal_observed": false,
+                  "math_probability_known": false
+                },
+                {
+                  "id": "FREESPIN__TO__READY",
+                  "target_state": [
+                    "READY"
+                  ],
+                  "response_schema": "response-schemas/freespin__to__ready.json",
+                  "terminal_observed": true,
+                  "math_probability_known": false
+                }
+              ]
+            }
+          },
+          "READY": {
+            "SPIN": {
+              "wire_action": "spin",
+              "selector_domains_observed": {},
+              "selector_vectors_observed": [
+                {}
+              ],
+              "outcomes": [
+                {
+                  "id": "SPIN__TO__READY",
+                  "target_state": [
+                    "READY"
+                  ],
+                  "response_schema": "response-schemas/spin__to__ready.json",
+                  "terminal_observed": true,
+                  "math_probability_known": false
+                }
+              ]
+            },
+            "SPIN__PURCHASE_FREESPIN_BUY": {
+              "wire_action": "spin",
+              "selector_domains_observed": {
+                "purchased_feature": [
+                  "freespin_buy"
+                ]
+              },
+              "selector_vectors_observed": [
+                {
+                  "purchased_feature": "freespin_buy"
+                }
+              ],
+              "outcomes": [
+                {
+                  "id": "SPIN__PURCHASE_FREESPIN_BUY__TO__FLOW_FREESPINS",
+                  "target_state": [
+                    "FLOW:freespins"
+                  ],
+                  "response_schema": "response-schemas/spin__purchase_freespin_buy__to__flow_freespins.json",
+                  "terminal_observed": false,
+                  "math_probability_known": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "bootstrap.json": {
+      "encoding": "json",
+      "bytes": 6064,
+      "value": {
+        "identifier": "FrozenFruit",
+        "launch_url": "https://demo.bgaming-network.com/games/FrozenFruit/FUN",
+        "api_url": "https://demo.bgaming-network.com/api/FrozenFruit/2763805/<session>",
+        "options": {
+          "env": "production",
+          "csrfTokenHeaderName": "X-CSRF-Token",
+          "csrfTokenHeaderValue": "<redacted>",
+          "play_token": "<redacted>",
+          "game": "slots/frozen_fruit",
+          "identifier": "FrozenFruit",
+          "title": "Frozen Fruit",
+          "currency": "FUN",
+          "balance_polling_interval": 30000,
+          "cache_id": "ddbc468f3906bd172c5153ac478b94a3c4687cd7daa5a133dfd90441a0005567",
+          "cache_player_id": "a4b61cf6a9fd8386fdb9a7b63c17f3d93e6a5b0b13d395efcd74f7c9e1adabbf",
+          "api": "https://demo.bgaming-network.com/api/FrozenFruit/2763805/<session>",
+          "rules_url": "https://rules.bgaming-network.com/en/FrozenFruit.json",
+          "deposit_url": null,
+          "games_page_url": "https://www.bgaming.com/games.html",
+          "history_url": null,
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09a13-f009-7b24-9e13-6f706bf9b5da/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/FrozenFruit/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY1ODk5NzR9LCJleHAiOjE4MDQ5Mjk3OTN9.VErQPJwcNJD7HcbTO6cdr4JT7QHD1Am5U6pPvm3N96w",
+          "websocket_url": "wss://demo.bgaming-network.com:443/cable",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=FrozenFruit&play_token=01a09a13-f009-7b24-9e13-6f706bf9b5da&server_id=demo",
+          "ui": {
+            "home_button": true,
+            "full_screen_prompt": true,
+            "logo": "standard",
+            "skin": "basic",
+            "skins": [
+              "basic"
+            ],
+            "brand_logo": null,
+            "brand": {
+              "name": "",
+              "logo": null,
+              "logo_in_game": null
+            },
+            "autospins_dialog": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "gamble_enabled": true,
+            "show_rtp_in_rules": true
+          },
+          "resources_path": "https://cdn.bgaming-network.com/html/FrozenFruit",
+          "custom": {},
+          "actual_currency_rate": 0.0,
+          "sound_enabled": true,
+          "games_loader_source": "https://cdn.bgaming-network.com/html/FrozenFruit/loader.js?1789291393",
+          "game_bundle_source": "https://cdn.bgaming-network.com/html/FrozenFruit/bundle.js",
+          "provable_fair": {
+            "verify_url": "https://demo.bgaming-network.com/api/games/verify"
+          },
+          "math": {
+            "rtp": {
+              "main": 96.0,
+              "bonus_buy": 96.0
+            },
+            "gamble_limit": 6600,
+            "max_multiplier": 6600.0,
+            "max_win_freq": 55000000
+          },
+          "rules": {
+            "min_bet": 20,
+            "max_bet": 3800,
+            "currency": {
+              "code": "FUN",
+              "symbol": "FUN",
+              "subunits": 100,
+              "exponent": 2
+            }
+          },
+          "version": "1.0.0",
+          "growthbook_flags": {
+            "tech_lobby_widget_position": {
+              "value": {
+                "desktop": "bottom",
+                "portrait": "top",
+                "landscape": "top"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "growth_drop_init_popup_ui": {
+              "value": {
+                "id": 602,
+                "value": "A"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            }
+          },
+          "lobby_v2_options": {
+            "player_id": 345339712,
+            "lobby_enabled": false,
+            "drops_enabled": false,
+            "drops_token": "<redacted>",
+            "drops_api_url": "https://drops.bgaming-network.com/api/v1/",
+            "profile_enabled": false,
+            "profile_api_url": "https://loyalty-core.shared.bgaming-system.com/api/v1",
+            "profile_token": "<redacted>",
+            "gamelist_enabled": false,
+            "gamelist_api_url": "https://gamelist.bgaming-network.com",
+            "gamelist_token": "<redacted>",
+            "challenges_enabled": false,
+            "challenges_api_url": "https://challenges.bgaming-network.com/",
+            "challenges_token": "<redacted>",
+            "challenges_fe_script_url": "https://brush.bgaming-network.com/",
+            "quests_enabled": false,
+            "quests_api_url": null,
+            "quests_token": "<redacted>",
+            "shop_enabled": false,
+            "shop_api_url": "",
+            "shop_token": "<redacted>",
+            "growth_fe_url": ""
+          },
+          "server_id": "demo",
+          "locale": "en",
+          "actions": {
+            "deposit": null,
+            "return": null,
+            "history": {
+              "text": null,
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzMzk3MTIsImd0X2lkIjoyNzYzODA1fSwiZXhwIjoxODA0OTI5NzkzfQ.Q-aamsKoACWVXe-r5eHYO8P76ul_vLP7aN7qym8YaXI",
+              "mode": "open"
+            }
+          },
+          "show_paytable": false,
+          "license_rules": {
+            "rules_section": {
+              "show_license_requirements": false,
+              "license_requirement_show_purchase": false,
+              "license_requirement_show_autoplay": false,
+              "license_requirement_show_quick_spins": false,
+              "license_requirement_show_autospin_confirmation": false,
+              "license_requirement_reset_autospin": false,
+              "show_rtp": [
+                "main_rtp",
+                "chance_rtp",
+                "bonus_rtp"
+              ],
+              "show_gamble_round": true,
+              "show_min_max": false,
+              "show_max_win_frequency": false,
+              "show_max_multiplier": true,
+              "show_max_win_rules_text": null
+            },
+            "screen_section": {
+              "show_rtp_on_main_screen": false,
+              "show_max_win_frequency_on_main_screen": false,
+              "show_max_multiplier_on_main_screen": false
+            },
+            "lines_count": "60"
+          },
+          "open_page_method": "redirect",
+          "reset_bet_to_default": false,
+          "enable_chinese_logos": false,
+          "enable_quick_spins_by_default": null,
+          "purchased_feature_limit": null,
+          "pre_bet_balance_validation": false,
+          "available_games_to_switch": []
+        },
+        "round_series_id": 1789291391162
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 6843,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "frozen-fruit",
+          "name": "Frozen Fruit",
+          "identifier": "FrozenFruit"
+        },
+        "generated_at": "2026-09-13T09:23:42+00:00",
+        "source_run": "2026-09-13_06-23-10-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "FREESPIN",
+            "transport": "HTTP_JSON",
+            "wire_action": "freespin",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 4,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "freespin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          },
+          {
+            "id": "SPIN",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bet"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          },
+          {
+            "id": "SPIN__PURCHASE_FREESPIN_BUY",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {
+              "purchased_feature": [
+                "freespin_buy"
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "purchased_feature": "freespin_buy"
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    },
+                    "purchased_feature": {
+                      "type": "string",
+                      "observed_enum": [
+                        "freespin_buy"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bet",
+                    "purchased_feature"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": null,
+            "cost_multiplier": 80.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "init.feature_multipliers+client"
+          },
+          {
+            "id": "BUY_EXTRA_BONUS",
+            "kind": "FEATURE",
+            "wire_command": "buy_extra_bonus",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "FREESPIN",
+            "kind": "CONTINUATION",
+            "wire_command": "freespin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {
+          "FLOW:freespins": {
+            "FREESPIN": [
+              "FREESPIN__TO__FLOW_FREESPINS",
+              "FREESPIN__TO__READY"
+            ]
+          },
+          "READY": {
+            "SPIN": [
+              "SPIN__TO__READY"
+            ],
+            "SPIN__PURCHASE_FREESPIN_BUY": [
+              "SPIN__PURCHASE_FREESPIN_BUY__TO__FLOW_FREESPINS"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 88,
+      "value": {
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789291391162
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 14587,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            20,
+            40,
+            60,
+            80,
+            100,
+            120,
+            160,
+            200,
+            300,
+            400,
+            500,
+            700,
+            1000,
+            1500,
+            2000,
+            2500,
+            3000,
+            3800
+          ],
+          "default_bet": 60,
+          "paytable": {
+            "0": [
+              0,
+              1,
+              10,
+              100,
+              500
+            ],
+            "1": [
+              0,
+              0,
+              6,
+              30,
+              120
+            ],
+            "2": [
+              0,
+              0,
+              5,
+              25,
+              100
+            ],
+            "3": [
+              0,
+              0,
+              4,
+              20,
+              80
+            ],
+            "4": [
+              0,
+              0,
+              1,
+              3,
+              12
+            ],
+            "5": [
+              0,
+              0,
+              1,
+              3,
+              12
+            ],
+            "6": [
+              0,
+              0,
+              1,
+              3,
+              12
+            ],
+            "7": [
+              0,
+              0,
+              1,
+              3,
+              12
+            ],
+            "8": [
+              0,
+              1,
+              10,
+              100,
+              500
+            ]
+          },
+          "paytables": {
+            "0": {
+              "default": [
+                0,
+                1,
+                10,
+                100,
+                500
+              ]
+            },
+            "1": {
+              "default": [
+                0,
+                0,
+                6,
+                30,
+                120
+              ]
+            },
+            "2": {
+              "default": [
+                0,
+                0,
+                5,
+                25,
+                100
+              ]
+            },
+            "3": {
+              "default": [
+                0,
+                0,
+                4,
+                20,
+                80
+              ]
+            },
+            "4": {
+              "default": [
+                0,
+                0,
+                1,
+                3,
+                12
+              ]
+            },
+            "5": {
+              "default": [
+                0,
+                0,
+                1,
+                3,
+                12
+              ]
+            },
+            "6": {
+              "default": [
+                0,
+                0,
+                1,
+                3,
+                12
+              ]
+            },
+            "7": {
+              "default": [
+                0,
+                0,
+                1,
+                3,
+                12
+              ]
+            },
+            "8": {
+              "default": [
+                0,
+                1,
+                10,
+                100,
+                500
+              ]
+            }
+          },
+          "special_symbols": [
+            {
+              "kind": "wild",
+              "symbol": "8"
+            },
+            {
+              "kind": "scatter",
+              "symbol": "9"
+            }
+          ],
+          "lines": [
+            [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            [
+              0,
+              1,
+              2,
+              1,
+              0
+            ],
+            [
+              2,
+              1,
+              0,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              1,
+              2,
+              2
+            ],
+            [
+              2,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              1,
+              1,
+              0
+            ]
+          ],
+          "reels": {
+            "main": [
+              [
+                "0",
+                "4",
+                "7",
+                "2",
+                "4",
+                "6",
+                "0",
+                "5",
+                "4",
+                "2",
+                "9",
+                "6",
+                "3",
+                "5",
+                "6",
+                "1",
+                "9",
+                "2",
+                "6",
+                "5",
+                "2",
+                "7",
+                "4",
+                "5",
+                "6",
+                "3",
+                "9",
+                "2",
+                "3",
+                "9",
+                "7",
+                "1",
+                "5",
+                "6",
+                "2",
+                "9",
+                "4",
+                "0",
+                "4",
+                "5",
+                "7",
+                "4",
+                "6"
+              ],
+              [
+                "4",
+                "7",
+                "1",
+                "5",
+                "7",
+                "3",
+                "5",
+                "3",
+                "7",
+                "5",
+                "0",
+                "6",
+                "5",
+                "5",
+                "5",
+                "3",
+                "7",
+                "5",
+                "7",
+                "1",
+                "7",
+                "0",
+                "5",
+                "4",
+                "2",
+                "5",
+                "0",
+                "6",
+                "7",
+                "6"
+              ],
+              [
+                "5",
+                "1",
+                "4",
+                "6",
+                "3",
+                "7",
+                "2",
+                "0",
+                "6",
+                "0",
+                "7",
+                "2",
+                "6",
+                "4",
+                "2",
+                "5",
+                "4",
+                "0",
+                "7",
+                "1",
+                "9",
+                "7",
+                "4",
+                "3",
+                "6",
+                "7",
+                "1",
+                "5",
+                "9",
+                "4",
+                "3",
+                "7",
+                "2",
+                "4",
+                "3",
+                "7",
+                "6",
+                "7",
+                "4"
+              ],
+              [
+                "5",
+                "0",
+                "4",
+                "6",
+                "1",
+                "4",
+                "2",
+                "5",
+                "7",
+                "0",
+                "6",
+                "2",
+                "5",
+                "4",
+                "2",
+                "6",
+                "5",
+                "6",
+                "4",
+                "3",
+                "6",
+                "1",
+                "5",
+                "3",
+                "4",
+                "7",
+                "6",
+                "5",
+                "2",
+                "4",
+                "3",
+                "7",
+                "6",
+                "5",
+                "1",
+                "7",
+                "6",
+                "2",
+                "4",
+                "3",
+                "7"
+              ],
+              [
+                "5",
+                "7",
+                "2",
+                "6",
+                "4",
+                "2",
+                "5",
+                "6",
+                "3",
+                "6",
+                "4",
+                "3",
+                "7",
+                "1",
+                "6",
+                "2",
+                "4",
+                "6",
+                "9",
+                "7",
+                "1",
+                "4",
+                "5",
+                "2",
+                "6",
+                "3",
+                "4",
+                "3",
+                "5",
+                "1",
+                "9",
+                "6",
+                "0",
+                "7",
+                "2",
+                "5",
+                "7",
+                "0",
+                "4",
+                "7",
+                "5",
+                "6",
+                "4",
+                "5",
+                "7",
+                "1",
+                "3",
+                "6"
+              ]
+            ],
+            "freespins": [
+              [
+                "4",
+                "7",
+                "2",
+                "4",
+                "6",
+                "5",
+                "4",
+                "2",
+                "6",
+                "5",
+                "3",
+                "4",
+                "7",
+                "5",
+                "6",
+                "1",
+                "5",
+                "2",
+                "6",
+                "5",
+                "2",
+                "7",
+                "4",
+                "5",
+                "6",
+                "3",
+                "5",
+                "7",
+                "2",
+                "6",
+                "4",
+                "7",
+                "1",
+                "5",
+                "6",
+                "2",
+                "4",
+                "0",
+                "4",
+                "6",
+                "5",
+                "7",
+                "4",
+                "6"
+              ],
+              [
+                "4",
+                "7",
+                "1",
+                "5",
+                "4",
+                "7",
+                "3",
+                "5",
+                "3",
+                "7",
+                "5",
+                "0",
+                "6",
+                "5",
+                "4",
+                "7",
+                "5",
+                "7",
+                "5",
+                "3",
+                "7",
+                "5",
+                "0",
+                "6",
+                "7",
+                "1",
+                "7",
+                "5",
+                "4",
+                "2",
+                "7",
+                "5",
+                "6",
+                "7",
+                "6"
+              ],
+              [
+                "5",
+                "1",
+                "4",
+                "6",
+                "0",
+                "6",
+                "7",
+                "2",
+                "6",
+                "4",
+                "2",
+                "5",
+                "4",
+                "0",
+                "7",
+                "1",
+                "7",
+                "6",
+                "4",
+                "3",
+                "6",
+                "7",
+                "1",
+                "5",
+                "4",
+                "3",
+                "7",
+                "6",
+                "2",
+                "4",
+                "3",
+                "7",
+                "6",
+                "7",
+                "4"
+              ],
+              [
+                "5",
+                "0",
+                "4",
+                "6",
+                "1",
+                "4",
+                "2",
+                "5",
+                "7",
+                "6",
+                "2",
+                "5",
+                "4",
+                "2",
+                "6",
+                "5",
+                "6",
+                "4",
+                "3",
+                "6",
+                "1",
+                "5",
+                "3",
+                "4",
+                "7",
+                "6",
+                "5",
+                "2",
+                "4",
+                "3",
+                "7",
+                "6",
+                "5",
+                "1",
+                "7",
+                "6",
+                "2",
+                "4",
+                "3",
+                "7"
+              ],
+              [
+                "5",
+                "7",
+                "2",
+                "6",
+                "4",
+                "2",
+                "5",
+                "6",
+                "3",
+                "6",
+                "4",
+                "3",
+                "7",
+                "1",
+                "6",
+                "2",
+                "4",
+                "6",
+                "7",
+                "1",
+                "4",
+                "5",
+                "2",
+                "6",
+                "3",
+                "4",
+                "3",
+                "5",
+                "1",
+                "6",
+                "7",
+                "2",
+                "5",
+                "7",
+                "0",
+                "4",
+                "7",
+                "5",
+                "6",
+                "4",
+                "5",
+                "7",
+                "1",
+                "3",
+                "6"
+              ]
+            ],
+            "freespin_buy": [
+              [
+                "2",
+                "4",
+                "4",
+                "4",
+                "4",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "2",
+                "4",
+                "4",
+                "4",
+                "4",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6"
+              ],
+              [
+                "1",
+                "3",
+                "5",
+                "3",
+                "5",
+                "5",
+                "5",
+                "7",
+                "0",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "1",
+                "3",
+                "5",
+                "3",
+                "5",
+                "5",
+                "5",
+                "7",
+                "0",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "7",
+                "7",
+                "7",
+                "7"
+              ],
+              [
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "7",
+                "7",
+                "7",
+                "7"
+              ],
+              [
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "7",
+                "7",
+                "7",
+                "7"
+              ],
+              [
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "7",
+                "7",
+                "7",
+                "7"
+              ]
+            ]
+          },
+          "layout": {
+            "reels": 5,
+            "rows": 3
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [
+            [
+              "1",
+              "5",
+              "6"
+            ],
+            [
+              "7",
+              "1",
+              "7"
+            ],
+            [
+              "5",
+              "6",
+              "3"
+            ],
+            [
+              "1",
+              "7",
+              "6"
+            ],
+            [
+              "6",
+              "3",
+              "4"
+            ]
+          ],
+          "feature_options": {
+            "feature_multipliers": {
+              "base_bet": 1,
+              "freespin_buy": 80
+            },
+            "disabled_features": []
+          },
+          "base_bet": 1,
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "last-refresh-init-request.json": {
+      "encoding": "json",
+      "bytes": 88,
+      "value": {
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789291420468
+        }
+      }
+    },
+    "last-refresh-init-response.json": {
+      "encoding": "json",
+      "bytes": 14587,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            20,
+            40,
+            60,
+            80,
+            100,
+            120,
+            160,
+            200,
+            300,
+            400,
+            500,
+            700,
+            1000,
+            1500,
+            2000,
+            2500,
+            3000,
+            3800
+          ],
+          "default_bet": 60,
+          "paytable": {
+            "0": [
+              0,
+              1,
+              10,
+              100,
+              500
+            ],
+            "1": [
+              0,
+              0,
+              6,
+              30,
+              120
+            ],
+            "2": [
+              0,
+              0,
+              5,
+              25,
+              100
+            ],
+            "3": [
+              0,
+              0,
+              4,
+              20,
+              80
+            ],
+            "4": [
+              0,
+              0,
+              1,
+              3,
+              12
+            ],
+            "5": [
+              0,
+              0,
+              1,
+              3,
+              12
+            ],
+            "6": [
+              0,
+              0,
+              1,
+              3,
+              12
+            ],
+            "7": [
+              0,
+              0,
+              1,
+              3,
+              12
+            ],
+            "8": [
+              0,
+              1,
+              10,
+              100,
+              500
+            ]
+          },
+          "paytables": {
+            "0": {
+              "default": [
+                0,
+                1,
+                10,
+                100,
+                500
+              ]
+            },
+            "1": {
+              "default": [
+                0,
+                0,
+                6,
+                30,
+                120
+              ]
+            },
+            "2": {
+              "default": [
+                0,
+                0,
+                5,
+                25,
+                100
+              ]
+            },
+            "3": {
+              "default": [
+                0,
+                0,
+                4,
+                20,
+                80
+              ]
+            },
+            "4": {
+              "default": [
+                0,
+                0,
+                1,
+                3,
+                12
+              ]
+            },
+            "5": {
+              "default": [
+                0,
+                0,
+                1,
+                3,
+                12
+              ]
+            },
+            "6": {
+              "default": [
+                0,
+                0,
+                1,
+                3,
+                12
+              ]
+            },
+            "7": {
+              "default": [
+                0,
+                0,
+                1,
+                3,
+                12
+              ]
+            },
+            "8": {
+              "default": [
+                0,
+                1,
+                10,
+                100,
+                500
+              ]
+            }
+          },
+          "special_symbols": [
+            {
+              "kind": "wild",
+              "symbol": "8"
+            },
+            {
+              "kind": "scatter",
+              "symbol": "9"
+            }
+          ],
+          "lines": [
+            [
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            [
+              0,
+              1,
+              2,
+              1,
+              0
+            ],
+            [
+              2,
+              1,
+              0,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              1,
+              2,
+              2
+            ],
+            [
+              2,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              1,
+              1,
+              0
+            ]
+          ],
+          "reels": {
+            "main": [
+              [
+                "0",
+                "4",
+                "7",
+                "2",
+                "4",
+                "6",
+                "0",
+                "5",
+                "4",
+                "2",
+                "9",
+                "6",
+                "3",
+                "5",
+                "6",
+                "1",
+                "9",
+                "2",
+                "6",
+                "5",
+                "2",
+                "7",
+                "4",
+                "5",
+                "6",
+                "3",
+                "9",
+                "2",
+                "3",
+                "9",
+                "7",
+                "1",
+                "5",
+                "6",
+                "2",
+                "9",
+                "4",
+                "0",
+                "4",
+                "5",
+                "7",
+                "4",
+                "6"
+              ],
+              [
+                "4",
+                "7",
+                "1",
+                "5",
+                "7",
+                "3",
+                "5",
+                "3",
+                "7",
+                "5",
+                "0",
+                "6",
+                "5",
+                "5",
+                "5",
+                "3",
+                "7",
+                "5",
+                "7",
+                "1",
+                "7",
+                "0",
+                "5",
+                "4",
+                "2",
+                "5",
+                "0",
+                "6",
+                "7",
+                "6"
+              ],
+              [
+                "5",
+                "1",
+                "4",
+                "6",
+                "3",
+                "7",
+                "2",
+                "0",
+                "6",
+                "0",
+                "7",
+                "2",
+                "6",
+                "4",
+                "2",
+                "5",
+                "4",
+                "0",
+                "7",
+                "1",
+                "9",
+                "7",
+                "4",
+                "3",
+                "6",
+                "7",
+                "1",
+                "5",
+                "9",
+                "4",
+                "3",
+                "7",
+                "2",
+                "4",
+                "3",
+                "7",
+                "6",
+                "7",
+                "4"
+              ],
+              [
+                "5",
+                "0",
+                "4",
+                "6",
+                "1",
+                "4",
+                "2",
+                "5",
+                "7",
+                "0",
+                "6",
+                "2",
+                "5",
+                "4",
+                "2",
+                "6",
+                "5",
+                "6",
+                "4",
+                "3",
+                "6",
+                "1",
+                "5",
+                "3",
+                "4",
+                "7",
+                "6",
+                "5",
+                "2",
+                "4",
+                "3",
+                "7",
+                "6",
+                "5",
+                "1",
+                "7",
+                "6",
+                "2",
+                "4",
+                "3",
+                "7"
+              ],
+              [
+                "5",
+                "7",
+                "2",
+                "6",
+                "4",
+                "2",
+                "5",
+                "6",
+                "3",
+                "6",
+                "4",
+                "3",
+                "7",
+                "1",
+                "6",
+                "2",
+                "4",
+                "6",
+                "9",
+                "7",
+                "1",
+                "4",
+                "5",
+                "2",
+                "6",
+                "3",
+                "4",
+                "3",
+                "5",
+                "1",
+                "9",
+                "6",
+                "0",
+                "7",
+                "2",
+                "5",
+                "7",
+                "0",
+                "4",
+                "7",
+                "5",
+                "6",
+                "4",
+                "5",
+                "7",
+                "1",
+                "3",
+                "6"
+              ]
+            ],
+            "freespins": [
+              [
+                "4",
+                "7",
+                "2",
+                "4",
+                "6",
+                "5",
+                "4",
+                "2",
+                "6",
+                "5",
+                "3",
+                "4",
+                "7",
+                "5",
+                "6",
+                "1",
+                "5",
+                "2",
+                "6",
+                "5",
+                "2",
+                "7",
+                "4",
+                "5",
+                "6",
+                "3",
+                "5",
+                "7",
+                "2",
+                "6",
+                "4",
+                "7",
+                "1",
+                "5",
+                "6",
+                "2",
+                "4",
+                "0",
+                "4",
+                "6",
+                "5",
+                "7",
+                "4",
+                "6"
+              ],
+              [
+                "4",
+                "7",
+                "1",
+                "5",
+                "4",
+                "7",
+                "3",
+                "5",
+                "3",
+                "7",
+                "5",
+                "0",
+                "6",
+                "5",
+                "4",
+                "7",
+                "5",
+                "7",
+                "5",
+                "3",
+                "7",
+                "5",
+                "0",
+                "6",
+                "7",
+                "1",
+                "7",
+                "5",
+                "4",
+                "2",
+                "7",
+                "5",
+                "6",
+                "7",
+                "6"
+              ],
+              [
+                "5",
+                "1",
+                "4",
+                "6",
+                "0",
+                "6",
+                "7",
+                "2",
+                "6",
+                "4",
+                "2",
+                "5",
+                "4",
+                "0",
+                "7",
+                "1",
+                "7",
+                "6",
+                "4",
+                "3",
+                "6",
+                "7",
+                "1",
+                "5",
+                "4",
+                "3",
+                "7",
+                "6",
+                "2",
+                "4",
+                "3",
+                "7",
+                "6",
+                "7",
+                "4"
+              ],
+              [
+                "5",
+                "0",
+                "4",
+                "6",
+                "1",
+                "4",
+                "2",
+                "5",
+                "7",
+                "6",
+                "2",
+                "5",
+                "4",
+                "2",
+                "6",
+                "5",
+                "6",
+                "4",
+                "3",
+                "6",
+                "1",
+                "5",
+                "3",
+                "4",
+                "7",
+                "6",
+                "5",
+                "2",
+                "4",
+                "3",
+                "7",
+                "6",
+                "5",
+                "1",
+                "7",
+                "6",
+                "2",
+                "4",
+                "3",
+                "7"
+              ],
+              [
+                "5",
+                "7",
+                "2",
+                "6",
+                "4",
+                "2",
+                "5",
+                "6",
+                "3",
+                "6",
+                "4",
+                "3",
+                "7",
+                "1",
+                "6",
+                "2",
+                "4",
+                "6",
+                "7",
+                "1",
+                "4",
+                "5",
+                "2",
+                "6",
+                "3",
+                "4",
+                "3",
+                "5",
+                "1",
+                "6",
+                "7",
+                "2",
+                "5",
+                "7",
+                "0",
+                "4",
+                "7",
+                "5",
+                "6",
+                "4",
+                "5",
+                "7",
+                "1",
+                "3",
+                "6"
+              ]
+            ],
+            "freespin_buy": [
+              [
+                "2",
+                "4",
+                "4",
+                "4",
+                "4",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "2",
+                "4",
+                "4",
+                "4",
+                "4",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6"
+              ],
+              [
+                "1",
+                "3",
+                "5",
+                "3",
+                "5",
+                "5",
+                "5",
+                "7",
+                "0",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "1",
+                "3",
+                "5",
+                "3",
+                "5",
+                "5",
+                "5",
+                "7",
+                "0",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "7",
+                "7",
+                "7",
+                "7"
+              ],
+              [
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "7",
+                "7",
+                "7",
+                "7"
+              ],
+              [
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "7",
+                "7",
+                "7",
+                "7"
+              ],
+              [
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "1",
+                "7",
+                "7",
+                "7",
+                "7",
+                "3",
+                "3",
+                "0",
+                "4",
+                "4",
+                "4",
+                "4",
+                "3",
+                "3",
+                "5",
+                "5",
+                "5",
+                "5",
+                "2",
+                "2",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "7",
+                "7",
+                "7",
+                "7"
+              ]
+            ]
+          },
+          "layout": {
+            "reels": 5,
+            "rows": 3
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [
+            [
+              "5",
+              "2",
+              "7"
+            ],
+            [
+              "4",
+              "7",
+              "1"
+            ],
+            [
+              "0",
+              "7",
+              "1"
+            ],
+            [
+              "7",
+              "5",
+              "0"
+            ],
+            [
+              "5",
+              "7",
+              "0"
+            ]
+          ],
+          "feature_options": {
+            "feature_multipliers": {
+              "base_bet": 1,
+              "freespin_buy": 80
+            },
+            "disabled_features": []
+          },
+          "base_bet": 1,
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
+          ]
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 3930,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "frozen-fruit",
+          "name": "Frozen Fruit",
+          "identifier": "FrozenFruit"
+        },
+        "generated_at": "2026-09-13T09:23:42+00:00",
+        "source_run": "2026-09-13_06-23-10-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": [
+          {
+            "id": "FREESPIN__TO__FLOW_FREESPINS",
+            "kind": "PURCHASE_RESULT",
+            "request_contract": "FREESPIN",
+            "source_states": [
+              "FLOW:freespins"
+            ],
+            "target_states": [
+              "FLOW:freespins"
+            ],
+            "provider_states": [
+              "freespins"
+            ],
+            "available_actions": [
+              "freespin",
+              "init"
+            ],
+            "terminal_observed": false,
+            "observed_count": 3,
+            "response_schema": "response-schemas/freespin__to__flow_freespins.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-002-request.json",
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-003-request.json",
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-004-request.json"
+            ]
+          },
+          {
+            "id": "FREESPIN__TO__READY",
+            "kind": "PURCHASE_RESULT",
+            "request_contract": "FREESPIN",
+            "source_states": [
+              "FLOW:freespins"
+            ],
+            "target_states": [
+              "READY"
+            ],
+            "provider_states": [
+              "closed"
+            ],
+            "available_actions": [
+              "init",
+              "spin"
+            ],
+            "terminal_observed": true,
+            "observed_count": 1,
+            "response_schema": "response-schemas/freespin__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-005-request.json"
+            ]
+          },
+          {
+            "id": "SPIN__PURCHASE_FREESPIN_BUY__TO__FLOW_FREESPINS",
+            "kind": "PURCHASE_RESULT",
+            "request_contract": "SPIN__PURCHASE_FREESPIN_BUY",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "FLOW:freespins"
+            ],
+            "provider_states": [
+              "freespins"
+            ],
+            "available_actions": [
+              "buy_extra_bonus",
+              "freespin",
+              "init"
+            ],
+            "terminal_observed": false,
+            "observed_count": 1,
+            "response_schema": "response-schemas/spin__purchase_freespin_buy__to__flow_freespins.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-001-request.json"
+            ]
+          },
+          {
+            "id": "SPIN__TO__READY",
+            "kind": "BASE_OR_FEATURE_ENTRY",
+            "request_contract": "SPIN",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "READY"
+            ],
+            "provider_states": [
+              "closed"
+            ],
+            "available_actions": [
+              "init",
+              "spin"
+            ],
+            "terminal_observed": true,
+            "observed_count": 1,
+            "response_schema": "response-schemas/spin__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 486,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "frozen-fruit",
+        "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "BUY_EXTRA_BONUS",
+            "signature": "BUY_EXTRA_BONUS:UNEXECUTED",
+            "required": [
+              "buy_extra_bonus"
+            ],
+            "covered": [],
+            "missing": [
+              "buy_extra_bonus"
+            ],
+            "complete": false
+          }
+        ],
+        "complete": false,
+        "missing_count": 1
+      }
+    },
+    "profile.json": {
+      "encoding": "json",
+      "bytes": 2564,
+      "value": {
+        "schema": "tester-spin/bgaming-profile/v1",
+        "capability_version": 2,
+        "family": "api-v2",
+        "confidence": 1.0,
+        "evidence": [
+          "init.options",
+          "init.api_version=2",
+          "persisted.validated"
+        ],
+        "spin_options": {},
+        "command_options": {},
+        "request_extra_data": {},
+        "spin_option_choices": {},
+        "effective_bet_selector": "",
+        "effective_bet_multipliers": {},
+        "dynamic_purchased_feature": true,
+        "purchase_feature_level_supported": true,
+        "purchase_features": [
+          "freespin_buy"
+        ],
+        "rows_required": false,
+        "line_count": 0,
+        "variable_layout": false,
+        "allowed_continuations": [
+          "close",
+          "freespin",
+          "play_bonus",
+          "play_preselection_game",
+          "preselection_game",
+          "respin"
+        ],
+        "source": "persisted-validated-profile",
+        "bundle_sha256": "30418937e380ebdd652d9587bb4a941cdcf3859ced528cf3dfc4e798b1b1f5dd",
+        "discovery_diagnostics": [
+          {
+            "kind": "loader",
+            "url": "https://cdn.bgaming-network.com/html/FrozenFruit/loader.js",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "kind": "script-skip",
+            "url": "https://www.googletagmanager.com/gtag/js",
+            "reason": "third-party-origin"
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/FrozenFruit/v0.0.111_v14.19.2/bundle.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 1772774,
+            "contract_score": 82
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/FrozenFruit/bundle.js",
+            "status": 404,
+            "ok": false,
+            "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/html/FrozenFruit/bundle.js"
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/wrapper.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 160620,
+            "contract_score": 24
+          },
+          {
+            "kind": "bundle",
+            "url": "https://boost2.bgaming-network.com/analytics/amplitude.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 5312,
+            "contract_score": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://replays.bgaming-network.com/replays.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 6770,
+            "contract_score": 0
+          },
+          {
+            "kind": "bundle",
+            "url": "https://cdn.bgaming-network.com/html/FrozenFruit/loader.js",
+            "status": 200,
+            "ok": true,
+            "bytes": 1573,
+            "contract_score": 0
+          }
+        ],
+        "validated": true
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 6843,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "frozen-fruit",
+          "name": "Frozen Fruit",
+          "identifier": "FrozenFruit"
+        },
+        "generated_at": "2026-09-13T09:23:42+00:00",
+        "source_run": "2026-09-13_06-23-10-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [
+          {
+            "id": "FREESPIN",
+            "transport": "HTTP_JSON",
+            "wire_action": "freespin",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 4,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "freespin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          },
+          {
+            "id": "SPIN",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bet"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          },
+          {
+            "id": "SPIN__PURCHASE_FREESPIN_BUY",
+            "transport": "HTTP_JSON",
+            "wire_action": "spin",
+            "selector_domains_observed": {
+              "purchased_feature": [
+                "freespin_buy"
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "purchased_feature": "freespin_buy"
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "extra_data": {
+                  "type": "object",
+                  "properties": {
+                    "round_series_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "round_series_id"
+                  ],
+                  "additionalProperties": true
+                },
+                "options": {
+                  "type": "object",
+                  "properties": {
+                    "bet": {
+                      "type": "integer"
+                    },
+                    "purchased_feature": {
+                      "type": "string",
+                      "observed_enum": [
+                        "freespin_buy"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bet",
+                    "purchased_feature"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "command",
+                "extra_data",
+                "options"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.extra_data.round_series_id"
+            ]
+          }
+        ],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY",
+            "kind": "PURCHASE",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": null,
+            "cost_multiplier": 80.0,
+            "required_options": [],
+            "covered_options": [],
+            "source": "init.feature_multipliers+client"
+          },
+          {
+            "id": "BUY_EXTRA_BONUS",
+            "kind": "FEATURE",
+            "wire_command": "buy_extra_bonus",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "FREESPIN",
+            "kind": "CONTINUATION",
+            "wire_command": "freespin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {
+          "FLOW:freespins": {
+            "FREESPIN": [
+              "FREESPIN__TO__FLOW_FREESPINS",
+              "FREESPIN__TO__READY"
+            ]
+          },
+          "READY": {
+            "SPIN": [
+              "SPIN__TO__READY"
+            ],
+            "SPIN__PURCHASE_FREESPIN_BUY": [
+              "SPIN__PURCHASE_FREESPIN_BUY__TO__FLOW_FREESPINS"
+            ]
+          }
+        },
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 467,
+      "value": {
+        "round_id": 17296451208,
+        "last_action_id": "17296451208_5",
+        "flow_state": "closed",
+        "flow_command": "freespin",
+        "purchased_feature": "freespin_buy",
+        "bet": 60,
+        "win": 720,
+        "balance_total": 107080,
+        "screen_sha256": "",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": 4,
+        "freespins_left": 0,
+        "response_sha256": "7068a55f7a8fc090",
+        "mode_id": "PURCHASE_FREESPIN_BUY",
+        "step": 5,
+        "expected_debit": 0
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/request.json": {
+      "encoding": "json",
+      "bytes": 167,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 60,
+          "purchased_feature": "freespin_buy"
+        },
+        "extra_data": {
+          "round_series_id": 1789291420468
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/response.json": {
+      "encoding": "json",
+      "bytes": 1526,
+      "value": {
+        "api_version": "2",
+        "features": {
+          "bonus_data": {
+            "bonus_game_params": {
+              "spins_count": 4,
+              "boards_count": 4,
+              "multiplier": 6
+            },
+            "bonus_game_prices": {
+              "extra_spin": 2655,
+              "extra_board": 2655,
+              "extra_multiplier": null,
+              "regenerate_bonus": null
+            },
+            "last_purchased_extra_bonus": null
+          },
+          "freespins_issued": 4,
+          "freespins_left": 4
+        },
+        "outcome": {
+          "screen": [
+            [
+              "6",
+              "9",
+              "2"
+            ],
+            [
+              "3",
+              "1",
+              "3"
+            ],
+            [
+              "9",
+              "4",
+              "4"
+            ],
+            [
+              "7",
+              "3",
+              "3"
+            ],
+            [
+              "9",
+              "3",
+              "3"
+            ]
+          ],
+          "special_symbols": {
+            "scatter": {
+              "9": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  2,
+                  0
+                ],
+                [
+                  4,
+                  0
+                ]
+              ]
+            }
+          },
+          "bet": 60,
+          "win": 0,
+          "wins": [],
+          "freespins_issued": 4,
+          "storage": null
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 95200
+        },
+        "flow": {
+          "round_id": 17296451208,
+          "last_action_id": "17296451208_1",
+          "state": "freespins",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "freespin",
+            "buy_extra_bonus"
+          ],
+          "purchased_feature": {
+            "name": "freespin_buy"
+          }
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-001-proof.json": {
+      "encoding": "json",
+      "bytes": 513,
+      "value": {
+        "round_id": 17296451208,
+        "last_action_id": "17296451208_1",
+        "flow_state": "freespins",
+        "flow_command": "spin",
+        "purchased_feature": "freespin_buy",
+        "bet": 60,
+        "win": 0,
+        "balance_total": 95200,
+        "screen_sha256": "ea744baca356",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": 4,
+        "freespins_left": 4,
+        "response_sha256": "f9584347a16f1b33",
+        "mode_id": "PURCHASE_FREESPIN_BUY",
+        "step": 1,
+        "expected_debit": 4800.0,
+        "expected_outcome_bet": 60.0
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 167,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 60,
+          "purchased_feature": "freespin_buy"
+        },
+        "extra_data": {
+          "round_series_id": 1789291420468
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 1526,
+      "value": {
+        "api_version": "2",
+        "features": {
+          "bonus_data": {
+            "bonus_game_params": {
+              "spins_count": 4,
+              "boards_count": 4,
+              "multiplier": 6
+            },
+            "bonus_game_prices": {
+              "extra_spin": 2655,
+              "extra_board": 2655,
+              "extra_multiplier": null,
+              "regenerate_bonus": null
+            },
+            "last_purchased_extra_bonus": null
+          },
+          "freespins_issued": 4,
+          "freespins_left": 4
+        },
+        "outcome": {
+          "screen": [
+            [
+              "6",
+              "9",
+              "2"
+            ],
+            [
+              "3",
+              "1",
+              "3"
+            ],
+            [
+              "9",
+              "4",
+              "4"
+            ],
+            [
+              "7",
+              "3",
+              "3"
+            ],
+            [
+              "9",
+              "3",
+              "3"
+            ]
+          ],
+          "special_symbols": {
+            "scatter": {
+              "9": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  2,
+                  0
+                ],
+                [
+                  4,
+                  0
+                ]
+              ]
+            }
+          },
+          "bet": 60,
+          "win": 0,
+          "wins": [],
+          "freespins_issued": 4,
+          "storage": null
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 95200
+        },
+        "flow": {
+          "round_id": 17296451208,
+          "last_action_id": "17296451208_1",
+          "state": "freespins",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "freespin",
+            "buy_extra_bonus"
+          ],
+          "purchased_feature": {
+            "name": "freespin_buy"
+          }
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-002-proof.json": {
+      "encoding": "json",
+      "bytes": 469,
+      "value": {
+        "round_id": 17296451208,
+        "last_action_id": "17296451208_2",
+        "flow_state": "freespins",
+        "flow_command": "freespin",
+        "purchased_feature": "freespin_buy",
+        "bet": 60,
+        "win": 720,
+        "balance_total": 95920,
+        "screen_sha256": "",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": 4,
+        "freespins_left": 3,
+        "response_sha256": "3f6d4b9fa74df227",
+        "mode_id": "PURCHASE_FREESPIN_BUY",
+        "step": 2,
+        "expected_debit": 0
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-002-request.json": {
+      "encoding": "json",
+      "bytes": 92,
+      "value": {
+        "command": "freespin",
+        "extra_data": {
+          "round_series_id": 1789291420468
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-002-response.json": {
+      "encoding": "json",
+      "bytes": 6747,
+      "value": {
+        "api_version": "2",
+        "features": {
+          "bonus_data": {
+            "bonus_game_params": {
+              "spins_count": 4,
+              "boards_count": 4,
+              "multiplier": 6
+            },
+            "bonus_game_prices": {
+              "extra_spin": 2655,
+              "extra_board": 2655,
+              "extra_multiplier": null,
+              "regenerate_bonus": null
+            },
+            "last_purchased_extra_bonus": null
+          },
+          "freespins_issued": 4,
+          "freespins_left": 3
+        },
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 60,
+          "win": 720,
+          "wins": [],
+          "storage": {
+            "boards": [
+              {
+                "screen": [
+                  [
+                    "6",
+                    "5",
+                    "2"
+                  ],
+                  [
+                    "6",
+                    "7",
+                    "1"
+                  ],
+                  [
+                    "7",
+                    "6",
+                    "4"
+                  ],
+                  [
+                    "2",
+                    "4",
+                    "3"
+                  ],
+                  [
+                    "3",
+                    "5",
+                    "1"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  18,
+                  23,
+                  16,
+                  36,
+                  26
+                ],
+                "special_symbols": {},
+                "bet": 0,
+                "win": 360,
+                "wins": [
+                  [
+                    "line",
+                    360,
+                    [
+                      0,
+                      0,
+                      1
+                    ],
+                    5
+                  ]
+                ],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "7",
+                    "2",
+                    "4"
+                  ],
+                  [
+                    "5",
+                    "7",
+                    "5"
+                  ],
+                  [
+                    "4",
+                    "3",
+                    "7"
+                  ],
+                  [
+                    "2",
+                    "5",
+                    "4"
+                  ],
+                  [
+                    "6",
+                    "3",
+                    "4"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  1,
+                  16,
+                  24,
+                  10,
+                  23
+                ],
+                "special_symbols": {},
+                "bet": 0,
+                "win": 360,
+                "wins": [
+                  [
+                    "line",
+                    360,
+                    [
+                      0,
+                      1,
+                      2
+                    ],
+                    3
+                  ]
+                ],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "4",
+                    "7",
+                    "5"
+                  ],
+                  [
+                    "4",
+                    "7",
+                    "3"
+                  ],
+                  [
+                    "7",
+                    "6",
+                    "2"
+                  ],
+                  [
+                    "0",
+                    "4",
+                    "6"
+                  ],
+                  [
+                    "1",
+                    "6",
+                    "7"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  11,
+                  4,
+                  26,
+                  1,
+                  28
+                ],
+                "special_symbols": {},
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "2",
+                    "4",
+                    "6"
+                  ],
+                  [
+                    "4",
+                    "7",
+                    "1"
+                  ],
+                  [
+                    "7",
+                    "1",
+                    "5"
+                  ],
+                  [
+                    "2",
+                    "6",
+                    "5"
+                  ],
+                  [
+                    "6",
+                    "4",
+                    "5"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  2,
+                  0,
+                  21,
+                  13,
+                  38
+                ],
+                "special_symbols": {},
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "6",
+                    "5",
+                    "4"
+                  ],
+                  [
+                    "6",
+                    "7",
+                    "1"
+                  ],
+                  [
+                    "7",
+                    "6",
+                    "2"
+                  ],
+                  [
+                    "7",
+                    "6",
+                    "2"
+                  ],
+                  [
+                    "4",
+                    "6",
+                    "7"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  4,
+                  23,
+                  26,
+                  34,
+                  16
+                ],
+                "special_symbols": {},
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": false
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "4",
+                    "7",
+                    "2"
+                  ],
+                  [
+                    "5",
+                    "4",
+                    "7"
+                  ],
+                  [
+                    "7",
+                    "6",
+                    "2"
+                  ],
+                  [
+                    "4",
+                    "3",
+                    "7"
+                  ],
+                  [
+                    "4",
+                    "3",
+                    "5"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  0,
+                  3,
+                  26,
+                  28,
+                  25
+                ],
+                "special_symbols": {},
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": false
+                },
+                "internal_store": null
+              }
+            ]
+          }
+        },
+        "balance": {
+          "game": 720,
+          "wallet": 95200
+        },
+        "flow": {
+          "round_id": 17296451208,
+          "last_action_id": "17296451208_2",
+          "state": "freespins",
+          "command": "freespin",
+          "available_actions": [
+            "init",
+            "freespin"
+          ],
+          "purchased_feature": {
+            "name": "freespin_buy"
+          }
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-003-proof.json": {
+      "encoding": "json",
+      "bytes": 471,
+      "value": {
+        "round_id": 17296451208,
+        "last_action_id": "17296451208_3",
+        "flow_state": "freespins",
+        "flow_command": "freespin",
+        "purchased_feature": "freespin_buy",
+        "bet": 60,
+        "win": 4320,
+        "balance_total": 100240,
+        "screen_sha256": "",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": 4,
+        "freespins_left": 2,
+        "response_sha256": "447576027625084e",
+        "mode_id": "PURCHASE_FREESPIN_BUY",
+        "step": 3,
+        "expected_debit": 0
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-003-request.json": {
+      "encoding": "json",
+      "bytes": 92,
+      "value": {
+        "command": "freespin",
+        "extra_data": {
+          "round_series_id": 1789291420468
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-003-response.json": {
+      "encoding": "json",
+      "bytes": 9124,
+      "value": {
+        "api_version": "2",
+        "features": {
+          "bonus_data": {
+            "bonus_game_params": {
+              "spins_count": 4,
+              "boards_count": 4,
+              "multiplier": 6
+            },
+            "bonus_game_prices": {
+              "extra_spin": 2655,
+              "extra_board": 2655,
+              "extra_multiplier": null,
+              "regenerate_bonus": null
+            },
+            "last_purchased_extra_bonus": null
+          },
+          "freespins_issued": 4,
+          "freespins_left": 2
+        },
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 60,
+          "win": 4320,
+          "wins": [],
+          "storage": {
+            "boards": [
+              {
+                "screen": [
+                  [
+                    "7",
+                    "2",
+                    "6"
+                  ],
+                  [
+                    "4",
+                    "2",
+                    "7"
+                  ],
+                  [
+                    "6",
+                    "8",
+                    "1"
+                  ],
+                  [
+                    "4",
+                    "3",
+                    "7"
+                  ],
+                  [
+                    "8",
+                    "4",
+                    "5"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  27,
+                  28,
+                  20,
+                  37,
+                  19
+                ],
+                "special_symbols": {
+                  "wild": {
+                    "8": [
+                      [
+                        2,
+                        1
+                      ],
+                      [
+                        4,
+                        0
+                      ]
+                    ]
+                  }
+                },
+                "bet": 0,
+                "win": 1800,
+                "wins": [
+                  [
+                    "line",
+                    1800,
+                    [
+                      1,
+                      1,
+                      1
+                    ],
+                    0
+                  ]
+                ],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "7",
+                    "2",
+                    "4"
+                  ],
+                  [
+                    "5",
+                    "7",
+                    "8"
+                  ],
+                  [
+                    "8",
+                    "8",
+                    "7"
+                  ],
+                  [
+                    "2",
+                    "4",
+                    "3"
+                  ],
+                  [
+                    "4",
+                    "3",
+                    "7"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  1,
+                  16,
+                  24,
+                  36,
+                  10
+                ],
+                "special_symbols": {
+                  "wild": {
+                    "8": [
+                      [
+                        1,
+                        2
+                      ],
+                      [
+                        2,
+                        0
+                      ],
+                      [
+                        2,
+                        1
+                      ]
+                    ]
+                  }
+                },
+                "bet": 0,
+                "win": 1080,
+                "wins": [
+                  [
+                    "line",
+                    360,
+                    [
+                      0,
+                      1,
+                      2
+                    ],
+                    3
+                  ],
+                  [
+                    "line",
+                    360,
+                    [
+                      2,
+                      2,
+                      1
+                    ],
+                    6
+                  ],
+                  [
+                    "line",
+                    360,
+                    [
+                      0,
+                      1,
+                      1
+                    ],
+                    9
+                  ]
+                ],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "2",
+                    "4",
+                    "8"
+                  ],
+                  [
+                    "4",
+                    "2",
+                    "7"
+                  ],
+                  [
+                    "7",
+                    "4",
+                    "5"
+                  ],
+                  [
+                    "8",
+                    "8",
+                    "4"
+                  ],
+                  [
+                    "5",
+                    "7",
+                    "2"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  35,
+                  28,
+                  33,
+                  35,
+                  0
+                ],
+                "special_symbols": {
+                  "wild": {
+                    "8": [
+                      [
+                        0,
+                        2
+                      ],
+                      [
+                        3,
+                        0
+                      ],
+                      [
+                        3,
+                        1
+                      ]
+                    ]
+                  }
+                },
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "4",
+                    "7",
+                    "5"
+                  ],
+                  [
+                    "7",
+                    "1",
+                    "7"
+                  ],
+                  [
+                    "7",
+                    "1",
+                    "7"
+                  ],
+                  [
+                    "8",
+                    "7",
+                    "6"
+                  ],
+                  [
+                    "8",
+                    "5",
+                    "7"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  11,
+                  24,
+                  14,
+                  7,
+                  31
+                ],
+                "special_symbols": {
+                  "wild": {
+                    "8": [
+                      [
+                        3,
+                        0
+                      ],
+                      [
+                        4,
+                        0
+                      ]
+                    ]
+                  }
+                },
+                "bet": 0,
+                "win": 1440,
+                "wins": [
+                  [
+                    "line",
+                    1080,
+                    [
+                      1,
+                      0,
+                      0,
+                      0
+                    ],
+                    7
+                  ],
+                  [
+                    "line",
+                    360,
+                    [
+                      1,
+                      2,
+                      2
+                    ],
+                    8
+                  ]
+                ],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "1",
+                    "5",
+                    "6"
+                  ],
+                  [
+                    "7",
+                    "6",
+                    "4"
+                  ],
+                  [
+                    "7",
+                    "1",
+                    "8"
+                  ],
+                  [
+                    "2",
+                    "5",
+                    "7"
+                  ],
+                  [
+                    "5",
+                    "6",
+                    "4"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  32,
+                  33,
+                  14,
+                  6,
+                  37
+                ],
+                "special_symbols": {
+                  "wild": {
+                    "8": [
+                      [
+                        2,
+                        2
+                      ]
+                    ]
+                  }
+                },
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": false
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "2",
+                    "6",
+                    "8"
+                  ],
+                  [
+                    "8",
+                    "5",
+                    "6"
+                  ],
+                  [
+                    "4",
+                    "3",
+                    "6"
+                  ],
+                  [
+                    "4",
+                    "3",
+                    "7"
+                  ],
+                  [
+                    "7",
+                    "1",
+                    "4"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  7,
+                  30,
+                  18,
+                  37,
+                  18
+                ],
+                "special_symbols": {
+                  "wild": {
+                    "8": [
+                      [
+                        0,
+                        2
+                      ],
+                      [
+                        1,
+                        0
+                      ]
+                    ]
+                  }
+                },
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": false
+                },
+                "internal_store": null
+              }
+            ]
+          }
+        },
+        "balance": {
+          "game": 5040,
+          "wallet": 95200
+        },
+        "flow": {
+          "round_id": 17296451208,
+          "last_action_id": "17296451208_3",
+          "state": "freespins",
+          "command": "freespin",
+          "available_actions": [
+            "init",
+            "freespin"
+          ],
+          "purchased_feature": {
+            "name": "freespin_buy"
+          }
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-004-proof.json": {
+      "encoding": "json",
+      "bytes": 471,
+      "value": {
+        "round_id": 17296451208,
+        "last_action_id": "17296451208_4",
+        "flow_state": "freespins",
+        "flow_command": "freespin",
+        "purchased_feature": "freespin_buy",
+        "bet": 60,
+        "win": 6120,
+        "balance_total": 106360,
+        "screen_sha256": "",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": 4,
+        "freespins_left": 1,
+        "response_sha256": "85b2a0e30c56a1ce",
+        "mode_id": "PURCHASE_FREESPIN_BUY",
+        "step": 4,
+        "expected_debit": 0
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-004-request.json": {
+      "encoding": "json",
+      "bytes": 92,
+      "value": {
+        "command": "freespin",
+        "extra_data": {
+          "round_series_id": 1789291420468
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-004-response.json": {
+      "encoding": "json",
+      "bytes": 9645,
+      "value": {
+        "api_version": "2",
+        "features": {
+          "bonus_data": {
+            "bonus_game_params": {
+              "spins_count": 4,
+              "boards_count": 4,
+              "multiplier": 6
+            },
+            "bonus_game_prices": {
+              "extra_spin": 2655,
+              "extra_board": 2655,
+              "extra_multiplier": null,
+              "regenerate_bonus": null
+            },
+            "last_purchased_extra_bonus": null
+          },
+          "freespins_issued": 4,
+          "freespins_left": 1
+        },
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 60,
+          "win": 6120,
+          "wins": [],
+          "storage": {
+            "boards": [
+              {
+                "screen": [
+                  [
+                    "7",
+                    "2",
+                    "6"
+                  ],
+                  [
+                    "7",
+                    "1",
+                    "8"
+                  ],
+                  [
+                    "8",
+                    "6",
+                    "7"
+                  ],
+                  [
+                    "8",
+                    "4",
+                    "3"
+                  ],
+                  [
+                    "4",
+                    "5",
+                    "7"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  27,
+                  1,
+                  4,
+                  16,
+                  39
+                ],
+                "special_symbols": {
+                  "wild": {
+                    "8": [
+                      [
+                        1,
+                        2
+                      ],
+                      [
+                        2,
+                        0
+                      ],
+                      [
+                        3,
+                        0
+                      ]
+                    ]
+                  }
+                },
+                "bet": 0,
+                "win": 2160,
+                "wins": [
+                  [
+                    "line",
+                    1080,
+                    [
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    1
+                  ],
+                  [
+                    "line",
+                    1080,
+                    [
+                      2,
+                      2,
+                      1,
+                      0
+                    ],
+                    6
+                  ]
+                ],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "6",
+                    "8",
+                    "2"
+                  ],
+                  [
+                    "4",
+                    "7",
+                    "8"
+                  ],
+                  [
+                    "8",
+                    "0",
+                    "6"
+                  ],
+                  [
+                    "4",
+                    "2",
+                    "6"
+                  ],
+                  [
+                    "5",
+                    "7",
+                    "1"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  18,
+                  0,
+                  3,
+                  12,
+                  40
+                ],
+                "special_symbols": {
+                  "wild": {
+                    "8": [
+                      [
+                        0,
+                        1
+                      ],
+                      [
+                        1,
+                        2
+                      ],
+                      [
+                        2,
+                        0
+                      ]
+                    ]
+                  }
+                },
+                "bet": 0,
+                "win": 2160,
+                "wins": [
+                  [
+                    "line",
+                    1080,
+                    [
+                      1,
+                      0,
+                      0,
+                      0
+                    ],
+                    7
+                  ],
+                  [
+                    "line",
+                    1080,
+                    [
+                      1,
+                      2,
+                      2,
+                      2
+                    ],
+                    8
+                  ]
+                ],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "5",
+                    "7",
+                    "2"
+                  ],
+                  [
+                    "8",
+                    "8",
+                    "3"
+                  ],
+                  [
+                    "7",
+                    "2",
+                    "6"
+                  ],
+                  [
+                    "7",
+                    "6",
+                    "5"
+                  ],
+                  [
+                    "6",
+                    "3",
+                    "8"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  26,
+                  4,
+                  6,
+                  24,
+                  7
+                ],
+                "special_symbols": {
+                  "wild": {
+                    "8": [
+                      [
+                        1,
+                        0
+                      ],
+                      [
+                        1,
+                        1
+                      ],
+                      [
+                        4,
+                        2
+                      ]
+                    ]
+                  }
+                },
+                "bet": 0,
+                "win": 1080,
+                "wins": [
+                  [
+                    "line",
+                    1080,
+                    [
+                      1,
+                      0,
+                      0,
+                      0
+                    ],
+                    7
+                  ]
+                ],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "7",
+                    "5",
+                    "8"
+                  ],
+                  [
+                    "1",
+                    "5",
+                    "4"
+                  ],
+                  [
+                    "5",
+                    "4",
+                    "0"
+                  ],
+                  [
+                    "5",
+                    "6",
+                    "4"
+                  ],
+                  [
+                    "7",
+                    "2",
+                    "8"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  12,
+                  2,
+                  11,
+                  15,
+                  1
+                ],
+                "special_symbols": {
+                  "wild": {
+                    "8": [
+                      [
+                        0,
+                        2
+                      ],
+                      [
+                        4,
+                        2
+                      ]
+                    ]
+                  }
+                },
+                "bet": 0,
+                "win": 720,
+                "wins": [
+                  [
+                    "line",
+                    360,
+                    [
+                      2,
+                      1,
+                      0
+                    ],
+                    4
+                  ],
+                  [
+                    "line",
+                    360,
+                    [
+                      2,
+                      2,
+                      1
+                    ],
+                    6
+                  ]
+                ],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "6",
+                    "5",
+                    "4"
+                  ],
+                  [
+                    "5",
+                    "0",
+                    "6"
+                  ],
+                  [
+                    "8",
+                    "4",
+                    "2"
+                  ],
+                  [
+                    "5",
+                    "7",
+                    "6"
+                  ],
+                  [
+                    "8",
+                    "6",
+                    "7"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  4,
+                  10,
+                  8,
+                  7,
+                  16
+                ],
+                "special_symbols": {
+                  "wild": {
+                    "8": [
+                      [
+                        2,
+                        0
+                      ],
+                      [
+                        4,
+                        0
+                      ]
+                    ]
+                  }
+                },
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": false
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "7",
+                    "4",
+                    "8"
+                  ],
+                  [
+                    "7",
+                    "6",
+                    "4"
+                  ],
+                  [
+                    "8",
+                    "3",
+                    "8"
+                  ],
+                  [
+                    "4",
+                    "7",
+                    "6"
+                  ],
+                  [
+                    "5",
+                    "1",
+                    "6"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  21,
+                  33,
+                  29,
+                  23,
+                  27
+                ],
+                "special_symbols": {
+                  "wild": {
+                    "8": [
+                      [
+                        0,
+                        2
+                      ],
+                      [
+                        2,
+                        0
+                      ],
+                      [
+                        2,
+                        2
+                      ]
+                    ]
+                  }
+                },
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": false
+                },
+                "internal_store": null
+              }
+            ]
+          }
+        },
+        "balance": {
+          "game": 11160,
+          "wallet": 95200
+        },
+        "flow": {
+          "round_id": 17296451208,
+          "last_action_id": "17296451208_4",
+          "state": "freespins",
+          "command": "freespin",
+          "available_actions": [
+            "init",
+            "freespin"
+          ],
+          "purchased_feature": {
+            "name": "freespin_buy"
+          }
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-005-proof.json": {
+      "encoding": "json",
+      "bytes": 467,
+      "value": {
+        "round_id": 17296451208,
+        "last_action_id": "17296451208_5",
+        "flow_state": "closed",
+        "flow_command": "freespin",
+        "purchased_feature": "freespin_buy",
+        "bet": 60,
+        "win": 720,
+        "balance_total": 107080,
+        "screen_sha256": "",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": 4,
+        "freespins_left": 0,
+        "response_sha256": "7068a55f7a8fc090",
+        "mode_id": "PURCHASE_FREESPIN_BUY",
+        "step": 5,
+        "expected_debit": 0
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-005-request.json": {
+      "encoding": "json",
+      "bytes": 92,
+      "value": {
+        "command": "freespin",
+        "extra_data": {
+          "round_series_id": 1789291420468
+        }
+      }
+    },
+    "PURCHASE_FREESPIN_BUY/attempt-001/step-005-response.json": {
+      "encoding": "json",
+      "bytes": 6740,
+      "value": {
+        "api_version": "2",
+        "features": {
+          "bonus_data": {
+            "bonus_game_params": {
+              "spins_count": 4,
+              "boards_count": 4,
+              "multiplier": 6
+            },
+            "bonus_game_prices": {
+              "extra_spin": 2655,
+              "extra_board": 2655,
+              "extra_multiplier": null,
+              "regenerate_bonus": null
+            },
+            "last_purchased_extra_bonus": null
+          },
+          "freespins_issued": 4,
+          "freespins_left": 0
+        },
+        "outcome": {
+          "screen": null,
+          "special_symbols": null,
+          "bet": 60,
+          "win": 720,
+          "wins": [],
+          "storage": {
+            "boards": [
+              {
+                "screen": [
+                  [
+                    "7",
+                    "1",
+                    "5"
+                  ],
+                  [
+                    "6",
+                    "4",
+                    "7"
+                  ],
+                  [
+                    "7",
+                    "6",
+                    "2"
+                  ],
+                  [
+                    "2",
+                    "5",
+                    "7"
+                  ],
+                  [
+                    "5",
+                    "6",
+                    "4"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  31,
+                  34,
+                  26,
+                  6,
+                  37
+                ],
+                "special_symbols": {},
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "6",
+                    "5",
+                    "7"
+                  ],
+                  [
+                    "5",
+                    "0",
+                    "6"
+                  ],
+                  [
+                    "1",
+                    "4",
+                    "6"
+                  ],
+                  [
+                    "5",
+                    "2",
+                    "4"
+                  ],
+                  [
+                    "6",
+                    "3",
+                    "6"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  39,
+                  21,
+                  1,
+                  26,
+                  7
+                ],
+                "special_symbols": {},
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "6",
+                    "5",
+                    "7"
+                  ],
+                  [
+                    "6",
+                    "7",
+                    "1"
+                  ],
+                  [
+                    "2",
+                    "6",
+                    "4"
+                  ],
+                  [
+                    "2",
+                    "5",
+                    "4"
+                  ],
+                  [
+                    "6",
+                    "4",
+                    "5"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  39,
+                  23,
+                  7,
+                  10,
+                  38
+                ],
+                "special_symbols": {},
+                "bet": 0,
+                "win": 360,
+                "wins": [
+                  [
+                    "line",
+                    360,
+                    [
+                      0,
+                      0,
+                      1
+                    ],
+                    5
+                  ]
+                ],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "5",
+                    "6",
+                    "1"
+                  ],
+                  [
+                    "5",
+                    "4",
+                    "7"
+                  ],
+                  [
+                    "5",
+                    "1",
+                    "4"
+                  ],
+                  [
+                    "3",
+                    "7",
+                    "5"
+                  ],
+                  [
+                    "2",
+                    "4",
+                    "6"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  13,
+                  13,
+                  0,
+                  38,
+                  15
+                ],
+                "special_symbols": {},
+                "bet": 0,
+                "win": 360,
+                "wins": [
+                  [
+                    "line",
+                    360,
+                    [
+                      0,
+                      0,
+                      0
+                    ],
+                    1
+                  ]
+                ],
+                "freespins_issued": null,
+                "storage": {
+                  "active": true
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "5",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "7",
+                    "1",
+                    "5"
+                  ],
+                  [
+                    "6",
+                    "7",
+                    "1"
+                  ],
+                  [
+                    "5",
+                    "7",
+                    "6"
+                  ],
+                  [
+                    "7",
+                    "2",
+                    "5"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  9,
+                  1,
+                  20,
+                  7,
+                  30
+                ],
+                "special_symbols": {},
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": false
+                },
+                "internal_store": null
+              },
+              {
+                "screen": [
+                  [
+                    "2",
+                    "6",
+                    "5"
+                  ],
+                  [
+                    "2",
+                    "7",
+                    "5"
+                  ],
+                  [
+                    "6",
+                    "0",
+                    "6"
+                  ],
+                  [
+                    "5",
+                    "2",
+                    "4"
+                  ],
+                  [
+                    "3",
+                    "7",
+                    "1"
+                  ]
+                ],
+                "op_screen": null,
+                "indexes": [
+                  7,
+                  29,
+                  3,
+                  26,
+                  11
+                ],
+                "special_symbols": {},
+                "bet": 0,
+                "win": 0,
+                "wins": [],
+                "freespins_issued": null,
+                "storage": {
+                  "active": false
+                },
+                "internal_store": null
+              }
+            ]
+          }
+        },
+        "balance": {
+          "game": 11880,
+          "wallet": 95200
+        },
+        "flow": {
+          "round_id": 17296451208,
+          "last_action_id": "17296451208_5",
+          "state": "closed",
+          "command": "freespin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {
+            "name": "freespin_buy"
+          }
+        }
+      }
+    },
+    "response-schemas/freespin__to__flow_freespins.json": {
+      "encoding": "json",
+      "bytes": 19513,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "FREESPIN__TO__FLOW_FREESPINS",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 3,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "type": "string",
+              "observed_enum": [
+                "2"
+              ]
+            },
+            "balance": {
+              "type": "object",
+              "properties": {
+                "game": {
+                  "type": "integer"
+                },
+                "wallet": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "game",
+                "wallet"
+              ],
+              "additionalProperties": true
+            },
+            "features": {
+              "type": "object",
+              "properties": {
+                "bonus_data": {
+                  "type": "object",
+                  "properties": {
+                    "bonus_game_params": {
+                      "type": "object",
+                      "properties": {
+                        "boards_count": {
+                          "type": "integer"
+                        },
+                        "multiplier": {
+                          "type": "integer"
+                        },
+                        "spins_count": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "boards_count",
+                        "multiplier",
+                        "spins_count"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "bonus_game_prices": {
+                      "type": "object",
+                      "properties": {
+                        "extra_board": {
+                          "type": "integer"
+                        },
+                        "extra_multiplier": {
+                          "type": "null"
+                        },
+                        "extra_spin": {
+                          "type": "integer"
+                        },
+                        "regenerate_bonus": {
+                          "type": "null"
+                        }
+                      },
+                      "required": [
+                        "extra_board",
+                        "extra_multiplier",
+                        "extra_spin",
+                        "regenerate_bonus"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "last_purchased_extra_bonus": {
+                      "type": "null"
+                    }
+                  },
+                  "required": [
+                    "bonus_game_params",
+                    "bonus_game_prices",
+                    "last_purchased_extra_bonus"
+                  ],
+                  "additionalProperties": true
+                },
+                "freespins_issued": {
+                  "type": "integer"
+                },
+                "freespins_left": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "bonus_data",
+                "freespins_issued",
+                "freespins_left"
+              ],
+              "additionalProperties": true
+            },
+            "flow": {
+              "type": "object",
+              "properties": {
+                "available_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "observed_enum": [
+                      "freespin",
+                      "init"
+                    ]
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "freespin"
+                  ]
+                },
+                "last_action_id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "17296451208_2",
+                    "17296451208_3",
+                    "17296451208_4"
+                  ]
+                },
+                "purchased_feature": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "observed_enum": [
+                        "freespin_buy"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "additionalProperties": true
+                },
+                "round_id": {
+                  "type": "integer"
+                },
+                "state": {
+                  "type": "string",
+                  "observed_enum": [
+                    "freespins"
+                  ]
+                }
+              },
+              "required": [
+                "available_actions",
+                "command",
+                "last_action_id",
+                "purchased_feature",
+                "round_id",
+                "state"
+              ],
+              "additionalProperties": true
+            },
+            "outcome": {
+              "type": "object",
+              "properties": {
+                "bet": {
+                  "type": "integer"
+                },
+                "screen": {
+                  "type": "null"
+                },
+                "special_symbols": {
+                  "type": "null"
+                },
+                "storage": {
+                  "type": "object",
+                  "properties": {
+                    "boards": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "bet": {
+                            "type": "integer"
+                          },
+                          "freespins_issued": {
+                            "type": "null"
+                          },
+                          "indexes": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          },
+                          "internal_store": {
+                            "type": "null"
+                          },
+                          "op_screen": {
+                            "type": "null"
+                          },
+                          "screen": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "observed_enum": [
+                                  "0",
+                                  "1",
+                                  "2",
+                                  "3",
+                                  "4",
+                                  "5",
+                                  "6",
+                                  "7",
+                                  "8"
+                                ]
+                              }
+                            }
+                          },
+                          "special_symbols": {
+                            "type": "object",
+                            "properties": {
+                              "wild": {
+                                "type": "object",
+                                "properties": {
+                                  "8": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "integer"
+                                      }
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "8"
+                                ],
+                                "additionalProperties": true
+                              }
+                            },
+                            "required": [],
+                            "additionalProperties": true
+                          },
+                          "storage": {
+                            "type": "object",
+                            "properties": {
+                              "active": {
+                                "type": "boolean",
+                                "observed_values": [
+                                  false,
+                                  true
+                                ]
+                              }
+                            },
+                            "required": [
+                              "active"
+                            ],
+                            "additionalProperties": true
+                          },
+                          "win": {
+                            "type": "integer"
+                          },
+                          "wins": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": [
+                                  "array",
+                                  "integer",
+                                  "string"
+                                ],
+                                "items": {
+                                  "type": "integer"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "required": [
+                          "bet",
+                          "freespins_issued",
+                          "indexes",
+                          "internal_store",
+                          "op_screen",
+                          "screen",
+                          "special_symbols",
+                          "storage",
+                          "win",
+                          "wins"
+                        ],
+                        "additionalProperties": true
+                      }
+                    }
+                  },
+                  "required": [
+                    "boards"
+                  ],
+                  "additionalProperties": true
+                },
+                "win": {
+                  "type": "integer"
+                },
+                "wins": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "bet",
+                "screen",
+                "special_symbols",
+                "storage",
+                "win",
+                "wins"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "api_version",
+            "balance",
+            "features",
+            "flow",
+            "outcome"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.balance.game",
+          "$.balance.wallet",
+          "$.features.freespins_left",
+          "$.flow.last_action_id",
+          "$.flow.round_id",
+          "$.outcome.storage.boards[0].indexes[0]",
+          "$.outcome.storage.boards[0].indexes[1]",
+          "$.outcome.storage.boards[0].indexes[2]",
+          "$.outcome.storage.boards[0].indexes[3]",
+          "$.outcome.storage.boards[0].indexes[4]",
+          "$.outcome.storage.boards[0].screen[0][0]",
+          "$.outcome.storage.boards[0].screen[0][1]",
+          "$.outcome.storage.boards[0].screen[0][2]",
+          "$.outcome.storage.boards[0].screen[1][0]",
+          "$.outcome.storage.boards[0].screen[1][1]",
+          "$.outcome.storage.boards[0].screen[1][2]",
+          "$.outcome.storage.boards[0].screen[2][0]",
+          "$.outcome.storage.boards[0].screen[2][1]",
+          "$.outcome.storage.boards[0].screen[2][2]",
+          "$.outcome.storage.boards[0].screen[3][0]",
+          "$.outcome.storage.boards[0].screen[3][1]",
+          "$.outcome.storage.boards[0].screen[3][2]",
+          "$.outcome.storage.boards[0].screen[4][0]",
+          "$.outcome.storage.boards[0].screen[4][1]",
+          "$.outcome.storage.boards[0].screen[4][2]",
+          "$.outcome.storage.boards[0].special_symbols.wild.8[0][0]",
+          "$.outcome.storage.boards[0].special_symbols.wild.8[0][1]",
+          "$.outcome.storage.boards[0].special_symbols.wild.8[1][0]",
+          "$.outcome.storage.boards[0].win",
+          "$.outcome.storage.boards[0].wins[0][0]",
+          "$.outcome.storage.boards[0].wins[0][1]",
+          "$.outcome.storage.boards[0].wins[0][2][0]",
+          "$.outcome.storage.boards[0].wins[0][2][1]",
+          "$.outcome.storage.boards[0].wins[0][2][2]",
+          "$.outcome.storage.boards[0].wins[0][2][3]",
+          "$.outcome.storage.boards[0].wins[0][3]",
+          "$.outcome.storage.boards[0].wins[1][0]",
+          "$.outcome.storage.boards[0].wins[1][1]",
+          "$.outcome.storage.boards[0].wins[1][2][0]",
+          "$.outcome.storage.boards[0].wins[1][2][1]",
+          "$.outcome.storage.boards[0].wins[1][2][2]",
+          "$.outcome.storage.boards[0].wins[1][2][3]",
+          "$.outcome.storage.boards[0].wins[1][3]",
+          "$.outcome.storage.boards[1].indexes[0]",
+          "$.outcome.storage.boards[1].indexes[1]",
+          "$.outcome.storage.boards[1].indexes[2]",
+          "$.outcome.storage.boards[1].indexes[3]",
+          "$.outcome.storage.boards[1].indexes[4]",
+          "$.outcome.storage.boards[1].screen[0][0]",
+          "$.outcome.storage.boards[1].screen[0][1]",
+          "$.outcome.storage.boards[1].screen[0][2]",
+          "$.outcome.storage.boards[1].screen[1][0]",
+          "$.outcome.storage.boards[1].screen[1][2]",
+          "$.outcome.storage.boards[1].screen[2][0]",
+          "$.outcome.storage.boards[1].screen[2][1]",
+          "$.outcome.storage.boards[1].screen[2][2]",
+          "$.outcome.storage.boards[1].screen[3][0]",
+          "$.outcome.storage.boards[1].screen[3][1]",
+          "$.outcome.storage.boards[1].screen[3][2]",
+          "$.outcome.storage.boards[1].screen[4][0]",
+          "$.outcome.storage.boards[1].screen[4][1]",
+          "$.outcome.storage.boards[1].screen[4][2]",
+          "$.outcome.storage.boards[1].special_symbols.wild.8[0][0]",
+          "$.outcome.storage.boards[1].special_symbols.wild.8[0][1]",
+          "$.outcome.storage.boards[1].special_symbols.wild.8[1][0]",
+          "$.outcome.storage.boards[1].special_symbols.wild.8[1][1]",
+          "$.outcome.storage.boards[1].special_symbols.wild.8[2][1]",
+          "$.outcome.storage.boards[1].win",
+          "$.outcome.storage.boards[1].wins[0][0]",
+          "$.outcome.storage.boards[1].wins[0][1]",
+          "$.outcome.storage.boards[1].wins[0][2][0]",
+          "$.outcome.storage.boards[1].wins[0][2][1]",
+          "$.outcome.storage.boards[1].wins[0][2][2]",
+          "$.outcome.storage.boards[1].wins[0][2][3]",
+          "$.outcome.storage.boards[1].wins[0][3]",
+          "$.outcome.storage.boards[1].wins[1][0]",
+          "$.outcome.storage.boards[1].wins[1][1]",
+          "$.outcome.storage.boards[1].wins[1][2][0]",
+          "$.outcome.storage.boards[1].wins[1][2][1]",
+          "$.outcome.storage.boards[1].wins[1][2][2]",
+          "$.outcome.storage.boards[1].wins[1][2][3]",
+          "$.outcome.storage.boards[1].wins[1][3]",
+          "$.outcome.storage.boards[1].wins[2][0]",
+          "$.outcome.storage.boards[1].wins[2][1]",
+          "$.outcome.storage.boards[1].wins[2][2][0]",
+          "$.outcome.storage.boards[1].wins[2][2][1]",
+          "$.outcome.storage.boards[1].wins[2][2][2]",
+          "$.outcome.storage.boards[1].wins[2][3]",
+          "$.outcome.storage.boards[2].indexes[0]",
+          "$.outcome.storage.boards[2].indexes[1]",
+          "$.outcome.storage.boards[2].indexes[2]",
+          "$.outcome.storage.boards[2].indexes[3]",
+          "$.outcome.storage.boards[2].indexes[4]",
+          "$.outcome.storage.boards[2].screen[0][0]",
+          "$.outcome.storage.boards[2].screen[0][1]",
+          "$.outcome.storage.boards[2].screen[0][2]",
+          "$.outcome.storage.boards[2].screen[1][0]",
+          "$.outcome.storage.boards[2].screen[1][1]",
+          "$.outcome.storage.boards[2].screen[1][2]",
+          "$.outcome.storage.boards[2].screen[2][1]",
+          "$.outcome.storage.boards[2].screen[2][2]",
+          "$.outcome.storage.boards[2].screen[3][0]",
+          "$.outcome.storage.boards[2].screen[3][1]",
+          "$.outcome.storage.boards[2].screen[3][2]",
+          "$.outcome.storage.boards[2].screen[4][0]",
+          "$.outcome.storage.boards[2].screen[4][1]",
+          "$.outcome.storage.boards[2].screen[4][2]",
+          "$.outcome.storage.boards[2].special_symbols.wild.8[0][0]",
+          "$.outcome.storage.boards[2].special_symbols.wild.8[0][1]",
+          "$.outcome.storage.boards[2].special_symbols.wild.8[1][0]",
+          "$.outcome.storage.boards[2].special_symbols.wild.8[1][1]",
+          "$.outcome.storage.boards[2].special_symbols.wild.8[2][0]",
+          "$.outcome.storage.boards[2].special_symbols.wild.8[2][1]",
+          "$.outcome.storage.boards[2].win",
+          "$.outcome.storage.boards[2].wins[0][0]",
+          "$.outcome.storage.boards[2].wins[0][1]",
+          "$.outcome.storage.boards[2].wins[0][2][0]",
+          "$.outcome.storage.boards[2].wins[0][2][1]",
+          "$.outcome.storage.boards[2].wins[0][2][2]",
+          "$.outcome.storage.boards[2].wins[0][2][3]",
+          "$.outcome.storage.boards[2].wins[0][3]",
+          "$.outcome.storage.boards[3].indexes[0]",
+          "$.outcome.storage.boards[3].indexes[1]",
+          "$.outcome.storage.boards[3].indexes[2]",
+          "$.outcome.storage.boards[3].indexes[3]",
+          "$.outcome.storage.boards[3].indexes[4]",
+          "$.outcome.storage.boards[3].screen[0][0]",
+          "$.outcome.storage.boards[3].screen[0][1]",
+          "$.outcome.storage.boards[3].screen[0][2]",
+          "$.outcome.storage.boards[3].screen[1][0]",
+          "$.outcome.storage.boards[3].screen[1][1]",
+          "$.outcome.storage.boards[3].screen[1][2]",
+          "$.outcome.storage.boards[3].screen[2][0]",
+          "$.outcome.storage.boards[3].screen[2][1]",
+          "$.outcome.storage.boards[3].screen[2][2]",
+          "$.outcome.storage.boards[3].screen[3][0]",
+          "$.outcome.storage.boards[3].screen[3][1]",
+          "$.outcome.storage.boards[3].screen[3][2]",
+          "$.outcome.storage.boards[3].screen[4][0]",
+          "$.outcome.storage.boards[3].screen[4][1]",
+          "$.outcome.storage.boards[3].screen[4][2]",
+          "$.outcome.storage.boards[3].special_symbols.wild.8[0][0]",
+          "$.outcome.storage.boards[3].special_symbols.wild.8[0][1]",
+          "$.outcome.storage.boards[3].special_symbols.wild.8[1][1]",
+          "$.outcome.storage.boards[3].win",
+          "$.outcome.storage.boards[3].wins[0][0]",
+          "$.outcome.storage.boards[3].wins[0][1]",
+          "$.outcome.storage.boards[3].wins[0][2][0]",
+          "$.outcome.storage.boards[3].wins[0][2][1]",
+          "$.outcome.storage.boards[3].wins[0][2][2]",
+          "$.outcome.storage.boards[3].wins[0][2][3]",
+          "$.outcome.storage.boards[3].wins[0][3]",
+          "$.outcome.storage.boards[3].wins[1][0]",
+          "$.outcome.storage.boards[3].wins[1][1]",
+          "$.outcome.storage.boards[3].wins[1][2][0]",
+          "$.outcome.storage.boards[3].wins[1][2][1]",
+          "$.outcome.storage.boards[3].wins[1][2][2]",
+          "$.outcome.storage.boards[3].wins[1][3]",
+          "$.outcome.storage.boards[4].indexes[0]",
+          "$.outcome.storage.boards[4].indexes[1]",
+          "$.outcome.storage.boards[4].indexes[2]",
+          "$.outcome.storage.boards[4].indexes[3]",
+          "$.outcome.storage.boards[4].indexes[4]",
+          "$.outcome.storage.boards[4].screen[0][0]",
+          "$.outcome.storage.boards[4].screen[0][2]",
+          "$.outcome.storage.boards[4].screen[1][0]",
+          "$.outcome.storage.boards[4].screen[1][1]",
+          "$.outcome.storage.boards[4].screen[1][2]",
+          "$.outcome.storage.boards[4].screen[2][0]",
+          "$.outcome.storage.boards[4].screen[2][1]",
+          "$.outcome.storage.boards[4].screen[2][2]",
+          "$.outcome.storage.boards[4].screen[3][0]",
+          "$.outcome.storage.boards[4].screen[3][1]",
+          "$.outcome.storage.boards[4].screen[3][2]",
+          "$.outcome.storage.boards[4].screen[4][0]",
+          "$.outcome.storage.boards[4].screen[4][2]",
+          "$.outcome.storage.boards[4].special_symbols.wild.8[0][1]",
+          "$.outcome.storage.boards[4].win",
+          "$.outcome.storage.boards[5].indexes[0]",
+          "$.outcome.storage.boards[5].indexes[1]",
+          "$.outcome.storage.boards[5].indexes[2]",
+          "$.outcome.storage.boards[5].indexes[3]",
+          "$.outcome.storage.boards[5].indexes[4]",
+          "$.outcome.storage.boards[5].screen[0][0]",
+          "$.outcome.storage.boards[5].screen[0][1]",
+          "$.outcome.storage.boards[5].screen[0][2]",
+          "$.outcome.storage.boards[5].screen[1][0]",
+          "$.outcome.storage.boards[5].screen[1][1]",
+          "$.outcome.storage.boards[5].screen[1][2]",
+          "$.outcome.storage.boards[5].screen[2][0]",
+          "$.outcome.storage.boards[5].screen[2][1]",
+          "$.outcome.storage.boards[5].screen[2][2]",
+          "$.outcome.storage.boards[5].screen[3][1]",
+          "$.outcome.storage.boards[5].screen[3][2]",
+          "$.outcome.storage.boards[5].screen[4][0]",
+          "$.outcome.storage.boards[5].screen[4][1]",
+          "$.outcome.storage.boards[5].screen[4][2]",
+          "$.outcome.storage.boards[5].special_symbols.wild.8[1][0]",
+          "$.outcome.storage.boards[5].win",
+          "$.outcome.win"
+        ]
+      }
+    },
+    "response-schemas/freespin__to__ready.json": {
+      "encoding": "json",
+      "bytes": 9750,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "FREESPIN__TO__READY",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "type": "string",
+              "observed_enum": [
+                "2"
+              ]
+            },
+            "balance": {
+              "type": "object",
+              "properties": {
+                "game": {
+                  "type": "integer"
+                },
+                "wallet": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "game",
+                "wallet"
+              ],
+              "additionalProperties": true
+            },
+            "features": {
+              "type": "object",
+              "properties": {
+                "bonus_data": {
+                  "type": "object",
+                  "properties": {
+                    "bonus_game_params": {
+                      "type": "object",
+                      "properties": {
+                        "boards_count": {
+                          "type": "integer"
+                        },
+                        "multiplier": {
+                          "type": "integer"
+                        },
+                        "spins_count": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "boards_count",
+                        "multiplier",
+                        "spins_count"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "bonus_game_prices": {
+                      "type": "object",
+                      "properties": {
+                        "extra_board": {
+                          "type": "integer"
+                        },
+                        "extra_multiplier": {
+                          "type": "null"
+                        },
+                        "extra_spin": {
+                          "type": "integer"
+                        },
+                        "regenerate_bonus": {
+                          "type": "null"
+                        }
+                      },
+                      "required": [
+                        "extra_board",
+                        "extra_multiplier",
+                        "extra_spin",
+                        "regenerate_bonus"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "last_purchased_extra_bonus": {
+                      "type": "null"
+                    }
+                  },
+                  "required": [
+                    "bonus_game_params",
+                    "bonus_game_prices",
+                    "last_purchased_extra_bonus"
+                  ],
+                  "additionalProperties": true
+                },
+                "freespins_issued": {
+                  "type": "integer"
+                },
+                "freespins_left": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "bonus_data",
+                "freespins_issued",
+                "freespins_left"
+              ],
+              "additionalProperties": true
+            },
+            "flow": {
+              "type": "object",
+              "properties": {
+                "available_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "observed_enum": [
+                      "init",
+                      "spin"
+                    ]
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "freespin"
+                  ]
+                },
+                "last_action_id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "17296451208_5"
+                  ]
+                },
+                "purchased_feature": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "observed_enum": [
+                        "freespin_buy"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "additionalProperties": true
+                },
+                "round_id": {
+                  "type": "integer"
+                },
+                "state": {
+                  "type": "string",
+                  "observed_enum": [
+                    "closed"
+                  ]
+                }
+              },
+              "required": [
+                "available_actions",
+                "command",
+                "last_action_id",
+                "purchased_feature",
+                "round_id",
+                "state"
+              ],
+              "additionalProperties": true
+            },
+            "outcome": {
+              "type": "object",
+              "properties": {
+                "bet": {
+                  "type": "integer"
+                },
+                "screen": {
+                  "type": "null"
+                },
+                "special_symbols": {
+                  "type": "null"
+                },
+                "storage": {
+                  "type": "object",
+                  "properties": {
+                    "boards": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "bet": {
+                            "type": "integer"
+                          },
+                          "freespins_issued": {
+                            "type": "null"
+                          },
+                          "indexes": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          },
+                          "internal_store": {
+                            "type": "null"
+                          },
+                          "op_screen": {
+                            "type": "null"
+                          },
+                          "screen": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "observed_enum": [
+                                  "0",
+                                  "1",
+                                  "2",
+                                  "3",
+                                  "4",
+                                  "5",
+                                  "6",
+                                  "7"
+                                ]
+                              }
+                            }
+                          },
+                          "special_symbols": {
+                            "type": "object",
+                            "properties": {},
+                            "required": [],
+                            "additionalProperties": true
+                          },
+                          "storage": {
+                            "type": "object",
+                            "properties": {
+                              "active": {
+                                "type": "boolean",
+                                "observed_values": [
+                                  false,
+                                  true
+                                ]
+                              }
+                            },
+                            "required": [
+                              "active"
+                            ],
+                            "additionalProperties": true
+                          },
+                          "win": {
+                            "type": "integer"
+                          },
+                          "wins": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": [
+                                  "array",
+                                  "integer",
+                                  "string"
+                                ],
+                                "items": {
+                                  "type": "integer"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "required": [
+                          "bet",
+                          "freespins_issued",
+                          "indexes",
+                          "internal_store",
+                          "op_screen",
+                          "screen",
+                          "special_symbols",
+                          "storage",
+                          "win",
+                          "wins"
+                        ],
+                        "additionalProperties": true
+                      }
+                    }
+                  },
+                  "required": [
+                    "boards"
+                  ],
+                  "additionalProperties": true
+                },
+                "win": {
+                  "type": "integer"
+                },
+                "wins": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "bet",
+                "screen",
+                "special_symbols",
+                "storage",
+                "win",
+                "wins"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "api_version",
+            "balance",
+            "features",
+            "flow",
+            "outcome"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.balance.wallet",
+          "$.flow.last_action_id",
+          "$.flow.round_id",
+          "$.outcome.storage.boards[0].win",
+          "$.outcome.storage.boards[1].win",
+          "$.outcome.storage.boards[2].win",
+          "$.outcome.storage.boards[2].wins[0][0]",
+          "$.outcome.storage.boards[2].wins[0][1]",
+          "$.outcome.storage.boards[2].wins[0][2][0]",
+          "$.outcome.storage.boards[2].wins[0][2][1]",
+          "$.outcome.storage.boards[2].wins[0][2][2]",
+          "$.outcome.storage.boards[2].wins[0][3]",
+          "$.outcome.storage.boards[3].win",
+          "$.outcome.storage.boards[3].wins[0][0]",
+          "$.outcome.storage.boards[3].wins[0][1]",
+          "$.outcome.storage.boards[3].wins[0][2][0]",
+          "$.outcome.storage.boards[3].wins[0][2][1]",
+          "$.outcome.storage.boards[3].wins[0][2][2]",
+          "$.outcome.storage.boards[3].wins[0][3]",
+          "$.outcome.storage.boards[4].win",
+          "$.outcome.storage.boards[5].win",
+          "$.outcome.win"
+        ]
+      }
+    },
+    "response-schemas/spin__purchase_freespin_buy__to__flow_freespins.json": {
+      "encoding": "json",
+      "bytes": 6646,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "SPIN__PURCHASE_FREESPIN_BUY__TO__FLOW_FREESPINS",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "type": "string",
+              "observed_enum": [
+                "2"
+              ]
+            },
+            "balance": {
+              "type": "object",
+              "properties": {
+                "game": {
+                  "type": "integer"
+                },
+                "wallet": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "game",
+                "wallet"
+              ],
+              "additionalProperties": true
+            },
+            "features": {
+              "type": "object",
+              "properties": {
+                "bonus_data": {
+                  "type": "object",
+                  "properties": {
+                    "bonus_game_params": {
+                      "type": "object",
+                      "properties": {
+                        "boards_count": {
+                          "type": "integer"
+                        },
+                        "multiplier": {
+                          "type": "integer"
+                        },
+                        "spins_count": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "boards_count",
+                        "multiplier",
+                        "spins_count"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "bonus_game_prices": {
+                      "type": "object",
+                      "properties": {
+                        "extra_board": {
+                          "type": "integer"
+                        },
+                        "extra_multiplier": {
+                          "type": "null"
+                        },
+                        "extra_spin": {
+                          "type": "integer"
+                        },
+                        "regenerate_bonus": {
+                          "type": "null"
+                        }
+                      },
+                      "required": [
+                        "extra_board",
+                        "extra_multiplier",
+                        "extra_spin",
+                        "regenerate_bonus"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "last_purchased_extra_bonus": {
+                      "type": "null"
+                    }
+                  },
+                  "required": [
+                    "bonus_game_params",
+                    "bonus_game_prices",
+                    "last_purchased_extra_bonus"
+                  ],
+                  "additionalProperties": true
+                },
+                "freespins_issued": {
+                  "type": "integer"
+                },
+                "freespins_left": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "bonus_data",
+                "freespins_issued",
+                "freespins_left"
+              ],
+              "additionalProperties": true
+            },
+            "flow": {
+              "type": "object",
+              "properties": {
+                "available_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "observed_enum": [
+                      "buy_extra_bonus",
+                      "freespin",
+                      "init"
+                    ]
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "last_action_id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "17296451208_1"
+                  ]
+                },
+                "purchased_feature": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "observed_enum": [
+                        "freespin_buy"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "additionalProperties": true
+                },
+                "round_id": {
+                  "type": "integer"
+                },
+                "state": {
+                  "type": "string",
+                  "observed_enum": [
+                    "freespins"
+                  ]
+                }
+              },
+              "required": [
+                "available_actions",
+                "command",
+                "last_action_id",
+                "purchased_feature",
+                "round_id",
+                "state"
+              ],
+              "additionalProperties": true
+            },
+            "outcome": {
+              "type": "object",
+              "properties": {
+                "bet": {
+                  "type": "integer"
+                },
+                "freespins_issued": {
+                  "type": "integer"
+                },
+                "screen": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "observed_enum": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "6",
+                        "7",
+                        "9"
+                      ]
+                    }
+                  }
+                },
+                "special_symbols": {
+                  "type": "object",
+                  "properties": {
+                    "scatter": {
+                      "type": "object",
+                      "properties": {
+                        "9": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "9"
+                      ],
+                      "additionalProperties": true
+                    }
+                  },
+                  "required": [
+                    "scatter"
+                  ],
+                  "additionalProperties": true
+                },
+                "storage": {
+                  "type": "null"
+                },
+                "win": {
+                  "type": "integer"
+                },
+                "wins": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "bet",
+                "freespins_issued",
+                "screen",
+                "special_symbols",
+                "storage",
+                "win",
+                "wins"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "api_version",
+            "balance",
+            "features",
+            "flow",
+            "outcome"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.balance.wallet",
+          "$.flow.last_action_id",
+          "$.flow.round_id",
+          "$.outcome.win"
+        ]
+      }
+    },
+    "response-schemas/spin__to__ready.json": {
+      "encoding": "json",
+      "bytes": 3902,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "SPIN__TO__READY",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "api_version": {
+              "type": "string",
+              "observed_enum": [
+                "2"
+              ]
+            },
+            "balance": {
+              "type": "object",
+              "properties": {
+                "game": {
+                  "type": "integer"
+                },
+                "wallet": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "game",
+                "wallet"
+              ],
+              "additionalProperties": true
+            },
+            "flow": {
+              "type": "object",
+              "properties": {
+                "available_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "observed_enum": [
+                      "init",
+                      "spin"
+                    ]
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "observed_enum": [
+                    "spin"
+                  ]
+                },
+                "last_action_id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "17296450985_1"
+                  ]
+                },
+                "purchased_feature": {
+                  "type": "object",
+                  "properties": {},
+                  "required": [],
+                  "additionalProperties": true
+                },
+                "round_id": {
+                  "type": "integer"
+                },
+                "state": {
+                  "type": "string",
+                  "observed_enum": [
+                    "closed"
+                  ]
+                }
+              },
+              "required": [
+                "available_actions",
+                "command",
+                "last_action_id",
+                "purchased_feature",
+                "round_id",
+                "state"
+              ],
+              "additionalProperties": true
+            },
+            "outcome": {
+              "type": "object",
+              "properties": {
+                "bet": {
+                  "type": "integer"
+                },
+                "screen": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "observed_enum": [
+                        "0",
+                        "1",
+                        "2",
+                        "4",
+                        "5",
+                        "6",
+                        "7"
+                      ]
+                    }
+                  }
+                },
+                "special_symbols": {
+                  "type": "object",
+                  "properties": {},
+                  "required": [],
+                  "additionalProperties": true
+                },
+                "storage": {
+                  "type": "null"
+                },
+                "win": {
+                  "type": "integer"
+                },
+                "wins": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "array",
+                        "integer",
+                        "string"
+                      ],
+                      "items": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "bet",
+                "screen",
+                "special_symbols",
+                "storage",
+                "win",
+                "wins"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "api_version",
+            "balance",
+            "flow",
+            "outcome"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.balance.wallet",
+          "$.flow.last_action_id",
+          "$.flow.round_id",
+          "$.outcome.win",
+          "$.outcome.wins[0][0]",
+          "$.outcome.wins[0][1]",
+          "$.outcome.wins[0][2][0]",
+          "$.outcome.wins[0][2][1]",
+          "$.outcome.wins[0][2][2]",
+          "$.outcome.wins[0][3]"
+        ]
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 2846,
+      "value": {
+        "provider": "bgaming",
+        "slug": "frozen-fruit",
+        "game_name": "Frozen Fruit",
+        "game_url": "https://demo.bgaming-network.com/play/FrozenFruit/FUN?server=demo",
+        "requested_spins": 2,
+        "successful_spins": 2,
+        "failed_spins": 0,
+        "status": "PARCIAL",
+        "symbol": "FrozenFruit",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": true,
+            "wire_command": "spin"
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY",
+            "kind": "PURCHASE",
+            "observed": true,
+            "client_observed": true,
+            "executable": true,
+            "discovery_state": "CLIENT_OBSERVED",
+            "wire_command": "spin",
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": null,
+            "feature_multiplier": 80,
+            "base_multiplier": 1,
+            "cost_multiplier": 80.0,
+            "source": "init.feature_multipliers+client"
+          },
+          {
+            "id": "BUY_EXTRA_BONUS",
+            "kind": "FEATURE",
+            "observed": false,
+            "wire_command": "buy_extra_bonus"
+          },
+          {
+            "id": "FREESPIN",
+            "kind": "CONTINUATION",
+            "observed": true,
+            "wire_command": "freespin"
+          }
+        ],
+        "started_at": "2026-09-13T09:23:10+00:00",
+        "finished_at": "2026-09-13T09:23:42+00:00",
+        "elapsed_ms": 32077.9999999977,
+        "error": "Cobertura de ramificaciones pendiente: BUY_EXTRA_BONUS -> ['buy_extra_bonus'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Frozen Fruit\\tests\\2026-09-13_06-23-10-bgaming-http-api-v2",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": true,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 327.9999999977008,
+            "symbol": "FrozenFruit",
+            "endpoint": "https://demo.bgaming-network.com/api/FrozenFruit/2763805/<session>",
+            "na": "closed",
+            "terminal": true,
+            "wire_steps": 1,
+            "warning": "",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Frozen Fruit\\tests\\2026-09-13_06-23-10-bgaming-http-api-v2\\SPIN\\attempt-001"
+          },
+          {
+            "number": 1,
+            "ok": true,
+            "mode_id": "PURCHASE_FREESPIN_BUY",
+            "mode_kind": "PURCHASE",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 2735.000000000582,
+            "symbol": "FrozenFruit",
+            "endpoint": "https://demo.bgaming-network.com/api/FrozenFruit/2763805/<session>",
+            "na": "closed",
+            "terminal": true,
+            "wire_steps": 5,
+            "warning": "",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Frozen Fruit\\tests\\2026-09-13_06-23-10-bgaming-http-api-v2\\PURCHASE_FREESPIN_BUY\\attempt-001"
+          }
+        ]
+      }
+    },
+    "SPIN/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 487,
+      "value": {
+        "round_id": 17296450985,
+        "last_action_id": "17296450985_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 60,
+        "win": 60,
+        "balance_total": 100000,
+        "screen_sha256": "83526fe61671",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "74f8eaa0b176f62b",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 60.0,
+        "expected_outcome_bet": 60.0
+      }
+    },
+    "SPIN/attempt-001/request.json": {
+      "encoding": "json",
+      "bytes": 125,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 60
+        },
+        "extra_data": {
+          "round_series_id": 1789291391162
+        }
+      }
+    },
+    "SPIN/attempt-001/response.json": {
+      "encoding": "json",
+      "bytes": 890,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": [
+            [
+              "2",
+              "6",
+              "5"
+            ],
+            [
+              "7",
+              "1",
+              "5"
+            ],
+            [
+              "4",
+              "5",
+              "1"
+            ],
+            [
+              "7",
+              "6",
+              "5"
+            ],
+            [
+              "0",
+              "4",
+              "7"
+            ]
+          ],
+          "special_symbols": {},
+          "bet": 60,
+          "win": 60,
+          "wins": [
+            [
+              "line",
+              60,
+              [
+                2,
+                2,
+                1
+              ],
+              6
+            ]
+          ],
+          "storage": null
+        },
+        "balance": {
+          "game": 60,
+          "wallet": 99940
+        },
+        "flow": {
+          "round_id": 17296450985,
+          "last_action_id": "17296450985_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {}
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-proof.json": {
+      "encoding": "json",
+      "bytes": 487,
+      "value": {
+        "round_id": 17296450985,
+        "last_action_id": "17296450985_1",
+        "flow_state": "closed",
+        "flow_command": "spin",
+        "purchased_feature": "",
+        "bet": 60,
+        "win": 60,
+        "balance_total": 100000,
+        "screen_sha256": "83526fe61671",
+        "storage_seed": null,
+        "storage_mode": null,
+        "freespins_issued": null,
+        "freespins_left": null,
+        "response_sha256": "74f8eaa0b176f62b",
+        "mode_id": "SPIN",
+        "step": 1,
+        "expected_debit": 60.0,
+        "expected_outcome_bet": 60.0
+      }
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 125,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bet": 60
+        },
+        "extra_data": {
+          "round_series_id": 1789291391162
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 890,
+      "value": {
+        "api_version": "2",
+        "outcome": {
+          "screen": [
+            [
+              "2",
+              "6",
+              "5"
+            ],
+            [
+              "7",
+              "1",
+              "5"
+            ],
+            [
+              "4",
+              "5",
+              "1"
+            ],
+            [
+              "7",
+              "6",
+              "5"
+            ],
+            [
+              "0",
+              "4",
+              "7"
+            ]
+          ],
+          "special_symbols": {},
+          "bet": 60,
+          "win": 60,
+          "wins": [
+            [
+              "line",
+              60,
+              [
+                2,
+                2,
+                1
+              ],
+              6
+            ]
+          ],
+          "storage": null
+        },
+        "balance": {
+          "game": 60,
+          "wallet": 99940
+        },
+        "flow": {
+          "round_id": 17296450985,
+          "last_action_id": "17296450985_1",
+          "state": "closed",
+          "command": "spin",
+          "available_actions": [
+            "init",
+            "spin"
+          ],
+          "purchased_feature": {}
+        }
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 2700,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "frozen-fruit",
+          "name": "Frozen Fruit",
+          "identifier": "FrozenFruit"
+        },
+        "generated_at": "2026-09-13T09:23:42+00:00",
+        "source_run": "2026-09-13_06-23-10-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {
+          "FLOW:freespins": {
+            "provider_states": [
+              "freespins"
+            ],
+            "allowed_wire_actions_observed": [
+              "freespin"
+            ],
+            "terminal_observed": false
+          },
+          "READY": {
+            "provider_states": [
+              "closed"
+            ],
+            "allowed_wire_actions_observed": [
+              "spin"
+            ],
+            "terminal_observed": true
+          }
+        },
+        "transitions": [
+          {
+            "source": "FLOW:freespins",
+            "request_contract": "FREESPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "outcome": "FREESPIN__TO__FLOW_FREESPINS",
+            "target": "FLOW:freespins",
+            "observed_count": 3,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-002-request.json",
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-003-request.json",
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-004-request.json"
+            ]
+          },
+          {
+            "source": "FLOW:freespins",
+            "request_contract": "FREESPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "outcome": "FREESPIN__TO__READY",
+            "target": "READY",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-005-request.json"
+            ]
+          },
+          {
+            "source": "READY",
+            "request_contract": "SPIN",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "outcome": "SPIN__TO__READY",
+            "target": "READY",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          },
+          {
+            "source": "READY",
+            "request_contract": "SPIN__PURCHASE_FREESPIN_BUY",
+            "request_selector_vectors_observed": [
+              {
+                "purchased_feature": "freespin_buy"
+              }
+            ],
+            "outcome": "SPIN__PURCHASE_FREESPIN_BUY__TO__FLOW_FREESPINS",
+            "target": "FLOW:freespins",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "PURCHASE_FREESPIN_BUY/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
