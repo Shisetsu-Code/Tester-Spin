@@ -6,6 +6,7 @@ from typing import Any
 
 from tester_spin.models import utc_now_iso
 from tester_spin.providers.base import Progress
+from tester_spin.providers.bgaming.har_capture import _is_bgaming_state_post
 from tester_spin.structure.normalization import sanitize
 
 
@@ -46,7 +47,7 @@ def run_assisted_browser(
 
         def on_request(request: Any) -> None:
             try:
-                if str(request.method or "").upper() != "POST":
+                if not _is_bgaming_state_post(request):
                     return
                 try:
                     payload = request.post_data_json
@@ -87,7 +88,7 @@ def run_assisted_browser(
             )
             progress(
                 f"[{game_name}] ASISTIDO: navegador listo. Probá todas las opciones visibles. "
-                "Cuando termines, cerrá la ventana del juego o usá DETENER en Tester-Spin."
+                "Cuando termines, cerrá la ventana del juego. DETENER cancela la promoción."
             )
             while not stop_event.is_set() and not page.is_closed():
                 page.wait_for_timeout(250)
@@ -100,7 +101,7 @@ def run_assisted_browser(
             finally:
                 browser.close()
 
-    completed = bool(captures) and not browser_error
+    completed = bool(captures) and not browser_error and not stop_event.is_set()
     return captures, completed, browser_error
 
 
