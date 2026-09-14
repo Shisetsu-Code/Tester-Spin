@@ -191,7 +191,7 @@ class BGamingProvider(_BGamingProvider):
         progress(
             f"[{game.name}] HAR existente reutilizado: {relative}; "
             f"calidad={quality.grade if quality is not None else 'UNKNOWN'}; "
-            "no se recaptura Chromium en la prueba normal."
+            "no se sobrescribe ni se recaptura Chromium en la prueba normal."
         )
 
 
