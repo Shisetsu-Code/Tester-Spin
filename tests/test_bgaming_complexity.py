@@ -118,6 +118,20 @@ def test_standard_purchase_422_is_simple_pending_when_round_did_not_enter_branch
     assert any(row["kind"] == "UNRESOLVED_STANDARD_WIRE" for row in payload["capability_gaps"])
 
 
+def test_alien_fruits_purchase_coverage_gap_is_simple_pending() -> None:
+    result = _result(status="PARCIAL")
+    result.error = (
+        "Cobertura requerida pendiente: "
+        "PURCHASE_BONUS_BUY -> ['PURCHASE_BONUS_BUY']; "
+        "PURCHASE_BONUS_CHANCE -> ['PURCHASE_BONUS_CHANCE']."
+    )
+    payload = classify_result(result)
+    assert payload["classification"] == SIMPLE_PENDING
+    assert payload["requires_review"] is False
+    assert payload["reasons"] == []
+    assert any(row["kind"] == "STANDARD_COVERAGE_GAP" for row in payload["capability_gaps"])
+
+
 def test_continuation_422_still_requires_review() -> None:
     result = _result(status="PARCIAL")
     result.discovered_modes = [
