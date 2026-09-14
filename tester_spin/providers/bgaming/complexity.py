@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -13,6 +14,33 @@ SIMPLE_PENDING = "SIMPLE_PENDIENTE"
 REVIEW_REQUIRED = "REQUIERE_REVISION"
 INDETERMINATE = "INDETERMINADO"
 MANUAL_RESOLVED = "RESUELTO_MANUALMENTE"
+
+_STANDARD_MODE_PREFIXES = (
+    "PURCHASE_",
+    "SPIN",
+    "ANTE",
+    "BONUS_CHANCE",
+)
+
+
+def _coverage_mode_ids(value: str) -> list[str]:
+    """Extract uppercase mode identifiers from a coverage diagnostic.
+
+    Coverage messages often contain Python-list formatting, e.g.
+    ``PURCHASE_X -> ['PURCHASE_X']``.  Parsing with whitespace splitting leaves
+    quotes/brackets attached and can accidentally classify a standard purchase as
+    complex gameplay.  Regex extraction keeps the classifier independent from
+    presentation formatting.
+    """
+    return list(dict.fromkeys(re.findall(r"\b[A-Z][A-Z0-9_]*\b", str(value or ""))))
+
+
+def _standard_coverage_only(value: str) -> bool:
+    mode_ids = _coverage_mode_ids(value)
+    return bool(mode_ids) and all(
+        mode_id.startswith(_STANDARD_MODE_PREFIXES)
+        for mode_id in mode_ids
+    )
 
 
 def classify_result(result: GameTestResult) -> dict[str, Any]:
@@ -55,14 +83,10 @@ def classify_result(result: GameTestResult) -> dict[str, Any]:
         if mode_id:
             mode_kind_by_id[mode_id] = kind
 
-        # FEATURE means the server/runtime exposed a post-spin action.  If we
-        # observed it but cannot execute it, that is genuine gameplay branching.
         if kind == "FEATURE" and mode.get("observed") is False:
             add_reason("UNKNOWN_ACTION", command, command)
             continue
 
-        # A standard purchase still travels through spin.  Not having its wire
-        # shape yet is a protocol capability gap, not evidence of a complex game.
         if kind == "PURCHASE" and mode.get("executable") is False:
             add_gap("UNKNOWN_PURCHASE_CONTRACT", mode_id)
 
@@ -84,8 +108,6 @@ def classify_result(result: GameTestResult) -> dict[str, Any]:
             or "wire-shape" in text
         )
         if wire_unresolved:
-            # 422 on an already-entered continuation is complex; 422 on a base
-            # spin/purchase/ante mode is just an unlearned standard spin shape.
             if (
                 "continuación" in text
                 or "continuation" in text
@@ -95,8 +117,6 @@ def classify_result(result: GameTestResult) -> dict[str, Any]:
             else:
                 add_gap("UNRESOLVED_STANDARD_WIRE", mode_id or "spin")
 
-        # This is the strongest runtime signal.  A purchase/ante that finishes
-        # closed is still simple; a response that leaves the round open is not.
         if (
             attempt.status_code is not None
             and not attempt.terminal
@@ -109,24 +129,7 @@ def classify_result(result: GameTestResult) -> dict[str, Any]:
     folded = error.casefold()
     if "cobertura requerida pendiente:" in folded:
         value = error.split("Cobertura requerida pendiente:", 1)[-1][:500]
-        upper = value.upper()
-        # Purchase/ante coverage is standard spin surface.  Keep it out of the
-        # manual queue unless a real runtime branch independently proves
-        # complexity.
-        tokens = [
-            token.strip(" ,;:[](){}")
-            for token in upper.replace("->", " ").split()
-            if token.strip(" ,;:[](){}")
-        ]
-        standard_only = bool(tokens) and all(
-            token.startswith("PURCHASE_")
-            or token.startswith("SPIN")
-            or token.startswith("ANTE")
-            or token.startswith("BONUS_CHANCE")
-            for token in tokens
-            if token.isupper()
-        )
-        if standard_only:
+        if _standard_coverage_only(value):
             add_gap("STANDARD_COVERAGE_GAP", value)
         else:
             add_reason("COVERAGE_GAP", value)
