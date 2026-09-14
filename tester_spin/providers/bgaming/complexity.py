@@ -17,13 +17,16 @@ MANUAL_RESOLVED = "RESUELTO_MANUALMENTE"
 def classify_result(result: GameTestResult) -> dict[str, Any]:
     reasons: list[dict[str, str]] = []
     seen: set[tuple[str, str]] = set()
+    review_targets: list[str] = []
 
-    def add(kind: str, value: str) -> None:
+    def add(kind: str, value: str, target: str = "") -> None:
         marker = (kind, value)
-        if marker in seen:
-            return
-        seen.add(marker)
-        reasons.append({"kind": kind, "value": value})
+        if marker not in seen:
+            seen.add(marker)
+            reasons.append({"kind": kind, "value": value})
+        target = str(target or "").strip()
+        if target and target not in review_targets:
+            review_targets.append(target)
 
     for mode in result.discovered_modes or []:
         if not isinstance(mode, dict):
@@ -32,11 +35,11 @@ def classify_result(result: GameTestResult) -> dict[str, Any]:
         kind = str(mode.get("kind") or "").upper()
         command = str(mode.get("wire_command") or mode_id)
         if kind == "FEATURE" and mode.get("observed") is False:
-            add("UNKNOWN_ACTION", command)
+            add("UNKNOWN_ACTION", command, command)
         if kind == "PURCHASE" and mode.get("executable") is False:
-            add("UNKNOWN_PURCHASE_CONTRACT", mode_id)
+            add("UNKNOWN_PURCHASE_CONTRACT", mode_id, "spin")
         if str(mode.get("discovery_state") or "").upper() == "ADVERTISED_ONLY":
-            add("ADVERTISED_ONLY", command)
+            add("ADVERTISED_ONLY", command, command)
 
     for attempt in result.attempts or []:
         text = (str(attempt.warning or "") + " " + str(attempt.error or "")).casefold()
@@ -69,6 +72,7 @@ def classify_result(result: GameTestResult) -> dict[str, Any]:
         "requires_review": requires_review,
         "technical_status": str(result.status or ""),
         "reasons": reasons,
+        "review_targets": review_targets,
         "classified_at": utc_now_iso(),
         "source": "normal-runner",
     }
