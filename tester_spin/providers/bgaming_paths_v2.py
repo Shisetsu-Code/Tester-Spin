@@ -108,8 +108,6 @@ def _post_command_guard(
             timeout_s=timeout_s,
         )
         if isinstance(evidence, dict):
-            # Promotion remains narrow: only exact client-proven, fully literal
-            # payload variants become replay candidates. Text hits alone never do.
             remember_dynamic_evidence(evidence)
             from tester_spin.providers.bgaming.structural_map import record_discovery
             record_discovery(data, evidence)
@@ -264,8 +262,6 @@ def _move_run_guard(result: GameTestResult, target: Path) -> None:
         index += 1
 
 
-# install_policy() supplies the HyperHive wager hook and scoped option domains.
-# These guards stay inert outside a normal exhaustive provider run.
 _execution.discover_profile = _profile_guard
 _execution.save_profile = _save_profile_guard
 _execution.post_command = _post_command_guard
@@ -278,6 +274,8 @@ _exhaustive._move_run = _move_run_guard
 class BGamingProvider(_exhaustive.BGamingProvider):
     """BGaming exhaustive traversal with scoped purchase/wager policy."""
 
+    _defer_complexity_classification = True
+
     def test_game(
         self,
         game: Game,
@@ -289,6 +287,7 @@ class BGamingProvider(_exhaustive.BGamingProvider):
     ) -> GameTestResult:
         from tester_spin.providers.bgaming.structural_map import begin_capture, end_capture
         from tester_spin.structure import atomic_write
+
         capture, capture_token = begin_capture(game.slug)
         _policy.begin_policy_run()
         _flow_memory.set_current_game_dir(self.game_dir(game))
@@ -317,6 +316,12 @@ class BGamingProvider(_exhaustive.BGamingProvider):
                 if result.status == "OK":
                     result.status = "PARCIAL"
                 result.error = (str(result.error or "") + " Structural Map: " + type(exc).__name__).strip()
+
+            # This is the first point where every BGaming layer has finished
+            # mutating status/error/coverage.  Complexity must be derived here,
+            # never from the intermediate base-provider result.
+            self._finalize_complexity(game, result, progress)
+
             if result.run_dir and Path(result.run_dir).is_dir():
                 try:
                     atomic_write(Path(result.run_dir) / "result.json", result.to_dict())
@@ -324,6 +329,9 @@ class BGamingProvider(_exhaustive.BGamingProvider):
                     result.structural_map["result_write_diagnostic"] = type(exc).__name__
                     if result.status == "OK":
                         result.status = "PARCIAL"
+                    # Reclassify if even final result persistence changed the
+                    # technical status, keeping complexity.json consistent.
+                    self._finalize_complexity(game, result, progress)
             return result
         finally:
             end_capture(capture_token)
