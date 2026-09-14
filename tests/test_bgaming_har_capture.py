@@ -126,10 +126,10 @@ class BGamingHARCaptureTests(unittest.TestCase):
             self.assertIsNotNone(quality)
             self.assertEqual(quality.grade, "HAR_BOOTSTRAP_ONLY")
             self.assertFalse(quality.protocol_usable)
-            self.assertTrue(any("no se recaptura Chromium" in line for line in logs))
+            self.assertTrue(any("Chromium diferido" in line for line in logs))
             debug = analysis / "har-debug.jsonl"
             self.assertTrue(debug.is_file())
-            self.assertIn("prepare_cheap_first_reuse_har", debug.read_text(encoding="utf-8"))
+            self.assertIn("prepare_cheap_first_no_har", debug.read_text(encoding="utf-8"))
 
     def test_provider_har_folder_falls_back_to_analysis_diagnostics(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
