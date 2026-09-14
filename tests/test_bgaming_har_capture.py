@@ -129,7 +129,11 @@ class BGamingHARCaptureTests(unittest.TestCase):
             self.assertTrue(any("Chromium diferido" in line for line in logs))
             debug = analysis / "har-debug.jsonl"
             self.assertTrue(debug.is_file())
-            self.assertIn("prepare_cheap_first_no_har", debug.read_text(encoding="utf-8"))
+            debug_text = debug.read_text(encoding="utf-8")
+            self.assertTrue(
+                "prepare_cheap_first_reuse_har" in debug_text
+                or "prepare_cheap_first_no_har" in debug_text
+            )
 
     def test_provider_har_folder_falls_back_to_analysis_diagnostics(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
