@@ -169,8 +169,8 @@ class BGamingProvider(_BGamingProvider):
         if existing is None:
             append_har_debug(game_dir, "prepare_cheap_first_no_har")
             progress(
-                f"[{game.name}] preparación barata: sin HAR; Chromium diferido "
-                "hasta que la prueba detecte lógica que requiera revisión."
+                f"[{game.name}] preparación barata: sin HAR útil; Chromium diferido; "
+                "no se recaptura Chromium en la prueba normal."
             )
             return
 
@@ -191,7 +191,7 @@ class BGamingProvider(_BGamingProvider):
         progress(
             f"[{game.name}] HAR existente reutilizado: {relative}; "
             f"calidad={quality.grade if quality is not None else 'UNKNOWN'}; "
-            "no se sobrescribe ni se recaptura Chromium en la prueba normal."
+            "Chromium diferido; no se sobrescribe ni se recaptura Chromium en la prueba normal."
         )
 
 
