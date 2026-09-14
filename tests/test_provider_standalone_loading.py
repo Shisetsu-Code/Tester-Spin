@@ -4,6 +4,7 @@ import json
 import os
 import subprocess
 import sys
+import unittest
 
 
 def _loaded_provider_modules(env: dict[str, str] | None = None) -> list[str]:
@@ -22,6 +23,11 @@ def _loaded_provider_modules(env: dict[str, str] | None = None) -> list[str]:
     return json.loads(completed.stdout.strip())
 
 
-def test_importing_provider_package_does_not_eager_load_provider_implementations():
-    loaded = _loaded_provider_modules(os.environ.copy())
-    assert loaded == []
+class ProviderStandaloneLoadingTests(unittest.TestCase):
+    def test_importing_provider_package_does_not_eager_load_provider_implementations(self) -> None:
+        loaded = _loaded_provider_modules(os.environ.copy())
+        self.assertEqual(loaded, [])
+
+
+if __name__ == "__main__":
+    unittest.main()
