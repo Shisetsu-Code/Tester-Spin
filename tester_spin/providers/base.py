@@ -119,6 +119,8 @@ class ProviderRegistry:
         self._providers: dict[str, ProviderAdapter] = {}
 
     def register(self, provider: ProviderAdapter) -> None:
+        if bool(getattr(provider, "_provider_disabled", False)):
+            return
         if provider.key in self._providers:
             raise ValueError(f"Proveedor duplicado: {provider.key}")
         self._providers[provider.key] = provider
