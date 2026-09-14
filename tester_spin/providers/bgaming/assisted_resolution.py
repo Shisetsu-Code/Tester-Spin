@@ -10,7 +10,7 @@ from typing import Any
 from tester_spin.models import Game, utc_now_iso
 from tester_spin.providers.base import Progress
 from tester_spin.providers.bgaming.assisted_browser import run_assisted_browser
-from tester_spin.providers.bgaming.complexity import mark_manual_resolution
+from tester_spin.providers.bgaming.complexity import load_complexity, mark_manual_resolution
 from tester_spin.providers.bgaming.wager_format import (
     _resolve_launch,
     analyze_game_wager_format,
@@ -79,9 +79,13 @@ def capture_matches_target(payload: dict[str, Any], targets: list[dict[str, Any]
     if not command or not isinstance(options, dict):
         return False
     for target in targets:
-        if str(target.get("command") or "") != command:
+        target_command = str(target.get("command") or "")
+        if target_command not in {command, "*"}:
             continue
-        if any(str(field) in options for field in target.get("fields") or []):
+        fields = [str(field) for field in target.get("fields") or []]
+        if not fields:
+            return command != "init"
+        if any(field in options for field in fields):
             return True
     return False
 
@@ -255,6 +259,20 @@ def _restore_assisted_history(
     return restored
 
 
+def _runtime_review_targets(game_dir: Path) -> list[dict[str, Any]]:
+    complexity = load_complexity(game_dir)
+    if not bool(complexity.get("requires_review")):
+        return []
+    commands = [
+        str(value).strip()
+        for value in complexity.get("review_targets") or []
+        if str(value).strip()
+    ]
+    if commands:
+        return [{"command": command, "fields": []} for command in dict.fromkeys(commands)]
+    return [{"command": "*", "fields": []}]
+
+
 def resolve_game_assisted(
     provider: Any,
     game: Game,
@@ -275,26 +293,27 @@ def resolve_game_assisted(
 
     targets = unresolved_targets(payload)
     if not targets:
-        progress(f"[{game.name}] ASISTIDO: no quedan campos unresolved; no se abre Chromium.")
-        mark_manual_resolution(
-            game_dir,
-            completed=True,
-            remaining_fields=0,
-            captures=1 if previous_payload.get("assisted_resolution") else 0,
-        )
-        return AssistedResolutionResult(
-            "READY",
-            game.slug,
-            artifact=str(artifact),
-            targets=0,
-            completed=True,
-        )
+        targets = _runtime_review_targets(game_dir)
+        if targets:
+            progress(
+                f"[{game.name}] ASISTIDO: el análisis estático no dejó campos unresolved, "
+                "pero la ejecución real marcó lógica compleja; se observará la interacción."
+            )
+        else:
+            progress(f"[{game.name}] ASISTIDO: no hay revisión pendiente; no se abre Chromium.")
+            return AssistedResolutionResult(
+                "READY",
+                game.slug,
+                artifact=str(artifact),
+                targets=0,
+                completed=True,
+            )
 
     target_text = "; ".join(
         f"{str(item.get('command') or '')}({', '.join(str(value) for value in item.get('fields') or [])})"
         for item in targets
     )
-    progress(f"[{game.name}] ASISTIDO: pendientes={target_text}.")
+    progress(f"[{game.name}] ASISTIDO: objetivos={target_text}.")
 
     session, launch_url = _resolve_launch(provider, game, timeout_s)
     if session is None or not launch_url:
@@ -350,7 +369,7 @@ def resolve_game_assisted(
         captures=len(captures),
     )
 
-    if completed and not remaining:
+    if completed and not remaining and captures:
         status = "READY"
     elif captures:
         status = "PARCIAL"
