@@ -1,0 +1,35 @@
+name: Build Pragmatic Windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/pragmatic-standalone-exe
+    paths:
+      - 'launcher.py'
+      - 'pragmatic_launcher.py'
+      - 'run_pragmatic.py'
+      - 'tester_spin/updater.py'
+      - 'tester_spin/providers/**'
+      - '.github/workflows/build-pragmatic.yml'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PyInstaller
+        run: python -m pip install --upgrade pip pyinstaller
+      - name: Build Pragmatic.exe
+        shell: pwsh
+        run: |
+          python -m PyInstaller --noconfirm --clean --onefile --windowed --name Pragmatic pragmatic_launcher.py
+      - name: Upload Pragmatic.exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pragmatic-windows-x64
+          path: dist/Pragmatic.exe
