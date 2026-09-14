@@ -73,21 +73,148 @@ def _enrich_evidence(
     return evidence
 
 
+def _load_json(path: Path) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return value if isinstance(value, dict) else {}
+
+
+def _evidence_fingerprint(evidence: dict[str, Any]) -> str:
+    client = evidence.get("client")
+    if not isinstance(client, dict):
+        return ""
+    return _clean(client.get("bundle_sha256"))
+
+
+def _evidence_from_assisted_capture(
+    capture: dict[str, Any],
+    *,
+    bundle_sha256: str,
+) -> dict[str, Any] | None:
+    command = _clean(capture.get("command"))
+    options = capture.get("options")
+    flow = capture.get("from_flow")
+    if not command or command == "init" or not isinstance(options, dict) or not isinstance(flow, dict):
+        return None
+    state = _clean(flow.get("state"))
+    scope = _clean(flow.get("purchase_scope")) or purchase_scope(flow)
+    if not state:
+        return None
+    # A persisted internal spin is only safe with an explicit purchase scope.
+    if command == "spin" and (state == "closed" or not scope):
+        return None
+    option_fields = [str(key) for key in options]
+    return {
+        "schema": "tester-spin/bgaming-server-guided-discovery/v1",
+        "flow": {
+            "state": state,
+            "command": _clean(flow.get("command")),
+            "available_actions": [command],
+            "purchase_scope": scope,
+            "purchased_feature": flow.get("purchased_feature") if isinstance(flow.get("purchased_feature"), dict) else {},
+        },
+        "client": {
+            "source": "assisted-runtime-observation",
+            "bundle_sha256": bundle_sha256,
+        },
+        "actions": [
+            {
+                "action": command,
+                "advertised": True,
+                "option_fields": option_fields,
+                "parameterless": not options,
+                "option_variants": [
+                    {
+                        "label": _variant_label(options),
+                        "options": dict(options),
+                        "source": "assisted-runtime-observation",
+                    }
+                ],
+                "unresolved_option_variants": [],
+                "serializer_shape_proven": True,
+                "replay_eligible": True,
+                "execution_authority": "assisted-user-reviewed",
+            }
+        ],
+    }
+
+
+def _persisted_evidence(game_dir: Path, *, bundle_sha256: str) -> list[dict[str, Any]]:
+    """Load only evidence proven against the currently observed client bundle."""
+    digest = _clean(bundle_sha256)
+    if not digest:
+        return []
+    rows: list[dict[str, Any]] = []
+
+    test_files = sorted(
+        game_dir.glob("tests/*/server-guided-discovery.json"),
+        key=lambda path: path.stat().st_mtime if path.exists() else 0,
+        reverse=True,
+    )[:24]
+    for path in test_files:
+        payload = _load_json(path)
+        for item in payload.get("states") or []:
+            if isinstance(item, dict) and _evidence_fingerprint(item) == digest:
+                rows.append(item)
+
+    assisted_files = sorted(
+        game_dir.glob("analysis/assisted-resolution/*/session.json"),
+        key=lambda path: path.stat().st_mtime if path.exists() else 0,
+        reverse=True,
+    )[:24]
+    for path in assisted_files:
+        payload = _load_json(path)
+        if not bool(payload.get("completed_by_user")):
+            continue
+        if _clean(payload.get("client_bundle_sha256")) != digest:
+            continue
+        for capture in payload.get("captures") or []:
+            if not isinstance(capture, dict):
+                continue
+            evidence = _evidence_from_assisted_capture(
+                capture,
+                bundle_sha256=digest,
+            )
+            if evidence is not None:
+                rows.append(evidence)
+    return rows
+
+
+def _remember_matching_persisted(evidence: dict[str, Any]) -> None:
+    game_dir = getattr(_LOCAL, "game_dir", None)
+    digest = _evidence_fingerprint(evidence)
+    if not isinstance(game_dir, Path) or not digest:
+        return
+    loaded = getattr(_LOCAL, "loaded_fingerprints", None)
+    if not isinstance(loaded, set):
+        loaded = set()
+        _LOCAL.loaded_fingerprints = loaded
+    if digest in loaded:
+        return
+    loaded.add(digest)
+    for persisted in _persisted_evidence(game_dir, bundle_sha256=digest):
+        _remember_with_context(persisted)
+
+
 def _discover_with_context(runtime, data: dict[str, Any], *, timeout_s: float):
     evidence = _ORIGINAL_DISCOVER(runtime, data, timeout_s=timeout_s)
-    return _enrich_evidence(evidence, data)
+    evidence = _enrich_evidence(evidence, data)
+    if isinstance(evidence, dict):
+        # The current bundle fingerprint is now known. Only at this point may
+        # historical evidence become execution authority.
+        _remember_matching_persisted(evidence)
+    return evidence
 
 
 def _remember_with_context(evidence: dict[str, Any]) -> None:
     """Remember client-proven choices and narrowly allow feature-internal spin.
 
     ``spin`` is deliberately excluded by the legacy dynamic learner because a
-    normal spin is a wager.  It becomes replayable here only when all of these
-    are true: the server response is non-terminal, the round belongs to an
-    explicit purchased feature, the server advertised ``spin``, and the client
-    supplied an exact replay-eligible literal payload.  This models provider
-    features that require pressing Spin inside an already purchased feature
-    without turning arbitrary base spins into continuations.
+    normal spin is a wager. It becomes replayable here only when the response is
+    non-terminal, belongs to an explicit purchased feature, the server advertised
+    ``spin``, and the client supplied an exact replay-eligible literal payload.
     """
     if not isinstance(evidence, dict):
         return
@@ -104,9 +231,6 @@ def _remember_with_context(evidence: dict[str, Any]) -> None:
 
     specs = _server_guided._dynamic_specs()
 
-    # Add purchase scope as an additional compatibility guard to every dynamic
-    # action learned from this response.  State-only reuse is too broad for
-    # provider clients that reuse action names across different buy features.
     if scope:
         for raw in evidence.get("actions") or []:
             if not isinstance(raw, dict) or not raw.get("replay_eligible"):
@@ -175,106 +299,11 @@ def _dynamic_variants_with_scope(data: dict[str, Any], action: str) -> list[dict
     return variants
 
 
-def _evidence_from_assisted_capture(capture: dict[str, Any]) -> dict[str, Any] | None:
-    command = _clean(capture.get("command"))
-    options = capture.get("options")
-    flow = capture.get("from_flow")
-    if not command or command == "init" or not isinstance(options, dict) or not isinstance(flow, dict):
-        return None
-    state = _clean(flow.get("state"))
-    scope = _clean(flow.get("purchase_scope")) or purchase_scope(flow)
-    if not state:
-        return None
-    # A persisted internal spin is only safe with an explicit purchase scope.
-    if command == "spin" and (state == "closed" or not scope):
-        return None
-    option_fields = [str(key) for key in options]
-    return {
-        "schema": "tester-spin/bgaming-server-guided-discovery/v1",
-        "flow": {
-            "state": state,
-            "command": _clean(flow.get("command")),
-            "available_actions": [command],
-            "purchase_scope": scope,
-            "purchased_feature": flow.get("purchased_feature") if isinstance(flow.get("purchased_feature"), dict) else {},
-        },
-        "client": {
-            "source": "assisted-runtime-observation",
-            "bundle_sha256": "",
-        },
-        "actions": [
-            {
-                "action": command,
-                "advertised": True,
-                "option_fields": option_fields,
-                "parameterless": not options,
-                "option_variants": [
-                    {
-                        "label": _variant_label(options),
-                        "options": dict(options),
-                        "source": "assisted-runtime-observation",
-                    }
-                ],
-                "unresolved_option_variants": [],
-                "serializer_shape_proven": True,
-                "replay_eligible": True,
-                "execution_authority": "assisted-user-reviewed",
-            }
-        ],
-    }
-
-
-def _load_json(path: Path) -> dict[str, Any]:
-    try:
-        value = json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
-    return value if isinstance(value, dict) else {}
-
-
-def _persisted_evidence(game_dir: Path) -> list[dict[str, Any]]:
-    rows: list[dict[str, Any]] = []
-
-    # Historical normal runs already contain bounded server/client correlations.
-    # Reuse them instead of rediscovering a known branch on every catalog pass.
-    test_files = sorted(
-        game_dir.glob("tests/*/server-guided-discovery.json"),
-        key=lambda path: path.stat().st_mtime if path.exists() else 0,
-        reverse=True,
-    )[:24]
-    for path in test_files:
-        payload = _load_json(path)
-        for item in payload.get("states") or []:
-            if isinstance(item, dict):
-                rows.append(item)
-
-    assisted_files = sorted(
-        game_dir.glob("analysis/assisted-resolution/*/session.json"),
-        key=lambda path: path.stat().st_mtime if path.exists() else 0,
-        reverse=True,
-    )[:24]
-    for path in assisted_files:
-        payload = _load_json(path)
-        # Aborted sessions are useful diagnostics but must not become execution
-        # authority.  Only a user-completed review can promote captured payloads.
-        if not bool(payload.get("completed_by_user")):
-            continue
-        for capture in payload.get("captures") or []:
-            if not isinstance(capture, dict):
-                continue
-            evidence = _evidence_from_assisted_capture(capture)
-            if evidence is not None:
-                rows.append(evidence)
-    return rows
-
-
 def _begin_with_persisted_evidence() -> None:
+    # Reset the in-memory dynamic registry. Historical evidence is intentionally
+    # deferred until _discover_with_context() proves the current bundle hash.
     _ORIGINAL_BEGIN()
-    game_dir = getattr(_LOCAL, "game_dir", None)
-    if not isinstance(game_dir, Path):
-        return
-    for evidence in _persisted_evidence(game_dir):
-        _remember_with_context(evidence)
+    _LOCAL.loaded_fingerprints = set()
 
 
 def set_current_game_dir(path: Path | None) -> None:
@@ -283,15 +312,17 @@ def set_current_game_dir(path: Path | None) -> None:
 
 def clear_current_game_dir() -> None:
     _LOCAL.game_dir = None
+    _LOCAL.loaded_fingerprints = set()
 
 
 def _install_flow_choice_spin_bridge() -> None:
-    # Import only after server_guided has been patched so flow_choices binds the
-    # scoped dynamic_action_* helpers rather than their unguarded originals.
     from tester_spin.providers.bgaming import flow_choices
 
-    original_candidates = flow_choices._candidate_prompts
+    # flow_choices may already have been imported by bgaming_exhaustive before
+    # this module installs. Refresh the bound helper explicitly.
+    flow_choices.dynamic_action_variants = _dynamic_variants_with_scope
 
+    original_candidates = flow_choices._candidate_prompts
     if getattr(original_candidates, "_tester_spin_internal_spin", False):
         return
 
@@ -326,29 +357,6 @@ def install() -> None:
     _INSTALLED = True
 
 
-def wrap_provider(base_cls):
-    install()
-
-    class PersistentFlowBGamingProvider(base_cls):
-        def test_game(self, game, *, spins, timeout_s, stop_event, progress):
-            set_current_game_dir(self.game_dir(game))
-            try:
-                return super().test_game(
-                    game,
-                    spins=spins,
-                    timeout_s=timeout_s,
-                    stop_event=stop_event,
-                    progress=progress,
-                )
-            finally:
-                clear_current_game_dir()
-
-    PersistentFlowBGamingProvider.__name__ = "BGamingProvider"
-    PersistentFlowBGamingProvider.__qualname__ = "BGamingProvider"
-    PersistentFlowBGamingProvider.__module__ = "tester_spin.providers.bgaming"
-    return PersistentFlowBGamingProvider
-
-
 install()
 
 
@@ -357,5 +365,4 @@ __all__ = [
     "install",
     "purchase_scope",
     "set_current_game_dir",
-    "wrap_provider",
 ]
