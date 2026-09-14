@@ -313,17 +313,22 @@ class BGamingProvider(_exhaustive.BGamingProvider):
             try:
                 capture.finish(result, self.game_dir(game))
             except Exception as exc:
-                result.structural_map = {"status": "failed", "diagnostic": type(exc).__name__}
-                if result.status == "OK":
-                    result.status = "PARCIAL"
-                result.error = (str(result.error or "") + " Structural Map: " + type(exc).__name__).strip()
+                diagnostic = type(exc).__name__
+                result.structural_map = {"status": "failed", "diagnostic": diagnostic}
+                progress(
+                    f"[{game.name}] Structural Map diagnóstico: {diagnostic}; "
+                    "la telemetría auxiliar no modifica el estado del protocolo."
+                )
             if result.run_dir and Path(result.run_dir).is_dir():
                 try:
                     atomic_write(Path(result.run_dir) / "result.json", result.to_dict())
                 except OSError as exc:
-                    result.structural_map["result_write_diagnostic"] = type(exc).__name__
-                    if result.status == "OK":
-                        result.status = "PARCIAL"
+                    diagnostic = type(exc).__name__
+                    result.structural_map["result_write_diagnostic"] = diagnostic
+                    progress(
+                        f"[{game.name}] result.json diagnóstico: {diagnostic}; "
+                        "la persistencia auxiliar no modifica el estado del protocolo."
+                    )
             return result
         finally:
             end_capture(capture_token)
