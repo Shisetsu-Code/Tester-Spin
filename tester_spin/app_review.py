@@ -9,6 +9,7 @@ from tester_spin.providers.bgaming.complexity import (
     INDETERMINATE,
     MANUAL_RESOLVED,
     REVIEW_REQUIRED,
+    SIMPLE_PENDING,
     load_complexity,
 )
 
@@ -26,7 +27,7 @@ class ReviewTesterSpinApp(AssistedTesterSpinApp):
         )
         self.review_btn.pack(side="left", padx=(8, 0))
         try:
-            self.tree.column("status", width=155, minwidth=125, anchor="center")
+            self.tree.column("status", width=175, minwidth=135, anchor="center")
         except Exception:
             pass
 
@@ -61,6 +62,8 @@ class ReviewTesterSpinApp(AssistedTesterSpinApp):
             suffix = ""
             if classification == AUTO_COMPLETE:
                 suffix = "AUTO"
+            elif classification == SIMPLE_PENDING:
+                suffix = "SIMPLE"
             elif classification == REVIEW_REQUIRED:
                 suffix = "REVISIÓN"
                 review_count += 1
@@ -92,16 +95,23 @@ class ReviewTesterSpinApp(AssistedTesterSpinApp):
         if not payload:
             return
         reasons = payload.get("reasons") or []
+        gaps = payload.get("capability_gaps") or []
         reason_text = "\n".join(
             f"- {row.get('kind')}: {row.get('value')}"
             for row in reasons[:12]
             if isinstance(row, dict)
         ) or "- sin ramas complejas detectadas"
+        gap_text = "\n".join(
+            f"- {row.get('kind')}: {row.get('value')}"
+            for row in gaps[:12]
+            if isinstance(row, dict)
+        ) or "- ninguno"
         extra = (
             "\n\nClasificación BGaming:\n"
             f"{payload.get('classification') or '—'}\n"
             f"Requiere revisión: {'sí' if payload.get('requires_review') else 'no'}\n"
-            f"Motivos:\n{reason_text}"
+            f"Lógica compleja:\n{reason_text}\n"
+            f"Huecos técnicos simples:\n{gap_text}"
         )
         try:
             self.detail_text.configure(state="normal")
