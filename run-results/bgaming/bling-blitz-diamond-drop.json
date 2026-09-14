@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-13T13:35:16+00:00",
-  "source_commit": "61b5a6e1ad1092ca4003ec671bc7ce8bbde0d3db",
+  "published_at": "2026-09-14T02:33:11+00:00",
+  "source_commit": "0f748aac3cdb714e9b8104413328a32575300108",
   "provider": "bgaming",
   "game": {
     "slug": "bling-blitz-diamond-drop",
@@ -25,8 +25,8 @@
         "kind": "SPIN",
         "observed": false,
         "validated": false,
-        "executable": false,
-        "discovery_state": "REJECTED_51100",
+        "executable": true,
+        "discovery_state": "HAR_SCRIPT_OBSERVED",
         "wire_method": "play",
         "request_options": {
           "bet_type": "bet",
@@ -35,35 +35,94 @@
         "source": "selected-har-script-contract"
       }
     ],
-    "started_at": "2026-09-13T13:34:54+00:00",
-    "finished_at": "2026-09-13T13:35:16+00:00",
-    "elapsed_ms": 22452.99999999952,
-    "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-    "run_dir": "2026-09-13_10-34-54-bgaming-hyperhive-jsonrpc",
-    "attempts": [
-      {
-        "number": 1,
-        "ok": false,
-        "mode_id": "SPIN",
-        "mode_kind": "SPIN",
-        "provider_bl": null,
-        "provider_pur": null,
-        "status_code": null,
-        "elapsed_ms": 1000.0,
-        "symbol": "BlingBlitzDiamondDrop",
-        "endpoint": "https://bling-blitz-diamond-drop.demo.bgaming-network.com/api",
-        "na": "",
-        "terminal": false,
-        "wire_steps": 0,
-        "warning": "",
-        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Bling Blitz Diamond Drop\\tests\\2026-09-13_10-34-54-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
-      }
-    ],
-    "samples_per_path": 1
+    "started_at": "2026-09-14T02:32:49+00:00",
+    "finished_at": "2026-09-14T02:33:11+00:00",
+    "elapsed_ms": 21656.000000002678,
+    "error": "BGaming HyperHive sin respuestas válidas.",
+    "run_dir": "2026-09-13_23-32-49-bgaming-hyperhive-jsonrpc",
+    "attempts": [],
+    "samples_per_path": 1,
+    "structural_map": {
+      "path": "analysis/game-structure.json",
+      "schema": "tester-spin/game-structure/v1",
+      "coverage": {
+        "states": 0,
+        "decision_points": 0,
+        "choices": 0,
+        "executed": 0,
+        "outcome_observed": 0,
+        "pending": 0,
+        "unknowns": 2,
+        "complete": false,
+        "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+      },
+      "diagnostics": []
+    }
   },
-  "artifact_bytes_embedded": 16633,
+  "artifact_bytes_embedded": 15684,
   "artifacts": {
+    "analysis/game-structure.json": {
+      "encoding": "json",
+      "bytes": 1733,
+      "value": {
+        "schema": "tester-spin/game-structure/v1",
+        "metadata": {
+          "provider": "bgaming",
+          "protocol_family": "bgaming-json-flow",
+          "game_identifier": "bling-blitz-diamond-drop",
+          "slug": "bling-blitz-diamond-drop",
+          "bundle_fingerprint": "",
+          "generated_at": "2026-09-14T02:32:49+00:00",
+          "compatibility": "unverified",
+          "source_evidence_summary": {
+            "capture": "BGaming JSON requests/responses at transport boundary",
+            "diagnostics": []
+          },
+          "merged_runs": [
+            "run:f0101eaa3be38a2499f35de2"
+          ],
+          "previous_revisions": []
+        },
+        "states": {},
+        "decision_points": {},
+        "choices": {},
+        "transitions": {},
+        "request_contracts": {},
+        "response_contracts": {},
+        "field_semantics": {},
+        "path_context": {},
+        "unknowns": {
+          "unknown:2f013aac28a11ad930871d09": {
+            "id": "unknown:2f013aac28a11ad930871d09",
+            "kind": "protocol",
+            "entity": "bgaming",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No supported JSON flow observations; protocol adapter required"
+          },
+          "unknown:5e8d8be112375757aa17c6de": {
+            "id": "unknown:5e8d8be112375757aa17c6de",
+            "kind": "client",
+            "entity": "fingerprint",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client compatibility unverified; only observed protocol evidence"
+          }
+        },
+        "evidence": {},
+        "relations": {},
+        "artifact_references": [],
+        "coverage": {
+          "states": 0,
+          "decision_points": 0,
+          "choices": 0,
+          "executed": 0,
+          "outcome_observed": 0,
+          "pending": 0,
+          "unknowns": 2,
+          "complete": false,
+          "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+        }
+      }
+    },
     "path-coverage.json": {
       "encoding": "json",
       "bytes": 544,
@@ -95,7 +154,7 @@
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 1923,
+      "bytes": 1565,
       "value": {
         "provider": "bgaming",
         "slug": "bling-blitz-diamond-drop",
@@ -112,8 +171,8 @@
             "kind": "SPIN",
             "observed": false,
             "validated": false,
-            "executable": false,
-            "discovery_state": "REJECTED_51100",
+            "executable": true,
+            "discovery_state": "HAR_SCRIPT_OBSERVED",
             "wire_method": "play",
             "request_options": {
               "bet_type": "bet",
@@ -122,111 +181,44 @@
             "source": "selected-har-script-contract"
           }
         ],
-        "started_at": "2026-09-13T13:34:54+00:00",
-        "finished_at": "2026-09-13T13:35:16+00:00",
-        "elapsed_ms": 22452.99999999952,
-        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Bling Blitz Diamond Drop\\tests\\2026-09-13_10-34-54-bgaming-hyperhive-jsonrpc",
-        "attempts": [
-          {
-            "number": 1,
-            "ok": false,
-            "mode_id": "SPIN",
-            "mode_kind": "SPIN",
-            "provider_bl": null,
-            "provider_pur": null,
-            "status_code": null,
-            "elapsed_ms": 1000.0,
-            "symbol": "BlingBlitzDiamondDrop",
-            "endpoint": "https://bling-blitz-diamond-drop.demo.bgaming-network.com/api",
-            "na": "",
-            "terminal": false,
-            "wire_steps": 0,
-            "warning": "",
-            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Bling Blitz Diamond Drop\\tests\\2026-09-13_10-34-54-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
-          }
-        ],
-        "samples_per_path": 1
+        "started_at": "2026-09-14T02:32:49+00:00",
+        "finished_at": "2026-09-14T02:33:11+00:00",
+        "elapsed_ms": 21656.000000002678,
+        "error": "BGaming HyperHive sin respuestas válidas.",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Bling Blitz Diamond Drop\\tests\\2026-09-13_23-32-49-bgaming-hyperhive-jsonrpc",
+        "attempts": [],
+        "samples_per_path": 1,
+        "structural_map": {
+          "path": "analysis/game-structure.json",
+          "schema": "tester-spin/game-structure/v1",
+          "coverage": {
+            "states": 0,
+            "decision_points": 0,
+            "choices": 0,
+            "executed": 0,
+            "outcome_observed": 0,
+            "pending": 0,
+            "unknowns": 2,
+            "complete": false,
+            "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+          },
+          "diagnostics": []
+        }
       }
     },
     "sample-catalog.json": {
       "encoding": "json",
-      "bytes": 1216,
+      "bytes": 281,
       "value": {
         "schema": "tester-spin/sample-catalog/v2",
         "provider": "bgaming",
         "game": "bling-blitz-diamond-drop",
         "scope": "observed_paths_only",
         "samples_per_path": 1,
-        "groups": [
-          {
-            "id": "a179acbfa9295736f1e930b5ce3d37a237f56d86b16cce5a1bfd01dd210dd41a",
-            "mode_id": "SPIN",
-            "mode_kind": "SPIN",
-            "choices": [],
-            "validated_samples": 0,
-            "samples": [
-              {
-                "attempt": 1,
-                "artifact_dir": "SPIN/attempt-001",
-                "validated": false,
-                "terminal": false,
-                "observed_state_sequence": [],
-                "evidence": [
-                  {
-                    "path": "SPIN/attempt-001/rpc-error-request.json",
-                    "sha256": "59de361569a94fdefb534d22e41db63e9e5c8c08821820d709354fd682ab8c3e",
-                    "bytes": 345
-                  },
-                  {
-                    "path": "SPIN/attempt-001/rpc-error-response.json",
-                    "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
-                    "bytes": 136
-                  }
-                ]
-              }
-            ],
-            "missing_samples": 1
-          }
-        ],
+        "groups": [],
         "observed_state_types": [],
         "diagnostics": [],
         "observed_paths_sampled": false
-      }
-    },
-    "SPIN/attempt-001/rpc-error-request.json": {
-      "encoding": "json",
-      "bytes": 345,
-      "value": {
-        "id": "dda5ae88-ba3c-4620-8264-e1fa7c89cceb",
-        "jsonrpc": "2.0",
-        "method": "play",
-        "params": {
-          "token": "<redacted>",
-          "req": {
-            "bet": 10,
-            "bet_type": "bet",
-            "custom_req": {
-              "action": "spin",
-              "exponent": 2,
-              "stake": 10
-            }
-          },
-          "state_lock": "<redacted>"
-        }
-      }
-    },
-    "SPIN/attempt-001/rpc-error-response.json": {
-      "encoding": "json",
-      "bytes": 136,
-      "value": {
-        "id": "x",
-        "jsonrpc": "2.0",
-        "error": {
-          "code": 51100,
-          "message": "Something went wrong. Refresh the page."
-        }
       }
     },
     "backend-conformance.json": {
@@ -240,8 +232,8 @@
           "name": "Bling Blitz Diamond Drop",
           "identifier": "BlingBlitzDiamondDrop"
         },
-        "generated_at": "2026-09-13T13:35:16+00:00",
-        "source_run": "2026-09-13_10-34-54-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-14T02:33:11+00:00",
+        "source_run": "2026-09-13_23-32-49-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -271,8 +263,8 @@
           "name": "Bling Blitz Diamond Drop",
           "identifier": "BlingBlitzDiamondDrop"
         },
-        "generated_at": "2026-09-13T13:35:16+00:00",
-        "source_run": "2026-09-13_10-34-54-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-14T02:33:11+00:00",
+        "source_run": "2026-09-13_23-32-49-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -337,7 +329,7 @@
     },
     "emulation-contract.json": {
       "encoding": "json",
-      "bytes": 1721,
+      "bytes": 1353,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -346,8 +338,8 @@
           "name": "Bling Blitz Diamond Drop",
           "identifier": "BlingBlitzDiamondDrop"
         },
-        "generated_at": "2026-09-13T13:35:16+00:00",
-        "source_run": "2026-09-13_10-34-54-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-14T02:33:11+00:00",
+        "source_run": "2026-09-13_23-32-49-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -365,7 +357,7 @@
             "id": "SPIN",
             "kind": "SPIN",
             "wire_command": "",
-            "executable": false,
+            "executable": true,
             "coverage_required": false,
             "purchased_feature": null,
             "purchased_feature_level": null,
@@ -375,21 +367,7 @@
             "source": "selected-har-script-contract"
           }
         ],
-        "unresolved_modes": [
-          {
-            "id": "SPIN",
-            "kind": "SPIN",
-            "wire_command": "",
-            "executable": false,
-            "coverage_required": false,
-            "purchased_feature": null,
-            "purchased_feature_level": null,
-            "cost_multiplier": null,
-            "required_options": [],
-            "covered_options": [],
-            "source": "selected-har-script-contract"
-          }
-        ],
+        "unresolved_modes": [],
         "dispatch": {},
         "artifacts": {
           "state_machine": "state-machine.json",
@@ -404,7 +382,7 @@
       "encoding": "json",
       "bytes": 142,
       "value": {
-        "id": "038d83ca-52a6-47bd-b843-3e71b24649f4",
+        "id": "afe66b84-2923-450e-81d8-90ff49634aa7",
         "jsonrpc": "2.0",
         "method": "init",
         "params": {
@@ -416,7 +394,7 @@
       "encoding": "json",
       "bytes": 1891,
       "value": {
-        "id": "038d83ca-52a6-47bd-b843-3e71b24649f4",
+        "id": "afe66b84-2923-450e-81d8-90ff49634aa7",
         "jsonrpc": "2.0",
         "result": {
           "freebets": null,
@@ -501,7 +479,7 @@
           "urls": {
             "deposit_url": null,
             "return_url": null,
-            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDU0ODkzMjksImd0X2lkIjozNzIxMDExfSwiZXhwIjoxODA0OTQ0OTA4fQ.vqhhxCgxLO6UWs9viJexoUBllg_UfmenKbLwjybSzGo"
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDYwMzUwNzgsImd0X2lkIjozNzIxMDExfSwiZXhwIjoxODA0OTkxNTg1fQ.HU-gg9sVf1EJDyq_TYWcti-stXaQ2E7FizpkOjb2q3o"
           },
           "balance": 100000,
           "state_lock": "<redacted>"
@@ -519,8 +497,8 @@
           "name": "Bling Blitz Diamond Drop",
           "identifier": "BlingBlitzDiamondDrop"
         },
-        "generated_at": "2026-09-13T13:35:16+00:00",
-        "source_run": "2026-09-13_10-34-54-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-14T02:33:11+00:00",
+        "source_run": "2026-09-13_23-32-49-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -534,7 +512,7 @@
     },
     "path-catalog.json": {
       "encoding": "json",
-      "bytes": 1136,
+      "bytes": 964,
       "value": {
         "schema": "tester-spin/bgaming-path-catalog/v1",
         "phase": "coverage",
@@ -554,23 +532,21 @@
             "id": "SPIN",
             "kind": "SPIN",
             "branch_signature": "",
-            "executable": false,
+            "executable": true,
             "coverage_required": false,
             "required_options": [],
             "covered_options": [],
-            "attempts_observed": 1,
+            "attempts_observed": 0,
             "terminal_successes": 0,
             "wire_steps": 0,
-            "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Bling Blitz Diamond Drop\\tests\\2026-09-13_10-34-54-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
-            ]
+            "artifacts": []
           }
         ]
       }
     },
     "protocol-contract.json": {
       "encoding": "json",
-      "bytes": 1721,
+      "bytes": 1353,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -579,8 +555,8 @@
           "name": "Bling Blitz Diamond Drop",
           "identifier": "BlingBlitzDiamondDrop"
         },
-        "generated_at": "2026-09-13T13:35:16+00:00",
-        "source_run": "2026-09-13_10-34-54-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-14T02:33:11+00:00",
+        "source_run": "2026-09-13_23-32-49-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -598,7 +574,7 @@
             "id": "SPIN",
             "kind": "SPIN",
             "wire_command": "",
-            "executable": false,
+            "executable": true,
             "coverage_required": false,
             "purchased_feature": null,
             "purchased_feature_level": null,
@@ -608,21 +584,7 @@
             "source": "selected-har-script-contract"
           }
         ],
-        "unresolved_modes": [
-          {
-            "id": "SPIN",
-            "kind": "SPIN",
-            "wire_command": "",
-            "executable": false,
-            "coverage_required": false,
-            "purchased_feature": null,
-            "purchased_feature_level": null,
-            "cost_multiplier": null,
-            "required_options": [],
-            "covered_options": [],
-            "source": "selected-har-script-contract"
-          }
-        ],
+        "unresolved_modes": [],
         "dispatch": {},
         "artifacts": {
           "state_machine": "state-machine.json",
@@ -644,8 +606,8 @@
           "name": "Bling Blitz Diamond Drop",
           "identifier": "BlingBlitzDiamondDrop"
         },
-        "generated_at": "2026-09-13T13:35:16+00:00",
-        "source_run": "2026-09-13_10-34-54-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-14T02:33:11+00:00",
+        "source_run": "2026-09-13_23-32-49-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
