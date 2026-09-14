@@ -11,6 +11,10 @@ from tester_spin.providers.base import Progress
 import tester_spin.providers.bgaming_exhaustive as _exhaustive
 import tester_spin.providers.bgaming_path_policy as _policy
 from tester_spin.providers.bgaming import execution as _execution
+from tester_spin.providers.bgaming import persistent_flow_memory as _flow_memory
+
+_flow_memory.install()
+
 from tester_spin.providers.bgaming.server_guided import (
     begin_dynamic_contract_run,
     discover_server_guided_client_evidence,
@@ -287,6 +291,7 @@ class BGamingProvider(_exhaustive.BGamingProvider):
         from tester_spin.structure import atomic_write
         capture, capture_token = begin_capture(game.slug)
         _policy.begin_policy_run()
+        _flow_memory.set_current_game_dir(self.game_dir(game))
         begin_dynamic_contract_run()
         _policy._LOCAL.dynamic_purchased_feature = False
         _policy._LOCAL.purchase_feature_level_supported = False
@@ -323,6 +328,7 @@ class BGamingProvider(_exhaustive.BGamingProvider):
         finally:
             end_capture(capture_token)
             end_dynamic_contract_run()
+            _flow_memory.clear_current_game_dir()
             _policy.end_policy_run()
             for name in (
                 "dynamic_purchased_feature",
