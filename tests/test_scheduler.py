@@ -5,8 +5,8 @@ import time
 import unittest
 
 from tester_spin.models import Game, GameTestResult
+from tester_spin.providers import BGamingProvider
 from tester_spin.providers.base import ProviderAdapter
-from tester_spin.providers.bgaming.adapter import BGamingProvider
 from tester_spin.scheduler import run_game_tests
 
 
