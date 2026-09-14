@@ -15,6 +15,10 @@ class BGamingPathsV2Regressions(unittest.TestCase):
     def tearDown(self) -> None:
         policy.end_policy_run()
 
+    def test_active_provider_owns_final_complexity_classification(self) -> None:
+        self.assertTrue(v2.BGamingProvider._defer_complexity_classification)
+        self.assertTrue(hasattr(v2.BGamingProvider, "_finalize_complexity"))
+
     def test_refreshed_command_options_are_merged_before_profile_save(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "game.json"
