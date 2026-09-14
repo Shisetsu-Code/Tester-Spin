@@ -29,6 +29,8 @@ install_har_script_bridge()
 class BGamingProvider(_BGamingProvider):
     """BGaming provider with cheap-first execution and explicit complexity triage."""
 
+    _defer_complexity_classification = False
+
     def har_artifact_dir(self, game: Game) -> Path | None:
         game_dir = self.game_dir(game)
         existing = select_best_har(game_dir)
@@ -38,6 +40,73 @@ class BGamingProvider(_BGamingProvider):
         if analysis_dir.is_dir():
             return analysis_dir
         return None
+
+    def _finalize_complexity(
+        self,
+        game: Game,
+        result: GameTestResult,
+        progress: Progress,
+    ) -> dict:
+        """Persist/log complexity only from the authoritative final result."""
+        game_dir = self.game_dir(game)
+        complexity = persist_result_complexity(game_dir, result)
+        classification = str(complexity.get("classification") or "INDETERMINADO")
+        reasons = complexity.get("reasons") or []
+        gaps = complexity.get("capability_gaps") or []
+
+        if complexity.get("requires_review"):
+            reason_text = ", ".join(
+                f"{row.get('kind')}={row.get('value')}"
+                for row in reasons[:6]
+                if isinstance(row, dict)
+            )
+            progress(
+                f"[{game.name}] CLASIFICACIÓN: {classification}; "
+                f"revisión manual recomendada"
+                + (f"; {reason_text}" if reason_text else "")
+                + "."
+            )
+        elif gaps:
+            gap_text = ", ".join(
+                f"{row.get('kind')}={row.get('value')}"
+                for row in gaps[:6]
+                if isinstance(row, dict)
+            )
+            progress(
+                f"[{game.name}] CLASIFICACIÓN: {classification}; lógica simple, "
+                f"cobertura técnica pendiente"
+                + (f"; {gap_text}" if gap_text else "")
+                + "."
+            )
+        else:
+            progress(f"[{game.name}] CLASIFICACIÓN: {classification}.")
+
+        append_har_debug(
+            game_dir,
+            "runner_result",
+            status=result.status,
+            complexity=classification,
+            requires_review=bool(complexity.get("requires_review")),
+            reasons=reasons,
+            capability_gaps=gaps,
+            requested_spins=result.requested_spins,
+            successful_spins=result.successful_spins,
+            failed_spins=result.failed_spins,
+            elapsed_ms=result.elapsed_ms,
+            error=result.error,
+            run_dir=result.run_dir,
+            discovered_modes=[
+                {
+                    "id": mode.get("id"),
+                    "kind": mode.get("kind"),
+                    "executable": mode.get("executable"),
+                    "discovery_state": mode.get("discovery_state"),
+                }
+                for mode in result.discovered_modes[:50]
+                if isinstance(mode, dict)
+            ],
+        )
+        return complexity
 
     def test_game(
         self,
@@ -105,48 +174,8 @@ class BGamingProvider(_BGamingProvider):
         finally:
             clear_thread_har_path()
 
-        complexity = persist_result_complexity(game_dir, result)
-        classification = str(complexity.get("classification") or "INDETERMINADO")
-        reasons = complexity.get("reasons") or []
-        if complexity.get("requires_review"):
-            reason_text = ", ".join(
-                f"{row.get('kind')}={row.get('value')}"
-                for row in reasons[:6]
-                if isinstance(row, dict)
-            )
-            progress(
-                f"[{game.name}] CLASIFICACIÓN: {classification}; "
-                f"revisión manual recomendada"
-                + (f"; {reason_text}" if reason_text else "")
-                + "."
-            )
-        else:
-            progress(f"[{game.name}] CLASIFICACIÓN: {classification}.")
-
-        append_har_debug(
-            game_dir,
-            "runner_result",
-            status=result.status,
-            complexity=classification,
-            requires_review=bool(complexity.get("requires_review")),
-            reasons=reasons,
-            requested_spins=result.requested_spins,
-            successful_spins=result.successful_spins,
-            failed_spins=result.failed_spins,
-            elapsed_ms=result.elapsed_ms,
-            error=result.error,
-            run_dir=result.run_dir,
-            discovered_modes=[
-                {
-                    "id": mode.get("id"),
-                    "kind": mode.get("kind"),
-                    "executable": mode.get("executable"),
-                    "discovery_state": mode.get("discovery_state"),
-                }
-                for mode in result.discovered_modes[:50]
-                if isinstance(mode, dict)
-            ],
-        )
+        if not getattr(self, "_defer_complexity_classification", False):
+            self._finalize_complexity(game, result, progress)
         return result
 
     def prepare_test_artifacts(
