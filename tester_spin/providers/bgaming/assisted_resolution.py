@@ -10,6 +10,7 @@ from typing import Any
 from tester_spin.models import Game, utc_now_iso
 from tester_spin.providers.base import Progress
 from tester_spin.providers.bgaming.assisted_browser import run_assisted_browser
+from tester_spin.providers.bgaming.complexity import mark_manual_resolution
 from tester_spin.providers.bgaming.wager_format import (
     _resolve_launch,
     analyze_game_wager_format,
@@ -262,7 +263,8 @@ def resolve_game_assisted(
     stop_event: threading.Event,
     progress: Progress,
 ) -> AssistedResolutionResult:
-    analysis_dir = provider.game_dir(game) / "analysis"
+    game_dir = provider.game_dir(game)
+    analysis_dir = game_dir / "analysis"
     analysis_dir.mkdir(parents=True, exist_ok=True)
     artifact = analysis_dir / "wager-format.json"
 
@@ -274,6 +276,12 @@ def resolve_game_assisted(
     targets = unresolved_targets(payload)
     if not targets:
         progress(f"[{game.name}] ASISTIDO: no quedan campos unresolved; no se abre Chromium.")
+        mark_manual_resolution(
+            game_dir,
+            completed=True,
+            remaining_fields=0,
+            captures=1 if previous_payload.get("assisted_resolution") else 0,
+        )
         return AssistedResolutionResult(
             "READY",
             game.slug,
@@ -334,6 +342,13 @@ def resolve_game_assisted(
     )
     atomic_write(artifact, merged)
     remaining = unresolved_targets(merged)
+    remaining_fields = sum(len(item.get("fields") or []) for item in remaining)
+    mark_manual_resolution(
+        game_dir,
+        completed=completed,
+        remaining_fields=remaining_fields,
+        captures=len(captures),
+    )
 
     if completed and not remaining:
         status = "READY"
@@ -344,8 +359,7 @@ def resolve_game_assisted(
 
     progress(
         f"[{game.name}] ASISTIDO {status}: capturas={len(captures)}, "
-        f"campos_resueltos={resolved_fields}, "
-        f"pendientes={sum(len(item.get('fields') or []) for item in remaining)}; "
+        f"campos_resueltos={resolved_fields}, pendientes={remaining_fields}; "
         f"artifact={session_artifact}"
     )
     return AssistedResolutionResult(
