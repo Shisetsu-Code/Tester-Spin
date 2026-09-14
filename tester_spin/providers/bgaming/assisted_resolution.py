@@ -53,6 +53,13 @@ def _read_json(path: Path) -> dict[str, Any]:
     return value if isinstance(value, dict) else {}
 
 
+def _client_fingerprint(payload: dict[str, Any]) -> str:
+    client = payload.get("client") if isinstance(payload, dict) else None
+    if not isinstance(client, dict):
+        return ""
+    return str(client.get("bundle_sha256") or "").strip()
+
+
 def unresolved_targets(payload: dict[str, Any]) -> list[dict[str, Any]]:
     result: list[dict[str, Any]] = []
     for command in payload.get("commands") or []:
@@ -140,6 +147,7 @@ def merge_assisted_captures(
                 "options": sanitize(options),
                 "source": "assisted-runtime-observation",
                 "evidence": "USER_ASSISTED_RUNTIME",
+                "from_flow": sanitize(capture.get("from_flow") or {}),
             }
             marker = json.dumps(variant, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
             if marker not in seen:
@@ -200,6 +208,7 @@ def merge_assisted_captures(
         {
             "schema": SCHEMA,
             "session_id": session_id,
+            "client_bundle_sha256": _client_fingerprint(merged),
             "finished_at": utc_now_iso(),
             "completed_by_user": bool(completed),
             "captures": captures,
@@ -234,6 +243,16 @@ def _restore_assisted_history(
     fresh: dict[str, Any],
     previous: dict[str, Any],
 ) -> dict[str, Any]:
+    fresh_fingerprint = _client_fingerprint(fresh)
+    previous_fingerprint = _client_fingerprint(previous)
+    if (
+        fresh_fingerprint
+        and previous_fingerprint
+        and fresh_fingerprint != previous_fingerprint
+    ):
+        # Never promote user-reviewed payloads across a client update.
+        return fresh
+
     assisted = previous.get("assisted_resolution")
     if not isinstance(assisted, dict):
         return fresh
@@ -244,6 +263,9 @@ def _restore_assisted_history(
     restored = fresh
     for index, session in enumerate(sessions):
         if not isinstance(session, dict):
+            continue
+        session_fingerprint = str(session.get("client_bundle_sha256") or "").strip()
+        if fresh_fingerprint and session_fingerprint and session_fingerprint != fresh_fingerprint:
             continue
         captures = session.get("captures")
         if not isinstance(captures, list):
@@ -290,6 +312,7 @@ def resolve_game_assisted(
     analyze_game_wager_format(provider, game, timeout_s=timeout_s, progress=progress)
     payload = _restore_assisted_history(_read_json(artifact), previous_payload)
     atomic_write(artifact, payload)
+    client_bundle_sha256 = _client_fingerprint(payload)
 
     targets = unresolved_targets(payload)
     if not targets:
@@ -345,6 +368,7 @@ def resolve_game_assisted(
         {
             "schema": SCHEMA,
             "game": game.slug,
+            "client_bundle_sha256": client_bundle_sha256,
             "targets": targets,
             "captures": captures,
             "completed_by_user": completed,
