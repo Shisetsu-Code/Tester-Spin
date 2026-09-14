@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-13T13:39:33+00:00",
-  "source_commit": "61b5a6e1ad1092ca4003ec671bc7ce8bbde0d3db",
+  "published_at": "2026-09-14T04:49:11+00:00",
+  "source_commit": "4ec388284beff71637abd35983ad815cc048afc8",
   "provider": "bgaming",
   "game": {
     "slug": "fiesta-clusters",
@@ -67,11 +67,11 @@
         "covered_options": []
       }
     ],
-    "started_at": "2026-09-13T13:39:28+00:00",
-    "finished_at": "2026-09-13T13:39:32+00:00",
-    "elapsed_ms": 4094.000000000051,
+    "started_at": "2026-09-14T04:49:06+00:00",
+    "finished_at": "2026-09-14T04:49:11+00:00",
+    "elapsed_ms": 4702.999999994063,
     "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_BUY, PURCHASE_FREESPIN_CHANCE. Cobertura de ramificaciones pendiente: PURCHASE_FREESPIN_BUY -> ['PURCHASE_FREESPIN_BUY']; PURCHASE_FREESPIN_CHANCE -> ['PURCHASE_FREESPIN_CHANCE'].",
-    "run_dir": "2026-09-13_10-39-28-bgaming-http-api-v2",
+    "run_dir": "2026-09-14_01-49-06-bgaming-http-api-v2",
     "attempts": [
       {
         "number": 1,
@@ -81,7 +81,7 @@
         "provider_bl": null,
         "provider_pur": null,
         "status_code": 200,
-        "elapsed_ms": 313.00000000010186,
+        "elapsed_ms": 358.99999999674037,
         "symbol": "FiestaClusters",
         "endpoint": "https://demo.bgaming-network.com/api/FiestaClusters/2737266/<session>",
         "na": "closed",
@@ -89,13 +89,2232 @@
         "wire_steps": 1,
         "warning": "",
         "error": "",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fiesta Clusters\\tests\\2026-09-13_10-39-28-bgaming-http-api-v2\\SPIN\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fiesta Clusters\\tests\\2026-09-14_01-49-06-bgaming-http-api-v2\\SPIN\\attempt-001"
       }
     ],
-    "samples_per_path": 1
+    "samples_per_path": 1,
+    "structural_map": {
+      "path": "analysis/game-structure.json",
+      "schema": "tester-spin/game-structure/v1",
+      "coverage": {
+        "states": 3,
+        "decision_points": 5,
+        "choices": 2,
+        "executed": 2,
+        "outcome_observed": 2,
+        "pending": 0,
+        "unknowns": 42,
+        "complete": false,
+        "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+      },
+      "diagnostics": []
+    }
   },
-  "artifact_bytes_embedded": 40601,
+  "artifact_bytes_embedded": 128504,
   "artifacts": {
+    "analysis/game-structure.json": {
+      "encoding": "json",
+      "bytes": 76720,
+      "value": {
+        "schema": "tester-spin/game-structure/v1",
+        "metadata": {
+          "provider": "bgaming",
+          "protocol_family": "bgaming-json-flow",
+          "game_identifier": "fiesta-clusters",
+          "slug": "fiesta-clusters",
+          "bundle_fingerprint": "038a073a88d2236e50d0ca24190ccce2e190ed820fa2e4fd2bdc37ecaa09a138",
+          "generated_at": "2026-09-14T04:49:06+00:00",
+          "compatibility": "fingerprint_scoped",
+          "source_evidence_summary": {
+            "capture": "BGaming JSON requests/responses at transport boundary",
+            "diagnostics": []
+          },
+          "merged_runs": [
+            "run:1f8e5a0aa52773eb88768d7f"
+          ],
+          "previous_revisions": []
+        },
+        "states": {
+          "state:390a27ace7cb7787d64abd95": {
+            "id": "state:390a27ace7cb7787d64abd95",
+            "server_state": "<unobserved>",
+            "structural_signature": "",
+            "terminal": null,
+            "available_actions": [],
+            "first_seen": "2026-09-14T04:49:10+00:00",
+            "observations": 0,
+            "incoming_transitions": [],
+            "outgoing_transitions": [
+              "transition:4ff1e653f7e28c4069007c85"
+            ],
+            "response_contracts": [],
+            "evidence": [
+              "evidence:54b4c37f50b2a18a141d1420"
+            ],
+            "unresolved": []
+          },
+          "state:af586f9144c8b35d83640284": {
+            "id": "state:af586f9144c8b35d83640284",
+            "server_state": "ready",
+            "structural_signature": "",
+            "terminal": false,
+            "available_actions": [
+              "init",
+              "spin"
+            ],
+            "first_seen": "2026-09-14T04:49:10+00:00",
+            "observations": 1,
+            "incoming_transitions": [
+              "transition:4ff1e653f7e28c4069007c85"
+            ],
+            "outgoing_transitions": [
+              "transition:ab1b8de30e08a2634bf5505c"
+            ],
+            "response_contracts": [
+              "response_contracts:27b2163e8370ca8af2afa0a4"
+            ],
+            "evidence": [
+              "evidence:54b4c37f50b2a18a141d1420",
+              "evidence:df6ec0fd1112887ee49df6eb"
+            ],
+            "unresolved": []
+          },
+          "state:66c06125f5229bb373917f6f": {
+            "id": "state:66c06125f5229bb373917f6f",
+            "server_state": "closed",
+            "structural_signature": "",
+            "terminal": true,
+            "available_actions": [
+              "init",
+              "spin"
+            ],
+            "first_seen": "2026-09-14T04:49:11+00:00",
+            "observations": 1,
+            "incoming_transitions": [
+              "transition:ab1b8de30e08a2634bf5505c"
+            ],
+            "outgoing_transitions": [],
+            "response_contracts": [
+              "response_contracts:1354be9d0521101aca2d8f5e"
+            ],
+            "evidence": [
+              "evidence:54b4c37f50b2a18a141d1420",
+              "evidence:df6ec0fd1112887ee49df6eb"
+            ],
+            "unresolved": []
+          }
+        },
+        "decision_points": {
+          "decision:029cc6e51b85183599d53e0f": {
+            "id": "decision:029cc6e51b85183599d53e0f",
+            "state_id": "state:390a27ace7cb7787d64abd95",
+            "command": "init",
+            "type": "observed_action",
+            "choices": [
+              "choice:746bfca5ff7942032f9da9c7"
+            ],
+            "cardinality": {
+              "known": 1,
+              "exhaustive": false
+            },
+            "mutually_exclusive": null,
+            "repeatable": null,
+            "composite": null,
+            "confirmation_required": null,
+            "evidence": [
+              "evidence:54b4c37f50b2a18a141d1420"
+            ],
+            "replay_prefixes": [
+              []
+            ],
+            "coverage": {
+              "discovered": 1,
+              "executed": 1,
+              "outcome_observed": 1
+            }
+          },
+          "decision:6871a2b58903a58f119663ad": {
+            "id": "decision:6871a2b58903a58f119663ad",
+            "state_id": "state:af586f9144c8b35d83640284",
+            "command": "init",
+            "type": "observed_action",
+            "choices": [],
+            "cardinality": {
+              "known": 0,
+              "exhaustive": false
+            },
+            "mutually_exclusive": null,
+            "repeatable": null,
+            "composite": null,
+            "confirmation_required": null,
+            "evidence": [
+              "evidence:df6ec0fd1112887ee49df6eb"
+            ],
+            "replay_prefixes": [
+              [
+                "choice:746bfca5ff7942032f9da9c7"
+              ]
+            ],
+            "coverage": {
+              "discovered": 0,
+              "executed": 0,
+              "outcome_observed": 0
+            }
+          },
+          "decision:2ee34fbfa0a0cefef33760ad": {
+            "id": "decision:2ee34fbfa0a0cefef33760ad",
+            "state_id": "state:af586f9144c8b35d83640284",
+            "command": "spin",
+            "type": "observed_action",
+            "choices": [
+              "choice:13a5e97a7c4edc2934dfe907"
+            ],
+            "cardinality": {
+              "known": 1,
+              "exhaustive": false
+            },
+            "mutually_exclusive": null,
+            "repeatable": null,
+            "composite": null,
+            "confirmation_required": null,
+            "evidence": [
+              "evidence:df6ec0fd1112887ee49df6eb",
+              "evidence:54b4c37f50b2a18a141d1420"
+            ],
+            "replay_prefixes": [
+              [
+                "choice:746bfca5ff7942032f9da9c7"
+              ]
+            ],
+            "coverage": {
+              "discovered": 1,
+              "executed": 1,
+              "outcome_observed": 1
+            }
+          },
+          "decision:fc528c87479f291c6cff3919": {
+            "id": "decision:fc528c87479f291c6cff3919",
+            "state_id": "state:66c06125f5229bb373917f6f",
+            "command": "init",
+            "type": "observed_action",
+            "choices": [],
+            "cardinality": {
+              "known": 0,
+              "exhaustive": false
+            },
+            "mutually_exclusive": null,
+            "repeatable": null,
+            "composite": null,
+            "confirmation_required": null,
+            "evidence": [
+              "evidence:df6ec0fd1112887ee49df6eb"
+            ],
+            "replay_prefixes": [
+              [
+                "choice:746bfca5ff7942032f9da9c7",
+                "choice:13a5e97a7c4edc2934dfe907"
+              ]
+            ],
+            "coverage": {
+              "discovered": 0,
+              "executed": 0,
+              "outcome_observed": 0
+            }
+          },
+          "decision:d5f68b3789a637907b3220dc": {
+            "id": "decision:d5f68b3789a637907b3220dc",
+            "state_id": "state:66c06125f5229bb373917f6f",
+            "command": "spin",
+            "type": "observed_action",
+            "choices": [],
+            "cardinality": {
+              "known": 0,
+              "exhaustive": false
+            },
+            "mutually_exclusive": null,
+            "repeatable": null,
+            "composite": null,
+            "confirmation_required": null,
+            "evidence": [
+              "evidence:df6ec0fd1112887ee49df6eb"
+            ],
+            "replay_prefixes": [
+              [
+                "choice:746bfca5ff7942032f9da9c7",
+                "choice:13a5e97a7c4edc2934dfe907"
+              ]
+            ],
+            "coverage": {
+              "discovered": 0,
+              "executed": 0,
+              "outcome_observed": 0
+            }
+          }
+        },
+        "choices": {
+          "choice:746bfca5ff7942032f9da9c7": {
+            "id": "choice:746bfca5ff7942032f9da9c7",
+            "decision_point_id": "decision:029cc6e51b85183599d53e0f",
+            "label": "init",
+            "semantic_value": null,
+            "request": {
+              "command": "init",
+              "options": {}
+            },
+            "request_contracts": [
+              "request_contracts:dd1fb79274c1badfc1f90c4d"
+            ],
+            "evidence": [
+              "evidence:54b4c37f50b2a18a141d1420"
+            ],
+            "preconditions": [],
+            "context_mutations": [
+              {}
+            ],
+            "coverage": {
+              "discovered": true,
+              "executed": true,
+              "outcome_observed": true,
+              "outcome_derived": false,
+              "attempts": 1,
+              "successful_samples": 1
+            },
+            "unresolved_reason": ""
+          },
+          "choice:13a5e97a7c4edc2934dfe907": {
+            "id": "choice:13a5e97a7c4edc2934dfe907",
+            "decision_point_id": "decision:2ee34fbfa0a0cefef33760ad",
+            "label": "spin",
+            "semantic_value": null,
+            "request": {
+              "command": "spin",
+              "options": {
+                "bet": 20
+              }
+            },
+            "request_contracts": [
+              "request_contracts:2f3446fca438c225ba97398b"
+            ],
+            "evidence": [
+              "evidence:54b4c37f50b2a18a141d1420"
+            ],
+            "preconditions": [],
+            "context_mutations": [
+              {
+                "selected_options:spin": {
+                  "bet": 20
+                }
+              }
+            ],
+            "coverage": {
+              "discovered": true,
+              "executed": true,
+              "outcome_observed": true,
+              "outcome_derived": false,
+              "attempts": 1,
+              "successful_samples": 1
+            },
+            "unresolved_reason": ""
+          }
+        },
+        "transitions": {
+          "transition:4ff1e653f7e28c4069007c85": {
+            "id": "transition:4ff1e653f7e28c4069007c85",
+            "from_state": "state:390a27ace7cb7787d64abd95",
+            "decision_point": "decision:029cc6e51b85183599d53e0f",
+            "choice": "choice:746bfca5ff7942032f9da9c7",
+            "request_contract": "request_contracts:dd1fb79274c1badfc1f90c4d",
+            "response_contract": "response_contracts:27b2163e8370ca8af2afa0a4",
+            "to_state": "state:af586f9144c8b35d83640284",
+            "observations": 1,
+            "evidence": [
+              "evidence:54b4c37f50b2a18a141d1420"
+            ],
+            "terminal": false,
+            "path_context": "context:ec134065dfb56f8b4e1522aa",
+            "validation_results": {
+              "wire_state_observed; reward_not_validated": 1
+            }
+          },
+          "transition:ab1b8de30e08a2634bf5505c": {
+            "id": "transition:ab1b8de30e08a2634bf5505c",
+            "from_state": "state:af586f9144c8b35d83640284",
+            "decision_point": "decision:2ee34fbfa0a0cefef33760ad",
+            "choice": "choice:13a5e97a7c4edc2934dfe907",
+            "request_contract": "request_contracts:2f3446fca438c225ba97398b",
+            "response_contract": "response_contracts:1354be9d0521101aca2d8f5e",
+            "to_state": "state:66c06125f5229bb373917f6f",
+            "observations": 1,
+            "evidence": [
+              "evidence:54b4c37f50b2a18a141d1420"
+            ],
+            "terminal": true,
+            "path_context": "context:879ce4ed2c2e860c02137e15",
+            "validation_results": {
+              "wire_state_observed; reward_not_validated": 1
+            }
+          }
+        },
+        "request_contracts": {
+          "request_contracts:dd1fb79274c1badfc1f90c4d": {
+            "id": "request_contracts:dd1fb79274c1badfc1f90c4d",
+            "schema": {
+              "samples": 1,
+              "observed_types": {
+                "object": 1
+              },
+              "nullable": false,
+              "confidence": "observed_only",
+              "role": "unknown",
+              "properties": {
+                "command": {
+                  "samples": 1,
+                  "observed_types": {
+                    "string": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "static",
+                  "observed_values": [
+                    "init"
+                  ],
+                  "values_bounded": true,
+                  "variability": "constant_in_observations",
+                  "enum_exhaustive": false,
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "extra_data": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "round_series_id": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "runtime",
+                      "observed_values": [
+                        "[runtime:round_series_id]"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                }
+              },
+              "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+            },
+            "examples": [
+              {
+                "command": "init",
+                "extra_data": {
+                  "round_series_id": "[runtime:round_series_id]"
+                }
+              }
+            ],
+            "observations": 1,
+            "evidence": [
+              "evidence:54b4c37f50b2a18a141d1420"
+            ],
+            "status": "observed_partial",
+            "conditional_fields": []
+          },
+          "request_contracts:2f3446fca438c225ba97398b": {
+            "id": "request_contracts:2f3446fca438c225ba97398b",
+            "schema": {
+              "samples": 1,
+              "observed_types": {
+                "object": 1
+              },
+              "nullable": false,
+              "confidence": "observed_only",
+              "role": "unknown",
+              "properties": {
+                "command": {
+                  "samples": 1,
+                  "observed_types": {
+                    "string": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "static",
+                  "observed_values": [
+                    "spin"
+                  ],
+                  "values_bounded": true,
+                  "variability": "constant_in_observations",
+                  "enum_exhaustive": false,
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "options": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "bet": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "choice",
+                      "observed_values": [
+                        20
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "extra_data": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "round_series_id": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "runtime",
+                      "observed_values": [
+                        "[runtime:round_series_id]"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                }
+              },
+              "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+            },
+            "examples": [
+              {
+                "command": "spin",
+                "options": {
+                  "bet": 20
+                },
+                "extra_data": {
+                  "round_series_id": "[runtime:round_series_id]"
+                }
+              }
+            ],
+            "observations": 1,
+            "evidence": [
+              "evidence:54b4c37f50b2a18a141d1420"
+            ],
+            "status": "observed_partial",
+            "conditional_fields": []
+          }
+        },
+        "response_contracts": {
+          "response_contracts:27b2163e8370ca8af2afa0a4": {
+            "id": "response_contracts:27b2163e8370ca8af2afa0a4",
+            "schema": {
+              "samples": 1,
+              "observed_types": {
+                "object": 1
+              },
+              "nullable": false,
+              "confidence": "observed_only",
+              "role": "unknown",
+              "properties": {
+                "api_version": {
+                  "samples": 1,
+                  "observed_types": {
+                    "string": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "observed_values": [
+                    "2"
+                  ],
+                  "values_bounded": true,
+                  "variability": "constant_in_observations",
+                  "enum_exhaustive": false,
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "options": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "available_bets": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 18,
+                        "max": 18
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "items": {
+                        "samples": 18,
+                        "observed_types": {
+                          "integer": 18
+                        },
+                        "nullable": false,
+                        "confidence": "observed_only",
+                        "role": "unknown",
+                        "observed_values": [
+                          20,
+                          40,
+                          60,
+                          80,
+                          100,
+                          120,
+                          160,
+                          200
+                        ],
+                        "values_bounded": true,
+                        "variability": "variable",
+                        "enum_exhaustive": false
+                      },
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "default_bet": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        200
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "paytable": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {},
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "paytables": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {},
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "special_symbols": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 0,
+                        "max": 0
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "lines": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 0,
+                        "max": 0
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "reels": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "main": {
+                          "samples": 1,
+                          "observed_types": {
+                            "array": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "length": {
+                            "min": 0,
+                            "max": 0
+                          },
+                          "position_semantics": "unknown",
+                          "collection_role": "unknown; does not establish choices",
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "layout": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "reels": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            1
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "rows": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            1
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "currency": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "code": {
+                          "samples": 1,
+                          "observed_types": {
+                            "string": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            "FUN"
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "symbol": {
+                          "samples": 1,
+                          "observed_types": {
+                            "string": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            "FUN"
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "subunits": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            100
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "exponent": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "screen": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 0,
+                        "max": 0
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "default_seed": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        4010
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "feature_options": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "feature_multipliers": {
+                          "samples": 1,
+                          "observed_types": {
+                            "object": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "properties": {
+                            "freespin_buy": {
+                              "samples": 1,
+                              "observed_types": {
+                                "integer": 1
+                              },
+                              "nullable": false,
+                              "confidence": "observed_only",
+                              "role": "unknown",
+                              "observed_values": [
+                                2000
+                              ],
+                              "values_bounded": true,
+                              "variability": "constant_in_observations",
+                              "enum_exhaustive": false,
+                              "parent_samples": 1,
+                              "optional_observed": false,
+                              "present_in_all_observed": true,
+                              "required": null
+                            },
+                            "freespin_chance": {
+                              "samples": 1,
+                              "observed_types": {
+                                "integer": 1
+                              },
+                              "nullable": false,
+                              "confidence": "observed_only",
+                              "role": "unknown",
+                              "observed_values": [
+                                25
+                              ],
+                              "values_bounded": true,
+                              "variability": "constant_in_observations",
+                              "enum_exhaustive": false,
+                              "parent_samples": 1,
+                              "optional_observed": false,
+                              "present_in_all_observed": true,
+                              "required": null
+                            },
+                            "base_bet": {
+                              "samples": 1,
+                              "observed_types": {
+                                "integer": 1
+                              },
+                              "nullable": false,
+                              "confidence": "observed_only",
+                              "role": "unknown",
+                              "observed_values": [
+                                20
+                              ],
+                              "values_bounded": true,
+                              "variability": "constant_in_observations",
+                              "enum_exhaustive": false,
+                              "parent_samples": 1,
+                              "optional_observed": false,
+                              "present_in_all_observed": true,
+                              "required": null
+                            }
+                          },
+                          "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "disabled_features": {
+                          "samples": 1,
+                          "observed_types": {
+                            "array": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "length": {
+                            "min": 0,
+                            "max": 0
+                          },
+                          "position_semantics": "unknown",
+                          "collection_role": "unknown; does not establish choices",
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "digit_options": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "bet": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "paytable": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "balance": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "balance": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "game": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        0
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "wallet": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        100000
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "flow": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "round_id": {
+                      "samples": 1,
+                      "observed_types": {
+                        "null": 1
+                      },
+                      "nullable": true,
+                      "confidence": "observed_only",
+                      "role": "runtime",
+                      "observed_values": [
+                        "[runtime:round_id]"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "last_action_id": {
+                      "samples": 1,
+                      "observed_types": {
+                        "null": 1
+                      },
+                      "nullable": true,
+                      "confidence": "observed_only",
+                      "role": "runtime",
+                      "observed_values": [
+                        "[runtime:last_action_id]"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "state": {
+                      "samples": 1,
+                      "observed_types": {
+                        "string": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        "ready"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "command": {
+                      "samples": 1,
+                      "observed_types": {
+                        "string": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        "init"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "available_actions": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 2,
+                        "max": 2
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "items": {
+                        "samples": 2,
+                        "observed_types": {
+                          "string": 2
+                        },
+                        "nullable": false,
+                        "confidence": "observed_only",
+                        "role": "unknown",
+                        "observed_values": [
+                          "init",
+                          "spin"
+                        ],
+                        "values_bounded": true,
+                        "variability": "variable",
+                        "enum_exhaustive": false
+                      },
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                }
+              },
+              "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+            },
+            "examples": [
+              {
+                "api_version": "2",
+                "options": {
+                  "available_bets": [
+                    20,
+                    40,
+                    60,
+                    80,
+                    100,
+                    120,
+                    160,
+                    200,
+                    300,
+                    500,
+                    700,
+                    1000,
+                    1500,
+                    2000,
+                    2500,
+                    3000,
+                    4000,
+                    5000
+                  ],
+                  "default_bet": 200,
+                  "paytable": {},
+                  "paytables": {},
+                  "special_symbols": [],
+                  "lines": [],
+                  "reels": {
+                    "main": []
+                  },
+                  "layout": {
+                    "reels": 1,
+                    "rows": 1
+                  },
+                  "currency": {
+                    "code": "FUN",
+                    "symbol": "FUN",
+                    "subunits": 100,
+                    "exponent": 2
+                  },
+                  "screen": [],
+                  "default_seed": 4010,
+                  "feature_options": {
+                    "feature_multipliers": {
+                      "freespin_buy": 2000,
+                      "freespin_chance": 25,
+                      "base_bet": 20
+                    },
+                    "disabled_features": []
+                  },
+                  "digit_options": {
+                    "bet": 2,
+                    "paytable": 2,
+                    "balance": 2
+                  }
+                },
+                "balance": {
+                  "game": 0,
+                  "wallet": 100000
+                },
+                "flow": {
+                  "round_id": "[runtime:round_id]",
+                  "last_action_id": "[runtime:last_action_id]",
+                  "state": "ready",
+                  "command": "init",
+                  "available_actions": [
+                    "init",
+                    "spin"
+                  ]
+                }
+              }
+            ],
+            "observations": 1,
+            "evidence": [
+              "evidence:54b4c37f50b2a18a141d1420"
+            ],
+            "status": "observed_partial",
+            "conditional_fields": []
+          },
+          "response_contracts:1354be9d0521101aca2d8f5e": {
+            "id": "response_contracts:1354be9d0521101aca2d8f5e",
+            "schema": {
+              "samples": 1,
+              "observed_types": {
+                "object": 1
+              },
+              "nullable": false,
+              "confidence": "observed_only",
+              "role": "unknown",
+              "properties": {
+                "api_version": {
+                  "samples": 1,
+                  "observed_types": {
+                    "string": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "observed_values": [
+                    "2"
+                  ],
+                  "values_bounded": true,
+                  "variability": "constant_in_observations",
+                  "enum_exhaustive": false,
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "outcome": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "screen": {
+                      "samples": 1,
+                      "observed_types": {
+                        "null": 1
+                      },
+                      "nullable": true,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        null
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "special_symbols": {
+                      "samples": 1,
+                      "observed_types": {
+                        "null": 1
+                      },
+                      "nullable": true,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        null
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "bet": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        20
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "win": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        60
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "wins": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 0,
+                        "max": 0
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "storage": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "seed": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            94038
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "mode": {
+                          "samples": 1,
+                          "observed_types": {
+                            "string": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            "0"
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "balance": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "game": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        60
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "wallet": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        99980
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "flow": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "round_id": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "runtime",
+                      "observed_values": [
+                        "[runtime:round_id]"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "last_action_id": {
+                      "samples": 1,
+                      "observed_types": {
+                        "string": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "runtime",
+                      "observed_values": [
+                        "[runtime:last_action_id]"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "state": {
+                      "samples": 1,
+                      "observed_types": {
+                        "string": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        "closed"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "command": {
+                      "samples": 1,
+                      "observed_types": {
+                        "string": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        "spin"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "available_actions": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 2,
+                        "max": 2
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "items": {
+                        "samples": 2,
+                        "observed_types": {
+                          "string": 2
+                        },
+                        "nullable": false,
+                        "confidence": "observed_only",
+                        "role": "unknown",
+                        "observed_values": [
+                          "init",
+                          "spin"
+                        ],
+                        "values_bounded": true,
+                        "variability": "variable",
+                        "enum_exhaustive": false
+                      },
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "purchased_feature": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {},
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                }
+              },
+              "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+            },
+            "examples": [
+              {
+                "api_version": "2",
+                "outcome": {
+                  "screen": null,
+                  "special_symbols": null,
+                  "bet": 20,
+                  "win": 60,
+                  "wins": [],
+                  "storage": {
+                    "seed": 94038,
+                    "mode": "0"
+                  }
+                },
+                "balance": {
+                  "game": 60,
+                  "wallet": 99980
+                },
+                "flow": {
+                  "round_id": "[runtime:round_id]",
+                  "last_action_id": "[runtime:last_action_id]",
+                  "state": "closed",
+                  "command": "spin",
+                  "available_actions": [
+                    "init",
+                    "spin"
+                  ],
+                  "purchased_feature": {}
+                }
+              }
+            ],
+            "observations": 1,
+            "evidence": [
+              "evidence:54b4c37f50b2a18a141d1420"
+            ],
+            "status": "observed_partial",
+            "conditional_fields": []
+          }
+        },
+        "field_semantics": {
+          "semantic:080a7280a2f024d2def58f16": {
+            "id": "semantic:080a7280a2f024d2def58f16",
+            "path": "flow.state",
+            "semantic": "server_state",
+            "confidence": "provider_parser",
+            "evidence": [
+              "evidence:de58f757e34a7c6d5582e26a"
+            ]
+          },
+          "semantic:1a641063c1e0d92d1ef05bb4": {
+            "id": "semantic:1a641063c1e0d92d1ef05bb4",
+            "path": "flow.available_actions",
+            "semantic": "legal_actions",
+            "confidence": "provider_parser",
+            "evidence": [
+              "evidence:de58f757e34a7c6d5582e26a"
+            ]
+          },
+          "semantic:02290aea5686748daa3ca55c": {
+            "id": "semantic:02290aea5686748daa3ca55c",
+            "path": "balance.wallet",
+            "semantic": "wallet_balance_raw",
+            "confidence": "provider_parser",
+            "evidence": [
+              "evidence:de58f757e34a7c6d5582e26a"
+            ]
+          }
+        },
+        "path_context": {
+          "context:ec134065dfb56f8b4e1522aa": {
+            "id": "context:ec134065dfb56f8b4e1522aa",
+            "before": {},
+            "mutation": {},
+            "after": {}
+          },
+          "context:879ce4ed2c2e860c02137e15": {
+            "id": "context:879ce4ed2c2e860c02137e15",
+            "before": {},
+            "mutation": {
+              "selected_options:spin": {
+                "bet": 20
+              }
+            },
+            "after": {
+              "selected_options:spin": {
+                "bet": 20
+              }
+            }
+          }
+        },
+        "unknowns": {
+          "unknown:255cfe17c8ba70350eb64210": {
+            "id": "unknown:255cfe17c8ba70350eb64210",
+            "kind": "decision",
+            "entity": "decision:6871a2b58903a58f119663ad",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client request or option domain remains unresolved"
+          },
+          "unknown:a690e507ca2c1e42da155221": {
+            "id": "unknown:a690e507ca2c1e42da155221",
+            "kind": "decision",
+            "entity": "decision:2ee34fbfa0a0cefef33760ad",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client request or option domain remains unresolved"
+          },
+          "unknown:5e34cf8820421abfc03bc80c": {
+            "id": "unknown:5e34cf8820421abfc03bc80c",
+            "kind": "decision",
+            "entity": "decision:fc528c87479f291c6cff3919",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client request or option domain remains unresolved"
+          },
+          "unknown:23443b920d728724d2ab35ff": {
+            "id": "unknown:23443b920d728724d2ab35ff",
+            "kind": "decision",
+            "entity": "decision:d5f68b3789a637907b3220dc",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client request or option domain remains unresolved"
+          },
+          "unknown:ae83f2a4a318bb9b4099ee25": {
+            "id": "unknown:ae83f2a4a318bb9b4099ee25",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/api_version",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:ad4a7404b2be82394fbd7885": {
+            "id": "unknown:ad4a7404b2be82394fbd7885",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.available_bets[]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:68d5d6f0f17689fc35dcfd55": {
+            "id": "unknown:68d5d6f0f17689fc35dcfd55",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.default_bet",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:17b3c1af2fde28a736f65696": {
+            "id": "unknown:17b3c1af2fde28a736f65696",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.paytable",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:d5105458db030afc33b149e2": {
+            "id": "unknown:d5105458db030afc33b149e2",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.paytables",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:4578f8293dfa1e58770f285f": {
+            "id": "unknown:4578f8293dfa1e58770f285f",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.special_symbols",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:82d9fbb2bcaf299bb6885369": {
+            "id": "unknown:82d9fbb2bcaf299bb6885369",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.lines",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:1d03845e736e27e3d76452cd": {
+            "id": "unknown:1d03845e736e27e3d76452cd",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.reels.main",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:7057ff479d0eddd5313bb0d0": {
+            "id": "unknown:7057ff479d0eddd5313bb0d0",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.layout.reels",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:783bce3aa2fc16b06cb32853": {
+            "id": "unknown:783bce3aa2fc16b06cb32853",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.layout.rows",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:87a26d9ff06e057f3bd2997b": {
+            "id": "unknown:87a26d9ff06e057f3bd2997b",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.currency.code",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:999bb88b14703e307374c0bb": {
+            "id": "unknown:999bb88b14703e307374c0bb",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.currency.symbol",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:e63b8b65a359965c31a7f704": {
+            "id": "unknown:e63b8b65a359965c31a7f704",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.currency.subunits",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:f60003615dd6eae1cf5f1d6e": {
+            "id": "unknown:f60003615dd6eae1cf5f1d6e",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.currency.exponent",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:5ce676e8d758a2b359a3b31e": {
+            "id": "unknown:5ce676e8d758a2b359a3b31e",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.screen",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:28f03d784e30b22b6e6cf28d": {
+            "id": "unknown:28f03d784e30b22b6e6cf28d",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.default_seed",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:73a8e084a5d65d1b7e5a2c75": {
+            "id": "unknown:73a8e084a5d65d1b7e5a2c75",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.feature_options.feature_multipliers.freespin_buy",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:6659c3a49f22e5f5cadd09a0": {
+            "id": "unknown:6659c3a49f22e5f5cadd09a0",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.feature_options.feature_multipliers.freespin_chance",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:2ee21b82a0ce72aa9bf83b69": {
+            "id": "unknown:2ee21b82a0ce72aa9bf83b69",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.feature_options.feature_multipliers.base_bet",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:fd66ee0ea360ea7af43a2c82": {
+            "id": "unknown:fd66ee0ea360ea7af43a2c82",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.feature_options.disabled_features",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:87bed79e0d78e87146a09edb": {
+            "id": "unknown:87bed79e0d78e87146a09edb",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.digit_options.bet",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:1783cd3192c58f3d385415c6": {
+            "id": "unknown:1783cd3192c58f3d385415c6",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.digit_options.paytable",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:5121a27f84bfe1c667df17c0": {
+            "id": "unknown:5121a27f84bfe1c667df17c0",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/options.digit_options.balance",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:de2d68d91a433953c3edac65": {
+            "id": "unknown:de2d68d91a433953c3edac65",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/balance.game",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:1786909cb9a9c5633d58e702": {
+            "id": "unknown:1786909cb9a9c5633d58e702",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/flow.command",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:04800eb5111abefaf398b987": {
+            "id": "unknown:04800eb5111abefaf398b987",
+            "kind": "field",
+            "entity": "response_contracts:27b2163e8370ca8af2afa0a4/flow.available_actions[]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:5419cf8c231974345d06820a": {
+            "id": "unknown:5419cf8c231974345d06820a",
+            "kind": "field",
+            "entity": "response_contracts:1354be9d0521101aca2d8f5e/api_version",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:cb1366db5ddd37078f35e703": {
+            "id": "unknown:cb1366db5ddd37078f35e703",
+            "kind": "field",
+            "entity": "response_contracts:1354be9d0521101aca2d8f5e/outcome.screen",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:34a94d3ed9ea5d6e210702b9": {
+            "id": "unknown:34a94d3ed9ea5d6e210702b9",
+            "kind": "field",
+            "entity": "response_contracts:1354be9d0521101aca2d8f5e/outcome.special_symbols",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:78ee58c33fccb55cf63463dc": {
+            "id": "unknown:78ee58c33fccb55cf63463dc",
+            "kind": "field",
+            "entity": "response_contracts:1354be9d0521101aca2d8f5e/outcome.bet",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:915e01fc1d7837a8ce38526a": {
+            "id": "unknown:915e01fc1d7837a8ce38526a",
+            "kind": "field",
+            "entity": "response_contracts:1354be9d0521101aca2d8f5e/outcome.win",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:a60bce0f4500d07430223446": {
+            "id": "unknown:a60bce0f4500d07430223446",
+            "kind": "field",
+            "entity": "response_contracts:1354be9d0521101aca2d8f5e/outcome.wins",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:aa01a9922879be61ec33bbc7": {
+            "id": "unknown:aa01a9922879be61ec33bbc7",
+            "kind": "field",
+            "entity": "response_contracts:1354be9d0521101aca2d8f5e/outcome.storage.seed",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:7784e23b3493c18bbd0c1055": {
+            "id": "unknown:7784e23b3493c18bbd0c1055",
+            "kind": "field",
+            "entity": "response_contracts:1354be9d0521101aca2d8f5e/outcome.storage.mode",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:e6e1aad1b21b8f1d2f95fbae": {
+            "id": "unknown:e6e1aad1b21b8f1d2f95fbae",
+            "kind": "field",
+            "entity": "response_contracts:1354be9d0521101aca2d8f5e/balance.game",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:2a980a172bb77405d72f5cf3": {
+            "id": "unknown:2a980a172bb77405d72f5cf3",
+            "kind": "field",
+            "entity": "response_contracts:1354be9d0521101aca2d8f5e/flow.command",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:d4cd7fa3ddae726fe580369c": {
+            "id": "unknown:d4cd7fa3ddae726fe580369c",
+            "kind": "field",
+            "entity": "response_contracts:1354be9d0521101aca2d8f5e/flow.available_actions[]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:e787cfec6c64d6d96d2c195a": {
+            "id": "unknown:e787cfec6c64d6d96d2c195a",
+            "kind": "field",
+            "entity": "response_contracts:1354be9d0521101aca2d8f5e/flow.purchased_feature",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          }
+        },
+        "evidence": {
+          "evidence:54b4c37f50b2a18a141d1420": {
+            "id": "evidence:54b4c37f50b2a18a141d1420",
+            "kind": "WIRE_OBSERVED",
+            "source": "structured observation"
+          },
+          "evidence:de58f757e34a7c6d5582e26a": {
+            "id": "evidence:de58f757e34a7c6d5582e26a",
+            "kind": "CLIENT_PROVEN",
+            "source": "tester_spin/providers/bgaming/runtime.py"
+          },
+          "evidence:df6ec0fd1112887ee49df6eb": {
+            "id": "evidence:df6ec0fd1112887ee49df6eb",
+            "kind": "CLIENT_PROVEN",
+            "source": "server-guided-discovery.json"
+          }
+        },
+        "relations": {},
+        "artifact_references": [
+          "server-guided-discovery.json"
+        ],
+        "coverage": {
+          "states": 3,
+          "decision_points": 5,
+          "choices": 2,
+          "executed": 2,
+          "outcome_observed": 2,
+          "pending": 0,
+          "unknowns": 42,
+          "complete": false,
+          "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+        }
+      }
+    },
     "path-coverage.json": {
       "encoding": "json",
       "bytes": 996,
@@ -255,7 +2474,7 @@
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 2912,
+      "bytes": 3380,
       "value": {
         "provider": "bgaming",
         "slug": "fiesta-clusters",
@@ -314,11 +2533,11 @@
             "covered_options": []
           }
         ],
-        "started_at": "2026-09-13T13:39:28+00:00",
-        "finished_at": "2026-09-13T13:39:32+00:00",
-        "elapsed_ms": 4094.000000000051,
+        "started_at": "2026-09-14T04:49:06+00:00",
+        "finished_at": "2026-09-14T04:49:11+00:00",
+        "elapsed_ms": 4702.999999994063,
         "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_BUY, PURCHASE_FREESPIN_CHANCE. Cobertura de ramificaciones pendiente: PURCHASE_FREESPIN_BUY -> ['PURCHASE_FREESPIN_BUY']; PURCHASE_FREESPIN_CHANCE -> ['PURCHASE_FREESPIN_CHANCE'].",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fiesta Clusters\\tests\\2026-09-13_10-39-28-bgaming-http-api-v2",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fiesta Clusters\\tests\\2026-09-14_01-49-06-bgaming-http-api-v2",
         "attempts": [
           {
             "number": 1,
@@ -328,7 +2547,7 @@
             "provider_bl": null,
             "provider_pur": null,
             "status_code": 200,
-            "elapsed_ms": 313.00000000010186,
+            "elapsed_ms": 358.99999999674037,
             "symbol": "FiestaClusters",
             "endpoint": "https://demo.bgaming-network.com/api/FiestaClusters/2737266/<session>",
             "na": "closed",
@@ -336,10 +2555,26 @@
             "wire_steps": 1,
             "warning": "",
             "error": "",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fiesta Clusters\\tests\\2026-09-13_10-39-28-bgaming-http-api-v2\\SPIN\\attempt-001"
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fiesta Clusters\\tests\\2026-09-14_01-49-06-bgaming-http-api-v2\\SPIN\\attempt-001"
           }
         ],
-        "samples_per_path": 1
+        "samples_per_path": 1,
+        "structural_map": {
+          "path": "analysis/game-structure.json",
+          "schema": "tester-spin/game-structure/v1",
+          "coverage": {
+            "states": 3,
+            "decision_points": 5,
+            "choices": 2,
+            "executed": 2,
+            "outcome_observed": 2,
+            "pending": 0,
+            "unknowns": 42,
+            "complete": false,
+            "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+          },
+          "diagnostics": []
+        }
       }
     },
     "sample-catalog.json": {
@@ -379,23 +2614,23 @@
                 "evidence": [
                   {
                     "path": "SPIN/attempt-001/request.json",
-                    "sha256": "16e05f94890eb6ca62a1e94ba6557ef7a58b4be08619eea400c4d110db2bd022",
+                    "sha256": "c4359b8f21b32a11d78908cc195f966c2fe546aef0b144fda4d414688f288e37",
                     "bytes": 125
                   },
                   {
                     "path": "SPIN/attempt-001/response.json",
-                    "sha256": "a21c44ae31fa320e5fed8603039e778aebaf8a81cca95ec0959c00c28aa79c0b",
-                    "bytes": 502
+                    "sha256": "eab59df7ab3226098dea0f3eeba36ab1888d38f746bccbe1081772ad9c188b16",
+                    "bytes": 505
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-request.json",
-                    "sha256": "16e05f94890eb6ca62a1e94ba6557ef7a58b4be08619eea400c4d110db2bd022",
+                    "sha256": "c4359b8f21b32a11d78908cc195f966c2fe546aef0b144fda4d414688f288e37",
                     "bytes": 125
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-response.json",
-                    "sha256": "a21c44ae31fa320e5fed8603039e778aebaf8a81cca95ec0959c00c28aa79c0b",
-                    "bytes": 502
+                    "sha256": "eab59df7ab3226098dea0f3eeba36ab1888d38f746bccbe1081772ad9c188b16",
+                    "bytes": 505
                   }
                 ]
               }
@@ -436,22 +2671,22 @@
     },
     "SPIN/attempt-001/remote-proof.json": {
       "encoding": "json",
-      "bytes": 472,
+      "bytes": 475,
       "value": {
-        "round_id": 17298721634,
-        "last_action_id": "17298721634_1",
+        "round_id": 17307366566,
+        "last_action_id": "17307366566_1",
         "flow_state": "closed",
         "flow_command": "spin",
         "purchased_feature": "",
         "bet": 20,
-        "win": 0,
-        "balance_total": 99980,
+        "win": 60,
+        "balance_total": 100040,
         "screen_sha256": "",
-        "storage_seed": 3950,
+        "storage_seed": 94038,
         "storage_mode": "0",
         "freespins_issued": null,
         "freespins_left": null,
-        "response_sha256": "450271195f7dbedb",
+        "response_sha256": "4fd0203ba4e95ccc",
         "mode_id": "SPIN",
         "step": 1,
         "expected_debit": 20.0,
@@ -467,33 +2702,33 @@
           "bet": 20
         },
         "extra_data": {
-          "round_series_id": 1789306769550
+          "round_series_id": 1789361347760
         }
       }
     },
     "SPIN/attempt-001/response.json": {
       "encoding": "json",
-      "bytes": 502,
+      "bytes": 505,
       "value": {
         "api_version": "2",
         "outcome": {
           "screen": null,
           "special_symbols": null,
           "bet": 20,
-          "win": 0,
+          "win": 60,
           "wins": [],
           "storage": {
-            "seed": 3950,
+            "seed": 94038,
             "mode": "0"
           }
         },
         "balance": {
-          "game": 0,
+          "game": 60,
           "wallet": 99980
         },
         "flow": {
-          "round_id": 17298721634,
-          "last_action_id": "17298721634_1",
+          "round_id": 17307366566,
+          "last_action_id": "17307366566_1",
           "state": "closed",
           "command": "spin",
           "available_actions": [
@@ -506,22 +2741,22 @@
     },
     "SPIN/attempt-001/step-001-proof.json": {
       "encoding": "json",
-      "bytes": 472,
+      "bytes": 475,
       "value": {
-        "round_id": 17298721634,
-        "last_action_id": "17298721634_1",
+        "round_id": 17307366566,
+        "last_action_id": "17307366566_1",
         "flow_state": "closed",
         "flow_command": "spin",
         "purchased_feature": "",
         "bet": 20,
-        "win": 0,
-        "balance_total": 99980,
+        "win": 60,
+        "balance_total": 100040,
         "screen_sha256": "",
-        "storage_seed": 3950,
+        "storage_seed": 94038,
         "storage_mode": "0",
         "freespins_issued": null,
         "freespins_left": null,
-        "response_sha256": "450271195f7dbedb",
+        "response_sha256": "4fd0203ba4e95ccc",
         "mode_id": "SPIN",
         "step": 1,
         "expected_debit": 20.0,
@@ -537,33 +2772,33 @@
           "bet": 20
         },
         "extra_data": {
-          "round_series_id": 1789306769550
+          "round_series_id": 1789361347760
         }
       }
     },
     "SPIN/attempt-001/step-001-response.json": {
       "encoding": "json",
-      "bytes": 502,
+      "bytes": 505,
       "value": {
         "api_version": "2",
         "outcome": {
           "screen": null,
           "special_symbols": null,
           "bet": 20,
-          "win": 0,
+          "win": 60,
           "wins": [],
           "storage": {
-            "seed": 3950,
+            "seed": 94038,
             "mode": "0"
           }
         },
         "balance": {
-          "game": 0,
+          "game": 60,
           "wallet": 99980
         },
         "flow": {
-          "round_id": 17298721634,
-          "last_action_id": "17298721634_1",
+          "round_id": 17307366566,
+          "last_action_id": "17307366566_1",
           "state": "closed",
           "command": "spin",
           "available_actions": [
@@ -585,8 +2820,8 @@
           "name": "Fiesta Clusters",
           "identifier": "FiestaClusters"
         },
-        "generated_at": "2026-09-13T13:39:32+00:00",
-        "source_run": "2026-09-13_10-39-28-bgaming-http-api-v2",
+        "generated_at": "2026-09-14T04:49:11+00:00",
+        "source_run": "2026-09-14_01-49-06-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -634,8 +2869,8 @@
           "name": "Fiesta Clusters",
           "identifier": "FiestaClusters"
         },
-        "generated_at": "2026-09-13T13:39:32+00:00",
-        "source_run": "2026-09-13_10-39-28-bgaming-http-api-v2",
+        "generated_at": "2026-09-14T04:49:11+00:00",
+        "source_run": "2026-09-14_01-49-06-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -688,17 +2923,17 @@
           "title": "Fiesta Clusters",
           "currency": "FUN",
           "balance_polling_interval": 30000,
-          "cache_id": "e5d20aa0bf7dac8c0750e57390ef5ab4eddacf2cc0710ca9dcce1bea8ab060f7",
-          "cache_player_id": "063bfe25b279c5075f2864c180c9cce511d688ea276272215662fd93f25136e2",
+          "cache_id": "1b908bc3cd58b87f0aec851f454bf4593a81caf7150835edd7f69e9421cae2cf",
+          "cache_player_id": "912bd5d25d336a67a58eb69cb8442ac303e2b072c86c4aa4042f23e3d4d34ea2",
           "api": "https://demo.bgaming-network.com/api/FiestaClusters/2737266/<session>",
           "rules_url": "https://rules.bgaming-network.com/en/FiestaClusters.json",
           "deposit_url": null,
           "games_page_url": "https://www.bgaming.com/games.html",
           "history_url": null,
-          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09afe-9aba-7d5e-83a9-4bba6b1025d7/launch",
-          "game_page_url": "https://demo.bgaming-network.com/games/FiestaClusters/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY3NDI0NTR9LCJleHAiOjE4MDQ5NDUxNzJ9.hpodGcp6XTfXCKHGukGqWHyr-0okZvGFFWznOO2t66w",
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09e3f-6c06-77e7-8d45-7180f82483b2/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/FiestaClusters/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDczNTI1NjZ9LCJleHAiOjE4MDQ5OTk3NTJ9.B97UsC7fKeKcyigGo7fey_BlFhdgXsjm8xKpQGZ6Z08",
           "websocket_url": "wss://demo.bgaming-network.com:443/cable",
-          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=FiestaClusters&play_token=01a09afe-9aba-7d5e-83a9-4bba6b1025d7&server_id=demo",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=FiestaClusters&play_token=01a09e3f-6c06-77e7-8d45-7180f82483b2&server_id=demo",
           "ui": {
             "home_button": true,
             "full_screen_prompt": true,
@@ -732,7 +2967,7 @@
           "custom": {},
           "actual_currency_rate": 0.0,
           "sound_enabled": true,
-          "games_loader_source": "https://cdn.bgaming-network.com/html/FiestaClusters/loader.js?1789306772",
+          "games_loader_source": "https://cdn.bgaming-network.com/html/FiestaClusters/loader.js?1789361352",
           "game_bundle_source": "https://cdn.bgaming-network.com/html/FiestaClusters/bundle.js",
           "provable_fair": {
             "verify_url": "https://demo.bgaming-network.com/api/games/verify"
@@ -782,7 +3017,7 @@
             }
           },
           "lobby_v2_options": {
-            "player_id": 345492001,
+            "player_id": 346101428,
             "lobby_enabled": false,
             "drops_enabled": false,
             "drops_token": "<redacted>",
@@ -812,7 +3047,7 @@
             "return": null,
             "history": {
               "text": null,
-              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDU0OTIwMDEsImd0X2lkIjoyNzM3MjY2fSwiZXhwIjoxODA0OTQ1MTcyfQ.aGAy75k0pWxFpS7g8IYBkpEC9hrSd57IVqgVfMBSQS4",
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDYxMDE0MjgsImd0X2lkIjoyNzM3MjY2fSwiZXhwIjoxODA0OTk5NzUyfQ.r0iz9np_hZUpuJpcIIINixt9u7ZlfLffhamzc79oNqI",
               "mode": "open"
             }
           },
@@ -851,7 +3086,7 @@
           "pre_bet_balance_validation": false,
           "available_games_to_switch": []
         },
-        "round_series_id": 1789306769550
+        "round_series_id": 1789361347760
       }
     },
     "emulation-contract.json": {
@@ -865,8 +3100,8 @@
           "name": "Fiesta Clusters",
           "identifier": "FiestaClusters"
         },
-        "generated_at": "2026-09-13T13:39:32+00:00",
-        "source_run": "2026-09-13_10-39-28-bgaming-http-api-v2",
+        "generated_at": "2026-09-14T04:49:11+00:00",
+        "source_run": "2026-09-14_01-49-06-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -1036,13 +3271,13 @@
       "value": {
         "command": "init",
         "extra_data": {
-          "round_series_id": 1789306769550
+          "round_series_id": 1789361347760
         }
       }
     },
     "init-response.json": {
       "encoding": "json",
-      "bytes": 1207,
+      "bytes": 1206,
       "value": {
         "api_version": "2",
         "options": {
@@ -1085,7 +3320,7 @@
             "exponent": 2
           },
           "screen": [],
-          "default_seed": 17182,
+          "default_seed": 4010,
           "feature_options": {
             "feature_multipliers": {
               "freespin_buy": 2000,
@@ -1127,8 +3362,8 @@
           "name": "Fiesta Clusters",
           "identifier": "FiestaClusters"
         },
-        "generated_at": "2026-09-13T13:39:32+00:00",
-        "source_run": "2026-09-13_10-39-28-bgaming-http-api-v2",
+        "generated_at": "2026-09-14T04:49:11+00:00",
+        "source_run": "2026-09-14_01-49-06-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -1202,7 +3437,7 @@
             "terminal_successes": 1,
             "wire_steps": 1,
             "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fiesta Clusters\\tests\\2026-09-13_10-39-28-bgaming-http-api-v2\\SPIN\\attempt-001"
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fiesta Clusters\\tests\\2026-09-14_01-49-06-bgaming-http-api-v2\\SPIN\\attempt-001"
             ]
           },
           {
@@ -1249,8 +3484,8 @@
           "name": "Fiesta Clusters",
           "identifier": "FiestaClusters"
         },
-        "generated_at": "2026-09-13T13:39:32+00:00",
-        "source_run": "2026-09-13_10-39-28-bgaming-http-api-v2",
+        "generated_at": "2026-09-14T04:49:11+00:00",
+        "source_run": "2026-09-14_01-49-06-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -1470,7 +3705,7 @@
                 "last_action_id": {
                   "type": "string",
                   "observed_enum": [
-                    "17298721634_1"
+                    "17307366566_1"
                   ]
                 },
                 "purchased_feature": {
@@ -1566,6 +3801,384 @@
         ]
       }
     },
+    "server-guided-discovery.json": {
+      "encoding": "json",
+      "bytes": 10704,
+      "value": {
+        "schema": "tester-spin/bgaming-server-guided-run/v1",
+        "provider": "bgaming",
+        "game": "fiesta-clusters",
+        "states": [
+          {
+            "schema": "tester-spin/bgaming-server-guided-discovery/v1",
+            "flow": {
+              "state": "ready",
+              "command": "init",
+              "available_actions": [
+                "init",
+                "spin"
+              ]
+            },
+            "client": {
+              "source": "https://boost2.bgaming-network.com/wrapper.js",
+              "bundle_sha256": "038a073a88d2236e50d0ca24190ccce2e190ed820fa2e4fd2bdc37ecaa09a138"
+            },
+            "actions": [
+              {
+                "action": "init",
+                "advertised": true,
+                "client_command_literal_hits": 0,
+                "option_fields": [],
+                "parameterless": false,
+                "option_variants": [],
+                "unresolved_option_variants": [],
+                "client_wrappers": [],
+                "forwarded_options_parameters": [],
+                "serializer_shape_proven": false,
+                "replay_eligible": false,
+                "execution_authority": "evidence-only"
+              },
+              {
+                "action": "spin",
+                "advertised": true,
+                "client_command_literal_hits": 0,
+                "option_fields": [],
+                "parameterless": false,
+                "option_variants": [],
+                "unresolved_option_variants": [],
+                "client_wrappers": [],
+                "forwarded_options_parameters": [],
+                "serializer_shape_proven": false,
+                "replay_eligible": false,
+                "execution_authority": "evidence-only"
+              }
+            ],
+            "search_seeds": [
+              {
+                "token": "ready",
+                "path": "$.flow.state",
+                "kind": "flow-state",
+                "client_hits": 25,
+                "near_actions": []
+              },
+              {
+                "token": "init",
+                "path": "$.flow.command",
+                "kind": "flow-command",
+                "client_hits": 103,
+                "near_actions": [
+                  "init"
+                ]
+              },
+              {
+                "token": "init",
+                "path": "$.flow.available_actions[0]",
+                "kind": "available-action",
+                "client_hits": 103,
+                "near_actions": [
+                  "init"
+                ]
+              },
+              {
+                "token": "spin",
+                "path": "$.flow.available_actions[1]",
+                "kind": "available-action",
+                "client_hits": 35,
+                "near_actions": [
+                  "spin"
+                ]
+              },
+              {
+                "token": "available_bets",
+                "path": "$.options.available_bets",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "default_bet",
+                "path": "$.options.default_bet",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "paytable",
+                "path": "$.options.paytable",
+                "kind": "field",
+                "client_hits": 2,
+                "near_actions": []
+              },
+              {
+                "token": "paytables",
+                "path": "$.options.paytables",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "special_symbols",
+                "path": "$.options.special_symbols",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "lines",
+                "path": "$.options.lines",
+                "kind": "field",
+                "client_hits": 1,
+                "near_actions": []
+              },
+              {
+                "token": "reels",
+                "path": "$.options.reels",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "main",
+                "path": "$.options.reels.main",
+                "kind": "field",
+                "client_hits": 57,
+                "near_actions": []
+              },
+              {
+                "token": "layout",
+                "path": "$.options.layout",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "reels",
+                "path": "$.options.layout.reels",
+                "kind": "mapping-key",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "rows",
+                "path": "$.options.layout.rows",
+                "kind": "mapping-key",
+                "client_hits": 56,
+                "near_actions": []
+              },
+              {
+                "token": "currency",
+                "path": "$.options.currency",
+                "kind": "field",
+                "client_hits": 12,
+                "near_actions": []
+              },
+              {
+                "token": "code",
+                "path": "$.options.currency.code",
+                "kind": "mapping-key",
+                "client_hits": 15,
+                "near_actions": []
+              },
+              {
+                "token": "FUN",
+                "path": "$.options.currency.code",
+                "kind": "enum-value",
+                "client_hits": 1,
+                "near_actions": []
+              },
+              {
+                "token": "symbol",
+                "path": "$.options.currency.symbol",
+                "kind": "mapping-key",
+                "client_hits": 3,
+                "near_actions": []
+              },
+              {
+                "token": "FUN",
+                "path": "$.options.currency.symbol",
+                "kind": "enum-value",
+                "client_hits": 1,
+                "near_actions": []
+              },
+              {
+                "token": "subunits",
+                "path": "$.options.currency.subunits",
+                "kind": "mapping-key",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "exponent",
+                "path": "$.options.currency.exponent",
+                "kind": "mapping-key",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "screen",
+                "path": "$.options.screen",
+                "kind": "field",
+                "client_hits": 13,
+                "near_actions": []
+              },
+              {
+                "token": "default_seed",
+                "path": "$.options.default_seed",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "feature_options",
+                "path": "$.options.feature_options",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "feature_multipliers",
+                "path": "$.options.feature_options.feature_multipliers",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "freespin_buy",
+                "path": "$.options.feature_options.feature_multipliers.freespin_buy",
+                "kind": "mapping-key",
+                "client_hits": 1,
+                "near_actions": []
+              },
+              {
+                "token": "freespin_chance",
+                "path": "$.options.feature_options.feature_multipliers.freespin_chance",
+                "kind": "mapping-key",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "base_bet",
+                "path": "$.options.feature_options.feature_multipliers.base_bet",
+                "kind": "mapping-key",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "disabled_features",
+                "path": "$.options.feature_options.disabled_features",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "digit_options",
+                "path": "$.options.digit_options",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "bet",
+                "path": "$.options.digit_options.bet",
+                "kind": "mapping-key",
+                "client_hits": 8,
+                "near_actions": []
+              },
+              {
+                "token": "paytable",
+                "path": "$.options.digit_options.paytable",
+                "kind": "mapping-key",
+                "client_hits": 2,
+                "near_actions": []
+              }
+            ]
+          },
+          {
+            "schema": "tester-spin/bgaming-server-guided-discovery/v1",
+            "flow": {
+              "state": "closed",
+              "command": "spin",
+              "available_actions": [
+                "init",
+                "spin"
+              ]
+            },
+            "client": {
+              "source": "https://boost2.bgaming-network.com/wrapper.js",
+              "bundle_sha256": "038a073a88d2236e50d0ca24190ccce2e190ed820fa2e4fd2bdc37ecaa09a138"
+            },
+            "actions": [
+              {
+                "action": "init",
+                "advertised": true,
+                "client_command_literal_hits": 0,
+                "option_fields": [],
+                "parameterless": false,
+                "option_variants": [],
+                "unresolved_option_variants": [],
+                "client_wrappers": [],
+                "forwarded_options_parameters": [],
+                "serializer_shape_proven": false,
+                "replay_eligible": false,
+                "execution_authority": "evidence-only"
+              },
+              {
+                "action": "spin",
+                "advertised": true,
+                "client_command_literal_hits": 0,
+                "option_fields": [],
+                "parameterless": false,
+                "option_variants": [],
+                "unresolved_option_variants": [],
+                "client_wrappers": [],
+                "forwarded_options_parameters": [],
+                "serializer_shape_proven": false,
+                "replay_eligible": false,
+                "execution_authority": "evidence-only"
+              }
+            ],
+            "search_seeds": [
+              {
+                "token": "closed",
+                "path": "$.flow.state",
+                "kind": "flow-state",
+                "client_hits": 9,
+                "near_actions": []
+              },
+              {
+                "token": "spin",
+                "path": "$.flow.command",
+                "kind": "flow-command",
+                "client_hits": 35,
+                "near_actions": [
+                  "spin"
+                ]
+              },
+              {
+                "token": "init",
+                "path": "$.flow.available_actions[0]",
+                "kind": "available-action",
+                "client_hits": 103,
+                "near_actions": [
+                  "init"
+                ]
+              },
+              {
+                "token": "spin",
+                "path": "$.flow.available_actions[1]",
+                "kind": "available-action",
+                "client_hits": 35,
+                "near_actions": [
+                  "spin"
+                ]
+              }
+            ]
+          }
+        ],
+        "diagnostics": [],
+        "execution_policy": "server advertisement or textual client hits alone do not authorize unknown requests; only exact client-proven fully literal payload variants marked replay_eligible may be replayed"
+      }
+    },
     "state-machine.json": {
       "encoding": "json",
       "bytes": 1086,
@@ -1577,8 +4190,8 @@
           "name": "Fiesta Clusters",
           "identifier": "FiestaClusters"
         },
-        "generated_at": "2026-09-13T13:39:32+00:00",
-        "source_run": "2026-09-13_10-39-28-bgaming-http-api-v2",
+        "generated_at": "2026-09-14T04:49:11+00:00",
+        "source_run": "2026-09-14_01-49-06-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
