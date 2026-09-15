@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-14T04:57:19+00:00",
-  "source_commit": "7a6a00c649dbcef8c5b7a7deaa4574c274c2028b",
+  "published_at": "2026-09-15T08:11:46+00:00",
+  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
   "provider": "bgaming",
   "game": {
     "slug": "chicken-fire",
@@ -15,23 +15,25 @@
     "game_name": "Chicken Fire",
     "game_url": "https://demo.bgaming-network.com/play/ChickenFire/FUN",
     "requested_spins": 1,
-    "successful_spins": 0,
-    "failed_spins": 1,
-    "status": "ERROR",
+    "successful_spins": 1,
+    "failed_spins": 0,
+    "status": "PARCIAL",
     "symbol": "ChickenFire",
     "discovered_modes": [
       {
         "id": "SPIN",
         "kind": "SPIN",
-        "observed": false,
-        "validated": false,
+        "observed": true,
+        "validated": true,
         "executable": true,
-        "discovery_state": "HAR_OBSERVED",
+        "discovery_state": "VALIDATED",
         "wire_method": "play",
         "request_options": {
           "bet_type": "bet"
         },
-        "source": "selected-har"
+        "source": "selected-har",
+        "evidence_level": "REMOTE_EXECUTION",
+        "execution_state": "PROVEN_TERMINAL"
       },
       {
         "id": "PURCHASE_BUY_BONUS",
@@ -45,15 +47,36 @@
           "bet_type": "bet",
           "purchased_feature": "buy_bonus"
         },
-        "source": "game_bundle_source"
+        "source": "game_bundle_source",
+        "evidence_level": "DISCOVERED",
+        "execution_state": "NOT_EXECUTABLE"
       }
     ],
-    "started_at": "2026-09-14T04:56:43+00:00",
-    "finished_at": "2026-09-14T04:56:57+00:00",
-    "elapsed_ms": 14031.999999999243,
-    "error": "BGaming HyperHive sin respuestas válidas.",
-    "run_dir": "2026-09-14_01-56-43-bgaming-hyperhive-jsonrpc",
-    "attempts": [],
+    "started_at": "2026-09-15T08:11:32+00:00",
+    "finished_at": "2026-09-15T08:11:46+00:00",
+    "elapsed_ms": 13422.000000005937,
+    "error": "Cobertura de ramificaciones pendiente: PURCHASE_BUY_BONUS -> ['PURCHASE_BUY_BONUS'].",
+    "run_dir": "2026-09-15_05-11-32-bgaming-hyperhive-jsonrpc",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": true,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": 200,
+        "elapsed_ms": 532.0000000065193,
+        "symbol": "ChickenFire",
+        "endpoint": "https://chicken-fire.demo.bgaming-network.com/api",
+        "na": "",
+        "terminal": true,
+        "wire_steps": 1,
+        "warning": "",
+        "error": "",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Chicken Fire\\tests\\2026-09-15_05-11-32-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+      }
+    ],
     "samples_per_path": 1,
     "structural_map": {
       "path": "analysis/game-structure.json",
@@ -72,11 +95,11 @@
       "diagnostics": []
     }
   },
-  "artifact_bytes_embedded": 16743,
+  "artifact_bytes_embedded": 45787,
   "artifacts": {
     "analysis/game-structure.json": {
       "encoding": "json",
-      "bytes": 1748,
+      "bytes": 1787,
       "value": {
         "schema": "tester-spin/game-structure/v1",
         "metadata": {
@@ -85,7 +108,7 @@
           "game_identifier": "chicken-fire",
           "slug": "chicken-fire",
           "bundle_fingerprint": "",
-          "generated_at": "2026-09-14T04:56:57+00:00",
+          "generated_at": "2026-09-15T08:11:46+00:00",
           "compatibility": "unverified",
           "source_evidence_summary": {
             "capture": "BGaming JSON requests/responses at transport boundary",
@@ -93,7 +116,8 @@
           },
           "merged_runs": [
             "run:b303832f5b59ef4fea00ad19",
-            "run:a8da2cd9d8d03d335ddb8aa9"
+            "run:a8da2cd9d8d03d335ddb8aa9",
+            "run:4999b1f73d99e952b7c8464b"
           ],
           "previous_revisions": []
         },
@@ -139,28 +163,12 @@
     },
     "path-coverage.json": {
       "encoding": "json",
-      "bytes": 947,
+      "bytes": 588,
       "value": {
         "schema": "tester-spin/path-coverage/v1",
         "provider": "bgaming",
         "game": "chicken-fire",
         "branch_points": [
-          {
-            "source": "discovered_modes_fail_closed",
-            "mode_id": "SPIN",
-            "signature": "SPIN:UNEXECUTED",
-            "required": [
-              "SPIN"
-            ],
-            "covered": [],
-            "missing": [
-              "SPIN"
-            ],
-            "complete": false,
-            "required_samples": 1,
-            "sample_counts": null,
-            "sample_deficits": {}
-          },
           {
             "source": "discovered_modes_fail_closed",
             "mode_id": "PURCHASE_BUY_BONUS",
@@ -179,35 +187,37 @@
           }
         ],
         "complete": false,
-        "missing_count": 2
+        "missing_count": 1
       }
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 1847,
+      "bytes": 2671,
       "value": {
         "provider": "bgaming",
         "slug": "chicken-fire",
         "game_name": "Chicken Fire",
         "game_url": "https://demo.bgaming-network.com/play/ChickenFire/FUN",
         "requested_spins": 1,
-        "successful_spins": 0,
-        "failed_spins": 1,
-        "status": "ERROR",
+        "successful_spins": 1,
+        "failed_spins": 0,
+        "status": "PARCIAL",
         "symbol": "ChickenFire",
         "discovered_modes": [
           {
             "id": "SPIN",
             "kind": "SPIN",
-            "observed": false,
-            "validated": false,
+            "observed": true,
+            "validated": true,
             "executable": true,
-            "discovery_state": "HAR_OBSERVED",
+            "discovery_state": "VALIDATED",
             "wire_method": "play",
             "request_options": {
               "bet_type": "bet"
             },
-            "source": "selected-har"
+            "source": "selected-har",
+            "evidence_level": "REMOTE_EXECUTION",
+            "execution_state": "PROVEN_TERMINAL"
           },
           {
             "id": "PURCHASE_BUY_BONUS",
@@ -221,15 +231,36 @@
               "bet_type": "bet",
               "purchased_feature": "buy_bonus"
             },
-            "source": "game_bundle_source"
+            "source": "game_bundle_source",
+            "evidence_level": "DISCOVERED",
+            "execution_state": "NOT_EXECUTABLE"
           }
         ],
-        "started_at": "2026-09-14T04:56:43+00:00",
-        "finished_at": "2026-09-14T04:56:57+00:00",
-        "elapsed_ms": 14031.999999999243,
-        "error": "BGaming HyperHive sin respuestas válidas.",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Chicken Fire\\tests\\2026-09-14_01-56-43-bgaming-hyperhive-jsonrpc",
-        "attempts": [],
+        "started_at": "2026-09-15T08:11:32+00:00",
+        "finished_at": "2026-09-15T08:11:46+00:00",
+        "elapsed_ms": 13422.000000005937,
+        "error": "Cobertura de ramificaciones pendiente: PURCHASE_BUY_BONUS -> ['PURCHASE_BUY_BONUS'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Chicken Fire\\tests\\2026-09-15_05-11-32-bgaming-hyperhive-jsonrpc",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": true,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 532.0000000065193,
+            "symbol": "ChickenFire",
+            "endpoint": "https://chicken-fire.demo.bgaming-network.com/api",
+            "na": "",
+            "terminal": true,
+            "wire_steps": 1,
+            "warning": "",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Chicken Fire\\tests\\2026-09-15_05-11-32-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+          }
+        ],
         "samples_per_path": 1,
         "structural_map": {
           "path": "analysis/game-structure.json",
@@ -251,22 +282,190 @@
     },
     "sample-catalog.json": {
       "encoding": "json",
-      "bytes": 269,
+      "bytes": 1200,
       "value": {
         "schema": "tester-spin/sample-catalog/v2",
         "provider": "bgaming",
         "game": "chicken-fire",
         "scope": "observed_paths_only",
         "samples_per_path": 1,
-        "groups": [],
+        "groups": [
+          {
+            "id": "a179acbfa9295736f1e930b5ce3d37a237f56d86b16cce5a1bfd01dd210dd41a",
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "choices": [],
+            "validated_samples": 1,
+            "samples": [
+              {
+                "attempt": 1,
+                "artifact_dir": "SPIN/attempt-001",
+                "validated": true,
+                "terminal": true,
+                "observed_state_sequence": [],
+                "evidence": [
+                  {
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "581ca2602858a55ef9c3a94377e4ec1cc7b856b6b1310af57a4473b14cbdfbb6",
+                    "bytes": 241
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "f987c267f1d125b948b307f7585400eb7a0372b643526950b644c22d134e9c33",
+                    "bytes": 1781
+                  }
+                ]
+              }
+            ],
+            "missing_samples": 0
+          }
+        ],
         "observed_state_types": [],
         "diagnostics": [],
-        "observed_paths_sampled": false
+        "observed_paths_sampled": true
+      }
+    },
+    "SPIN/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 406,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "mode_id": "SPIN",
+        "steps": 1,
+        "before_balance": 100000.0,
+        "observed_debit": 100.0,
+        "final": true,
+        "balance": 100300,
+        "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
+        "round_step": null,
+        "bet": null,
+        "total_win": 400,
+        "freespins": null,
+        "next_action": null,
+        "table_sha256": "",
+        "response_sha256": "8ea098c80612488a"
+      }
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 241,
+      "value": {
+        "id": "b0445b67-e930-465f-b72c-6d7f874bc691",
+        "jsonrpc": "2.0",
+        "method": "play",
+        "params": {
+          "token": "<redacted>",
+          "req": {
+            "bet": 100,
+            "bet_type": "bet"
+          },
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 1781,
+      "value": {
+        "id": "b0445b67-e930-465f-b72c-6d7f874bc691",
+        "jsonrpc": "2.0",
+        "result": {
+          "final": true,
+          "resp": {
+            "data": [
+              {
+                "board": [
+                  [
+                    "S6",
+                    "S6",
+                    "S7"
+                  ],
+                  [
+                    "S7",
+                    "S7",
+                    "S7"
+                  ],
+                  [
+                    "COIN",
+                    "COIN",
+                    "S7"
+                  ]
+                ],
+                "multipliersBoard": [
+                  [
+                    1,
+                    1,
+                    1
+                  ],
+                  [
+                    1,
+                    1,
+                    1
+                  ],
+                  [
+                    1,
+                    1,
+                    1
+                  ]
+                ],
+                "coinValuesBoard": [
+                  [
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    0
+                  ],
+                  [
+                    100,
+                    200,
+                    0
+                  ]
+                ],
+                "collectPositions": [],
+                "resetRespin": true,
+                "respinsCount": 0,
+                "pileSymbols": []
+              }
+            ],
+            "totalWin": 400,
+            "pile": false,
+            "paylineWins": {
+              "2,2,2": {
+                "symbol": "S7",
+                "positions": [
+                  [
+                    0,
+                    2
+                  ],
+                  [
+                    1,
+                    2
+                  ],
+                  [
+                    2,
+                    2
+                  ]
+                ],
+                "amount": 400
+              }
+            },
+            "hitMaxWin": false,
+            "baseBet": 100,
+            "stageIndex": 0
+          },
+          "balance": 100300,
+          "freebets": null,
+          "state_lock": "<redacted>"
+        }
       }
     },
     "backend-conformance.json": {
       "encoding": "json",
-      "bytes": 922,
+      "bytes": 1426,
       "value": {
         "schema": "tester-spin/bgaming-backend-conformance/v1",
         "provider": "bgaming",
@@ -275,8 +474,8 @@
           "name": "Chicken Fire",
           "identifier": "ChickenFire"
         },
-        "generated_at": "2026-09-14T04:56:57+00:00",
-        "source_run": "2026-09-14_01-56-43-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:11:46+00:00",
+        "source_run": "2026-09-15_05-11-32-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -285,7 +484,25 @@
           "INFERENCE"
         ],
         "wire_replay_complete": false,
-        "cases": [],
+        "cases": [
+          {
+            "id": "CASE_0001",
+            "source_state": "READY",
+            "request_contract": "RPC_PLAY",
+            "request_selector_vectors_observed": [
+              {
+                "bet_type": "bet"
+              }
+            ],
+            "accepted_outcome": "RPC_PLAY__TO__READY",
+            "expected_target_state": "READY",
+            "response_schema": "response-schemas/rpc_play__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ],
         "rules": [
           "A backend response must match the response schema for the selected outcome.",
           "The response must move the session to the documented target state.",
@@ -297,7 +514,7 @@
     },
     "backend-response-plan.json": {
       "encoding": "json",
-      "bytes": 706,
+      "bytes": 1347,
       "value": {
         "schema": "tester-spin/bgaming-backend-response-plan/v1",
         "provider": "bgaming",
@@ -306,8 +523,8 @@
           "name": "Chicken Fire",
           "identifier": "ChickenFire"
         },
-        "generated_at": "2026-09-14T04:56:57+00:00",
-        "source_run": "2026-09-14_01-56-43-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:11:46+00:00",
+        "source_run": "2026-09-15_05-11-32-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -317,7 +534,34 @@
         ],
         "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
         "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
-        "states": {}
+        "states": {
+          "READY": {
+            "RPC_PLAY": {
+              "wire_action": "play",
+              "selector_domains_observed": {
+                "bet_type": [
+                  "bet"
+                ]
+              },
+              "selector_vectors_observed": [
+                {
+                  "bet_type": "bet"
+                }
+              ],
+              "outcomes": [
+                {
+                  "id": "RPC_PLAY__TO__READY",
+                  "target_state": [
+                    "READY"
+                  ],
+                  "response_schema": "response-schemas/rpc_play__to__ready.json",
+                  "terminal_observed": true,
+                  "math_probability_known": false
+                }
+              ]
+            }
+          }
+        }
       }
     },
     "contract-diagnostic.json": {
@@ -372,9 +616,225 @@
         "base_discovery_state": "HAR_OBSERVED"
       }
     },
+    "diagnostic.json": {
+      "encoding": "json",
+      "bytes": 6607,
+      "value": {
+        "schema": "tester-spin/run-diagnostics/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "chicken-fire",
+          "name": "Chicken Fire",
+          "symbol": "ChickenFire"
+        },
+        "started_at": "2026-09-15T08:11:32+00:00",
+        "finished_at": "2026-09-15T08:11:46+00:00",
+        "result_status": "PARCIAL",
+        "scope": "observed_paths_only",
+        "observed_error": "Cobertura de ramificaciones pendiente: PURCHASE_BUY_BONUS -> ['PURCHASE_BUY_BONUS'].",
+        "root_cause": {
+          "status": "UNDETERMINED",
+          "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
+        },
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "status": "INCOMPLETE",
+            "validated": false,
+            "tested": true,
+            "attempt_count": 1,
+            "terminal_count": 1,
+            "missing_options": [],
+            "branches": [],
+            "provider_metadata": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": true,
+              "validated": true,
+              "executable": true,
+              "discovery_state": "VALIDATED",
+              "wire_method": "play",
+              "request_options": {
+                "bet_type": "bet"
+              },
+              "source": "selected-har",
+              "evidence_level": "REMOTE_EXECUTION",
+              "execution_state": "PROVEN_TERMINAL"
+            }
+          },
+          {
+            "id": "PURCHASE_BUY_BONUS",
+            "kind": "PURCHASE",
+            "status": "DISCOVERED",
+            "validated": false,
+            "tested": false,
+            "attempt_count": 0,
+            "terminal_count": 0,
+            "missing_options": [
+              "PURCHASE_BUY_BONUS"
+            ],
+            "branches": [
+              {
+                "source": "discovered_modes_fail_closed",
+                "mode_id": "PURCHASE_BUY_BONUS",
+                "signature": "PURCHASE_BUY_BONUS:UNEXECUTED",
+                "required": [
+                  "PURCHASE_BUY_BONUS"
+                ],
+                "covered": [],
+                "missing": [
+                  "PURCHASE_BUY_BONUS"
+                ],
+                "complete": false,
+                "required_samples": 1,
+                "sample_counts": null,
+                "sample_deficits": {}
+              }
+            ],
+            "provider_metadata": {
+              "id": "PURCHASE_BUY_BONUS",
+              "kind": "PURCHASE",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "BASE_CONTRACT_UNRESOLVED",
+              "wire_method": "play",
+              "request_options": {
+                "bet_type": "bet",
+                "purchased_feature": "buy_bonus"
+              },
+              "source": "game_bundle_source",
+              "evidence_level": "DISCOVERED",
+              "execution_state": "NOT_EXECUTABLE"
+            }
+          }
+        ],
+        "attempts": [
+          {
+            "number": 1,
+            "mode_id": "SPIN",
+            "reported_ok": true,
+            "reported_terminal": true,
+            "http_status": 200,
+            "last_state": "",
+            "wire_steps": 1,
+            "elapsed_ms": 532.0000000065193,
+            "error": "",
+            "warning": "",
+            "evidence": [
+              {
+                "path": "SPIN/attempt-001/step-001-request.json",
+                "sha256": "581ca2602858a55ef9c3a94377e4ec1cc7b856b6b1310af57a4473b14cbdfbb6",
+                "bytes": 241,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/step-001-response.json",
+                "sha256": "f987c267f1d125b948b307f7585400eb7a0372b643526950b644c22d134e9c33",
+                "bytes": 1781,
+                "kind": "response"
+              }
+            ],
+            "first_request": "SPIN/attempt-001/step-001-request.json",
+            "last_request": "SPIN/attempt-001/step-001-request.json",
+            "last_response": "SPIN/attempt-001/step-001-response.json",
+            "ordering": "ARTIFACT_STEP_INDEX",
+            "trajectory_id": "838a777ce02262c76fdf"
+          }
+        ],
+        "bootstrap_evidence": [
+          {
+            "path": "init-request.json",
+            "sha256": "6e264507402fae5360d01397ff845a2b068ec0ca3f7b7c61e9959f70efda569a",
+            "bytes": 142,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-response.json",
+            "sha256": "494cf91690bf610c09a05e9809134293d0263b1cf5853ac9abff9cb29c146eb3",
+            "bytes": 1617,
+            "kind": "envelope"
+          }
+        ],
+        "unknown_actions": [
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_edf011b8e35242b9",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "PURCHASE_BUY_BONUS",
+              "kind": "PURCHASE",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "BASE_CONTRACT_UNRESOLVED",
+              "wire_method": "play",
+              "request_options": {
+                "bet_type": "bet",
+                "purchased_feature": "buy_bonus"
+              },
+              "source": "game_bundle_source",
+              "evidence_level": "DISCOVERED",
+              "execution_state": "NOT_EXECUTABLE"
+            },
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/step-001-request.json",
+                  "sha256": "581ca2602858a55ef9c3a94377e4ec1cc7b856b6b1310af57a4473b14cbdfbb6",
+                  "bytes": 241,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-response.json",
+                  "sha256": "f987c267f1d125b948b307f7585400eb7a0372b643526950b644c22d134e9c33",
+                  "bytes": 1781,
+                  "kind": "response"
+                }
+              ]
+            ]
+          }
+        ],
+        "request_comparisons": [],
+        "coverage": {
+          "schema": "tester-spin/path-coverage/v1",
+          "provider": "bgaming",
+          "game": "chicken-fire",
+          "branch_points": [
+            {
+              "source": "discovered_modes_fail_closed",
+              "mode_id": "PURCHASE_BUY_BONUS",
+              "signature": "PURCHASE_BUY_BONUS:UNEXECUTED",
+              "required": [
+                "PURCHASE_BUY_BONUS"
+              ],
+              "covered": [],
+              "missing": [
+                "PURCHASE_BUY_BONUS"
+              ],
+              "complete": false,
+              "required_samples": 1,
+              "sample_counts": null,
+              "sample_deficits": {}
+            }
+          ],
+          "complete": false,
+          "missing_count": 1
+        },
+        "sample_diagnostics": [],
+        "evidence_gaps": [],
+        "next_steps": [
+          "Revisar la respuesta que anuncia la acción/opción pendiente y el serializer del cliente de este proveedor. No inventar argumentos ni un handler.",
+          "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa."
+        ],
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Chicken Fire\\diagnostics\\20260915T081132-fe53d95c6b43\\events.jsonl",
+        "tree": "run-tree.html",
+        "tree_data": "run-tree.json"
+      }
+    },
     "emulation-contract.json": {
       "encoding": "json",
-      "bytes": 2050,
+      "bytes": 4484,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -383,8 +843,8 @@
           "name": "Chicken Fire",
           "identifier": "ChickenFire"
         },
-        "generated_at": "2026-09-14T04:56:57+00:00",
-        "source_run": "2026-09-14_01-56-43-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:11:46+00:00",
+        "source_run": "2026-09-15_05-11-32-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -392,11 +852,106 @@
           "PROVIDER_METADATA",
           "INFERENCE"
         ],
-        "status": "ERROR",
+        "status": "PARCIAL",
         "wire_replay_complete": false,
         "math_model_complete": false,
         "rng_probabilities_known": false,
-        "request_contracts": [],
+        "request_contracts": [
+          {
+            "id": "RPC_PLAY",
+            "transport": "HTTP_JSONRPC_2.0",
+            "wire_action": "play",
+            "selector_domains_observed": {
+              "bet_type": [
+                "bet"
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "bet_type": "bet"
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "b0445b67-e930-465f-b72c-6d7f874bc691"
+                  ]
+                },
+                "jsonrpc": {
+                  "type": "string",
+                  "observed_enum": [
+                    "2.0"
+                  ]
+                },
+                "method": {
+                  "type": "string",
+                  "observed_enum": [
+                    "play"
+                  ]
+                },
+                "params": {
+                  "type": "object",
+                  "properties": {
+                    "req": {
+                      "type": "object",
+                      "properties": {
+                        "bet": {
+                          "type": "integer"
+                        },
+                        "bet_type": {
+                          "type": "string",
+                          "observed_enum": [
+                            "bet"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "bet",
+                        "bet_type"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "state_lock": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>"
+                      ]
+                    },
+                    "token": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "req",
+                    "state_lock",
+                    "token"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "id",
+                "jsonrpc",
+                "method",
+                "params"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.id",
+              "$.params.state_lock",
+              "$.params.token"
+            ]
+          }
+        ],
         "modes": [
           {
             "id": "SPIN",
@@ -440,7 +995,13 @@
             "source": "game_bundle_source"
           }
         ],
-        "dispatch": {},
+        "dispatch": {
+          "READY": {
+            "RPC_PLAY": [
+              "RPC_PLAY__TO__READY"
+            ]
+          }
+        },
         "artifacts": {
           "state_machine": "state-machine.json",
           "outcome_catalog": "outcome-catalog.json",
@@ -454,7 +1015,7 @@
       "encoding": "json",
       "bytes": 142,
       "value": {
-        "id": "2b7824a9-d1c6-401a-bab7-17f6ab62b049",
+        "id": "ae1e9280-4951-4cd9-a64e-1dd2366652e7",
         "jsonrpc": "2.0",
         "method": "init",
         "params": {
@@ -466,7 +1027,7 @@
       "encoding": "json",
       "bytes": 1617,
       "value": {
-        "id": "2b7824a9-d1c6-401a-bab7-17f6ab62b049",
+        "id": "ae1e9280-4951-4cd9-a64e-1dd2366652e7",
         "jsonrpc": "2.0",
         "result": {
           "freebets": null,
@@ -531,7 +1092,7 @@
           "urls": {
             "deposit_url": null,
             "return_url": null,
-            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDYxMDUyMDAsImd0X2lkIjozODI5NDIzfSwiZXhwIjoxODA1MDAwMjE4fQ.888pJm_pVctou3GNE48ht_Jku1rQN-NA3nTdK9W1bkc"
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcxMzcyOTYsImd0X2lkIjozODI5NDIzfSwiZXhwIjoxODA1MDk4MzA5fQ.7Fqy06v034t6EShL8rvaDaJw0eQnA90T90e5zH1NJcY"
           },
           "balance": 100000,
           "state_lock": "<redacted>"
@@ -540,7 +1101,7 @@
     },
     "outcome-catalog.json": {
       "encoding": "json",
-      "bytes": 577,
+      "bytes": 1290,
       "value": {
         "schema": "tester-spin/bgaming-outcome-catalog/v1",
         "provider": "bgaming",
@@ -549,8 +1110,8 @@
           "name": "Chicken Fire",
           "identifier": "ChickenFire"
         },
-        "generated_at": "2026-09-14T04:56:57+00:00",
-        "source_run": "2026-09-14_01-56-43-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:11:46+00:00",
+        "source_run": "2026-09-15_05-11-32-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -559,12 +1120,39 @@
           "INFERENCE"
         ],
         "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
-        "outcomes": []
+        "outcomes": [
+          {
+            "id": "RPC_PLAY__TO__READY",
+            "kind": "BASE_OR_FEATURE_ENTRY",
+            "request_contract": "RPC_PLAY",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "READY"
+            ],
+            "provider_states": [
+              "final"
+            ],
+            "available_actions": [],
+            "terminal_observed": true,
+            "observed_count": 1,
+            "response_schema": "response-schemas/rpc_play__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
       }
     },
     "path-catalog.json": {
       "encoding": "json",
-      "bytes": 1272,
+      "bytes": 1431,
       "value": {
         "schema": "tester-spin/bgaming-path-catalog/v1",
         "phase": "coverage",
@@ -588,10 +1176,12 @@
             "coverage_required": false,
             "required_options": [],
             "covered_options": [],
-            "attempts_observed": 0,
-            "terminal_successes": 0,
-            "wire_steps": 0,
-            "artifacts": []
+            "attempts_observed": 1,
+            "terminal_successes": 1,
+            "wire_steps": 1,
+            "artifacts": [
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Chicken Fire\\tests\\2026-09-15_05-11-32-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+            ]
           },
           {
             "id": "PURCHASE_BUY_BONUS",
@@ -611,7 +1201,7 @@
     },
     "protocol-contract.json": {
       "encoding": "json",
-      "bytes": 2050,
+      "bytes": 4484,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -620,8 +1210,8 @@
           "name": "Chicken Fire",
           "identifier": "ChickenFire"
         },
-        "generated_at": "2026-09-14T04:56:57+00:00",
-        "source_run": "2026-09-14_01-56-43-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:11:46+00:00",
+        "source_run": "2026-09-15_05-11-32-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -629,11 +1219,106 @@
           "PROVIDER_METADATA",
           "INFERENCE"
         ],
-        "status": "ERROR",
+        "status": "PARCIAL",
         "wire_replay_complete": false,
         "math_model_complete": false,
         "rng_probabilities_known": false,
-        "request_contracts": [],
+        "request_contracts": [
+          {
+            "id": "RPC_PLAY",
+            "transport": "HTTP_JSONRPC_2.0",
+            "wire_action": "play",
+            "selector_domains_observed": {
+              "bet_type": [
+                "bet"
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "bet_type": "bet"
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "b0445b67-e930-465f-b72c-6d7f874bc691"
+                  ]
+                },
+                "jsonrpc": {
+                  "type": "string",
+                  "observed_enum": [
+                    "2.0"
+                  ]
+                },
+                "method": {
+                  "type": "string",
+                  "observed_enum": [
+                    "play"
+                  ]
+                },
+                "params": {
+                  "type": "object",
+                  "properties": {
+                    "req": {
+                      "type": "object",
+                      "properties": {
+                        "bet": {
+                          "type": "integer"
+                        },
+                        "bet_type": {
+                          "type": "string",
+                          "observed_enum": [
+                            "bet"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "bet",
+                        "bet_type"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "state_lock": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>"
+                      ]
+                    },
+                    "token": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "req",
+                    "state_lock",
+                    "token"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "id",
+                "jsonrpc",
+                "method",
+                "params"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.id",
+              "$.params.state_lock",
+              "$.params.token"
+            ]
+          }
+        ],
         "modes": [
           {
             "id": "SPIN",
@@ -677,7 +1362,13 @@
             "source": "game_bundle_source"
           }
         ],
-        "dispatch": {},
+        "dispatch": {
+          "READY": {
+            "RPC_PLAY": [
+              "RPC_PLAY__TO__READY"
+            ]
+          }
+        },
         "artifacts": {
           "state_machine": "state-machine.json",
           "outcome_catalog": "outcome-catalog.json",
@@ -687,9 +1378,403 @@
         }
       }
     },
+    "response-schemas/rpc_play__to__ready.json": {
+      "encoding": "json",
+      "bytes": 5963,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "RPC_PLAY__TO__READY",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "observed_enum": [
+                "b0445b67-e930-465f-b72c-6d7f874bc691"
+              ]
+            },
+            "jsonrpc": {
+              "type": "string",
+              "observed_enum": [
+                "2.0"
+              ]
+            },
+            "result": {
+              "type": "object",
+              "properties": {
+                "balance": {
+                  "type": "integer"
+                },
+                "final": {
+                  "type": "boolean",
+                  "observed_values": [
+                    true
+                  ]
+                },
+                "freebets": {
+                  "type": "null"
+                },
+                "resp": {
+                  "type": "object",
+                  "properties": {
+                    "baseBet": {
+                      "type": "integer"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "board": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "observed_enum": [
+                                  "COIN",
+                                  "S6",
+                                  "S7"
+                                ]
+                              }
+                            }
+                          },
+                          "coinValuesBoard": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer"
+                              }
+                            }
+                          },
+                          "collectPositions": {
+                            "type": "array",
+                            "items": {}
+                          },
+                          "multipliersBoard": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer"
+                              }
+                            }
+                          },
+                          "pileSymbols": {
+                            "type": "array",
+                            "items": {}
+                          },
+                          "resetRespin": {
+                            "type": "boolean",
+                            "observed_values": [
+                              true
+                            ]
+                          },
+                          "respinsCount": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "board",
+                          "coinValuesBoard",
+                          "collectPositions",
+                          "multipliersBoard",
+                          "pileSymbols",
+                          "resetRespin",
+                          "respinsCount"
+                        ],
+                        "additionalProperties": true
+                      }
+                    },
+                    "hitMaxWin": {
+                      "type": "boolean",
+                      "observed_values": [
+                        false
+                      ]
+                    },
+                    "paylineWins": {
+                      "type": "object",
+                      "properties": {
+                        "2,2,2": {
+                          "type": "object",
+                          "properties": {
+                            "amount": {
+                              "type": "integer"
+                            },
+                            "positions": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "items": {
+                                  "type": "integer"
+                                }
+                              }
+                            },
+                            "symbol": {
+                              "type": "string",
+                              "observed_enum": [
+                                "S7"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "amount",
+                            "positions",
+                            "symbol"
+                          ],
+                          "additionalProperties": true
+                        }
+                      },
+                      "required": [
+                        "2,2,2"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "pile": {
+                      "type": "boolean",
+                      "observed_values": [
+                        false
+                      ]
+                    },
+                    "stageIndex": {
+                      "type": "integer"
+                    },
+                    "totalWin": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "baseBet",
+                    "data",
+                    "hitMaxWin",
+                    "paylineWins",
+                    "pile",
+                    "stageIndex",
+                    "totalWin"
+                  ],
+                  "additionalProperties": true
+                },
+                "state_lock": {
+                  "type": "string",
+                  "observed_enum": [
+                    "<redacted>"
+                  ]
+                }
+              },
+              "required": [
+                "balance",
+                "final",
+                "freebets",
+                "resp",
+                "state_lock"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "id",
+            "jsonrpc",
+            "result"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.id",
+          "$.result.balance",
+          "$.result.resp.hitMaxWin",
+          "$.result.resp.totalWin",
+          "$.result.state_lock"
+        ]
+      }
+    },
+    "run-tree.json": {
+      "encoding": "json",
+      "bytes": 5138,
+      "value": {
+        "schema": "tester-spin/run-tree/v1",
+        "provider": "bgaming",
+        "game": "chicken-fire",
+        "scope": "observed_trajectories",
+        "exact_remote_outcome_reproducible": false,
+        "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
+        "trajectories": [
+          {
+            "id": "838a777ce02262c76fdf",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": true,
+                "validated": true,
+                "executable": true,
+                "discovery_state": "VALIDATED",
+                "wire_method": "play",
+                "request_options": {
+                  "bet_type": "bet"
+                },
+                "source": "selected-har",
+                "evidence_level": "REMOTE_EXECUTION",
+                "execution_state": "PROVEN_TERMINAL"
+              }
+            },
+            "attempt": 1,
+            "reported_terminal": true,
+            "reported_ok": true,
+            "sequence_status": "ARTIFACT_STEP_INDEX",
+            "steps": [
+              {
+                "label": "step-001",
+                "directory": "SPIN/attempt-001",
+                "request": [
+                  {
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "581ca2602858a55ef9c3a94377e4ec1cc7b856b6b1310af57a4473b14cbdfbb6",
+                    "bytes": 241,
+                    "kind": "request"
+                  }
+                ],
+                "response": [
+                  {
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "f987c267f1d125b948b307f7585400eb7a0372b643526950b644c22d134e9c33",
+                    "bytes": 1781,
+                    "kind": "response"
+                  }
+                ],
+                "id": "838a777ce02262c76fdf:0",
+                "parent_id": "838a777ce02262c76fdf",
+                "observed_response": {
+                  "id": "b0445b67-e930-465f-b72c-6d7f874bc691",
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "final": true,
+                    "resp": {
+                      "data": [
+                        {
+                          "board": [
+                            [
+                              "S6",
+                              "S6",
+                              "S7"
+                            ],
+                            [
+                              "S7",
+                              "S7",
+                              "S7"
+                            ],
+                            [
+                              "COIN",
+                              "COIN",
+                              "S7"
+                            ]
+                          ],
+                          "multipliersBoard": [
+                            [
+                              1,
+                              1,
+                              1
+                            ],
+                            [
+                              1,
+                              1,
+                              1
+                            ],
+                            [
+                              1,
+                              1,
+                              1
+                            ]
+                          ],
+                          "coinValuesBoard": [
+                            [
+                              0,
+                              0,
+                              0
+                            ],
+                            [
+                              0,
+                              0,
+                              0
+                            ],
+                            [
+                              100,
+                              200,
+                              0
+                            ]
+                          ],
+                          "collectPositions": [],
+                          "resetRespin": true,
+                          "respinsCount": 0,
+                          "pileSymbols": []
+                        }
+                      ],
+                      "totalWin": 400,
+                      "pile": false,
+                      "paylineWins": {
+                        "2,2,2": {
+                          "symbol": "S7",
+                          "positions": [
+                            [
+                              0,
+                              2
+                            ],
+                            [
+                              1,
+                              2
+                            ],
+                            [
+                              2,
+                              2
+                            ]
+                          ],
+                          "amount": 400
+                        }
+                      },
+                      "hitMaxWin": false,
+                      "baseBet": 100,
+                      "stageIndex": 0
+                    },
+                    "balance": 100300,
+                    "freebets": null,
+                    "state_lock": "<redacted>"
+                  }
+                }
+              }
+            ],
+            "events": [],
+            "gaps": [],
+            "offline_replay_ready": true
+          }
+        ],
+        "announced_branches": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "PURCHASE_BUY_BONUS",
+            "signature": "PURCHASE_BUY_BONUS:UNEXECUTED",
+            "required": [
+              "PURCHASE_BUY_BONUS"
+            ],
+            "covered": [],
+            "missing": [
+              "PURCHASE_BUY_BONUS"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          }
+        ]
+      }
+    },
     "state-machine.json": {
       "encoding": "json",
-      "bytes": 523,
+      "bytes": 1111,
       "value": {
         "schema": "tester-spin/bgaming-state-machine/v1",
         "provider": "bgaming",
@@ -698,8 +1783,8 @@
           "name": "Chicken Fire",
           "identifier": "ChickenFire"
         },
-        "generated_at": "2026-09-14T04:56:57+00:00",
-        "source_run": "2026-09-14_01-56-43-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:11:46+00:00",
+        "source_run": "2026-09-15_05-11-32-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -708,8 +1793,35 @@
           "INFERENCE"
         ],
         "initial_state": "READY",
-        "states": {},
-        "transitions": []
+        "states": {
+          "READY": {
+            "provider_states": [
+              "final"
+            ],
+            "allowed_wire_actions_observed": [
+              "play"
+            ],
+            "terminal_observed": true
+          }
+        },
+        "transitions": [
+          {
+            "source": "READY",
+            "request_contract": "RPC_PLAY",
+            "request_selector_vectors_observed": [
+              {
+                "bet_type": "bet"
+              }
+            ],
+            "outcome": "RPC_PLAY__TO__READY",
+            "target": "READY",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
       }
     },
     "wager-catalog.json": {
