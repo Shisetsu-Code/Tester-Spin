@@ -1,0 +1,1049 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-15T09:12:51+00:00",
+  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
+  "provider": "bgaming",
+  "game": {
+    "slug": "zeus-goes-wild",
+    "name": "Zeus Goes Wild",
+    "symbol": "ZeusGoesWild",
+    "url": "https://demo.bgaming-network.com/play/ZeusGoesWild/FUN"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "zeus-goes-wild",
+    "game_name": "Zeus Goes Wild",
+    "game_url": "https://demo.bgaming-network.com/play/ZeusGoesWild/FUN",
+    "requested_spins": 1,
+    "successful_spins": 0,
+    "failed_spins": 1,
+    "status": "ERROR",
+    "symbol": "ZeusGoesWild",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "REJECTED_51100",
+        "wire_method": "play",
+        "request_options": {
+          "bet_type": "bet"
+        },
+        "source": "game_bundle_source",
+        "evidence_level": "REMOTE_REJECTION",
+        "execution_state": "REJECTED_REMOTE"
+      }
+    ],
+    "started_at": "2026-09-15T09:12:30+00:00",
+    "finished_at": "2026-09-15T09:12:44+00:00",
+    "elapsed_ms": 13687.999999994645,
+    "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+    "run_dir": "2026-09-15_06-12-30-bgaming-hyperhive-jsonrpc",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": false,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": null,
+        "elapsed_ms": 562.0000000053551,
+        "symbol": "ZeusGoesWild",
+        "endpoint": "https://zeus-goes-wild.demo.bgaming-network.com/api",
+        "na": "",
+        "terminal": false,
+        "wire_steps": 0,
+        "warning": "",
+        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Zeus Goes Wild\\tests\\2026-09-15_06-12-30-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+      }
+    ],
+    "samples_per_path": 1,
+    "structural_map": {
+      "path": "analysis/game-structure.json",
+      "schema": "tester-spin/game-structure/v1",
+      "coverage": {
+        "states": 0,
+        "decision_points": 0,
+        "choices": 0,
+        "executed": 0,
+        "outcome_observed": 0,
+        "pending": 0,
+        "unknowns": 2,
+        "complete": false,
+        "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+      },
+      "diagnostics": []
+    }
+  },
+  "artifact_bytes_embedded": 25480,
+  "artifacts": {
+    "analysis/game-structure.json": {
+      "encoding": "json",
+      "bytes": 1713,
+      "value": {
+        "schema": "tester-spin/game-structure/v1",
+        "metadata": {
+          "provider": "bgaming",
+          "protocol_family": "bgaming-json-flow",
+          "game_identifier": "zeus-goes-wild",
+          "slug": "zeus-goes-wild",
+          "bundle_fingerprint": "",
+          "generated_at": "2026-09-15T09:12:30+00:00",
+          "compatibility": "unverified",
+          "source_evidence_summary": {
+            "capture": "BGaming JSON requests/responses at transport boundary",
+            "diagnostics": []
+          },
+          "merged_runs": [
+            "run:33a6a0f30fea02edc836f9bf"
+          ],
+          "previous_revisions": []
+        },
+        "states": {},
+        "decision_points": {},
+        "choices": {},
+        "transitions": {},
+        "request_contracts": {},
+        "response_contracts": {},
+        "field_semantics": {},
+        "path_context": {},
+        "unknowns": {
+          "unknown:5a84cc38f5eb823c6f1bc037": {
+            "id": "unknown:5a84cc38f5eb823c6f1bc037",
+            "kind": "protocol",
+            "entity": "bgaming",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No supported JSON flow observations; protocol adapter required"
+          },
+          "unknown:98ead3f1d618b1b4ff28318b": {
+            "id": "unknown:98ead3f1d618b1b4ff28318b",
+            "kind": "client",
+            "entity": "fingerprint",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client compatibility unverified; only observed protocol evidence"
+          }
+        },
+        "evidence": {},
+        "relations": {},
+        "artifact_references": [],
+        "coverage": {
+          "states": 0,
+          "decision_points": 0,
+          "choices": 0,
+          "executed": 0,
+          "outcome_observed": 0,
+          "pending": 0,
+          "unknowns": 2,
+          "complete": false,
+          "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+        }
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 534,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "zeus-goes-wild",
+        "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          }
+        ],
+        "complete": false,
+        "missing_count": 1
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 2378,
+      "value": {
+        "provider": "bgaming",
+        "slug": "zeus-goes-wild",
+        "game_name": "Zeus Goes Wild",
+        "game_url": "https://demo.bgaming-network.com/play/ZeusGoesWild/FUN",
+        "requested_spins": 1,
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "ERROR",
+        "symbol": "ZeusGoesWild",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "REJECTED_51100",
+            "wire_method": "play",
+            "request_options": {
+              "bet_type": "bet"
+            },
+            "source": "game_bundle_source",
+            "evidence_level": "REMOTE_REJECTION",
+            "execution_state": "REJECTED_REMOTE"
+          }
+        ],
+        "started_at": "2026-09-15T09:12:30+00:00",
+        "finished_at": "2026-09-15T09:12:44+00:00",
+        "elapsed_ms": 13687.999999994645,
+        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Zeus Goes Wild\\tests\\2026-09-15_06-12-30-bgaming-hyperhive-jsonrpc",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": null,
+            "elapsed_ms": 562.0000000053551,
+            "symbol": "ZeusGoesWild",
+            "endpoint": "https://zeus-goes-wild.demo.bgaming-network.com/api",
+            "na": "",
+            "terminal": false,
+            "wire_steps": 0,
+            "warning": "",
+            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Zeus Goes Wild\\tests\\2026-09-15_06-12-30-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+          }
+        ],
+        "samples_per_path": 1,
+        "structural_map": {
+          "path": "analysis/game-structure.json",
+          "schema": "tester-spin/game-structure/v1",
+          "coverage": {
+            "states": 0,
+            "decision_points": 0,
+            "choices": 0,
+            "executed": 0,
+            "outcome_observed": 0,
+            "pending": 0,
+            "unknowns": 2,
+            "complete": false,
+            "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+          },
+          "diagnostics": []
+        }
+      }
+    },
+    "sample-catalog.json": {
+      "encoding": "json",
+      "bytes": 1206,
+      "value": {
+        "schema": "tester-spin/sample-catalog/v2",
+        "provider": "bgaming",
+        "game": "zeus-goes-wild",
+        "scope": "observed_paths_only",
+        "samples_per_path": 1,
+        "groups": [
+          {
+            "id": "a179acbfa9295736f1e930b5ce3d37a237f56d86b16cce5a1bfd01dd210dd41a",
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "choices": [],
+            "validated_samples": 0,
+            "samples": [
+              {
+                "attempt": 1,
+                "artifact_dir": "SPIN/attempt-001",
+                "validated": false,
+                "terminal": false,
+                "observed_state_sequence": [],
+                "evidence": [
+                  {
+                    "path": "SPIN/attempt-001/rpc-error-request.json",
+                    "sha256": "48cea05966194c967ac3ad58359fc509d84b41d495f4197ce24ecf5850fab0f9",
+                    "bytes": 203
+                  },
+                  {
+                    "path": "SPIN/attempt-001/rpc-error-response.json",
+                    "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                    "bytes": 136
+                  }
+                ]
+              }
+            ],
+            "missing_samples": 1
+          }
+        ],
+        "observed_state_types": [],
+        "diagnostics": [],
+        "observed_paths_sampled": false
+      }
+    },
+    "SPIN/attempt-001/rpc-error-request.json": {
+      "encoding": "json",
+      "bytes": 203,
+      "value": {
+        "id": 0,
+        "jsonrpc": "2.0",
+        "method": "play",
+        "params": {
+          "token": "<redacted>",
+          "req": {
+            "bet": 10,
+            "bet_type": "bet"
+          },
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "SPIN/attempt-001/rpc-error-response.json": {
+      "encoding": "json",
+      "bytes": 136,
+      "value": {
+        "id": "x",
+        "jsonrpc": "2.0",
+        "error": {
+          "code": 51100,
+          "message": "Something went wrong. Refresh the page."
+        }
+      }
+    },
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 927,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "zeus-goes-wild",
+          "name": "Zeus Goes Wild",
+          "identifier": "ZeusGoesWild"
+        },
+        "generated_at": "2026-09-15T09:12:44+00:00",
+        "source_run": "2026-09-15_06-12-30-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 711,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "zeus-goes-wild",
+          "name": "Zeus Goes Wild",
+          "identifier": "ZeusGoesWild"
+        },
+        "generated_at": "2026-09-15T09:12:44+00:00",
+        "source_run": "2026-09-15_06-12-30-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "contract-diagnostic.json": {
+      "encoding": "json",
+      "bytes": 727,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "script_urls": [
+          "https://zeus-goes-wild.demo.bgaming-network.com/wg-boost/wrapper.js",
+          "https://zeus-goes-wild.demo.bgaming-network.com/wg-boost/analytics/amplitude.js",
+          "https://zeus-goes-wild.demo.bgaming-network.com/wg-replays/replays.js",
+          "https://zeus-goes-wild.demo.bgaming-network.com/bundle.js"
+        ],
+        "bundle_sha256": "09f39a41e6e83cea0c8353750278c6c518c110f3c685862a9da559854d9a1ae4",
+        "engine_sha256": "09f39a41e6e83cea0c8353750278c6c518c110f3c685862a9da559854d9a1ae4",
+        "rpc_id_profile": "zero",
+        "action_vocabulary": [],
+        "base_request": {
+          "bet_type": "bet"
+        },
+        "custom_req_profile": "",
+        "base_discovery_state": "BASE_CONTRACT"
+      }
+    },
+    "diagnostic.json": {
+      "encoding": "json",
+      "bytes": 5800,
+      "value": {
+        "schema": "tester-spin/run-diagnostics/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "zeus-goes-wild",
+          "name": "Zeus Goes Wild",
+          "symbol": "ZeusGoesWild"
+        },
+        "started_at": "2026-09-15T09:12:30+00:00",
+        "finished_at": "2026-09-15T09:12:44+00:00",
+        "result_status": "ERROR",
+        "scope": "observed_paths_only",
+        "observed_error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "root_cause": {
+          "status": "UNDETERMINED",
+          "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
+        },
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "status": "INCOMPLETE",
+            "validated": false,
+            "tested": true,
+            "attempt_count": 1,
+            "terminal_count": 0,
+            "missing_options": [
+              "SPIN"
+            ],
+            "branches": [
+              {
+                "source": "discovered_modes_fail_closed",
+                "mode_id": "SPIN",
+                "signature": "SPIN:UNEXECUTED",
+                "required": [
+                  "SPIN"
+                ],
+                "covered": [],
+                "missing": [
+                  "SPIN"
+                ],
+                "complete": false,
+                "required_samples": 1,
+                "sample_counts": null,
+                "sample_deficits": {}
+              }
+            ],
+            "provider_metadata": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "REJECTED_51100",
+              "wire_method": "play",
+              "request_options": {
+                "bet_type": "bet"
+              },
+              "source": "game_bundle_source",
+              "evidence_level": "REMOTE_REJECTION",
+              "execution_state": "REJECTED_REMOTE"
+            }
+          }
+        ],
+        "attempts": [
+          {
+            "number": 1,
+            "mode_id": "SPIN",
+            "reported_ok": false,
+            "reported_terminal": false,
+            "http_status": null,
+            "last_state": "",
+            "wire_steps": 0,
+            "elapsed_ms": 562.0000000053551,
+            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+            "warning": "",
+            "evidence": [
+              {
+                "path": "SPIN/attempt-001/rpc-error-request.json",
+                "sha256": "48cea05966194c967ac3ad58359fc509d84b41d495f4197ce24ecf5850fab0f9",
+                "bytes": 203,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/rpc-error-response.json",
+                "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                "bytes": 136,
+                "kind": "response"
+              }
+            ],
+            "first_request": "SPIN/attempt-001/rpc-error-request.json",
+            "last_request": "SPIN/attempt-001/rpc-error-request.json",
+            "last_response": "SPIN/attempt-001/rpc-error-response.json",
+            "ordering": "SINGLE_EXCHANGE",
+            "trajectory_id": "9c651bc22f4865ff2ce2"
+          }
+        ],
+        "bootstrap_evidence": [
+          {
+            "path": "init-request.json",
+            "sha256": "5c3f6b66145b2c8c170914a0b2b618ff11d0ad71efc0f79bb3e0db51f52cb573",
+            "bytes": 105,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-response.json",
+            "sha256": "16023b2dbb6c9f725ce2dfc21e8932ce476599d19ee477c2a943e35d19b9c670",
+            "bytes": 1863,
+            "kind": "envelope"
+          }
+        ],
+        "unknown_actions": [
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_5059bf6e72435b43",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "REJECTED_51100",
+              "wire_method": "play",
+              "request_options": {
+                "bet_type": "bet"
+              },
+              "source": "game_bundle_source",
+              "evidence_level": "REMOTE_REJECTION",
+              "execution_state": "REJECTED_REMOTE"
+            },
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/rpc-error-request.json",
+                  "sha256": "48cea05966194c967ac3ad58359fc509d84b41d495f4197ce24ecf5850fab0f9",
+                  "bytes": 203,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/rpc-error-response.json",
+                  "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                  "bytes": 136,
+                  "kind": "response"
+                }
+              ]
+            ]
+          }
+        ],
+        "request_comparisons": [],
+        "coverage": {
+          "schema": "tester-spin/path-coverage/v1",
+          "provider": "bgaming",
+          "game": "zeus-goes-wild",
+          "branch_points": [
+            {
+              "source": "discovered_modes_fail_closed",
+              "mode_id": "SPIN",
+              "signature": "SPIN:UNEXECUTED",
+              "required": [
+                "SPIN"
+              ],
+              "covered": [],
+              "missing": [
+                "SPIN"
+              ],
+              "complete": false,
+              "required_samples": 1,
+              "sample_counts": null,
+              "sample_deficits": {}
+            }
+          ],
+          "complete": false,
+          "missing_count": 1
+        },
+        "sample_diagnostics": [],
+        "evidence_gaps": [],
+        "next_steps": [
+          "Revisar la respuesta que anuncia la acción/opción pendiente y el serializer del cliente de este proveedor. No inventar argumentos ni un handler.",
+          "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa."
+        ],
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Zeus Goes Wild\\diagnostics\\20260915T091216-ca020b9c011c\\events.jsonl",
+        "tree": "run-tree.html",
+        "tree_data": "run-tree.json"
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 1672,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "zeus-goes-wild",
+          "name": "Zeus Goes Wild",
+          "identifier": "ZeusGoesWild"
+        },
+        "generated_at": "2026-09-15T09:12:44+00:00",
+        "source_run": "2026-09-15_06-12-30-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 105,
+      "value": {
+        "id": 0,
+        "jsonrpc": "2.0",
+        "method": "init",
+        "params": {
+          "token": "<redacted>"
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1863,
+      "value": {
+        "id": 0,
+        "jsonrpc": "2.0",
+        "result": {
+          "freebets": null,
+          "currency": "FUN",
+          "currency_attributes": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "locale": "en",
+          "config": {
+            "rtp": "95.50",
+            "displayed_rtp": "95.50",
+            "bet_limits": [
+              10,
+              20,
+              30,
+              50,
+              70,
+              100,
+              140,
+              200,
+              300,
+              500,
+              700,
+              1000,
+              1500,
+              2500,
+              5000,
+              10000,
+              20000,
+              32500
+            ],
+            "freebets_limits": [
+              10,
+              20,
+              30,
+              50,
+              70,
+              100,
+              140,
+              200,
+              300,
+              500,
+              700,
+              1000,
+              1500,
+              2500,
+              5000,
+              10000,
+              20000,
+              32500
+            ],
+            "default_bet": 100,
+            "purchased_features": [
+              "buy_bonus",
+              "bonus_buy",
+              "freespin_buy",
+              "high_freespin_buy",
+              "buy_chance",
+              "bonus_chance",
+              "freespin_chance",
+              "buy_bonus_and_chance",
+              "freespin_and_bonus_chance"
+            ],
+            "autospin_variant": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "quick_spins_enabled": false
+          },
+          "state": null,
+          "urls": {
+            "deposit_url": null,
+            "return_url": null,
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcyNTE4NjMsImd0X2lkIjo0MzY1NDAyfSwiZXhwIjoxODA1MTAxOTY2fQ.RhTzMoYjAltU-H4khdysHicVL-ISflbThr7e4MW9My0"
+          },
+          "balance": 100000,
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 582,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "zeus-goes-wild",
+          "name": "Zeus Goes Wild",
+          "identifier": "ZeusGoesWild"
+        },
+        "generated_at": "2026-09-15T09:12:44+00:00",
+        "source_run": "2026-09-15_06-12-30-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "path-catalog.json": {
+      "encoding": "json",
+      "bytes": 1097,
+      "value": {
+        "schema": "tester-spin/bgaming-path-catalog/v1",
+        "phase": "coverage",
+        "provider": "bgaming",
+        "game": {
+          "slug": "zeus-goes-wild",
+          "name": "Zeus Goes Wild",
+          "symbol": "ZeusGoesWild"
+        },
+        "semantics": {
+          "path_completeness": "Every provider/client-demonstrated executable branch must be traversed.",
+          "rng_completeness": "Observed random outcomes are samples, not proof that every RNG outcome exists or was exhausted.",
+          "future_sampling_unit": "Repeat each executable path independently; do not multiply unrelated modes by a scoped selector."
+        },
+        "paths": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "branch_signature": "",
+            "executable": false,
+            "coverage_required": false,
+            "required_options": [],
+            "covered_options": [],
+            "attempts_observed": 1,
+            "terminal_successes": 0,
+            "wire_steps": 0,
+            "artifacts": [
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Zeus Goes Wild\\tests\\2026-09-15_06-12-30-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+            ]
+          }
+        ]
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 1672,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "zeus-goes-wild",
+          "name": "Zeus Goes Wild",
+          "identifier": "ZeusGoesWild"
+        },
+        "generated_at": "2026-09-15T09:12:44+00:00",
+        "source_run": "2026-09-15_06-12-30-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "game_bundle_source"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "run-tree.json": {
+      "encoding": "json",
+      "bytes": 2573,
+      "value": {
+        "schema": "tester-spin/run-tree/v1",
+        "provider": "bgaming",
+        "game": "zeus-goes-wild",
+        "scope": "observed_trajectories",
+        "exact_remote_outcome_reproducible": false,
+        "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
+        "trajectories": [
+          {
+            "id": "9c651bc22f4865ff2ce2",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": false,
+                "validated": false,
+                "executable": false,
+                "discovery_state": "REJECTED_51100",
+                "wire_method": "play",
+                "request_options": {
+                  "bet_type": "bet"
+                },
+                "source": "game_bundle_source",
+                "evidence_level": "REMOTE_REJECTION",
+                "execution_state": "REJECTED_REMOTE"
+              }
+            },
+            "attempt": 1,
+            "reported_terminal": false,
+            "reported_ok": false,
+            "sequence_status": "SINGLE_EXCHANGE",
+            "steps": [
+              {
+                "label": "rpc-error",
+                "directory": "SPIN/attempt-001",
+                "request": [
+                  {
+                    "path": "SPIN/attempt-001/rpc-error-request.json",
+                    "sha256": "48cea05966194c967ac3ad58359fc509d84b41d495f4197ce24ecf5850fab0f9",
+                    "bytes": 203,
+                    "kind": "request"
+                  }
+                ],
+                "response": [
+                  {
+                    "path": "SPIN/attempt-001/rpc-error-response.json",
+                    "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                    "bytes": 136,
+                    "kind": "response"
+                  }
+                ],
+                "id": "9c651bc22f4865ff2ce2:0",
+                "parent_id": "9c651bc22f4865ff2ce2",
+                "observed_response": {
+                  "id": "x",
+                  "jsonrpc": "2.0",
+                  "error": {
+                    "code": 51100,
+                    "message": "Something went wrong. Refresh the page."
+                  }
+                }
+              }
+            ],
+            "events": [],
+            "gaps": [],
+            "offline_replay_ready": true
+          }
+        ],
+        "announced_branches": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          }
+        ]
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 528,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "zeus-goes-wild",
+          "name": "Zeus Goes Wild",
+          "identifier": "ZeusGoesWild"
+        },
+        "generated_at": "2026-09-15T09:12:44+00:00",
+        "source_run": "2026-09-15_06-12-30-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {},
+        "transitions": []
+      }
+    },
+    "wager-catalog.json": {
+      "encoding": "json",
+      "bytes": 1053,
+      "value": {
+        "schema": "tester-spin/bgaming-wager-catalog/v1",
+        "policy": {
+          "coverage": "Use the minimum provider-advertised wager for exhaustive protocol/path traversal; never invent a lower wager.",
+          "sampling": "Preserve default and full wager domain so future statistical sampling can be scheduled independently per path.",
+          "purchase_identity": "purchased_feature and purchased_feature_level are scoped to PURCHASE_* modes and are not global spin-option dimensions."
+        },
+        "plans": [
+          {
+            "default_bet": 100.0,
+            "coverage_bet": 10.0,
+            "available_bets": [
+              10.0,
+              20.0,
+              30.0,
+              50.0,
+              70.0,
+              100.0,
+              140.0,
+              200.0,
+              300.0,
+              500.0,
+              700.0,
+              1000.0,
+              1500.0,
+              2500.0,
+              5000.0,
+              10000.0,
+              20000.0,
+              32500.0
+            ],
+            "balance": 100000.0,
+            "source": "result.config.bet_limits:min",
+            "evidence": "init-response.json",
+            "purchase_costs": []
+          }
+        ]
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
