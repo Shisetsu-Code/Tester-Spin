@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-14T04:49:16+00:00",
-  "source_commit": "4ec388284beff71637abd35983ad815cc048afc8",
+  "published_at": "2026-09-15T08:20:38+00:00",
+  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
   "provider": "bgaming",
   "game": {
     "slug": "fire-lightning",
@@ -24,14 +24,17 @@
         "id": "SPIN",
         "kind": "SPIN",
         "observed": true,
-        "wire_command": "spin"
+        "wire_command": "spin",
+        "evidence_level": "REMOTE_EXECUTION",
+        "execution_state": "PROVEN_TERMINAL",
+        "validated": true
       }
     ],
-    "started_at": "2026-09-14T04:49:11+00:00",
-    "finished_at": "2026-09-14T04:49:16+00:00",
-    "elapsed_ms": 4140.999999995984,
+    "started_at": "2026-09-15T08:20:27+00:00",
+    "finished_at": "2026-09-15T08:20:31+00:00",
+    "elapsed_ms": 4328.9999999979045,
     "error": "",
-    "run_dir": "2026-09-14_01-49-11-bgaming-http-api-v2",
+    "run_dir": "2026-09-15_05-20-27-bgaming-http-api-v2",
     "attempts": [
       {
         "number": 1,
@@ -41,7 +44,7 @@
         "provider_bl": null,
         "provider_pur": null,
         "status_code": 200,
-        "elapsed_ms": 483.99999999674037,
+        "elapsed_ms": 312.9999999946449,
         "symbol": "FireLightning",
         "endpoint": "https://demo.bgaming-network.com/api/FireLightning/2366879/<session>",
         "na": "closed",
@@ -49,7 +52,7 @@
         "wire_steps": 1,
         "warning": "",
         "error": "",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fire Lightning\\tests\\2026-09-14_01-49-11-bgaming-http-api-v2\\SPIN\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fire Lightning\\tests\\2026-09-15_05-20-27-bgaming-http-api-v2\\SPIN\\attempt-001"
       }
     ],
     "samples_per_path": 1,
@@ -70,11 +73,11 @@
       "diagnostics": []
     }
   },
-  "artifact_bytes_embedded": 208445,
+  "artifact_bytes_embedded": 234140,
   "artifacts": {
     "analysis/game-structure.json": {
       "encoding": "json",
-      "bytes": 158299,
+      "bytes": 176728,
       "value": {
         "schema": "tester-spin/game-structure/v1",
         "metadata": {
@@ -83,14 +86,15 @@
           "game_identifier": "fire-lightning",
           "slug": "fire-lightning",
           "bundle_fingerprint": "",
-          "generated_at": "2026-09-14T04:49:11+00:00",
+          "generated_at": "2026-09-15T08:20:31+00:00",
           "compatibility": "unverified",
           "source_evidence_summary": {
             "capture": "BGaming JSON requests/responses at transport boundary",
             "diagnostics": []
           },
           "merged_runs": [
-            "run:ee9db52ee961721d61d28f22"
+            "run:ee9db52ee961721d61d28f22",
+            "run:4d5c208e1a1cdd6a7d8595aa"
           ],
           "previous_revisions": []
         },
@@ -195,7 +199,7 @@
               "executed": true,
               "outcome_observed": false,
               "outcome_derived": false,
-              "attempts": 1,
+              "attempts": 2,
               "successful_samples": 0
             },
             "unresolved_reason": "No wire outcome observed"
@@ -247,7 +251,7 @@
               "executed": true,
               "outcome_observed": false,
               "outcome_derived": false,
-              "attempts": 1,
+              "attempts": 2,
               "successful_samples": 0
             },
             "unresolved_reason": "No wire outcome observed"
@@ -258,18 +262,18 @@
           "request_contracts:556bdd2c4bcd77ccae132402": {
             "id": "request_contracts:556bdd2c4bcd77ccae132402",
             "schema": {
-              "samples": 1,
+              "samples": 2,
               "observed_types": {
-                "object": 1
+                "object": 2
               },
               "nullable": false,
               "confidence": "observed_only",
               "role": "unknown",
               "properties": {
                 "command": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "string": 1
+                    "string": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -280,24 +284,24 @@
                   "values_bounded": true,
                   "variability": "constant_in_observations",
                   "enum_exhaustive": false,
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "extra_data": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "round_series_id": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -308,14 +312,14 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
@@ -331,7 +335,7 @@
                 }
               }
             ],
-            "observations": 1,
+            "observations": 2,
             "evidence": [
               "evidence:61209ba2f64ca3062d6d5913"
             ],
@@ -341,18 +345,18 @@
           "request_contracts:17a575cfea20759840bf0745": {
             "id": "request_contracts:17a575cfea20759840bf0745",
             "schema": {
-              "samples": 1,
+              "samples": 2,
               "observed_types": {
-                "object": 1
+                "object": 2
               },
               "nullable": false,
               "confidence": "observed_only",
               "role": "unknown",
               "properties": {
                 "command": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "string": 1
+                    "string": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -363,33 +367,33 @@
                   "values_bounded": true,
                   "variability": "constant_in_observations",
                   "enum_exhaustive": false,
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "options": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "bets": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "choice",
                       "properties": {
                         "0": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -400,15 +404,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "1": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -419,15 +423,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "2": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -438,15 +442,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "3": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -457,15 +461,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "4": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -476,15 +480,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "5": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -495,15 +499,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "6": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -514,15 +518,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "7": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -533,15 +537,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "8": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -552,15 +556,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "9": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -571,15 +575,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "10": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -590,15 +594,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "11": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -609,15 +613,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "12": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -628,15 +632,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "13": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -647,15 +651,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "14": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -666,15 +670,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "15": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -685,15 +689,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "16": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -704,15 +708,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "17": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -723,15 +727,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "18": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -742,15 +746,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "19": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -761,38 +765,38 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "extra_data": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "round_series_id": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -803,33 +807,34 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "client_seed": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "observed_values": [
-                        67252
+                        67252,
+                        40037
                       ],
                       "values_bounded": true,
-                      "variability": "constant_in_observations",
+                      "variability": "variable",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
@@ -868,9 +873,40 @@
                   "round_series_id": "[runtime:round_series_id]",
                   "client_seed": 67252
                 }
+              },
+              {
+                "command": "spin",
+                "options": {
+                  "bets": {
+                    "0": 1,
+                    "1": 1,
+                    "2": 1,
+                    "3": 1,
+                    "4": 1,
+                    "5": 1,
+                    "6": 1,
+                    "7": 1,
+                    "8": 1,
+                    "9": 1,
+                    "10": 1,
+                    "11": 1,
+                    "12": 1,
+                    "13": 1,
+                    "14": 1,
+                    "15": 1,
+                    "16": 1,
+                    "17": 1,
+                    "18": 1,
+                    "19": 1
+                  }
+                },
+                "extra_data": {
+                  "round_series_id": "[runtime:round_series_id]",
+                  "client_seed": 40037
+                }
               }
             ],
-            "observations": 1,
+            "observations": 2,
             "evidence": [
               "evidence:61209ba2f64ca3062d6d5913"
             ],
@@ -882,27 +918,27 @@
           "response_contracts:69cdcb494a1ec0a5024670bd": {
             "id": "response_contracts:69cdcb494a1ec0a5024670bd",
             "schema": {
-              "samples": 1,
+              "samples": 2,
               "observed_types": {
-                "object": 1
+                "object": 2
               },
               "nullable": false,
               "confidence": "observed_only",
               "role": "unknown",
               "properties": {
                 "options": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "line_bets": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -914,9 +950,9 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 7,
+                        "samples": 14,
                         "observed_types": {
-                          "integer": 7
+                          "integer": 14
                         },
                         "nullable": false,
                         "confidence": "observed_only",
@@ -934,15 +970,15 @@
                         "variability": "variable",
                         "enum_exhaustive": false
                       },
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "default_bet": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -953,24 +989,24 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "scatter_bet_factors": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "3": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -981,15 +1017,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "4": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1000,15 +1036,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "5": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1019,31 +1055,31 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "paytable": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "[\"s0\", \"s0\", \"s0\", \"s0\", \"s0\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1054,15 +1090,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s0\", \"s0\", \"s0\", \"s0\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1073,15 +1109,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s0\", \"s0\", \"s0\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1092,15 +1128,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s1\", \"s1\", \"s1\", \"s1\", \"s1\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1111,15 +1147,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s1\", \"s1\", \"s1\", \"s1\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1130,15 +1166,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s1\", \"s1\", \"s1\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1149,15 +1185,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s2\", \"s2\", \"s2\", \"s2\", \"s2\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1168,15 +1204,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s2\", \"s2\", \"s2\", \"s2\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1187,15 +1223,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s2\", \"s2\", \"s2\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1206,15 +1242,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s3\", \"s3\", \"s3\", \"s3\", \"s3\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1225,15 +1261,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s3\", \"s3\", \"s3\", \"s3\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1244,15 +1280,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s3\", \"s3\", \"s3\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1263,15 +1299,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s4\", \"s4\", \"s4\", \"s4\", \"s4\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1282,15 +1318,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s4\", \"s4\", \"s4\", \"s4\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1301,15 +1337,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s4\", \"s4\", \"s4\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1320,15 +1356,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s5\", \"s5\", \"s5\", \"s5\", \"s5\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1339,15 +1375,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s5\", \"s5\", \"s5\", \"s5\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1358,15 +1394,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s5\", \"s5\", \"s5\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1377,15 +1413,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s6\", \"s6\", \"s6\", \"s6\", \"s6\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1396,15 +1432,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s6\", \"s6\", \"s6\", \"s6\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1415,15 +1451,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s6\", \"s6\", \"s6\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1434,15 +1470,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s7\", \"s7\", \"s7\", \"s7\", \"s7\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1453,15 +1489,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s7\", \"s7\", \"s7\", \"s7\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1472,15 +1508,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s7\", \"s7\", \"s7\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1491,15 +1527,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s8\", \"s8\", \"s8\", \"s8\", \"s8\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1510,15 +1546,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s8\", \"s8\", \"s8\", \"s8\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1529,15 +1565,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s8\", \"s8\", \"s8\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1548,15 +1584,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s9\", \"s9\", \"s9\", \"s9\", \"s9\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1567,15 +1603,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s9\", \"s9\", \"s9\", \"s9\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1586,15 +1622,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s9\", \"s9\", \"s9\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1605,15 +1641,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s10\", \"s10\", \"s10\", \"s10\", \"s10\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1624,15 +1660,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s10\", \"s10\", \"s10\", \"s10\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1643,15 +1679,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s10\", \"s10\", \"s10\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1662,15 +1698,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s11\", \"s11\", \"s11\", \"s11\", \"s11\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1681,15 +1717,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s11\", \"s11\", \"s11\", \"s11\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1700,15 +1736,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"s11\", \"s11\", \"s11\"]": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1719,22 +1755,22 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "lines": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1746,9 +1782,9 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 20,
+                        "samples": 40,
                         "observed_types": {
-                          "array": 20
+                          "array": 40
                         },
                         "nullable": false,
                         "confidence": "observed_only",
@@ -1760,9 +1796,9 @@
                         "position_semantics": "unknown",
                         "collection_role": "unknown; does not establish choices",
                         "items": {
-                          "samples": 100,
+                          "samples": 200,
                           "observed_types": {
-                            "integer": 100
+                            "integer": 200
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1777,15 +1813,15 @@
                           "enum_exhaustive": false
                         }
                       },
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "reels": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1797,9 +1833,9 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 5,
+                        "samples": 10,
                         "observed_types": {
-                          "array": 5
+                          "array": 10
                         },
                         "nullable": false,
                         "confidence": "observed_only",
@@ -1811,9 +1847,9 @@
                         "position_semantics": "unknown",
                         "collection_role": "unknown; does not establish choices",
                         "items": {
-                          "samples": 198,
+                          "samples": 396,
                           "observed_types": {
-                            "string": 198
+                            "string": 396
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1833,15 +1869,15 @@
                           "enum_exhaustive": false
                         }
                       },
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "freespin_reels": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1853,9 +1889,9 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 5,
+                        "samples": 10,
                         "observed_types": {
-                          "array": 5
+                          "array": 10
                         },
                         "nullable": false,
                         "confidence": "observed_only",
@@ -1867,9 +1903,9 @@
                         "position_semantics": "unknown",
                         "collection_role": "unknown; does not establish choices",
                         "items": {
-                          "samples": 191,
+                          "samples": 382,
                           "observed_types": {
-                            "string": 191
+                            "string": 382
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1889,15 +1925,15 @@
                           "enum_exhaustive": false
                         }
                       },
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "column_height": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1908,24 +1944,24 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "currency": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "code": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "string": 1
+                            "string": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1936,15 +1972,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "symbol": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "string": 1
+                            "string": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1955,15 +1991,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "subunits": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1974,15 +2010,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "exponent": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1993,31 +2029,31 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "digit_options": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "bet": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2028,15 +2064,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "paytable": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2047,15 +2083,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "balance": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2066,38 +2102,38 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "game": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "state": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "string": 1
+                        "string": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -2108,22 +2144,22 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "balance": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "integer": 1
+                    "integer": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -2134,24 +2170,24 @@
                   "values_bounded": true,
                   "variability": "constant_in_observations",
                   "enum_exhaustive": false,
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "extra_data": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "provable_data": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -2163,29 +2199,30 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 1,
+                        "samples": 2,
                         "observed_types": {
-                          "object": 1
+                          "object": 2
                         },
                         "nullable": false,
                         "confidence": "observed_only",
                         "role": "unknown",
                         "properties": {
                           "hash": {
-                            "samples": 1,
+                            "samples": 2,
                             "observed_types": {
-                              "string": 1
+                              "string": 2
                             },
                             "nullable": false,
                             "confidence": "observed_only",
                             "role": "unknown",
                             "observed_values": [
-                              "244a165f64ed453582a1b06c9fa8b5dd49ee98f2cfb2d8009aaa93336f0404a5"
+                              "244a165f64ed453582a1b06c9fa8b5dd49ee98f2cfb2d8009aaa93336f0404a5",
+                              "ab5f7497ddc1eacfa6f0ce8b15165bb023aa623a111f0fb442b7d053bb607989"
                             ],
                             "values_bounded": true,
-                            "variability": "constant_in_observations",
+                            "variability": "variable",
                             "enum_exhaustive": false,
-                            "parent_samples": 1,
+                            "parent_samples": 2,
                             "optional_observed": false,
                             "present_in_all_observed": true,
                             "required": null
@@ -2193,22 +2230,22 @@
                         },
                         "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
                       },
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "available_commands": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "array": 1
+                    "array": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -2220,9 +2257,9 @@
                   "position_semantics": "unknown",
                   "collection_role": "unknown; does not establish choices",
                   "items": {
-                    "samples": 2,
+                    "samples": 4,
                     "observed_types": {
-                      "string": 2
+                      "string": 4
                     },
                     "nullable": false,
                     "confidence": "observed_only",
@@ -2235,7 +2272,7 @@
                     "variability": "variable",
                     "enum_exhaustive": false
                   },
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
@@ -2882,9 +2919,648 @@
                   "init",
                   "spin"
                 ]
+              },
+              {
+                "options": {
+                  "line_bets": [
+                    1,
+                    5,
+                    10,
+                    50,
+                    100,
+                    200,
+                    250
+                  ],
+                  "default_bet": 1,
+                  "scatter_bet_factors": {
+                    "3": 2,
+                    "4": 10,
+                    "5": 100
+                  },
+                  "paytable": {
+                    "[\"s0\", \"s0\", \"s0\", \"s0\", \"s0\"]": 1000,
+                    "[\"s0\", \"s0\", \"s0\", \"s0\"]": 500,
+                    "[\"s0\", \"s0\", \"s0\"]": 50,
+                    "[\"s1\", \"s1\", \"s1\", \"s1\", \"s1\"]": 400,
+                    "[\"s1\", \"s1\", \"s1\", \"s1\"]": 100,
+                    "[\"s1\", \"s1\", \"s1\"]": 40,
+                    "[\"s2\", \"s2\", \"s2\", \"s2\", \"s2\"]": 400,
+                    "[\"s2\", \"s2\", \"s2\", \"s2\"]": 100,
+                    "[\"s2\", \"s2\", \"s2\"]": 40,
+                    "[\"s3\", \"s3\", \"s3\", \"s3\", \"s3\"]": 300,
+                    "[\"s3\", \"s3\", \"s3\", \"s3\"]": 50,
+                    "[\"s3\", \"s3\", \"s3\"]": 30,
+                    "[\"s4\", \"s4\", \"s4\", \"s4\", \"s4\"]": 300,
+                    "[\"s4\", \"s4\", \"s4\", \"s4\"]": 50,
+                    "[\"s4\", \"s4\", \"s4\"]": 30,
+                    "[\"s5\", \"s5\", \"s5\", \"s5\", \"s5\"]": 200,
+                    "[\"s5\", \"s5\", \"s5\", \"s5\"]": 40,
+                    "[\"s5\", \"s5\", \"s5\"]": 20,
+                    "[\"s6\", \"s6\", \"s6\", \"s6\", \"s6\"]": 200,
+                    "[\"s6\", \"s6\", \"s6\", \"s6\"]": 40,
+                    "[\"s6\", \"s6\", \"s6\"]": 20,
+                    "[\"s7\", \"s7\", \"s7\", \"s7\", \"s7\"]": 100,
+                    "[\"s7\", \"s7\", \"s7\", \"s7\"]": 25,
+                    "[\"s7\", \"s7\", \"s7\"]": 15,
+                    "[\"s8\", \"s8\", \"s8\", \"s8\", \"s8\"]": 100,
+                    "[\"s8\", \"s8\", \"s8\", \"s8\"]": 25,
+                    "[\"s8\", \"s8\", \"s8\"]": 15,
+                    "[\"s9\", \"s9\", \"s9\", \"s9\", \"s9\"]": 80,
+                    "[\"s9\", \"s9\", \"s9\", \"s9\"]": 20,
+                    "[\"s9\", \"s9\", \"s9\"]": 10,
+                    "[\"s10\", \"s10\", \"s10\", \"s10\", \"s10\"]": 80,
+                    "[\"s10\", \"s10\", \"s10\", \"s10\"]": 20,
+                    "[\"s10\", \"s10\", \"s10\"]": 10,
+                    "[\"s11\", \"s11\", \"s11\", \"s11\", \"s11\"]": 80,
+                    "[\"s11\", \"s11\", \"s11\", \"s11\"]": 20,
+                    "[\"s11\", \"s11\", \"s11\"]": 10
+                  },
+                  "lines": [
+                    [
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ],
+                    [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ],
+                    [
+                      0,
+                      1,
+                      2,
+                      1,
+                      0
+                    ],
+                    [
+                      2,
+                      1,
+                      0,
+                      1,
+                      2
+                    ],
+                    [
+                      0,
+                      0,
+                      1,
+                      0,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      1,
+                      2,
+                      2
+                    ],
+                    [
+                      1,
+                      0,
+                      0,
+                      0,
+                      1
+                    ],
+                    [
+                      1,
+                      2,
+                      2,
+                      2,
+                      1
+                    ],
+                    [
+                      0,
+                      1,
+                      1,
+                      1,
+                      0
+                    ],
+                    [
+                      2,
+                      1,
+                      1,
+                      1,
+                      2
+                    ],
+                    [
+                      0,
+                      1,
+                      0,
+                      1,
+                      0
+                    ],
+                    [
+                      2,
+                      1,
+                      2,
+                      1,
+                      2
+                    ],
+                    [
+                      1,
+                      0,
+                      1,
+                      0,
+                      1
+                    ],
+                    [
+                      1,
+                      2,
+                      1,
+                      2,
+                      1
+                    ],
+                    [
+                      1,
+                      1,
+                      0,
+                      1,
+                      1
+                    ],
+                    [
+                      1,
+                      1,
+                      2,
+                      1,
+                      1
+                    ],
+                    [
+                      0,
+                      2,
+                      0,
+                      2,
+                      0
+                    ],
+                    [
+                      2,
+                      0,
+                      2,
+                      0,
+                      2
+                    ],
+                    [
+                      1,
+                      0,
+                      2,
+                      0,
+                      1
+                    ]
+                  ],
+                  "reels": [
+                    [
+                      "s8",
+                      "s5",
+                      "s5",
+                      "s5",
+                      "s8",
+                      "s10",
+                      "s0",
+                      "s1",
+                      "s1",
+                      "s8",
+                      "s6",
+                      "s6",
+                      "s6",
+                      "s7",
+                      "s10",
+                      "s9",
+                      "s3",
+                      "s3",
+                      "s3",
+                      "s8",
+                      "s10",
+                      "s4",
+                      "s4",
+                      "s4",
+                      "s9",
+                      "s11",
+                      "s7",
+                      "s12",
+                      "s7",
+                      "s11",
+                      "s9",
+                      "s11",
+                      "s7",
+                      "s2",
+                      "s2",
+                      "s10",
+                      "s10",
+                      "s9"
+                    ],
+                    [
+                      "s3",
+                      "s3",
+                      "s0",
+                      "s1",
+                      "s1",
+                      "s1",
+                      "s4",
+                      "s4",
+                      "s13",
+                      "s11",
+                      "s7",
+                      "s9",
+                      "s5",
+                      "s5",
+                      "s5",
+                      "s13",
+                      "s10",
+                      "s9",
+                      "s11",
+                      "s12",
+                      "s11",
+                      "s8",
+                      "s2",
+                      "s2",
+                      "s8",
+                      "s10",
+                      "s11",
+                      "s7",
+                      "s9",
+                      "s6",
+                      "s6",
+                      "s6",
+                      "s10",
+                      "s9",
+                      "s0",
+                      "s10",
+                      "s7",
+                      "s13"
+                    ],
+                    [
+                      "s2",
+                      "s2",
+                      "s1",
+                      "s1",
+                      "s0",
+                      "s7",
+                      "s9",
+                      "s4",
+                      "s4",
+                      "s8",
+                      "s12",
+                      "s10",
+                      "s3",
+                      "s3",
+                      "s3",
+                      "s8",
+                      "s11",
+                      "s11",
+                      "s7",
+                      "s8",
+                      "s5",
+                      "s5",
+                      "s11",
+                      "s8",
+                      "s0",
+                      "s9",
+                      "s6",
+                      "s6",
+                      "s10",
+                      "s9",
+                      "s11",
+                      "s13",
+                      "s13",
+                      "s13",
+                      "s9",
+                      "s6",
+                      "s6",
+                      "s6",
+                      "s13",
+                      "s5",
+                      "s5",
+                      "s5"
+                    ],
+                    [
+                      "s2",
+                      "s2",
+                      "s3",
+                      "s3",
+                      "s12",
+                      "s4",
+                      "s4",
+                      "s5",
+                      "s13",
+                      "s8",
+                      "s8",
+                      "s9",
+                      "s7",
+                      "s7",
+                      "s0",
+                      "s9",
+                      "s8",
+                      "s10",
+                      "s1",
+                      "s1",
+                      "s10",
+                      "s8",
+                      "s7",
+                      "s9",
+                      "s8",
+                      "s6",
+                      "s6",
+                      "s6",
+                      "s7",
+                      "s7",
+                      "s9",
+                      "s11",
+                      "s11",
+                      "s5",
+                      "s5",
+                      "s5",
+                      "s9",
+                      "s0"
+                    ],
+                    [
+                      "s2",
+                      "s8",
+                      "s10",
+                      "s0",
+                      "s3",
+                      "s3",
+                      "s4",
+                      "s4",
+                      "s8",
+                      "s11",
+                      "s12",
+                      "s9",
+                      "s11",
+                      "s13",
+                      "s2",
+                      "s1",
+                      "s1",
+                      "s7",
+                      "s13",
+                      "s5",
+                      "s5",
+                      "s5",
+                      "s0",
+                      "s9",
+                      "s10",
+                      "s6",
+                      "s6",
+                      "s6",
+                      "s9",
+                      "s7",
+                      "s10",
+                      "s9",
+                      "s10",
+                      "s9",
+                      "s12",
+                      "s11",
+                      "s10",
+                      "s11",
+                      "s11",
+                      "s3",
+                      "s3",
+                      "s3"
+                    ]
+                  ],
+                  "freespin_reels": [
+                    [
+                      "s8",
+                      "s5",
+                      "s5",
+                      "s5",
+                      "s8",
+                      "s10",
+                      "s0",
+                      "s2",
+                      "s2",
+                      "s8",
+                      "s6",
+                      "s6",
+                      "s6",
+                      "s7",
+                      "s10",
+                      "s9",
+                      "s3",
+                      "s3",
+                      "s3",
+                      "s8",
+                      "s4",
+                      "s4",
+                      "s4",
+                      "s9",
+                      "s11",
+                      "s7",
+                      "s12",
+                      "s7",
+                      "s11",
+                      "s9",
+                      "s11",
+                      "s7",
+                      "s1",
+                      "s9",
+                      "s10",
+                      "s10",
+                      "s9"
+                    ],
+                    [
+                      "s3",
+                      "s3",
+                      "s0",
+                      "s2",
+                      "s2",
+                      "s2",
+                      "s4",
+                      "s4",
+                      "s13",
+                      "s11",
+                      "s7",
+                      "s9",
+                      "s5",
+                      "s5",
+                      "s13",
+                      "s10",
+                      "s9",
+                      "s11",
+                      "s12",
+                      "s11",
+                      "s8",
+                      "s1",
+                      "s1",
+                      "s8",
+                      "s10",
+                      "s11",
+                      "s7",
+                      "s9",
+                      "s6",
+                      "s6",
+                      "s6",
+                      "s10",
+                      "s9",
+                      "s0",
+                      "s10",
+                      "s7",
+                      "s13"
+                    ],
+                    [
+                      "s1",
+                      "s1",
+                      "s2",
+                      "s2",
+                      "s0",
+                      "s7",
+                      "s9",
+                      "s4",
+                      "s4",
+                      "s8",
+                      "s12",
+                      "s10",
+                      "s3",
+                      "s3",
+                      "s8",
+                      "s11",
+                      "s11",
+                      "s7",
+                      "s8",
+                      "s5",
+                      "s5",
+                      "s11",
+                      "s8",
+                      "s0",
+                      "s9",
+                      "s6",
+                      "s6",
+                      "s10",
+                      "s9",
+                      "s11",
+                      "s13",
+                      "s9",
+                      "s6",
+                      "s6",
+                      "s6",
+                      "s13",
+                      "s5",
+                      "s5",
+                      "s5"
+                    ],
+                    [
+                      "s1",
+                      "s1",
+                      "s3",
+                      "s3",
+                      "s12",
+                      "s4",
+                      "s4",
+                      "s5",
+                      "s13",
+                      "s8",
+                      "s8",
+                      "s9",
+                      "s7",
+                      "s7",
+                      "s0",
+                      "s9",
+                      "s8",
+                      "s10",
+                      "s2",
+                      "s2",
+                      "s10",
+                      "s8",
+                      "s7",
+                      "s9",
+                      "s8",
+                      "s6",
+                      "s6",
+                      "s6",
+                      "s7",
+                      "s7",
+                      "s9",
+                      "s11",
+                      "s11",
+                      "s13",
+                      "s5",
+                      "s5",
+                      "s5",
+                      "s9",
+                      "s0"
+                    ],
+                    [
+                      "s1",
+                      "s8",
+                      "s10",
+                      "s0",
+                      "s3",
+                      "s3",
+                      "s4",
+                      "s4",
+                      "s8",
+                      "s11",
+                      "s12",
+                      "s9",
+                      "s11",
+                      "s1",
+                      "s2",
+                      "s2",
+                      "s7",
+                      "s5",
+                      "s5",
+                      "s0",
+                      "s9",
+                      "s10",
+                      "s6",
+                      "s6",
+                      "s6",
+                      "s9",
+                      "s7",
+                      "s10",
+                      "s9",
+                      "s10",
+                      "s9",
+                      "s12",
+                      "s11",
+                      "s10",
+                      "s11",
+                      "s11",
+                      "s3",
+                      "s3",
+                      "s3"
+                    ]
+                  ],
+                  "column_height": 3,
+                  "currency": {
+                    "code": "FUN",
+                    "symbol": "FUN",
+                    "subunits": 100,
+                    "exponent": 2
+                  },
+                  "digit_options": {
+                    "bet": 2,
+                    "paytable": 2,
+                    "balance": 2
+                  }
+                },
+                "game": {
+                  "state": "idle"
+                },
+                "balance": 100000,
+                "extra_data": {
+                  "provable_data": [
+                    {
+                      "hash": "ab5f7497ddc1eacfa6f0ce8b15165bb023aa623a111f0fb442b7d053bb607989"
+                    }
+                  ]
+                },
+                "available_commands": [
+                  "init",
+                  "spin"
+                ]
               }
             ],
-            "observations": 1,
+            "observations": 2,
             "evidence": [
               "evidence:61209ba2f64ca3062d6d5913"
             ],
@@ -2894,36 +3570,36 @@
           "response_contracts:1fa15eb851873fd05cc1b8c3": {
             "id": "response_contracts:1fa15eb851873fd05cc1b8c3",
             "schema": {
-              "samples": 1,
+              "samples": 2,
               "observed_types": {
-                "object": 1
+                "object": 2
               },
               "nullable": false,
               "confidence": "observed_only",
               "role": "unknown",
               "properties": {
                 "bets": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "lines": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "0": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2934,15 +3610,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "1": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2953,15 +3629,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "2": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2972,15 +3648,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "3": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2991,15 +3667,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "4": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3010,15 +3686,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "5": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3029,15 +3705,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "6": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3048,15 +3724,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "7": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3067,15 +3743,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "8": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3086,15 +3762,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "9": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3105,15 +3781,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "10": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3124,15 +3800,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "11": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3143,15 +3819,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "12": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3162,15 +3838,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "13": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3181,15 +3857,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "14": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3200,15 +3876,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "15": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3219,15 +3895,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "16": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3238,15 +3914,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "17": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3257,15 +3933,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "18": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3276,15 +3952,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "19": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3295,38 +3971,38 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "game": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "span_indices": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -3338,9 +4014,9 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 5,
+                        "samples": 10,
                         "observed_types": {
-                          "integer": 5
+                          "integer": 10
                         },
                         "nullable": false,
                         "confidence": "observed_only",
@@ -3350,13 +4026,16 @@
                           42,
                           4,
                           8,
-                          36
+                          36,
+                          34,
+                          13,
+                          23
                         ],
                         "values_bounded": true,
                         "variability": "variable",
                         "enum_exhaustive": false
                       },
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
@@ -3421,24 +4100,24 @@
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
-                      "optional_observed": false,
-                      "present_in_all_observed": true,
+                      "parent_samples": 2,
+                      "optional_observed": true,
+                      "present_in_all_observed": false,
                       "required": null
                     },
                     "wilds": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "indices": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "array": 1
+                            "array": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -3450,9 +4129,9 @@
                           "position_semantics": "unknown",
                           "collection_role": "unknown; does not establish choices",
                           "items": {
-                            "samples": 1,
+                            "samples": 2,
                             "observed_types": {
-                              "array": 1
+                              "array": 2
                             },
                             "nullable": false,
                             "confidence": "observed_only",
@@ -3464,38 +4143,40 @@
                             "position_semantics": "unknown",
                             "collection_role": "unknown; does not establish choices",
                             "items": {
-                              "samples": 2,
+                              "samples": 4,
                               "observed_types": {
-                                "integer": 2
+                                "integer": 4
                               },
                               "nullable": false,
                               "confidence": "observed_only",
                               "role": "unknown",
                               "observed_values": [
                                 0,
-                                3
+                                3,
+                                2,
+                                1
                               ],
                               "values_bounded": true,
                               "variability": "variable",
                               "enum_exhaustive": false
                             }
                           },
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "state": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "string": 1
+                        "string": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -3506,15 +4187,15 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "action": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "string": 1
+                        "string": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -3525,22 +4206,22 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "balance": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "integer": 1
+                    "integer": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -3551,24 +4232,24 @@
                   "values_bounded": true,
                   "variability": "constant_in_observations",
                   "enum_exhaustive": false,
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "extra_data": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "provable_data": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -3580,38 +4261,40 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 2,
+                        "samples": 4,
                         "observed_types": {
-                          "object": 2
+                          "object": 4
                         },
                         "nullable": false,
                         "confidence": "observed_only",
                         "role": "unknown",
                         "properties": {
                           "hash": {
-                            "samples": 2,
+                            "samples": 4,
                             "observed_types": {
-                              "string": 2
+                              "string": 4
                             },
                             "nullable": false,
                             "confidence": "observed_only",
                             "role": "unknown",
                             "observed_values": [
                               "68855dc373d3b5b7b5f4559048a70d1835c87931d7ac08495a2e009b9ab6b0ad",
-                              "244a165f64ed453582a1b06c9fa8b5dd49ee98f2cfb2d8009aaa93336f0404a5"
+                              "244a165f64ed453582a1b06c9fa8b5dd49ee98f2cfb2d8009aaa93336f0404a5",
+                              "bfc67548a773e51ea01e2e877bb2978da8615cec5cfb07313064d47367761e0d",
+                              "ab5f7497ddc1eacfa6f0ce8b15165bb023aa623a111f0fb442b7d053bb607989"
                             ],
                             "values_bounded": true,
                             "variability": "variable",
                             "enum_exhaustive": false,
-                            "parent_samples": 2,
+                            "parent_samples": 4,
                             "optional_observed": false,
                             "present_in_all_observed": true,
                             "required": null
                           },
                           "secret": {
-                            "samples": 1,
+                            "samples": 2,
                             "observed_types": {
-                              "string": 1
+                              "string": 2
                             },
                             "nullable": false,
                             "confidence": "observed_only",
@@ -3622,45 +4305,47 @@
                             "values_bounded": true,
                             "variability": "constant_in_observations",
                             "enum_exhaustive": false,
-                            "parent_samples": 2,
+                            "parent_samples": 4,
                             "optional_observed": true,
                             "present_in_all_observed": false,
                             "required": null
                           },
                           "client_seed": {
-                            "samples": 1,
+                            "samples": 2,
                             "observed_types": {
-                              "string": 1
+                              "string": 2
                             },
                             "nullable": false,
                             "confidence": "observed_only",
                             "role": "unknown",
                             "observed_values": [
-                              "67252"
+                              "67252",
+                              "40037"
                             ],
                             "values_bounded": true,
-                            "variability": "constant_in_observations",
+                            "variability": "variable",
                             "enum_exhaustive": false,
-                            "parent_samples": 2,
+                            "parent_samples": 4,
                             "optional_observed": true,
                             "present_in_all_observed": false,
                             "required": null
                           },
                           "result": {
-                            "samples": 1,
+                            "samples": 2,
                             "observed_types": {
-                              "string": 1
+                              "string": 2
                             },
                             "nullable": false,
                             "confidence": "observed_only",
                             "role": "unknown",
                             "observed_values": [
-                              "{\"symbols\":[[\"s12\",\"s1\",\"s0\",\"s13\",\"s10\"],[\"s7\",\"s1\",\"s7\",\"s8\",\"s11\"],[\"s11\",\"s4\",\"s9\",\"s8\",\"s11\"]],\"card\":\"KC\"}"
+                              "{\"symbols\":[[\"s12\",\"s1\",\"s0\",\"s13\",\"s10\"],[\"s7\",\"s1\",\"s7\",\"s8\",\"s11\"],[\"s11\",\"s4\",\"s9\",\"s8\",\"s11\"]],\"card\":\"KC\"}",
+                              "{\"symbols\":[[\"s2\",\"s5\",\"s8\",\"s7\",\"s5\"],[\"s10\",\"s5\",\"s0\",\"s0\",\"s0\"],[\"s10\",\"s13\",\"s9\",\"s9\",\"s9\"]],\"card\":\"3S\"}"
                             ],
                             "values_bounded": true,
-                            "variability": "constant_in_observations",
+                            "variability": "variable",
                             "enum_exhaustive": false,
-                            "parent_samples": 2,
+                            "parent_samples": 4,
                             "optional_observed": true,
                             "present_in_all_observed": false,
                             "required": null
@@ -3668,22 +4353,22 @@
                         },
                         "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
                       },
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "available_commands": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "array": 1
+                    "array": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -3695,9 +4380,9 @@
                   "position_semantics": "unknown",
                   "collection_role": "unknown; does not establish choices",
                   "items": {
-                    "samples": 2,
+                    "samples": 4,
                     "observed_types": {
-                      "string": 2
+                      "string": 4
                     },
                     "nullable": false,
                     "confidence": "observed_only",
@@ -3710,7 +4395,7 @@
                     "variability": "variable",
                     "enum_exhaustive": false
                   },
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
@@ -3789,9 +4474,72 @@
                   "init",
                   "spin"
                 ]
+              },
+              {
+                "bets": {
+                  "lines": {
+                    "0": 1,
+                    "1": 1,
+                    "2": 1,
+                    "3": 1,
+                    "4": 1,
+                    "5": 1,
+                    "6": 1,
+                    "7": 1,
+                    "8": 1,
+                    "9": 1,
+                    "10": 1,
+                    "11": 1,
+                    "12": 1,
+                    "13": 1,
+                    "14": 1,
+                    "15": 1,
+                    "16": 1,
+                    "17": 1,
+                    "18": 1,
+                    "19": 1
+                  }
+                },
+                "game": {
+                  "span_indices": [
+                    34,
+                    13,
+                    23,
+                    13,
+                    21
+                  ],
+                  "wilds": {
+                    "indices": [
+                      [
+                        2,
+                        1
+                      ]
+                    ]
+                  },
+                  "state": "closed",
+                  "action": "spin"
+                },
+                "balance": 99980,
+                "extra_data": {
+                  "provable_data": [
+                    {
+                      "hash": "bfc67548a773e51ea01e2e877bb2978da8615cec5cfb07313064d47367761e0d"
+                    },
+                    {
+                      "hash": "ab5f7497ddc1eacfa6f0ce8b15165bb023aa623a111f0fb442b7d053bb607989",
+                      "secret": "[runtime:secret]",
+                      "client_seed": "40037",
+                      "result": "{\"symbols\":[[\"s2\",\"s5\",\"s8\",\"s7\",\"s5\"],[\"s10\",\"s5\",\"s0\",\"s0\",\"s0\"],[\"s10\",\"s13\",\"s9\",\"s9\",\"s9\"]],\"card\":\"3S\"}"
+                    }
+                  ]
+                },
+                "available_commands": [
+                  "init",
+                  "spin"
+                ]
               }
             ],
-            "observations": 1,
+            "observations": 2,
             "evidence": [
               "evidence:61209ba2f64ca3062d6d5913"
             ],
@@ -4519,7 +5267,7 @@
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 1872,
+      "bytes": 1988,
       "value": {
         "provider": "bgaming",
         "slug": "fire-lightning",
@@ -4535,14 +5283,17 @@
             "id": "SPIN",
             "kind": "SPIN",
             "observed": true,
-            "wire_command": "spin"
+            "wire_command": "spin",
+            "evidence_level": "REMOTE_EXECUTION",
+            "execution_state": "PROVEN_TERMINAL",
+            "validated": true
           }
         ],
-        "started_at": "2026-09-14T04:49:11+00:00",
-        "finished_at": "2026-09-14T04:49:16+00:00",
-        "elapsed_ms": 4140.999999995984,
+        "started_at": "2026-09-15T08:20:27+00:00",
+        "finished_at": "2026-09-15T08:20:31+00:00",
+        "elapsed_ms": 4328.9999999979045,
         "error": "",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fire Lightning\\tests\\2026-09-14_01-49-11-bgaming-http-api-v2",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fire Lightning\\tests\\2026-09-15_05-20-27-bgaming-http-api-v2",
         "attempts": [
           {
             "number": 1,
@@ -4552,7 +5303,7 @@
             "provider_bl": null,
             "provider_pur": null,
             "status_code": 200,
-            "elapsed_ms": 483.99999999674037,
+            "elapsed_ms": 312.9999999946449,
             "symbol": "FireLightning",
             "endpoint": "https://demo.bgaming-network.com/api/FireLightning/2366879/<session>",
             "na": "closed",
@@ -4560,7 +5311,7 @@
             "wire_steps": 1,
             "warning": "",
             "error": "",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fire Lightning\\tests\\2026-09-14_01-49-11-bgaming-http-api-v2\\SPIN\\attempt-001"
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fire Lightning\\tests\\2026-09-15_05-20-27-bgaming-http-api-v2\\SPIN\\attempt-001"
           }
         ],
         "samples_per_path": 1,
@@ -4619,23 +5370,23 @@
                 "evidence": [
                   {
                     "path": "SPIN/attempt-001/request.json",
-                    "sha256": "ff32e58e36bbe5cd1bcee17c4b1302972a9b6b6bd39f25712ec98271b0cf6cc5",
+                    "sha256": "12ee0fc9c2ef0a101a679c9bede91c5fb7d54b4e8d1e38e5704e80a72df5f7d4",
                     "bytes": 468
                   },
                   {
                     "path": "SPIN/attempt-001/response.json",
-                    "sha256": "ab5add7aab8c2533564e91b84f2c9df6cfb2de2c49f0b9ecfbd28cf1bc1055c8",
-                    "bytes": 1843
+                    "sha256": "d1e4b0fb709d2e6620207249205b1727a1955f1ebc62fa3c8bca550646687383",
+                    "bytes": 1737
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-request.json",
-                    "sha256": "ff32e58e36bbe5cd1bcee17c4b1302972a9b6b6bd39f25712ec98271b0cf6cc5",
+                    "sha256": "12ee0fc9c2ef0a101a679c9bede91c5fb7d54b4e8d1e38e5704e80a72df5f7d4",
                     "bytes": 468
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-response.json",
-                    "sha256": "ab5add7aab8c2533564e91b84f2c9df6cfb2de2c49f0b9ecfbd28cf1bc1055c8",
-                    "bytes": 1843
+                    "sha256": "d1e4b0fb709d2e6620207249205b1727a1955f1ebc62fa3c8bca550646687383",
+                    "bytes": 1737
                   }
                 ]
               }
@@ -4688,7 +5439,7 @@
         "balance_total": 99980,
         "game_state": "closed",
         "game_action": "spin",
-        "response_sha256": "e817ecccb7a75276"
+        "response_sha256": "59d91e300b29cb23"
       }
     },
     "SPIN/attempt-001/request.json": {
@@ -4721,14 +5472,14 @@
           }
         },
         "extra_data": {
-          "round_series_id": 1789361352906,
-          "client_seed": 67252
+          "round_series_id": 1789460428381,
+          "client_seed": 40037
         }
       }
     },
     "SPIN/attempt-001/response.json": {
       "encoding": "json",
-      "bytes": 1843,
+      "bytes": 1737,
       "value": {
         "bets": {
           "lines": {
@@ -4756,25 +5507,17 @@
         },
         "game": {
           "span_indices": [
-            27,
-            42,
-            4,
-            8,
-            36
+            34,
+            13,
+            23,
+            13,
+            21
           ],
-          "scatters": {
-            "indices": [
-              [
-                0,
-                0
-              ]
-            ]
-          },
           "wilds": {
             "indices": [
               [
-                0,
-                3
+                2,
+                1
               ]
             ]
           },
@@ -4785,13 +5528,13 @@
         "extra_data": {
           "provable_data": [
             {
-              "hash": "68855dc373d3b5b7b5f4559048a70d1835c87931d7ac08495a2e009b9ab6b0ad"
+              "hash": "bfc67548a773e51ea01e2e877bb2978da8615cec5cfb07313064d47367761e0d"
             },
             {
-              "hash": "244a165f64ed453582a1b06c9fa8b5dd49ee98f2cfb2d8009aaa93336f0404a5",
-              "secret": "{\"symbols\":[[\"s4\",\"s10\",\"s1\",\"s3\",\"s12\"],[\"s4\",\"s7\",\"s1\",\"s12\",\"s11\"],[\"s4\",\"s13\",\"s0\",\"s4\",\"s10\"],[\"s9\",\"s3\",\"s7\",\"s4\",\"s11\"],[\"s11\",\"s3\",\"s9\",\"s5\",\"s11\"],[\"s7\",\"s0\",\"s4\",\"s13\",\"s3\"],[\"s12\",\"s1\",\"s4\",\"s8\",\"s3\"],[\"s7\",\"s1\",\"s8\",\"s8\",\"s3\"],[\"s11\",\"s1\",\"s12\",\"s9\",\"s2\"],[\"s9\",\"s4\",\"s10\",\"s7\",\"s8\"],[\"s11\",\"s4\",\"s3\",\"s7\",\"s10\"],[\"s7\",\"s13\",\"s3\",\"s0\",\"s0\"]],\"card\":\"KC\",\"game\":\"FireLightning\",\"secret\":\"2ed1b5bcc94faf730b6773d7fb9610c4\"}",
-              "client_seed": "67252",
-              "result": "{\"symbols\":[[\"s12\",\"s1\",\"s0\",\"s13\",\"s10\"],[\"s7\",\"s1\",\"s7\",\"s8\",\"s11\"],[\"s11\",\"s4\",\"s9\",\"s8\",\"s11\"]],\"card\":\"KC\"}"
+              "hash": "ab5f7497ddc1eacfa6f0ce8b15165bb023aa623a111f0fb442b7d053bb607989",
+              "secret": "{\"symbols\":[[\"s9\",\"s5\",\"s8\",\"s8\",\"s2\"],[\"s11\",\"s5\",\"s0\",\"s9\",\"s1\"],[\"s7\",\"s13\",\"s9\",\"s7\",\"s1\"],[\"s2\",\"s10\",\"s6\",\"s7\",\"s7\"],[\"s2\",\"s9\",\"s6\",\"s0\",\"s13\"],[\"s10\",\"s11\",\"s10\",\"s9\",\"s5\"],[\"s10\",\"s12\",\"s9\",\"s8\",\"s5\"],[\"s9\",\"s11\",\"s11\",\"s10\",\"s5\"],[\"s8\",\"s8\",\"s13\",\"s1\",\"s0\"],[\"s5\",\"s2\",\"s13\",\"s1\",\"s9\"],[\"s5\",\"s2\",\"s13\",\"s10\",\"s10\"],[\"s5\",\"s8\",\"s9\",\"s8\",\"s6\"]],\"card\":\"3C\",\"game\":\"FireLightning\",\"secret\":\"62352960d7ac963cb457e191e8e5063b\"}",
+              "client_seed": "40037",
+              "result": "{\"symbols\":[[\"s2\",\"s5\",\"s8\",\"s7\",\"s5\"],[\"s10\",\"s5\",\"s0\",\"s0\",\"s0\"],[\"s10\",\"s13\",\"s9\",\"s9\",\"s9\"]],\"card\":\"3S\"}"
             }
           ]
         },
@@ -4831,14 +5574,14 @@
           }
         },
         "extra_data": {
-          "round_series_id": 1789361352906,
-          "client_seed": 67252
+          "round_series_id": 1789460428381,
+          "client_seed": 40037
         }
       }
     },
     "SPIN/attempt-001/step-001-response.json": {
       "encoding": "json",
-      "bytes": 1843,
+      "bytes": 1737,
       "value": {
         "bets": {
           "lines": {
@@ -4866,25 +5609,17 @@
         },
         "game": {
           "span_indices": [
-            27,
-            42,
-            4,
-            8,
-            36
+            34,
+            13,
+            23,
+            13,
+            21
           ],
-          "scatters": {
-            "indices": [
-              [
-                0,
-                0
-              ]
-            ]
-          },
           "wilds": {
             "indices": [
               [
-                0,
-                3
+                2,
+                1
               ]
             ]
           },
@@ -4895,13 +5630,13 @@
         "extra_data": {
           "provable_data": [
             {
-              "hash": "68855dc373d3b5b7b5f4559048a70d1835c87931d7ac08495a2e009b9ab6b0ad"
+              "hash": "bfc67548a773e51ea01e2e877bb2978da8615cec5cfb07313064d47367761e0d"
             },
             {
-              "hash": "244a165f64ed453582a1b06c9fa8b5dd49ee98f2cfb2d8009aaa93336f0404a5",
-              "secret": "{\"symbols\":[[\"s4\",\"s10\",\"s1\",\"s3\",\"s12\"],[\"s4\",\"s7\",\"s1\",\"s12\",\"s11\"],[\"s4\",\"s13\",\"s0\",\"s4\",\"s10\"],[\"s9\",\"s3\",\"s7\",\"s4\",\"s11\"],[\"s11\",\"s3\",\"s9\",\"s5\",\"s11\"],[\"s7\",\"s0\",\"s4\",\"s13\",\"s3\"],[\"s12\",\"s1\",\"s4\",\"s8\",\"s3\"],[\"s7\",\"s1\",\"s8\",\"s8\",\"s3\"],[\"s11\",\"s1\",\"s12\",\"s9\",\"s2\"],[\"s9\",\"s4\",\"s10\",\"s7\",\"s8\"],[\"s11\",\"s4\",\"s3\",\"s7\",\"s10\"],[\"s7\",\"s13\",\"s3\",\"s0\",\"s0\"]],\"card\":\"KC\",\"game\":\"FireLightning\",\"secret\":\"2ed1b5bcc94faf730b6773d7fb9610c4\"}",
-              "client_seed": "67252",
-              "result": "{\"symbols\":[[\"s12\",\"s1\",\"s0\",\"s13\",\"s10\"],[\"s7\",\"s1\",\"s7\",\"s8\",\"s11\"],[\"s11\",\"s4\",\"s9\",\"s8\",\"s11\"]],\"card\":\"KC\"}"
+              "hash": "ab5f7497ddc1eacfa6f0ce8b15165bb023aa623a111f0fb442b7d053bb607989",
+              "secret": "{\"symbols\":[[\"s9\",\"s5\",\"s8\",\"s8\",\"s2\"],[\"s11\",\"s5\",\"s0\",\"s9\",\"s1\"],[\"s7\",\"s13\",\"s9\",\"s7\",\"s1\"],[\"s2\",\"s10\",\"s6\",\"s7\",\"s7\"],[\"s2\",\"s9\",\"s6\",\"s0\",\"s13\"],[\"s10\",\"s11\",\"s10\",\"s9\",\"s5\"],[\"s10\",\"s12\",\"s9\",\"s8\",\"s5\"],[\"s9\",\"s11\",\"s11\",\"s10\",\"s5\"],[\"s8\",\"s8\",\"s13\",\"s1\",\"s0\"],[\"s5\",\"s2\",\"s13\",\"s1\",\"s9\"],[\"s5\",\"s2\",\"s13\",\"s10\",\"s10\"],[\"s5\",\"s8\",\"s9\",\"s8\",\"s6\"]],\"card\":\"3C\",\"game\":\"FireLightning\",\"secret\":\"62352960d7ac963cb457e191e8e5063b\"}",
+              "client_seed": "40037",
+              "result": "{\"symbols\":[[\"s2\",\"s5\",\"s8\",\"s7\",\"s5\"],[\"s10\",\"s5\",\"s0\",\"s0\",\"s0\"],[\"s10\",\"s13\",\"s9\",\"s9\",\"s9\"]],\"card\":\"3S\"}"
             }
           ]
         },
@@ -4922,8 +5657,8 @@
           "name": "Fire Lightning",
           "identifier": "FireLightning"
         },
-        "generated_at": "2026-09-14T04:49:16+00:00",
-        "source_run": "2026-09-14_01-49-11-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:20:31+00:00",
+        "source_run": "2026-09-15_05-20-27-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -4971,8 +5706,8 @@
           "name": "Fire Lightning",
           "identifier": "FireLightning"
         },
-        "generated_at": "2026-09-14T04:49:16+00:00",
-        "source_run": "2026-09-14_01-49-11-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:20:31+00:00",
+        "source_run": "2026-09-15_05-20-27-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -5025,17 +5760,17 @@
           "title": "Fire Lightning",
           "currency": "FUN",
           "balance_polling_interval": 30000,
-          "cache_id": "d8ac76b6aed2382d872756eafbfe4fdbf70e6e05235f798bd43079832032455b",
-          "cache_player_id": "cbbcad3839aa110b170e1bca6dcf68271d24bb3272d181d639b659bd74bb4a7b",
+          "cache_id": "140d4f71107cc46d8d158afe09c5f1f6d91a88d6650a941135c5e5c7a38c72f3",
+          "cache_player_id": "5118f6b5b46d0c07b2518a1ad93d54f34a7d4f1c80cd20e67b098bc22cd7017f",
           "api": "https://demo.bgaming-network.com/api/FireLightning/2366879/<session>",
           "rules_url": "https://rules.bgaming-network.com/en/FireLightning.json",
           "deposit_url": null,
           "games_page_url": "https://www.bgaming.com/games.html",
           "history_url": null,
-          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09e3f-8083-7dae-acce-a5eab7d0dde0/launch",
-          "game_page_url": "https://demo.bgaming-network.com/games/FireLightning/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDczNTI2MDl9LCJleHAiOjE4MDQ5OTk3NTd9.wGepHXsqJJt7g1QZbQhSQR13QuZfKOfcPwtm7cOUkfM",
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a0a427-4f8c-7f8d-ac76-b7e5885b94c7/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/FireLightning/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDg0MDc1NDJ9LCJleHAiOjE4MDUwOTg4MzV9._Vq2Hg8pKw7hgfqt99KPX3pNKPK1EX-OXnh0vBWpwCg",
           "websocket_url": "wss://demo.bgaming-network.com:443/cable",
-          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=FireLightning&play_token=01a09e3f-8083-7dae-acce-a5eab7d0dde0&server_id=demo",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=FireLightning&play_token=01a0a427-4f8c-7f8d-ac76-b7e5885b94c7&server_id=demo",
           "ui": {
             "home_button": true,
             "full_screen_prompt": true,
@@ -5110,7 +5845,7 @@
             }
           },
           "lobby_v2_options": {
-            "player_id": 346101471,
+            "player_id": 347155479,
             "lobby_enabled": false,
             "drops_enabled": false,
             "drops_token": "<redacted>",
@@ -5140,7 +5875,7 @@
             "return": null,
             "history": {
               "text": null,
-              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDYxMDE0NzEsImd0X2lkIjoyMzY2ODc5fSwiZXhwIjoxODA0OTk5NzU3fQ.ZjM_UwxFJ5Z0pACC8-p8VPSXgGncVXw5dZ5DE9p1Reg",
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcxNTU0NzksImd0X2lkIjoyMzY2ODc5fSwiZXhwIjoxODA1MDk4ODM1fQ.DDcn2bFcJrU1cyGWbN5kfAWPQIS9BOCXBFDtROd5dl0",
               "mode": "open"
             }
           },
@@ -5179,7 +5914,134 @@
           "pre_bet_balance_validation": false,
           "available_games_to_switch": []
         },
-        "round_series_id": 1789361352906
+        "round_series_id": 1789460428381
+      }
+    },
+    "diagnostic.json": {
+      "encoding": "json",
+      "bytes": 3774,
+      "value": {
+        "schema": "tester-spin/run-diagnostics/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "fire-lightning",
+          "name": "Fire Lightning",
+          "symbol": "FireLightning"
+        },
+        "started_at": "2026-09-15T08:20:27+00:00",
+        "finished_at": "2026-09-15T08:20:31+00:00",
+        "result_status": "OK",
+        "scope": "observed_paths_only",
+        "observed_error": "",
+        "root_cause": {
+          "status": "UNDETERMINED",
+          "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
+        },
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "status": "VALIDATED",
+            "validated": true,
+            "tested": true,
+            "attempt_count": 1,
+            "terminal_count": 1,
+            "missing_options": [],
+            "branches": [],
+            "provider_metadata": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": true,
+              "wire_command": "spin",
+              "evidence_level": "REMOTE_EXECUTION",
+              "execution_state": "PROVEN_TERMINAL",
+              "validated": true
+            }
+          }
+        ],
+        "attempts": [
+          {
+            "number": 1,
+            "mode_id": "SPIN",
+            "reported_ok": true,
+            "reported_terminal": true,
+            "http_status": 200,
+            "last_state": "closed",
+            "wire_steps": 1,
+            "elapsed_ms": 312.9999999946449,
+            "error": "",
+            "warning": "",
+            "evidence": [
+              {
+                "path": "SPIN/attempt-001/request.json",
+                "sha256": "12ee0fc9c2ef0a101a679c9bede91c5fb7d54b4e8d1e38e5704e80a72df5f7d4",
+                "bytes": 468,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/response.json",
+                "sha256": "d1e4b0fb709d2e6620207249205b1727a1955f1ebc62fa3c8bca550646687383",
+                "bytes": 1737,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/step-001-request.json",
+                "sha256": "12ee0fc9c2ef0a101a679c9bede91c5fb7d54b4e8d1e38e5704e80a72df5f7d4",
+                "bytes": 468,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/step-001-response.json",
+                "sha256": "d1e4b0fb709d2e6620207249205b1727a1955f1ebc62fa3c8bca550646687383",
+                "bytes": 1737,
+                "kind": "response"
+              }
+            ],
+            "first_request": "SPIN/attempt-001/request.json",
+            "last_request": "SPIN/attempt-001/request.json",
+            "last_response": "SPIN/attempt-001/response.json",
+            "ordering": "ARTIFACT_STEP_INDEX",
+            "trajectory_id": "1fefc502a7a085c6a28a"
+          }
+        ],
+        "bootstrap_evidence": [
+          {
+            "path": "bootstrap.json",
+            "sha256": "066980181d9d5c1a3c8866ea1f8862591c2396144d0fb0c9721710c1c2186454",
+            "bytes": 5823,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-request.json",
+            "sha256": "e025a3aa5d641a03903035dfd15f372a9f2094cdcdd002a6967fda5dcaa1b6b3",
+            "bytes": 88,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-response.json",
+            "sha256": "3e08ef319bfaea78499a64e58739f057dc0e66aaaee6e210d176dad37ee11648",
+            "bytes": 10257,
+            "kind": "envelope"
+          }
+        ],
+        "unknown_actions": [],
+        "request_comparisons": [],
+        "coverage": {
+          "schema": "tester-spin/path-coverage/v1",
+          "provider": "bgaming",
+          "game": "fire-lightning",
+          "branch_points": [],
+          "complete": true,
+          "missing_count": 0
+        },
+        "sample_diagnostics": [],
+        "evidence_gaps": [],
+        "next_steps": [
+          "Las rutas observadas terminaron; una muestra corta no prueba ausencia de otras compras o estados naturales."
+        ],
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fire Lightning\\diagnostics\\20260915T082026-7878d54fe3f9\\events.jsonl",
+        "tree": "run-tree.html",
+        "tree_data": "run-tree.json"
       }
     },
     "emulation-contract.json": {
@@ -5193,8 +6055,8 @@
           "name": "Fire Lightning",
           "identifier": "FireLightning"
         },
-        "generated_at": "2026-09-14T04:49:16+00:00",
-        "source_run": "2026-09-14_01-49-11-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:20:31+00:00",
+        "source_run": "2026-09-15_05-20-27-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -5393,7 +6255,7 @@
       "value": {
         "command": "init",
         "extra_data": {
-          "round_series_id": 1789361352906
+          "round_series_id": 1789460428381
         }
       }
     },
@@ -6030,7 +6892,7 @@
         "extra_data": {
           "provable_data": [
             {
-              "hash": "244a165f64ed453582a1b06c9fa8b5dd49ee98f2cfb2d8009aaa93336f0404a5"
+              "hash": "ab5f7497ddc1eacfa6f0ce8b15165bb023aa623a111f0fb442b7d053bb607989"
             }
           ]
         },
@@ -6051,8 +6913,8 @@
           "name": "Fire Lightning",
           "identifier": "FireLightning"
         },
-        "generated_at": "2026-09-14T04:49:16+00:00",
-        "source_run": "2026-09-14_01-49-11-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:20:31+00:00",
+        "source_run": "2026-09-15_05-20-27-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -6123,7 +6985,7 @@
             "terminal_successes": 1,
             "wire_steps": 1,
             "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fire Lightning\\tests\\2026-09-14_01-49-11-bgaming-http-api-v2\\SPIN\\attempt-001"
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Fire Lightning\\tests\\2026-09-15_05-20-27-bgaming-http-api-v2\\SPIN\\attempt-001"
             ]
           }
         ]
@@ -6140,8 +7002,8 @@
           "name": "Fire Lightning",
           "identifier": "FireLightning"
         },
-        "generated_at": "2026-09-14T04:49:16+00:00",
-        "source_run": "2026-09-14_01-49-11-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:20:31+00:00",
+        "source_run": "2026-09-15_05-20-27-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -6336,7 +7198,7 @@
     },
     "response-schemas/spin__to__unknown.json": {
       "encoding": "json",
-      "bytes": 6121,
+      "bytes": 5618,
       "value": {
         "schema": "tester-spin/observed-json-shape/v1",
         "provider": "bgaming",
@@ -6467,20 +7329,20 @@
                       "client_seed": {
                         "type": "string",
                         "observed_enum": [
-                          "67252"
+                          "40037"
                         ]
                       },
                       "hash": {
                         "type": "string",
                         "observed_enum": [
-                          "244a165f64ed453582a1b06c9fa8b5dd49ee98f2cfb2d8009aaa93336f0404a5",
-                          "68855dc373d3b5b7b5f4559048a70d1835c87931d7ac08495a2e009b9ab6b0ad"
+                          "ab5f7497ddc1eacfa6f0ce8b15165bb023aa623a111f0fb442b7d053bb607989",
+                          "bfc67548a773e51ea01e2e877bb2978da8615cec5cfb07313064d47367761e0d"
                         ]
                       },
                       "result": {
                         "type": "string",
                         "observed_enum": [
-                          "{\"symbols\":[[\"s12\",\"s1\",\"s0\",\"s13\",\"s10\"],[\"s7\",\"s1\",\"s7\",\"s8\",\"s11\"],[\"s11\",\"s4\",\"s9\",\"s8\",\"s11\"]],\"card\":\"KC\"}"
+                          "{\"symbols\":[[\"s2\",\"s5\",\"s8\",\"s7\",\"s5\"],[\"s10\",\"s5\",\"s0\",\"s0\",\"s0\"],[\"s10\",\"s13\",\"s9\",\"s9\",\"s9\"]],\"card\":\"3S\"}"
                         ]
                       },
                       "secret": {
@@ -6507,24 +7369,6 @@
                   "observed_enum": [
                     "spin"
                   ]
-                },
-                "scatters": {
-                  "type": "object",
-                  "properties": {
-                    "indices": {
-                      "type": "array",
-                      "items": {
-                        "type": "array",
-                        "items": {
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "required": [
-                    "indices"
-                  ],
-                  "additionalProperties": true
                 },
                 "span_indices": {
                   "type": "array",
@@ -6559,7 +7403,6 @@
               },
               "required": [
                 "action",
-                "scatters",
                 "span_indices",
                 "state",
                 "wilds"
@@ -6582,6 +7425,143 @@
         ]
       }
     },
+    "run-tree.json": {
+      "encoding": "json",
+      "bytes": 4091,
+      "value": {
+        "schema": "tester-spin/run-tree/v1",
+        "provider": "bgaming",
+        "game": "fire-lightning",
+        "scope": "observed_trajectories",
+        "exact_remote_outcome_reproducible": false,
+        "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
+        "trajectories": [
+          {
+            "id": "1fefc502a7a085c6a28a",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": true,
+                "wire_command": "spin",
+                "evidence_level": "REMOTE_EXECUTION",
+                "execution_state": "PROVEN_TERMINAL",
+                "validated": true
+              }
+            },
+            "attempt": 1,
+            "reported_terminal": true,
+            "reported_ok": true,
+            "sequence_status": "ARTIFACT_STEP_INDEX",
+            "steps": [
+              {
+                "label": "step-001",
+                "directory": "SPIN/attempt-001",
+                "request": [
+                  {
+                    "path": "SPIN/attempt-001/request.json",
+                    "sha256": "12ee0fc9c2ef0a101a679c9bede91c5fb7d54b4e8d1e38e5704e80a72df5f7d4",
+                    "bytes": 468,
+                    "kind": "request"
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "12ee0fc9c2ef0a101a679c9bede91c5fb7d54b4e8d1e38e5704e80a72df5f7d4",
+                    "bytes": 468,
+                    "kind": "request"
+                  }
+                ],
+                "response": [
+                  {
+                    "path": "SPIN/attempt-001/response.json",
+                    "sha256": "d1e4b0fb709d2e6620207249205b1727a1955f1ebc62fa3c8bca550646687383",
+                    "bytes": 1737,
+                    "kind": "response"
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "d1e4b0fb709d2e6620207249205b1727a1955f1ebc62fa3c8bca550646687383",
+                    "bytes": 1737,
+                    "kind": "response"
+                  }
+                ],
+                "id": "1fefc502a7a085c6a28a:0",
+                "parent_id": "1fefc502a7a085c6a28a",
+                "observed_response": {
+                  "bets": {
+                    "lines": {
+                      "0": 1,
+                      "1": 1,
+                      "2": 1,
+                      "3": 1,
+                      "4": 1,
+                      "5": 1,
+                      "6": 1,
+                      "7": 1,
+                      "8": 1,
+                      "9": 1,
+                      "10": 1,
+                      "11": 1,
+                      "12": 1,
+                      "13": 1,
+                      "14": 1,
+                      "15": 1,
+                      "16": 1,
+                      "17": 1,
+                      "18": 1,
+                      "19": 1
+                    }
+                  },
+                  "game": {
+                    "span_indices": [
+                      34,
+                      13,
+                      23,
+                      13,
+                      21
+                    ],
+                    "wilds": {
+                      "indices": [
+                        [
+                          2,
+                          1
+                        ]
+                      ]
+                    },
+                    "state": "closed",
+                    "action": "spin"
+                  },
+                  "balance": 99980,
+                  "extra_data": {
+                    "provable_data": [
+                      {
+                        "hash": "bfc67548a773e51ea01e2e877bb2978da8615cec5cfb07313064d47367761e0d"
+                      },
+                      {
+                        "hash": "ab5f7497ddc1eacfa6f0ce8b15165bb023aa623a111f0fb442b7d053bb607989",
+                        "secret": "[REDACTED]",
+                        "client_seed": "40037",
+                        "result": "{\"symbols\":[[\"s2\",\"s5\",\"s8\",\"s7\",\"s5\"],[\"s10\",\"s5\",\"s0\",\"s0\",\"s0\"],[\"s10\",\"s13\",\"s9\",\"s9\",\"s9\"]],\"card\":\"3S\"}"
+                      }
+                    ]
+                  },
+                  "available_commands": [
+                    "init",
+                    "spin"
+                  ]
+                }
+              }
+            ],
+            "events": [],
+            "gaps": [],
+            "offline_replay_ready": true
+          }
+        ],
+        "announced_branches": []
+      }
+    },
     "state-machine.json": {
       "encoding": "json",
       "bytes": 1229,
@@ -6593,8 +7573,8 @@
           "name": "Fire Lightning",
           "identifier": "FireLightning"
         },
-        "generated_at": "2026-09-14T04:49:16+00:00",
-        "source_run": "2026-09-14_01-49-11-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:20:31+00:00",
+        "source_run": "2026-09-15_05-20-27-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
