@@ -1,6 +1,6 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-15T18:38:55+00:00",
+  "published_at": "2026-09-15T19:38:27+00:00",
   "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
   "provider": "bgaming",
   "game": {
@@ -25,21 +25,40 @@
         "kind": "SPIN",
         "observed": false,
         "validated": false,
-        "executable": false,
-        "discovery_state": "CONTRACT_UNRESOLVED",
+        "executable": true,
+        "discovery_state": "HAR_OBSERVED",
         "wire_method": "play",
         "request_options": {},
-        "source": "live-client-evidence-incomplete",
-        "evidence_level": "DISCOVERED",
-        "execution_state": "NOT_EXECUTABLE"
+        "source": "selected-har",
+        "evidence_level": "WIRE_CANDIDATE",
+        "execution_state": "ATTEMPTED_UNVALIDATED"
       }
     ],
-    "started_at": "2026-09-15T18:38:29+00:00",
-    "finished_at": "2026-09-15T18:38:55+00:00",
-    "elapsed_ms": 26031.000000002678,
-    "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
-    "run_dir": "2026-09-15_15-38-29-bgaming-hyperhive-jsonrpc",
-    "attempts": [],
+    "started_at": "2026-09-15T19:38:19+00:00",
+    "finished_at": "2026-09-15T19:38:26+00:00",
+    "elapsed_ms": 7264.999999999418,
+    "error": "BGaming HyperHive respondió 1/1; modos validados=0/1. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
+    "run_dir": "2026-09-15_16-38-19-bgaming-hyperhive-jsonrpc",
+    "attempts": [
+      {
+        "number": 1,
+        "ok": false,
+        "mode_id": "SPIN",
+        "mode_kind": "SPIN",
+        "provider_bl": null,
+        "provider_pur": null,
+        "status_code": 200,
+        "elapsed_ms": 530.9999999881256,
+        "symbol": "BigBucksSaloon",
+        "endpoint": "https://big-bucks-saloon.demo.bgaming-network.com/api",
+        "na": "",
+        "terminal": true,
+        "wire_steps": 1,
+        "warning": "HyperHive resultado final sin totalWin y no pudo inferirse por balance; HyperHive débito 40 != esperado 20; Regreso al juego base pendiente: REVIEW_REQUIRED",
+        "error": "",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Big Bucks Saloon\\tests\\2026-09-15_16-38-19-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+      }
+    ],
     "samples_per_path": 1,
     "structural_map": {
       "path": "analysis/game-structure.json",
@@ -58,11 +77,11 @@
       "diagnostics": []
     }
   },
-  "artifact_bytes_embedded": 20315,
+  "artifact_bytes_embedded": 44794,
   "artifacts": {
     "analysis/game-structure.json": {
       "encoding": "json",
-      "bytes": 1912,
+      "bytes": 1951,
       "value": {
         "schema": "tester-spin/game-structure/v1",
         "metadata": {
@@ -71,7 +90,7 @@
           "game_identifier": "big-bucks-saloon",
           "slug": "big-bucks-saloon",
           "bundle_fingerprint": "",
-          "generated_at": "2026-09-15T18:38:55+00:00",
+          "generated_at": "2026-09-15T19:38:26+00:00",
           "compatibility": "unverified",
           "source_evidence_summary": {
             "capture": "BGaming JSON requests/responses at transport boundary",
@@ -83,7 +102,8 @@
             "run:a231414cf1c30227c0ba5fe7",
             "run:45804e31dad9cb89a325da15",
             "run:c754d1da7f16bc242d6b2e51",
-            "run:66d9c3604322f15292536c89"
+            "run:66d9c3604322f15292536c89",
+            "run:46045d716337e524be8f6574"
           ],
           "previous_revisions": []
         },
@@ -158,7 +178,7 @@
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 1720,
+      "bytes": 2387,
       "value": {
         "provider": "bgaming",
         "slug": "big-bucks-saloon",
@@ -175,21 +195,40 @@
             "kind": "SPIN",
             "observed": false,
             "validated": false,
-            "executable": false,
-            "discovery_state": "CONTRACT_UNRESOLVED",
+            "executable": true,
+            "discovery_state": "HAR_OBSERVED",
             "wire_method": "play",
             "request_options": {},
-            "source": "live-client-evidence-incomplete",
-            "evidence_level": "DISCOVERED",
-            "execution_state": "NOT_EXECUTABLE"
+            "source": "selected-har",
+            "evidence_level": "WIRE_CANDIDATE",
+            "execution_state": "ATTEMPTED_UNVALIDATED"
           }
         ],
-        "started_at": "2026-09-15T18:38:29+00:00",
-        "finished_at": "2026-09-15T18:38:55+00:00",
-        "elapsed_ms": 26031.000000002678,
-        "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Big Bucks Saloon\\tests\\2026-09-15_15-38-29-bgaming-hyperhive-jsonrpc",
-        "attempts": [],
+        "started_at": "2026-09-15T19:38:19+00:00",
+        "finished_at": "2026-09-15T19:38:26+00:00",
+        "elapsed_ms": 7264.999999999418,
+        "error": "BGaming HyperHive respondió 1/1; modos validados=0/1. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Big Bucks Saloon\\tests\\2026-09-15_16-38-19-bgaming-hyperhive-jsonrpc",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": 200,
+            "elapsed_ms": 530.9999999881256,
+            "symbol": "BigBucksSaloon",
+            "endpoint": "https://big-bucks-saloon.demo.bgaming-network.com/api",
+            "na": "",
+            "terminal": true,
+            "wire_steps": 1,
+            "warning": "HyperHive resultado final sin totalWin y no pudo inferirse por balance; HyperHive débito 40 != esperado 20; Regreso al juego base pendiente: REVIEW_REQUIRED",
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Big Bucks Saloon\\tests\\2026-09-15_16-38-19-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+          }
+        ],
         "samples_per_path": 1,
         "structural_map": {
           "path": "analysis/game-structure.json",
@@ -211,22 +250,205 @@
     },
     "sample-catalog.json": {
       "encoding": "json",
-      "bytes": 273,
+      "bytes": 1425,
       "value": {
         "schema": "tester-spin/sample-catalog/v2",
         "provider": "bgaming",
         "game": "big-bucks-saloon",
         "scope": "observed_paths_only",
         "samples_per_path": 1,
-        "groups": [],
+        "groups": [
+          {
+            "id": "a179acbfa9295736f1e930b5ce3d37a237f56d86b16cce5a1bfd01dd210dd41a",
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "choices": [],
+            "validated_samples": 0,
+            "samples": [
+              {
+                "attempt": 1,
+                "artifact_dir": "SPIN/attempt-001",
+                "validated": false,
+                "terminal": true,
+                "observed_state_sequence": [],
+                "evidence": [
+                  {
+                    "path": "SPIN/attempt-001/server-responses.jsonl",
+                    "sha256": "345c994cd0c06ecb3d75d9d9052174c39176ef9d65e07336dc1b2ce96034043b",
+                    "bytes": 1031
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "4417c8e55277f6e44adff5f90e75211bee22d06ab4f1c1ac15317c0cb627058c",
+                    "bytes": 177
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "ac19c7d397e7aed6be624796025b968ccc39aabd7a38a59002c182ddaa2c4acf",
+                    "bytes": 1555
+                  }
+                ]
+              }
+            ],
+            "missing_samples": 1
+          }
+        ],
         "observed_state_types": [],
         "diagnostics": [],
         "observed_paths_sampled": false
       }
     },
+    "SPIN/attempt-001/remote-proof.json": {
+      "encoding": "json",
+      "bytes": 405,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "mode_id": "SPIN",
+        "steps": 1,
+        "before_balance": 100000.0,
+        "observed_debit": 40.0,
+        "final": true,
+        "balance": 99960,
+        "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
+        "round_step": null,
+        "bet": null,
+        "total_win": null,
+        "freespins": null,
+        "next_action": null,
+        "table_sha256": "",
+        "response_sha256": "6d06577aa32f77a2"
+      }
+    },
+    "SPIN/attempt-001/return-to-base.json": {
+      "encoding": "json",
+      "bytes": 210,
+      "value": {
+        "schema": "tester-spin/return-to-base/v1",
+        "status": "REVIEW_REQUIRED",
+        "connection_reused": true,
+        "required": 2,
+        "consecutive_base": 0,
+        "probes": [],
+        "reason": "HyperHive no terminal"
+      }
+    },
+    "SPIN/attempt-001/server-responses.jsonl": {
+      "encoding": "text",
+      "bytes": 1031,
+      "value": "{\"change_kind\": \"REFERENCE\", \"classification\": \"BASELINE\", \"signature\": \"8df576e27036d80792682105978f42cf15a62333e4e4359cc2c2a510faf965cd\", \"changed_paths\": [], \"review_required\": false, \"action\": \"play\", \"response\": {\"id\": 0, \"jsonrpc\": \"2.0\", \"result\": {\"final\": true, \"resp\": {\"gbid\": \"96\", \"gbrtp\": \"96.920\", \"gbver\": \"v2.877\", \"round\": {\"bet\": {\"dnm\": \"0.050\", \"rmid\": \"DEF\", \"tb\": \"40\"}, \"csid\": 0, \"id\": \"5b36c412-6498-4a78-9647-025d5c7f0a71\", \"mid\": \"DEF\", \"schema\": [\"DEF\"]}, \"step\": {\"f\": [[{\"e\": 3}, {\"e\": 2}, {\"e\": 5}], [{\"e\": 9}, {\"e\": 9}, {\"e\": 9}], [{\"e\": 6}, {\"e\": 6}, {\"e\": 6}], [{\"e\": 6}, {\"e\": 7}, {\"e\": 6}], [{\"e\": 5}, {\"e\": 3}, {\"e\": 2}]], \"goid\": 0, \"mid\": \"DEFAULT\"}}, \"balance\": 99960, \"freebets\": null, \"state_lock\": \"b6589fc6ab0dc82cf12099d1c2d40ab994e8410c\"}}, \"request\": {\"id\": 0, \"jsonrpc\": \"2.0\", \"method\": \"play\", \"params\": {\"token\": \"[REDACTED]\", \"req\": {\"bet\": 40}, \"state_lock\": \"b6589fc6ab0dc82cf12099d1c2d40ab994e8410c\"}}, \"http_status\": 200, \"captured_at\": \"2026-09-15T19:38:26.815922+00:00\"}\n"
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 177,
+      "value": {
+        "id": 0,
+        "jsonrpc": "2.0",
+        "method": "play",
+        "params": {
+          "token": "<redacted>",
+          "req": {
+            "bet": 40
+          },
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 1555,
+      "value": {
+        "id": 0,
+        "jsonrpc": "2.0",
+        "result": {
+          "final": true,
+          "resp": {
+            "gbid": "96",
+            "gbrtp": "96.920",
+            "gbver": "v2.877",
+            "round": {
+              "bet": {
+                "dnm": "0.050",
+                "rmid": "DEF",
+                "tb": "40"
+              },
+              "csid": 0,
+              "id": "5b36c412-6498-4a78-9647-025d5c7f0a71",
+              "mid": "DEF",
+              "schema": [
+                "DEF"
+              ]
+            },
+            "step": {
+              "f": [
+                [
+                  {
+                    "e": 3
+                  },
+                  {
+                    "e": 2
+                  },
+                  {
+                    "e": 5
+                  }
+                ],
+                [
+                  {
+                    "e": 9
+                  },
+                  {
+                    "e": 9
+                  },
+                  {
+                    "e": 9
+                  }
+                ],
+                [
+                  {
+                    "e": 6
+                  },
+                  {
+                    "e": 6
+                  },
+                  {
+                    "e": 6
+                  }
+                ],
+                [
+                  {
+                    "e": 6
+                  },
+                  {
+                    "e": 7
+                  },
+                  {
+                    "e": 6
+                  }
+                ],
+                [
+                  {
+                    "e": 5
+                  },
+                  {
+                    "e": 3
+                  },
+                  {
+                    "e": 2
+                  }
+                ]
+              ],
+              "goid": 0,
+              "mid": "DEFAULT"
+            }
+          },
+          "balance": 99960,
+          "freebets": null,
+          "state_lock": "<redacted>"
+        }
+      }
+    },
     "backend-conformance.json": {
       "encoding": "json",
-      "bytes": 933,
+      "bytes": 1398,
       "value": {
         "schema": "tester-spin/bgaming-backend-conformance/v1",
         "provider": "bgaming",
@@ -235,8 +457,8 @@
           "name": "Big Bucks Saloon",
           "identifier": "BigBucksSaloon"
         },
-        "generated_at": "2026-09-15T18:38:55+00:00",
-        "source_run": "2026-09-15_15-38-29-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T19:38:26+00:00",
+        "source_run": "2026-09-15_16-38-19-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -245,7 +467,23 @@
           "INFERENCE"
         ],
         "wire_replay_complete": false,
-        "cases": [],
+        "cases": [
+          {
+            "id": "CASE_0001",
+            "source_state": "READY",
+            "request_contract": "RPC_PLAY",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "accepted_outcome": "RPC_PLAY__TO__READY",
+            "expected_target_state": "READY",
+            "response_schema": "response-schemas/rpc_play__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ],
         "rules": [
           "A backend response must match the response schema for the selected outcome.",
           "The response must move the session to the documented target state.",
@@ -257,7 +495,7 @@
     },
     "backend-response-plan.json": {
       "encoding": "json",
-      "bytes": 717,
+      "bytes": 1248,
       "value": {
         "schema": "tester-spin/bgaming-backend-response-plan/v1",
         "provider": "bgaming",
@@ -266,8 +504,8 @@
           "name": "Big Bucks Saloon",
           "identifier": "BigBucksSaloon"
         },
-        "generated_at": "2026-09-15T18:38:55+00:00",
-        "source_run": "2026-09-15_15-38-29-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T19:38:26+00:00",
+        "source_run": "2026-09-15_16-38-19-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -277,12 +515,33 @@
         ],
         "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
         "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
-        "states": {}
+        "states": {
+          "READY": {
+            "RPC_PLAY": {
+              "wire_action": "play",
+              "selector_domains_observed": {},
+              "selector_vectors_observed": [
+                {}
+              ],
+              "outcomes": [
+                {
+                  "id": "RPC_PLAY__TO__READY",
+                  "target_state": [
+                    "READY"
+                  ],
+                  "response_schema": "response-schemas/rpc_play__to__ready.json",
+                  "terminal_observed": true,
+                  "math_probability_known": false
+                }
+              ]
+            }
+          }
+        }
       }
     },
     "contract-diagnostic.json": {
       "encoding": "json",
-      "bytes": 654,
+      "bytes": 647,
       "value": {
         "runtime": "hyperhive-jsonrpc",
         "script_urls": [
@@ -298,12 +557,12 @@
         "action_vocabulary": [],
         "base_request": {},
         "custom_req_profile": "",
-        "base_discovery_state": "CONTRACT_UNRESOLVED"
+        "base_discovery_state": "HAR_OBSERVED"
       }
     },
     "diagnostic.json": {
       "encoding": "json",
-      "bytes": 4159,
+      "bytes": 6512,
       "value": {
         "schema": "tester-spin/run-diagnostics/v1",
         "provider": "bgaming",
@@ -312,11 +571,11 @@
           "name": "Big Bucks Saloon",
           "symbol": "BigBucksSaloon"
         },
-        "started_at": "2026-09-15T18:38:29+00:00",
-        "finished_at": "2026-09-15T18:38:55+00:00",
+        "started_at": "2026-09-15T19:38:19+00:00",
+        "finished_at": "2026-09-15T19:38:26+00:00",
         "result_status": "PARCIAL",
         "scope": "observed_paths_only",
-        "observed_error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
+        "observed_error": "BGaming HyperHive respondió 1/1; modos validados=0/1. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
         "root_cause": {
           "status": "UNDETERMINED",
           "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
@@ -325,10 +584,10 @@
           {
             "id": "SPIN",
             "kind": "SPIN",
-            "status": "DISCOVERED",
+            "status": "INCOMPLETE",
             "validated": false,
-            "tested": false,
-            "attempt_count": 0,
+            "tested": true,
+            "attempt_count": 1,
             "terminal_count": 0,
             "missing_options": [
               "SPIN"
@@ -356,17 +615,64 @@
               "kind": "SPIN",
               "observed": false,
               "validated": false,
-              "executable": false,
-              "discovery_state": "CONTRACT_UNRESOLVED",
+              "executable": true,
+              "discovery_state": "HAR_OBSERVED",
               "wire_method": "play",
               "request_options": {},
-              "source": "live-client-evidence-incomplete",
-              "evidence_level": "DISCOVERED",
-              "execution_state": "NOT_EXECUTABLE"
+              "source": "selected-har",
+              "evidence_level": "WIRE_CANDIDATE",
+              "execution_state": "ATTEMPTED_UNVALIDATED"
             }
           }
         ],
-        "attempts": [],
+        "attempts": [
+          {
+            "return_to_base": {
+              "schema": "tester-spin/return-to-base/v1",
+              "status": "REVIEW_REQUIRED",
+              "connection_reused": true,
+              "required": 2,
+              "consecutive_base": 0,
+              "probes": [],
+              "reason": "HyperHive no terminal"
+            },
+            "number": 1,
+            "mode_id": "SPIN",
+            "reported_ok": false,
+            "reported_terminal": true,
+            "http_status": 200,
+            "last_state": "",
+            "wire_steps": 1,
+            "elapsed_ms": 530.9999999881256,
+            "error": "",
+            "warning": "HyperHive resultado final sin totalWin y no pudo inferirse por balance; HyperHive débito 40 != esperado 20; Regreso al juego base pendiente: REVIEW_REQUIRED",
+            "evidence": [
+              {
+                "path": "SPIN/attempt-001/server-responses.jsonl",
+                "sha256": "345c994cd0c06ecb3d75d9d9052174c39176ef9d65e07336dc1b2ce96034043b",
+                "bytes": 1031,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/step-001-request.json",
+                "sha256": "4417c8e55277f6e44adff5f90e75211bee22d06ab4f1c1ac15317c0cb627058c",
+                "bytes": 177,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/step-001-response.json",
+                "sha256": "ac19c7d397e7aed6be624796025b968ccc39aabd7a38a59002c182ddaa2c4acf",
+                "bytes": 1555,
+                "kind": "response"
+              }
+            ],
+            "first_request": "SPIN/attempt-001/step-001-request.json",
+            "last_request": "SPIN/attempt-001/step-001-request.json",
+            "last_response": "SPIN/attempt-001/step-001-response.json",
+            "ordering": "ARTIFACT_STEP_INDEX",
+            "trajectory_id": "deff3c240449af4dae9d"
+          }
+        ],
         "bootstrap_evidence": [
           {
             "path": "init-request.json",
@@ -376,29 +682,50 @@
           },
           {
             "path": "init-response.json",
-            "sha256": "a3ed7c6c8460401c7b3be2ffb6c6ae127fe5010f3dce83f09818b934d3d95fd6",
+            "sha256": "59acaed62ac047c93e228da8d0a1887a308a4f03f4243086bccf824fadb6eb99",
             "bytes": 1857,
             "kind": "envelope"
           }
         ],
         "unknown_actions": [
           {
-            "id": "UNCLASSIFIED_WIRE_VARIANT_8db9d2a00dfce1b5",
+            "id": "UNCLASSIFIED_WIRE_VARIANT_d9b92792f8b284bb",
             "signature_scope": "provider-reported unresolved observation; not a semantic classification",
             "observation": {
               "id": "SPIN",
               "kind": "SPIN",
               "observed": false,
               "validated": false,
-              "executable": false,
-              "discovery_state": "CONTRACT_UNRESOLVED",
+              "executable": true,
+              "discovery_state": "HAR_OBSERVED",
               "wire_method": "play",
               "request_options": {},
-              "source": "live-client-evidence-incomplete",
-              "evidence_level": "DISCOVERED",
-              "execution_state": "NOT_EXECUTABLE"
+              "source": "selected-har",
+              "evidence_level": "WIRE_CANDIDATE",
+              "execution_state": "ATTEMPTED_UNVALIDATED"
             },
-            "evidence": []
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/server-responses.jsonl",
+                  "sha256": "345c994cd0c06ecb3d75d9d9052174c39176ef9d65e07336dc1b2ce96034043b",
+                  "bytes": 1031,
+                  "kind": "response"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-request.json",
+                  "sha256": "4417c8e55277f6e44adff5f90e75211bee22d06ab4f1c1ac15317c0cb627058c",
+                  "bytes": 177,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-response.json",
+                  "sha256": "ac19c7d397e7aed6be624796025b968ccc39aabd7a38a59002c182ddaa2c4acf",
+                  "bytes": 1555,
+                  "kind": "response"
+                }
+              ]
+            ]
           }
         ],
         "request_comparisons": [],
@@ -433,14 +760,14 @@
           "Revisar la respuesta que anuncia la acción/opción pendiente y el serializer del cliente de este proveedor. No inventar argumentos ni un handler.",
           "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa."
         ],
-        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Big Bucks Saloon\\diagnostics\\20260915T183809-1e2e0eb860f0\\events.jsonl",
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Big Bucks Saloon\\diagnostics\\20260915T193757-1ff4820c01a1\\events.jsonl",
         "tree": "run-tree.html",
         "tree_data": "run-tree.json"
       }
     },
     "emulation-contract.json": {
       "encoding": "json",
-      "bytes": 1706,
+      "bytes": 3332,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -449,8 +776,8 @@
           "name": "Big Bucks Saloon",
           "identifier": "BigBucksSaloon"
         },
-        "generated_at": "2026-09-15T18:38:55+00:00",
-        "source_run": "2026-09-15_15-38-29-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T19:38:26+00:00",
+        "source_run": "2026-09-15_16-38-19-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -462,38 +789,109 @@
         "wire_replay_complete": false,
         "math_model_complete": false,
         "rng_probabilities_known": false,
-        "request_contracts": [],
+        "request_contracts": [
+          {
+            "id": "RPC_PLAY",
+            "transport": "HTTP_JSONRPC_2.0",
+            "wire_action": "play",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "jsonrpc": {
+                  "type": "string",
+                  "observed_enum": [
+                    "2.0"
+                  ]
+                },
+                "method": {
+                  "type": "string",
+                  "observed_enum": [
+                    "play"
+                  ]
+                },
+                "params": {
+                  "type": "object",
+                  "properties": {
+                    "req": {
+                      "type": "object",
+                      "properties": {
+                        "bet": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "bet"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "state_lock": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>"
+                      ]
+                    },
+                    "token": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "req",
+                    "state_lock",
+                    "token"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "id",
+                "jsonrpc",
+                "method",
+                "params"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.id",
+              "$.params.state_lock",
+              "$.params.token"
+            ]
+          }
+        ],
         "modes": [
           {
             "id": "SPIN",
             "kind": "SPIN",
             "wire_command": "",
-            "executable": false,
+            "executable": true,
             "coverage_required": false,
             "purchased_feature": null,
             "purchased_feature_level": null,
             "cost_multiplier": null,
             "required_options": [],
             "covered_options": [],
-            "source": "live-client-evidence-incomplete"
+            "source": "selected-har"
           }
         ],
-        "unresolved_modes": [
-          {
-            "id": "SPIN",
-            "kind": "SPIN",
-            "wire_command": "",
-            "executable": false,
-            "coverage_required": false,
-            "purchased_feature": null,
-            "purchased_feature_level": null,
-            "cost_multiplier": null,
-            "required_options": [],
-            "covered_options": [],
-            "source": "live-client-evidence-incomplete"
+        "unresolved_modes": [],
+        "dispatch": {
+          "READY": {
+            "RPC_PLAY": [
+              "RPC_PLAY__TO__READY"
+            ]
           }
-        ],
-        "dispatch": {},
+        },
         "artifacts": {
           "state_machine": "state-machine.json",
           "outcome_catalog": "outcome-catalog.json",
@@ -604,7 +1002,7 @@
           "urls": {
             "deposit_url": null,
             "return_url": null,
-            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDgwMTg3MjQsImd0X2lkIjo0MzY1NDA1fSwiZXhwIjoxODA1MTM1OTQyfQ.mhXLq_9PUIHZbjUD-nbOWRL-5YKdWpcX7BQu7X7S6eE"
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDgwNzg5MDMsImd0X2lkIjo0MzY1NDA1fSwiZXhwIjoxODA1MTM5NTA1fQ.j1gAcvJuOhViLcmNfJgz4KibF4Wp8u6DPHl0RgLmGo4"
           },
           "balance": 100000,
           "state_lock": "<redacted>"
@@ -613,7 +1011,7 @@
     },
     "outcome-catalog.json": {
       "encoding": "json",
-      "bytes": 588,
+      "bytes": 1301,
       "value": {
         "schema": "tester-spin/bgaming-outcome-catalog/v1",
         "provider": "bgaming",
@@ -622,8 +1020,8 @@
           "name": "Big Bucks Saloon",
           "identifier": "BigBucksSaloon"
         },
-        "generated_at": "2026-09-15T18:38:55+00:00",
-        "source_run": "2026-09-15_15-38-29-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T19:38:26+00:00",
+        "source_run": "2026-09-15_16-38-19-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -632,12 +1030,39 @@
           "INFERENCE"
         ],
         "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
-        "outcomes": []
+        "outcomes": [
+          {
+            "id": "RPC_PLAY__TO__READY",
+            "kind": "BASE_OR_FEATURE_ENTRY",
+            "request_contract": "RPC_PLAY",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "READY"
+            ],
+            "provider_states": [
+              "final"
+            ],
+            "available_actions": [],
+            "terminal_observed": true,
+            "observed_count": 1,
+            "response_schema": "response-schemas/rpc_play__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
       }
     },
     "path-catalog.json": {
       "encoding": "json",
-      "bytes": 942,
+      "bytes": 1104,
       "value": {
         "schema": "tester-spin/bgaming-path-catalog/v1",
         "phase": "coverage",
@@ -657,21 +1082,23 @@
             "id": "SPIN",
             "kind": "SPIN",
             "branch_signature": "",
-            "executable": false,
+            "executable": true,
             "coverage_required": false,
             "required_options": [],
             "covered_options": [],
-            "attempts_observed": 0,
+            "attempts_observed": 1,
             "terminal_successes": 0,
-            "wire_steps": 0,
-            "artifacts": []
+            "wire_steps": 1,
+            "artifacts": [
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Big Bucks Saloon\\tests\\2026-09-15_16-38-19-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+            ]
           }
         ]
       }
     },
     "protocol-contract.json": {
       "encoding": "json",
-      "bytes": 1706,
+      "bytes": 3332,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -680,8 +1107,8 @@
           "name": "Big Bucks Saloon",
           "identifier": "BigBucksSaloon"
         },
-        "generated_at": "2026-09-15T18:38:55+00:00",
-        "source_run": "2026-09-15_15-38-29-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T19:38:26+00:00",
+        "source_run": "2026-09-15_16-38-19-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -693,38 +1120,109 @@
         "wire_replay_complete": false,
         "math_model_complete": false,
         "rng_probabilities_known": false,
-        "request_contracts": [],
+        "request_contracts": [
+          {
+            "id": "RPC_PLAY",
+            "transport": "HTTP_JSONRPC_2.0",
+            "wire_action": "play",
+            "selector_domains_observed": {},
+            "selector_vectors_observed": [
+              {}
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 1,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "jsonrpc": {
+                  "type": "string",
+                  "observed_enum": [
+                    "2.0"
+                  ]
+                },
+                "method": {
+                  "type": "string",
+                  "observed_enum": [
+                    "play"
+                  ]
+                },
+                "params": {
+                  "type": "object",
+                  "properties": {
+                    "req": {
+                      "type": "object",
+                      "properties": {
+                        "bet": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "bet"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "state_lock": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>"
+                      ]
+                    },
+                    "token": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "req",
+                    "state_lock",
+                    "token"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "id",
+                "jsonrpc",
+                "method",
+                "params"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.id",
+              "$.params.state_lock",
+              "$.params.token"
+            ]
+          }
+        ],
         "modes": [
           {
             "id": "SPIN",
             "kind": "SPIN",
             "wire_command": "",
-            "executable": false,
+            "executable": true,
             "coverage_required": false,
             "purchased_feature": null,
             "purchased_feature_level": null,
             "cost_multiplier": null,
             "required_options": [],
             "covered_options": [],
-            "source": "live-client-evidence-incomplete"
+            "source": "selected-har"
           }
         ],
-        "unresolved_modes": [
-          {
-            "id": "SPIN",
-            "kind": "SPIN",
-            "wire_command": "",
-            "executable": false,
-            "coverage_required": false,
-            "purchased_feature": null,
-            "purchased_feature_level": null,
-            "cost_multiplier": null,
-            "required_options": [],
-            "covered_options": [],
-            "source": "live-client-evidence-incomplete"
+        "unresolved_modes": [],
+        "dispatch": {
+          "READY": {
+            "RPC_PLAY": [
+              "RPC_PLAY__TO__READY"
+            ]
           }
-        ],
-        "dispatch": {},
+        },
         "artifacts": {
           "state_machine": "state-machine.json",
           "outcome_catalog": "outcome-catalog.json",
@@ -734,9 +1232,218 @@
         }
       }
     },
+    "response-schemas/rpc_play__to__ready.json": {
+      "encoding": "json",
+      "bytes": 5614,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "RPC_PLAY__TO__READY",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 1,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "jsonrpc": {
+              "type": "string",
+              "observed_enum": [
+                "2.0"
+              ]
+            },
+            "result": {
+              "type": "object",
+              "properties": {
+                "balance": {
+                  "type": "integer"
+                },
+                "final": {
+                  "type": "boolean",
+                  "observed_values": [
+                    true
+                  ]
+                },
+                "freebets": {
+                  "type": "null"
+                },
+                "resp": {
+                  "type": "object",
+                  "properties": {
+                    "gbid": {
+                      "type": "string",
+                      "observed_enum": [
+                        "96"
+                      ]
+                    },
+                    "gbrtp": {
+                      "type": "string",
+                      "observed_enum": [
+                        "96.920"
+                      ]
+                    },
+                    "gbver": {
+                      "type": "string",
+                      "observed_enum": [
+                        "v2.877"
+                      ]
+                    },
+                    "round": {
+                      "type": "object",
+                      "properties": {
+                        "bet": {
+                          "type": "object",
+                          "properties": {
+                            "dnm": {
+                              "type": "string",
+                              "observed_enum": [
+                                "0.050"
+                              ]
+                            },
+                            "rmid": {
+                              "type": "string",
+                              "observed_enum": [
+                                "DEF"
+                              ]
+                            },
+                            "tb": {
+                              "type": "string",
+                              "observed_enum": [
+                                "40"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "dnm",
+                            "rmid",
+                            "tb"
+                          ],
+                          "additionalProperties": true
+                        },
+                        "csid": {
+                          "type": "integer"
+                        },
+                        "id": {
+                          "type": "string",
+                          "observed_enum": [
+                            "5b36c412-6498-4a78-9647-025d5c7f0a71"
+                          ]
+                        },
+                        "mid": {
+                          "type": "string",
+                          "observed_enum": [
+                            "DEF"
+                          ]
+                        },
+                        "schema": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "observed_enum": [
+                              "DEF"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "bet",
+                        "csid",
+                        "id",
+                        "mid",
+                        "schema"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "step": {
+                      "type": "object",
+                      "properties": {
+                        "f": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "e": {
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "e"
+                              ],
+                              "additionalProperties": true
+                            }
+                          }
+                        },
+                        "goid": {
+                          "type": "integer"
+                        },
+                        "mid": {
+                          "type": "string",
+                          "observed_enum": [
+                            "DEFAULT"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "f",
+                        "goid",
+                        "mid"
+                      ],
+                      "additionalProperties": true
+                    }
+                  },
+                  "required": [
+                    "gbid",
+                    "gbrtp",
+                    "gbver",
+                    "round",
+                    "step"
+                  ],
+                  "additionalProperties": true
+                },
+                "state_lock": {
+                  "type": "string",
+                  "observed_enum": [
+                    "<redacted>"
+                  ]
+                }
+              },
+              "required": [
+                "balance",
+                "final",
+                "freebets",
+                "resp",
+                "state_lock"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "id",
+            "jsonrpc",
+            "result"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.id",
+          "$.result.balance",
+          "$.result.resp.gbid",
+          "$.result.resp.round.bet.rmid",
+          "$.result.resp.round.csid",
+          "$.result.resp.round.id",
+          "$.result.resp.round.mid",
+          "$.result.resp.step.goid",
+          "$.result.resp.step.mid",
+          "$.result.state_lock"
+        ]
+      }
+    },
     "run-tree.json": {
       "encoding": "json",
-      "bytes": 707,
+      "bytes": 5280,
       "value": {
         "schema": "tester-spin/run-tree/v1",
         "provider": "bgaming",
@@ -744,7 +1451,162 @@
         "scope": "observed_trajectories",
         "exact_remote_outcome_reproducible": false,
         "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
-        "trajectories": [],
+        "trajectories": [
+          {
+            "capture_directory": "SPIN\\attempt-001",
+            "return_to_base": {
+              "schema": "tester-spin/return-to-base/v1",
+              "status": "REVIEW_REQUIRED",
+              "connection_reused": true,
+              "required": 2,
+              "consecutive_base": 0,
+              "probes": [],
+              "reason": "HyperHive no terminal"
+            },
+            "return_to_base_evidence": {
+              "path": "SPIN/attempt-001/return-to-base.json",
+              "sha256": "dbb41648d00b2bfc250fa75f9b9801b1ebc2e2da48d26a7c46a725a207160bcd"
+            },
+            "id": "deff3c240449af4dae9d",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": false,
+                "validated": false,
+                "executable": true,
+                "discovery_state": "HAR_OBSERVED",
+                "wire_method": "play",
+                "request_options": {},
+                "source": "selected-har",
+                "evidence_level": "WIRE_CANDIDATE",
+                "execution_state": "ATTEMPTED_UNVALIDATED"
+              }
+            },
+            "attempt": 1,
+            "reported_terminal": true,
+            "reported_ok": false,
+            "sequence_status": "ARTIFACT_STEP_INDEX",
+            "steps": [
+              {
+                "label": "step-001",
+                "directory": "SPIN/attempt-001",
+                "request": [
+                  {
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "4417c8e55277f6e44adff5f90e75211bee22d06ab4f1c1ac15317c0cb627058c",
+                    "bytes": 177,
+                    "kind": "request"
+                  }
+                ],
+                "response": [
+                  {
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "ac19c7d397e7aed6be624796025b968ccc39aabd7a38a59002c182ddaa2c4acf",
+                    "bytes": 1555,
+                    "kind": "response"
+                  }
+                ],
+                "id": "deff3c240449af4dae9d:0",
+                "parent_id": "deff3c240449af4dae9d",
+                "observed_response": {
+                  "id": 0,
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "final": true,
+                    "resp": {
+                      "gbid": "96",
+                      "gbrtp": "96.920",
+                      "gbver": "v2.877",
+                      "round": {
+                        "bet": {
+                          "dnm": "0.050",
+                          "rmid": "DEF",
+                          "tb": "40"
+                        },
+                        "csid": 0,
+                        "id": "5b36c412-6498-4a78-9647-025d5c7f0a71",
+                        "mid": "DEF",
+                        "schema": [
+                          "DEF"
+                        ]
+                      },
+                      "step": {
+                        "f": [
+                          [
+                            {
+                              "e": 3
+                            },
+                            {
+                              "e": 2
+                            },
+                            {
+                              "e": 5
+                            }
+                          ],
+                          [
+                            {
+                              "e": 9
+                            },
+                            {
+                              "e": 9
+                            },
+                            {
+                              "e": 9
+                            }
+                          ],
+                          [
+                            {
+                              "e": 6
+                            },
+                            {
+                              "e": 6
+                            },
+                            {
+                              "e": 6
+                            }
+                          ],
+                          [
+                            {
+                              "e": 6
+                            },
+                            {
+                              "e": 7
+                            },
+                            {
+                              "e": 6
+                            }
+                          ],
+                          [
+                            {
+                              "e": 5
+                            },
+                            {
+                              "e": 3
+                            },
+                            {
+                              "e": 2
+                            }
+                          ]
+                        ],
+                        "goid": 0,
+                        "mid": "DEFAULT"
+                      }
+                    },
+                    "balance": 99960,
+                    "freebets": null,
+                    "state_lock": "<redacted>"
+                  }
+                }
+              }
+            ],
+            "events": [],
+            "gaps": [],
+            "offline_replay_ready": true
+          }
+        ],
         "announced_branches": [
           {
             "source": "discovered_modes_fail_closed",
@@ -767,20 +1629,52 @@
     },
     "server-observations.json": {
       "encoding": "json",
-      "bytes": 215,
+      "bytes": 1253,
       "value": {
         "schema": "tester-spin/server-observations/v1",
         "provider": "bgaming",
         "scope": "this_game_this_run",
         "baseline_is_not_contract": true,
         "new_responses": 0,
+        "protocol_changes": 0,
+        "outcome_variations": 0,
         "unparsed": 0,
-        "observations": []
+        "observations": [
+          {
+            "change_kind": "REFERENCE",
+            "classification": "BASELINE",
+            "signature": "8df576e27036d80792682105978f42cf15a62333e4e4359cc2c2a510faf965cd",
+            "changed_paths": [],
+            "review_required": false,
+            "action": "play",
+            "http_status": 200,
+            "captured_at": "2026-09-15T19:38:26.815922+00:00",
+            "trajectory_id": "deff3c240449af4dae9d",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": false,
+                "validated": false,
+                "executable": true,
+                "discovery_state": "HAR_OBSERVED",
+                "wire_method": "play",
+                "request_options": {},
+                "source": "selected-har",
+                "evidence_level": "WIRE_CANDIDATE",
+                "execution_state": "ATTEMPTED_UNVALIDATED"
+              }
+            },
+            "source": "SPIN/attempt-001/server-responses.jsonl#line=1"
+          }
+        ]
       }
     },
     "state-machine.json": {
       "encoding": "json",
-      "bytes": 534,
+      "bytes": 1083,
       "value": {
         "schema": "tester-spin/bgaming-state-machine/v1",
         "provider": "bgaming",
@@ -789,8 +1683,8 @@
           "name": "Big Bucks Saloon",
           "identifier": "BigBucksSaloon"
         },
-        "generated_at": "2026-09-15T18:38:55+00:00",
-        "source_run": "2026-09-15_15-38-29-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T19:38:26+00:00",
+        "source_run": "2026-09-15_16-38-19-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -799,8 +1693,33 @@
           "INFERENCE"
         ],
         "initial_state": "READY",
-        "states": {},
-        "transitions": []
+        "states": {
+          "READY": {
+            "provider_states": [
+              "final"
+            ],
+            "allowed_wire_actions_observed": [
+              "play"
+            ],
+            "terminal_observed": true
+          }
+        },
+        "transitions": [
+          {
+            "source": "READY",
+            "request_contract": "RPC_PLAY",
+            "request_selector_vectors_observed": [
+              {}
+            ],
+            "outcome": "RPC_PLAY__TO__READY",
+            "target": "READY",
+            "observed_count": 1,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
       }
     },
     "wager-catalog.json": {
