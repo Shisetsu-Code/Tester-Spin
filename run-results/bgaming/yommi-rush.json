@@ -1,0 +1,826 @@
+{
+  "schema": "tester-spin/github-run-result/v1",
+  "published_at": "2026-09-15T09:12:47+00:00",
+  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
+  "provider": "bgaming",
+  "game": {
+    "slug": "yommi-rush",
+    "name": "Yommi Rush",
+    "symbol": "YommiRush",
+    "url": "https://demo.bgaming-network.com/play/YommiRush/FUN"
+  },
+  "result": {
+    "provider": "bgaming",
+    "slug": "yommi-rush",
+    "game_name": "Yommi Rush",
+    "game_url": "https://demo.bgaming-network.com/play/YommiRush/FUN",
+    "requested_spins": 1,
+    "successful_spins": 0,
+    "failed_spins": 1,
+    "status": "PARCIAL",
+    "symbol": "YommiRush",
+    "discovered_modes": [
+      {
+        "id": "SPIN",
+        "kind": "SPIN",
+        "observed": false,
+        "validated": false,
+        "executable": false,
+        "discovery_state": "CONTRACT_UNRESOLVED",
+        "wire_method": "play",
+        "request_options": {},
+        "source": "live-client-evidence-incomplete",
+        "evidence_level": "DISCOVERED",
+        "execution_state": "NOT_EXECUTABLE"
+      }
+    ],
+    "started_at": "2026-09-15T09:12:19+00:00",
+    "finished_at": "2026-09-15T09:12:43+00:00",
+    "elapsed_ms": 23843.999999997322,
+    "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
+    "run_dir": "2026-09-15_06-12-19-bgaming-hyperhive-jsonrpc",
+    "attempts": [],
+    "samples_per_path": 1,
+    "structural_map": {
+      "path": "analysis/game-structure.json",
+      "schema": "tester-spin/game-structure/v1",
+      "coverage": {
+        "states": 0,
+        "decision_points": 0,
+        "choices": 0,
+        "executed": 0,
+        "outcome_observed": 0,
+        "pending": 0,
+        "unknowns": 2,
+        "complete": false,
+        "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+      },
+      "diagnostics": []
+    }
+  },
+  "artifact_bytes_embedded": 19699,
+  "artifacts": {
+    "analysis/game-structure.json": {
+      "encoding": "json",
+      "bytes": 1705,
+      "value": {
+        "schema": "tester-spin/game-structure/v1",
+        "metadata": {
+          "provider": "bgaming",
+          "protocol_family": "bgaming-json-flow",
+          "game_identifier": "yommi-rush",
+          "slug": "yommi-rush",
+          "bundle_fingerprint": "",
+          "generated_at": "2026-09-15T09:12:19+00:00",
+          "compatibility": "unverified",
+          "source_evidence_summary": {
+            "capture": "BGaming JSON requests/responses at transport boundary",
+            "diagnostics": []
+          },
+          "merged_runs": [
+            "run:b977493d3daaedecf1631663"
+          ],
+          "previous_revisions": []
+        },
+        "states": {},
+        "decision_points": {},
+        "choices": {},
+        "transitions": {},
+        "request_contracts": {},
+        "response_contracts": {},
+        "field_semantics": {},
+        "path_context": {},
+        "unknowns": {
+          "unknown:2286e5e74b2760a0ada10800": {
+            "id": "unknown:2286e5e74b2760a0ada10800",
+            "kind": "protocol",
+            "entity": "bgaming",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No supported JSON flow observations; protocol adapter required"
+          },
+          "unknown:61df904347e7ff7dee18f86d": {
+            "id": "unknown:61df904347e7ff7dee18f86d",
+            "kind": "client",
+            "entity": "fingerprint",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client compatibility unverified; only observed protocol evidence"
+          }
+        },
+        "evidence": {},
+        "relations": {},
+        "artifact_references": [],
+        "coverage": {
+          "states": 0,
+          "decision_points": 0,
+          "choices": 0,
+          "executed": 0,
+          "outcome_observed": 0,
+          "pending": 0,
+          "unknowns": 2,
+          "complete": false,
+          "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+        }
+      }
+    },
+    "path-coverage.json": {
+      "encoding": "json",
+      "bytes": 530,
+      "value": {
+        "schema": "tester-spin/path-coverage/v1",
+        "provider": "bgaming",
+        "game": "yommi-rush",
+        "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          }
+        ],
+        "complete": false,
+        "missing_count": 1
+      }
+    },
+    "result.json": {
+      "encoding": "json",
+      "bytes": 1692,
+      "value": {
+        "provider": "bgaming",
+        "slug": "yommi-rush",
+        "game_name": "Yommi Rush",
+        "game_url": "https://demo.bgaming-network.com/play/YommiRush/FUN",
+        "requested_spins": 1,
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "PARCIAL",
+        "symbol": "YommiRush",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": false,
+            "validated": false,
+            "executable": false,
+            "discovery_state": "CONTRACT_UNRESOLVED",
+            "wire_method": "play",
+            "request_options": {},
+            "source": "live-client-evidence-incomplete",
+            "evidence_level": "DISCOVERED",
+            "execution_state": "NOT_EXECUTABLE"
+          }
+        ],
+        "started_at": "2026-09-15T09:12:19+00:00",
+        "finished_at": "2026-09-15T09:12:43+00:00",
+        "elapsed_ms": 23843.999999997322,
+        "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Yommi Rush\\tests\\2026-09-15_06-12-19-bgaming-hyperhive-jsonrpc",
+        "attempts": [],
+        "samples_per_path": 1,
+        "structural_map": {
+          "path": "analysis/game-structure.json",
+          "schema": "tester-spin/game-structure/v1",
+          "coverage": {
+            "states": 0,
+            "decision_points": 0,
+            "choices": 0,
+            "executed": 0,
+            "outcome_observed": 0,
+            "pending": 0,
+            "unknowns": 2,
+            "complete": false,
+            "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+          },
+          "diagnostics": []
+        }
+      }
+    },
+    "sample-catalog.json": {
+      "encoding": "json",
+      "bytes": 267,
+      "value": {
+        "schema": "tester-spin/sample-catalog/v2",
+        "provider": "bgaming",
+        "game": "yommi-rush",
+        "scope": "observed_paths_only",
+        "samples_per_path": 1,
+        "groups": [],
+        "observed_state_types": [],
+        "diagnostics": [],
+        "observed_paths_sampled": false
+      }
+    },
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 916,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "yommi-rush",
+          "name": "Yommi Rush",
+          "identifier": "YommiRush"
+        },
+        "generated_at": "2026-09-15T09:12:44+00:00",
+        "source_run": "2026-09-15_06-12-19-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 700,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "yommi-rush",
+          "name": "Yommi Rush",
+          "identifier": "YommiRush"
+        },
+        "generated_at": "2026-09-15T09:12:44+00:00",
+        "source_run": "2026-09-15_06-12-19-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "contract-diagnostic.json": {
+      "encoding": "json",
+      "bytes": 728,
+      "value": {
+        "runtime": "hyperhive-jsonrpc",
+        "script_urls": [
+          "https://yommi-rush.demo.bgaming-network.com/wg-boost/wrapper.js",
+          "https://yommi-rush.demo.bgaming-network.com/wg-boost/analytics/amplitude.js",
+          "https://yommi-rush.demo.bgaming-network.com/wg-replays/replays.js",
+          "https://yommi-rush.demo.bgaming-network.com/loader.cc30a72822c2c86db5e5.js",
+          "https://yommi-rush.demo.bgaming-network.com/main.efc4487caf724a6d77e6.js"
+        ],
+        "bundle_sha256": "",
+        "engine_sha256": "a0ab1c968c365954cb86cab6e3e9fd8eadf9a55e1125715ec1dd30d36a15dff7",
+        "rpc_id_profile": "uuid",
+        "action_vocabulary": [],
+        "base_request": {},
+        "custom_req_profile": "",
+        "base_discovery_state": "CONTRACT_UNRESOLVED"
+      }
+    },
+    "diagnostic.json": {
+      "encoding": "json",
+      "bytes": 4130,
+      "value": {
+        "schema": "tester-spin/run-diagnostics/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "yommi-rush",
+          "name": "Yommi Rush",
+          "symbol": "YommiRush"
+        },
+        "started_at": "2026-09-15T09:12:19+00:00",
+        "finished_at": "2026-09-15T09:12:43+00:00",
+        "result_status": "PARCIAL",
+        "scope": "observed_paths_only",
+        "observed_error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
+        "root_cause": {
+          "status": "UNDETERMINED",
+          "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
+        },
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "status": "DISCOVERED",
+            "validated": false,
+            "tested": false,
+            "attempt_count": 0,
+            "terminal_count": 0,
+            "missing_options": [
+              "SPIN"
+            ],
+            "branches": [
+              {
+                "source": "discovered_modes_fail_closed",
+                "mode_id": "SPIN",
+                "signature": "SPIN:UNEXECUTED",
+                "required": [
+                  "SPIN"
+                ],
+                "covered": [],
+                "missing": [
+                  "SPIN"
+                ],
+                "complete": false,
+                "required_samples": 1,
+                "sample_counts": null,
+                "sample_deficits": {}
+              }
+            ],
+            "provider_metadata": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "CONTRACT_UNRESOLVED",
+              "wire_method": "play",
+              "request_options": {},
+              "source": "live-client-evidence-incomplete",
+              "evidence_level": "DISCOVERED",
+              "execution_state": "NOT_EXECUTABLE"
+            }
+          }
+        ],
+        "attempts": [],
+        "bootstrap_evidence": [
+          {
+            "path": "init-request.json",
+            "sha256": "684b1b3d9a9dc35e11a9c1ba41549ca0d204221e92b6f76e495ae03b7dd2de82",
+            "bytes": 142,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-response.json",
+            "sha256": "ac82bd82a5deeb1c7c16bfb25fc6695be3508fb649ff40859f31adedbd7ae380",
+            "bytes": 1740,
+            "kind": "envelope"
+          }
+        ],
+        "unknown_actions": [
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_8db9d2a00dfce1b5",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "CONTRACT_UNRESOLVED",
+              "wire_method": "play",
+              "request_options": {},
+              "source": "live-client-evidence-incomplete",
+              "evidence_level": "DISCOVERED",
+              "execution_state": "NOT_EXECUTABLE"
+            },
+            "evidence": []
+          }
+        ],
+        "request_comparisons": [],
+        "coverage": {
+          "schema": "tester-spin/path-coverage/v1",
+          "provider": "bgaming",
+          "game": "yommi-rush",
+          "branch_points": [
+            {
+              "source": "discovered_modes_fail_closed",
+              "mode_id": "SPIN",
+              "signature": "SPIN:UNEXECUTED",
+              "required": [
+                "SPIN"
+              ],
+              "covered": [],
+              "missing": [
+                "SPIN"
+              ],
+              "complete": false,
+              "required_samples": 1,
+              "sample_counts": null,
+              "sample_deficits": {}
+            }
+          ],
+          "complete": false,
+          "missing_count": 1
+        },
+        "sample_diagnostics": [],
+        "evidence_gaps": [],
+        "next_steps": [
+          "Revisar la respuesta que anuncia la acción/opción pendiente y el serializer del cliente de este proveedor. No inventar argumentos ni un handler.",
+          "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa."
+        ],
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Yommi Rush\\diagnostics\\20260915T091159-272cdc254253\\events.jsonl",
+        "tree": "run-tree.html",
+        "tree_data": "run-tree.json"
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 1689,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "yommi-rush",
+          "name": "Yommi Rush",
+          "identifier": "YommiRush"
+        },
+        "generated_at": "2026-09-15T09:12:44+00:00",
+        "source_run": "2026-09-15_06-12-19-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "init-request.json": {
+      "encoding": "json",
+      "bytes": 142,
+      "value": {
+        "id": "f0364687-dbf1-4dbc-a1d8-fc9534936ea8",
+        "jsonrpc": "2.0",
+        "method": "init",
+        "params": {
+          "token": "<redacted>"
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1740,
+      "value": {
+        "id": "f0364687-dbf1-4dbc-a1d8-fc9534936ea8",
+        "jsonrpc": "2.0",
+        "result": {
+          "freebets": null,
+          "currency": "FUN",
+          "currency_attributes": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "locale": "en",
+          "config": {
+            "rtp": "96.00",
+            "displayed_rtp": "96.32",
+            "bet_limits": [
+              20,
+              40,
+              80,
+              100,
+              160,
+              200,
+              400,
+              800,
+              1200,
+              1600,
+              2500,
+              3500,
+              5000,
+              7000,
+              8000,
+              9000,
+              10000,
+              12500
+            ],
+            "freebets_limits": [
+              20,
+              40,
+              80,
+              100,
+              160,
+              200,
+              400,
+              800,
+              1200,
+              1600,
+              2500,
+              3500,
+              5000,
+              7000,
+              8000,
+              9000,
+              10000,
+              12500
+            ],
+            "default_bet": 200,
+            "purchased_features": [
+              "buy_bonus",
+              "buy_chance",
+              "buy_bonus_and_chance"
+            ],
+            "autospin_variant": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "quick_spins_enabled": false
+          },
+          "state": null,
+          "urls": {
+            "deposit_url": null,
+            "return_url": null,
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcyNTE2MTIsImd0X2lkIjo0MzY1NDA2fSwiZXhwIjoxODA1MTAxOTU2fQ.PpCgNRHkrbnVuYtdFHQFHe7BGvLewdifJvC5GokGPeI"
+          },
+          "balance": 100000,
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "outcome-catalog.json": {
+      "encoding": "json",
+      "bytes": 571,
+      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "yommi-rush",
+          "name": "Yommi Rush",
+          "identifier": "YommiRush"
+        },
+        "generated_at": "2026-09-15T09:12:44+00:00",
+        "source_run": "2026-09-15_06-12-19-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "path-catalog.json": {
+      "encoding": "json",
+      "bytes": 925,
+      "value": {
+        "schema": "tester-spin/bgaming-path-catalog/v1",
+        "phase": "coverage",
+        "provider": "bgaming",
+        "game": {
+          "slug": "yommi-rush",
+          "name": "Yommi Rush",
+          "symbol": "YommiRush"
+        },
+        "semantics": {
+          "path_completeness": "Every provider/client-demonstrated executable branch must be traversed.",
+          "rng_completeness": "Observed random outcomes are samples, not proof that every RNG outcome exists or was exhausted.",
+          "future_sampling_unit": "Repeat each executable path independently; do not multiply unrelated modes by a scoped selector."
+        },
+        "paths": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "branch_signature": "",
+            "executable": false,
+            "coverage_required": false,
+            "required_options": [],
+            "covered_options": [],
+            "attempts_observed": 0,
+            "terminal_successes": 0,
+            "wire_steps": 0,
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    "protocol-contract.json": {
+      "encoding": "json",
+      "bytes": 1689,
+      "value": {
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "yommi-rush",
+          "name": "Yommi Rush",
+          "identifier": "YommiRush"
+        },
+        "generated_at": "2026-09-15T09:12:44+00:00",
+        "source_run": "2026-09-15_06-12-19-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "unresolved_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": "live-client-evidence-incomplete"
+          }
+        ],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
+        }
+      }
+    },
+    "run-tree.json": {
+      "encoding": "json",
+      "bytes": 701,
+      "value": {
+        "schema": "tester-spin/run-tree/v1",
+        "provider": "bgaming",
+        "game": "yommi-rush",
+        "scope": "observed_trajectories",
+        "exact_remote_outcome_reproducible": false,
+        "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
+        "trajectories": [],
+        "announced_branches": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          }
+        ]
+      }
+    },
+    "state-machine.json": {
+      "encoding": "json",
+      "bytes": 517,
+      "value": {
+        "schema": "tester-spin/bgaming-state-machine/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "yommi-rush",
+          "name": "Yommi Rush",
+          "identifier": "YommiRush"
+        },
+        "generated_at": "2026-09-15T09:12:44+00:00",
+        "source_run": "2026-09-15_06-12-19-bgaming-hyperhive-jsonrpc",
+        "runtime_families": [],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "initial_state": "READY",
+        "states": {},
+        "transitions": []
+      }
+    },
+    "wager-catalog.json": {
+      "encoding": "json",
+      "bytes": 1057,
+      "value": {
+        "schema": "tester-spin/bgaming-wager-catalog/v1",
+        "policy": {
+          "coverage": "Use the minimum provider-advertised wager for exhaustive protocol/path traversal; never invent a lower wager.",
+          "sampling": "Preserve default and full wager domain so future statistical sampling can be scheduled independently per path.",
+          "purchase_identity": "purchased_feature and purchased_feature_level are scoped to PURCHASE_* modes and are not global spin-option dimensions."
+        },
+        "plans": [
+          {
+            "default_bet": 200.0,
+            "coverage_bet": 20.0,
+            "available_bets": [
+              20.0,
+              40.0,
+              80.0,
+              100.0,
+              160.0,
+              200.0,
+              400.0,
+              800.0,
+              1200.0,
+              1600.0,
+              2500.0,
+              3500.0,
+              5000.0,
+              7000.0,
+              8000.0,
+              9000.0,
+              10000.0,
+              12500.0
+            ],
+            "balance": 100000.0,
+            "source": "result.config.bet_limits:min",
+            "evidence": "init-response.json",
+            "purchase_costs": []
+          }
+        ]
+      }
+    }
+  },
+  "skipped_artifacts": []
+}
