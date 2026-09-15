@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-14T04:44:15+00:00",
-  "source_commit": "4ec388284beff71637abd35983ad815cc048afc8",
+  "published_at": "2026-09-15T08:18:27+00:00",
+  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
   "provider": "bgaming",
   "game": {
     "slug": "dusty-duel",
@@ -24,15 +24,20 @@
         "id": "SPIN",
         "kind": "SPIN",
         "observed": true,
-        "wire_command": "spin"
+        "wire_command": "spin",
+        "evidence_level": "REMOTE_EXECUTION",
+        "execution_state": "PROVEN_TERMINAL",
+        "validated": true
       },
       {
         "id": "PURCHASE_FREESPIN_CHANCE",
-        "kind": "PURCHASE",
+        "kind": "DISCOVERED_ONLY",
         "observed": true,
         "client_observed": false,
         "executable": false,
-        "coverage_required": true,
+        "coverage_required": false,
+        "evidence_level": "SERVER_ADVERTISED",
+        "execution_state": "WIRE_UNPROVEN",
         "discovery_state": "ADVERTISED_ONLY",
         "wire_command": "spin",
         "purchased_feature": "freespin_chance",
@@ -44,15 +49,18 @@
         "required_options": [
           "PURCHASE_FREESPIN_CHANCE"
         ],
-        "covered_options": []
+        "covered_options": [],
+        "validated": false
       },
       {
         "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-        "kind": "PURCHASE",
+        "kind": "DISCOVERED_ONLY",
         "observed": true,
         "client_observed": false,
         "executable": false,
-        "coverage_required": true,
+        "coverage_required": false,
+        "evidence_level": "SERVER_ADVERTISED",
+        "execution_state": "WIRE_UNPROVEN",
         "discovery_state": "ADVERTISED_ONLY",
         "wire_command": "spin",
         "purchased_feature": "freespin_buy",
@@ -64,15 +72,18 @@
         "required_options": [
           "PURCHASE_FREESPIN_BUY_LEVEL_0"
         ],
-        "covered_options": []
+        "covered_options": [],
+        "validated": false
       },
       {
         "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-        "kind": "PURCHASE",
+        "kind": "DISCOVERED_ONLY",
         "observed": true,
         "client_observed": false,
         "executable": false,
-        "coverage_required": true,
+        "coverage_required": false,
+        "evidence_level": "SERVER_ADVERTISED",
+        "execution_state": "WIRE_UNPROVEN",
         "discovery_state": "ADVERTISED_ONLY",
         "wire_command": "spin",
         "purchased_feature": "freespin_buy",
@@ -84,15 +95,18 @@
         "required_options": [
           "PURCHASE_FREESPIN_BUY_LEVEL_1"
         ],
-        "covered_options": []
+        "covered_options": [],
+        "validated": false
       },
       {
         "id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-        "kind": "PURCHASE",
+        "kind": "DISCOVERED_ONLY",
         "observed": true,
         "client_observed": false,
         "executable": false,
-        "coverage_required": true,
+        "coverage_required": false,
+        "evidence_level": "SERVER_ADVERTISED",
+        "execution_state": "WIRE_UNPROVEN",
         "discovery_state": "ADVERTISED_ONLY",
         "wire_command": "spin",
         "purchased_feature": "freespin_buy",
@@ -104,14 +118,15 @@
         "required_options": [
           "PURCHASE_FREESPIN_BUY_LEVEL_2"
         ],
-        "covered_options": []
+        "covered_options": [],
+        "validated": false
       }
     ],
-    "started_at": "2026-09-14T04:44:10+00:00",
-    "finished_at": "2026-09-14T04:44:15+00:00",
-    "elapsed_ms": 4453.000000001339,
-    "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_CHANCE, PURCHASE_FREESPIN_BUY_LEVEL_0, PURCHASE_FREESPIN_BUY_LEVEL_1, PURCHASE_FREESPIN_BUY_LEVEL_2. Cobertura de ramificaciones pendiente: PURCHASE_FREESPIN_CHANCE -> ['PURCHASE_FREESPIN_CHANCE']; PURCHASE_FREESPIN_BUY_LEVEL_0 -> ['PURCHASE_FREESPIN_BUY_LEVEL_0']; PURCHASE_FREESPIN_BUY_LEVEL_1 -> ['PURCHASE_FREESPIN_BUY_LEVEL_1']; PURCHASE_FREESPIN_BUY_LEVEL_2 -> ['PURCHASE_FREESPIN_BUY_LEVEL_2'].",
-    "run_dir": "2026-09-14_01-44-10-bgaming-http-api-v2",
+    "started_at": "2026-09-15T08:18:21+00:00",
+    "finished_at": "2026-09-15T08:18:26+00:00",
+    "elapsed_ms": 5327.999999994063,
+    "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_CHANCE, PURCHASE_FREESPIN_BUY_LEVEL_0, PURCHASE_FREESPIN_BUY_LEVEL_1, PURCHASE_FREESPIN_BUY_LEVEL_2.",
+    "run_dir": "2026-09-15_05-18-21-bgaming-http-api-v2",
     "attempts": [
       {
         "number": 1,
@@ -121,7 +136,7 @@
         "provider_bl": null,
         "provider_pur": null,
         "status_code": 200,
-        "elapsed_ms": 344.0000000045984,
+        "elapsed_ms": 358.99999999674037,
         "symbol": "DustyDuel",
         "endpoint": "https://demo.bgaming-network.com/api/DustyDuel/3799768/<session>",
         "na": "closed",
@@ -129,7 +144,7 @@
         "wire_steps": 1,
         "warning": "",
         "error": "",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-14_01-44-10-bgaming-http-api-v2\\SPIN\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-15_05-18-21-bgaming-http-api-v2\\SPIN\\attempt-001"
       }
     ],
     "samples_per_path": 1,
@@ -150,11 +165,11 @@
       "diagnostics": []
     }
   },
-  "artifact_bytes_embedded": 139298,
+  "artifact_bytes_embedded": 156556,
   "artifacts": {
     "analysis/game-structure.json": {
       "encoding": "json",
-      "bytes": 80078,
+      "bytes": 82840,
       "value": {
         "schema": "tester-spin/game-structure/v1",
         "metadata": {
@@ -163,14 +178,15 @@
           "game_identifier": "dusty-duel",
           "slug": "dusty-duel",
           "bundle_fingerprint": "038a073a88d2236e50d0ca24190ccce2e190ed820fa2e4fd2bdc37ecaa09a138",
-          "generated_at": "2026-09-14T04:44:10+00:00",
+          "generated_at": "2026-09-15T08:18:26+00:00",
           "compatibility": "fingerprint_scoped",
           "source_evidence_summary": {
             "capture": "BGaming JSON requests/responses at transport boundary",
             "diagnostics": []
           },
           "merged_runs": [
-            "run:7172adb579459a709a2d988a"
+            "run:7172adb579459a709a2d988a",
+            "run:77ea1d00ae08030f5057828e"
           ],
           "previous_revisions": []
         },
@@ -203,7 +219,7 @@
               "spin"
             ],
             "first_seen": "2026-09-14T04:44:14+00:00",
-            "observations": 1,
+            "observations": 2,
             "incoming_transitions": [
               "transition:990c1bb8f9e084e3fc90e353"
             ],
@@ -229,7 +245,7 @@
               "spin"
             ],
             "first_seen": "2026-09-14T04:44:15+00:00",
-            "observations": 1,
+            "observations": 2,
             "incoming_transitions": [
               "transition:e3a5600716525fa5dfc3994a"
             ],
@@ -416,8 +432,8 @@
               "executed": true,
               "outcome_observed": true,
               "outcome_derived": false,
-              "attempts": 1,
-              "successful_samples": 1
+              "attempts": 2,
+              "successful_samples": 2
             },
             "unresolved_reason": ""
           },
@@ -451,8 +467,8 @@
               "executed": true,
               "outcome_observed": true,
               "outcome_derived": false,
-              "attempts": 1,
-              "successful_samples": 1
+              "attempts": 2,
+              "successful_samples": 2
             },
             "unresolved_reason": ""
           }
@@ -466,14 +482,14 @@
             "request_contract": "request_contracts:2e136d150ad212d5c0be3cb7",
             "response_contract": "response_contracts:eafea8d7c84a34222516cc04",
             "to_state": "state:7468e21fb9ac4a1758fe2d97",
-            "observations": 1,
+            "observations": 2,
             "evidence": [
               "evidence:be788e7d6890ef4f4774ff67"
             ],
             "terminal": false,
             "path_context": "context:ba496e6784358221a3793999",
             "validation_results": {
-              "wire_state_observed; reward_not_validated": 1
+              "wire_state_observed; reward_not_validated": 2
             }
           },
           "transition:e3a5600716525fa5dfc3994a": {
@@ -484,14 +500,14 @@
             "request_contract": "request_contracts:c5b1adb968b99922fc53d0be",
             "response_contract": "response_contracts:89be2ceb5375aa12aedc9bd1",
             "to_state": "state:3107c56dab9aa62e505e7bb8",
-            "observations": 1,
+            "observations": 2,
             "evidence": [
               "evidence:be788e7d6890ef4f4774ff67"
             ],
             "terminal": true,
             "path_context": "context:7832ab259d402460152cb115",
             "validation_results": {
-              "wire_state_observed; reward_not_validated": 1
+              "wire_state_observed; reward_not_validated": 2
             }
           }
         },
@@ -499,18 +515,18 @@
           "request_contracts:2e136d150ad212d5c0be3cb7": {
             "id": "request_contracts:2e136d150ad212d5c0be3cb7",
             "schema": {
-              "samples": 1,
+              "samples": 2,
               "observed_types": {
-                "object": 1
+                "object": 2
               },
               "nullable": false,
               "confidence": "observed_only",
               "role": "unknown",
               "properties": {
                 "command": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "string": 1
+                    "string": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -521,24 +537,24 @@
                   "values_bounded": true,
                   "variability": "constant_in_observations",
                   "enum_exhaustive": false,
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "extra_data": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "round_series_id": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -549,14 +565,14 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
@@ -572,7 +588,7 @@
                 }
               }
             ],
-            "observations": 1,
+            "observations": 2,
             "evidence": [
               "evidence:be788e7d6890ef4f4774ff67"
             ],
@@ -582,18 +598,18 @@
           "request_contracts:c5b1adb968b99922fc53d0be": {
             "id": "request_contracts:c5b1adb968b99922fc53d0be",
             "schema": {
-              "samples": 1,
+              "samples": 2,
               "observed_types": {
-                "object": 1
+                "object": 2
               },
               "nullable": false,
               "confidence": "observed_only",
               "role": "unknown",
               "properties": {
                 "command": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "string": 1
+                    "string": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -604,24 +620,24 @@
                   "values_bounded": true,
                   "variability": "constant_in_observations",
                   "enum_exhaustive": false,
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "options": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "bet": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -632,31 +648,31 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "extra_data": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "round_series_id": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -667,14 +683,14 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
@@ -693,7 +709,7 @@
                 }
               }
             ],
-            "observations": 1,
+            "observations": 2,
             "evidence": [
               "evidence:be788e7d6890ef4f4774ff67"
             ],
@@ -705,18 +721,18 @@
           "response_contracts:eafea8d7c84a34222516cc04": {
             "id": "response_contracts:eafea8d7c84a34222516cc04",
             "schema": {
-              "samples": 1,
+              "samples": 2,
               "observed_types": {
-                "object": 1
+                "object": 2
               },
               "nullable": false,
               "confidence": "observed_only",
               "role": "unknown",
               "properties": {
                 "api_version": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "string": 1
+                    "string": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -727,24 +743,24 @@
                   "values_bounded": true,
                   "variability": "constant_in_observations",
                   "enum_exhaustive": false,
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "options": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "available_bets": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -756,9 +772,9 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 18,
+                        "samples": 36,
                         "observed_types": {
-                          "integer": 18
+                          "integer": 36
                         },
                         "nullable": false,
                         "confidence": "observed_only",
@@ -777,15 +793,15 @@
                         "variability": "variable",
                         "enum_exhaustive": false
                       },
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "default_bet": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -796,45 +812,45 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "paytable": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {},
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "paytables": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {},
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "special_symbols": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -845,15 +861,15 @@
                       },
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "lines": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -864,24 +880,24 @@
                       },
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "reels": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "main": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "array": 1
+                            "array": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -892,31 +908,31 @@
                           },
                           "position_semantics": "unknown",
                           "collection_role": "unknown; does not establish choices",
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "layout": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "reels": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -927,15 +943,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "rows": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -946,31 +962,31 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "currency": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "code": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "string": 1
+                            "string": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -981,15 +997,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "symbol": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "string": 1
+                            "string": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1000,15 +1016,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "subunits": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1019,15 +1035,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "exponent": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1038,22 +1054,22 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "screen": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1064,52 +1080,53 @@
                       },
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "default_seed": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "observed_values": [
-                        17047
+                        17047,
+                        40472
                       ],
                       "values_bounded": true,
-                      "variability": "constant_in_observations",
+                      "variability": "variable",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "feature_options": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "feature_multipliers": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "object": 1
+                            "object": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
                           "role": "unknown",
                           "properties": {
                             "base_bet": {
-                              "samples": 1,
+                              "samples": 2,
                               "observed_types": {
-                                "integer": 1
+                                "integer": 2
                               },
                               "nullable": false,
                               "confidence": "observed_only",
@@ -1120,15 +1137,15 @@
                               "values_bounded": true,
                               "variability": "constant_in_observations",
                               "enum_exhaustive": false,
-                              "parent_samples": 1,
+                              "parent_samples": 2,
                               "optional_observed": false,
                               "present_in_all_observed": true,
                               "required": null
                             },
                             "freespin_chance": {
-                              "samples": 1,
+                              "samples": 2,
                               "observed_types": {
-                                "integer": 1
+                                "integer": 2
                               },
                               "nullable": false,
                               "confidence": "observed_only",
@@ -1139,24 +1156,24 @@
                               "values_bounded": true,
                               "variability": "constant_in_observations",
                               "enum_exhaustive": false,
-                              "parent_samples": 1,
+                              "parent_samples": 2,
                               "optional_observed": false,
                               "present_in_all_observed": true,
                               "required": null
                             },
                             "freespin_buy": {
-                              "samples": 1,
+                              "samples": 2,
                               "observed_types": {
-                                "object": 1
+                                "object": 2
                               },
                               "nullable": false,
                               "confidence": "observed_only",
                               "role": "unknown",
                               "properties": {
                                 "0": {
-                                  "samples": 1,
+                                  "samples": 2,
                                   "observed_types": {
-                                    "integer": 1
+                                    "integer": 2
                                   },
                                   "nullable": false,
                                   "confidence": "observed_only",
@@ -1167,15 +1184,15 @@
                                   "values_bounded": true,
                                   "variability": "constant_in_observations",
                                   "enum_exhaustive": false,
-                                  "parent_samples": 1,
+                                  "parent_samples": 2,
                                   "optional_observed": false,
                                   "present_in_all_observed": true,
                                   "required": null
                                 },
                                 "1": {
-                                  "samples": 1,
+                                  "samples": 2,
                                   "observed_types": {
-                                    "integer": 1
+                                    "integer": 2
                                   },
                                   "nullable": false,
                                   "confidence": "observed_only",
@@ -1186,15 +1203,15 @@
                                   "values_bounded": true,
                                   "variability": "constant_in_observations",
                                   "enum_exhaustive": false,
-                                  "parent_samples": 1,
+                                  "parent_samples": 2,
                                   "optional_observed": false,
                                   "present_in_all_observed": true,
                                   "required": null
                                 },
                                 "2": {
-                                  "samples": 1,
+                                  "samples": 2,
                                   "observed_types": {
-                                    "integer": 1
+                                    "integer": 2
                                   },
                                   "nullable": false,
                                   "confidence": "observed_only",
@@ -1205,29 +1222,29 @@
                                   "values_bounded": true,
                                   "variability": "constant_in_observations",
                                   "enum_exhaustive": false,
-                                  "parent_samples": 1,
+                                  "parent_samples": 2,
                                   "optional_observed": false,
                                   "present_in_all_observed": true,
                                   "required": null
                                 }
                               },
                               "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                              "parent_samples": 1,
+                              "parent_samples": 2,
                               "optional_observed": false,
                               "present_in_all_observed": true,
                               "required": null
                             }
                           },
                           "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "disabled_features": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "array": 1
+                            "array": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1238,31 +1255,31 @@
                           },
                           "position_semantics": "unknown",
                           "collection_role": "unknown; does not establish choices",
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "digit_options": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "bet": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1273,15 +1290,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "paytable": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1292,15 +1309,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "balance": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1311,38 +1328,38 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "balance": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "game": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1353,15 +1370,15 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "wallet": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1372,31 +1389,31 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "flow": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "round_id": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "null": 1
+                        "null": 2
                       },
                       "nullable": true,
                       "confidence": "observed_only",
@@ -1407,15 +1424,15 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "last_action_id": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "null": 1
+                        "null": 2
                       },
                       "nullable": true,
                       "confidence": "observed_only",
@@ -1426,15 +1443,15 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "state": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "string": 1
+                        "string": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1445,15 +1462,15 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "command": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "string": 1
+                        "string": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1464,15 +1481,15 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "available_actions": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1484,9 +1501,9 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 2,
+                        "samples": 4,
                         "observed_types": {
-                          "string": 2
+                          "string": 4
                         },
                         "nullable": false,
                         "confidence": "observed_only",
@@ -1499,14 +1516,14 @@
                         "variability": "variable",
                         "enum_exhaustive": false
                       },
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
@@ -1590,9 +1607,85 @@
                     "spin"
                   ]
                 }
+              },
+              {
+                "api_version": "2",
+                "options": {
+                  "available_bets": [
+                    20,
+                    40,
+                    60,
+                    80,
+                    100,
+                    120,
+                    160,
+                    200,
+                    300,
+                    400,
+                    500,
+                    700,
+                    1000,
+                    1500,
+                    2000,
+                    3000,
+                    4000,
+                    5000
+                  ],
+                  "default_bet": 200,
+                  "paytable": {},
+                  "paytables": {},
+                  "special_symbols": [],
+                  "lines": [],
+                  "reels": {
+                    "main": []
+                  },
+                  "layout": {
+                    "reels": 1,
+                    "rows": 1
+                  },
+                  "currency": {
+                    "code": "FUN",
+                    "symbol": "FUN",
+                    "subunits": 100,
+                    "exponent": 2
+                  },
+                  "screen": [],
+                  "default_seed": 40472,
+                  "feature_options": {
+                    "feature_multipliers": {
+                      "base_bet": 20,
+                      "freespin_chance": 40,
+                      "freespin_buy": {
+                        "0": 2000,
+                        "1": 4000,
+                        "2": 10000
+                      }
+                    },
+                    "disabled_features": []
+                  },
+                  "digit_options": {
+                    "bet": 2,
+                    "paytable": 2,
+                    "balance": 2
+                  }
+                },
+                "balance": {
+                  "game": 0,
+                  "wallet": 100000
+                },
+                "flow": {
+                  "round_id": "[runtime:round_id]",
+                  "last_action_id": "[runtime:last_action_id]",
+                  "state": "ready",
+                  "command": "init",
+                  "available_actions": [
+                    "init",
+                    "spin"
+                  ]
+                }
               }
             ],
-            "observations": 1,
+            "observations": 2,
             "evidence": [
               "evidence:be788e7d6890ef4f4774ff67"
             ],
@@ -1602,18 +1695,18 @@
           "response_contracts:89be2ceb5375aa12aedc9bd1": {
             "id": "response_contracts:89be2ceb5375aa12aedc9bd1",
             "schema": {
-              "samples": 1,
+              "samples": 2,
               "observed_types": {
-                "object": 1
+                "object": 2
               },
               "nullable": false,
               "confidence": "observed_only",
               "role": "unknown",
               "properties": {
                 "api_version": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "string": 1
+                    "string": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -1624,24 +1717,24 @@
                   "values_bounded": true,
                   "variability": "constant_in_observations",
                   "enum_exhaustive": false,
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "outcome": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "screen": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "null": 1
+                        "null": 2
                       },
                       "nullable": true,
                       "confidence": "observed_only",
@@ -1652,15 +1745,15 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "special_symbols": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "null": 1
+                        "null": 2
                       },
                       "nullable": true,
                       "confidence": "observed_only",
@@ -1671,15 +1764,15 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "bet": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1690,34 +1783,35 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "win": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "observed_values": [
-                        35
+                        35,
+                        0
                       ],
                       "values_bounded": true,
-                      "variability": "constant_in_observations",
+                      "variability": "variable",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "wins": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1728,43 +1822,44 @@
                       },
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "storage": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "seed": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "integer": 1
+                            "integer": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
                           "role": "unknown",
                           "observed_values": [
-                            146934
+                            146934,
+                            40158
                           ],
                           "values_bounded": true,
-                          "variability": "constant_in_observations",
+                          "variability": "variable",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "mode": {
-                          "samples": 1,
+                          "samples": 2,
                           "observed_types": {
-                            "string": 1
+                            "string": 2
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1775,57 +1870,58 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
+                          "parent_samples": 2,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "balance": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "game": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "observed_values": [
-                        35
+                        35,
+                        0
                       ],
                       "values_bounded": true,
-                      "variability": "constant_in_observations",
+                      "variability": "variable",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "wallet": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1836,31 +1932,31 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "flow": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "round_id": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1871,15 +1967,15 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "last_action_id": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "string": 1
+                        "string": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1890,15 +1986,15 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "state": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "string": 1
+                        "string": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1909,15 +2005,15 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "command": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "string": 1
+                        "string": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1928,15 +2024,15 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "available_actions": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "array": 1
+                        "array": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1948,9 +2044,9 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 2,
+                        "samples": 4,
                         "observed_types": {
-                          "string": 2
+                          "string": 4
                         },
                         "nullable": false,
                         "confidence": "observed_only",
@@ -1963,29 +2059,29 @@
                         "variability": "variable",
                         "enum_exhaustive": false
                       },
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "purchased_feature": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {},
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 1,
+                  "parent_samples": 2,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
@@ -2022,9 +2118,38 @@
                   ],
                   "purchased_feature": {}
                 }
+              },
+              {
+                "api_version": "2",
+                "outcome": {
+                  "screen": null,
+                  "special_symbols": null,
+                  "bet": 20,
+                  "win": 0,
+                  "wins": [],
+                  "storage": {
+                    "seed": 40158,
+                    "mode": "0"
+                  }
+                },
+                "balance": {
+                  "game": 0,
+                  "wallet": 99980
+                },
+                "flow": {
+                  "round_id": "[runtime:round_id]",
+                  "last_action_id": "[runtime:last_action_id]",
+                  "state": "closed",
+                  "command": "spin",
+                  "available_actions": [
+                    "init",
+                    "spin"
+                  ],
+                  "purchased_feature": {}
+                }
               }
             ],
-            "observations": 1,
+            "observations": 2,
             "evidence": [
               "evidence:be788e7d6890ef4f4774ff67"
             ],
@@ -2429,79 +2554,14 @@
     },
     "path-coverage.json": {
       "encoding": "json",
-      "bytes": 1895,
+      "bytes": 167,
       "value": {
         "schema": "tester-spin/path-coverage/v1",
         "provider": "bgaming",
         "game": "dusty-duel",
-        "branch_points": [
-          {
-            "source": "discovered_modes",
-            "mode_id": "PURCHASE_FREESPIN_CHANCE",
-            "signature": "PURCHASE_FREESPIN_CHANCE",
-            "required": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "covered": [],
-            "missing": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "complete": false,
-            "required_samples": 1,
-            "sample_counts": null,
-            "sample_deficits": {}
-          },
-          {
-            "source": "discovered_modes",
-            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "signature": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "required": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_0"
-            ],
-            "covered": [],
-            "missing": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_0"
-            ],
-            "complete": false,
-            "required_samples": 1,
-            "sample_counts": null,
-            "sample_deficits": {}
-          },
-          {
-            "source": "discovered_modes",
-            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "signature": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "required": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_1"
-            ],
-            "covered": [],
-            "missing": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_1"
-            ],
-            "complete": false,
-            "required_samples": 1,
-            "sample_counts": null,
-            "sample_deficits": {}
-          },
-          {
-            "source": "discovered_modes",
-            "mode_id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "signature": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "required": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_2"
-            ],
-            "covered": [],
-            "missing": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_2"
-            ],
-            "complete": false,
-            "required_samples": 1,
-            "sample_counts": null,
-            "sample_deficits": {}
-          }
-        ],
-        "complete": false,
-        "missing_count": 4
+        "branch_points": [],
+        "complete": true,
+        "missing_count": 0
       }
     },
     "profile.json": {
@@ -2618,7 +2678,7 @@
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 4842,
+      "bytes": 5154,
       "value": {
         "provider": "bgaming",
         "slug": "dusty-duel",
@@ -2634,15 +2694,20 @@
             "id": "SPIN",
             "kind": "SPIN",
             "observed": true,
-            "wire_command": "spin"
+            "wire_command": "spin",
+            "evidence_level": "REMOTE_EXECUTION",
+            "execution_state": "PROVEN_TERMINAL",
+            "validated": true
           },
           {
             "id": "PURCHASE_FREESPIN_CHANCE",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "observed": true,
             "client_observed": false,
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
+            "evidence_level": "SERVER_ADVERTISED",
+            "execution_state": "WIRE_UNPROVEN",
             "discovery_state": "ADVERTISED_ONLY",
             "wire_command": "spin",
             "purchased_feature": "freespin_chance",
@@ -2654,15 +2719,18 @@
             "required_options": [
               "PURCHASE_FREESPIN_CHANCE"
             ],
-            "covered_options": []
+            "covered_options": [],
+            "validated": false
           },
           {
             "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "observed": true,
             "client_observed": false,
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
+            "evidence_level": "SERVER_ADVERTISED",
+            "execution_state": "WIRE_UNPROVEN",
             "discovery_state": "ADVERTISED_ONLY",
             "wire_command": "spin",
             "purchased_feature": "freespin_buy",
@@ -2674,15 +2742,18 @@
             "required_options": [
               "PURCHASE_FREESPIN_BUY_LEVEL_0"
             ],
-            "covered_options": []
+            "covered_options": [],
+            "validated": false
           },
           {
             "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "observed": true,
             "client_observed": false,
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
+            "evidence_level": "SERVER_ADVERTISED",
+            "execution_state": "WIRE_UNPROVEN",
             "discovery_state": "ADVERTISED_ONLY",
             "wire_command": "spin",
             "purchased_feature": "freespin_buy",
@@ -2694,15 +2765,18 @@
             "required_options": [
               "PURCHASE_FREESPIN_BUY_LEVEL_1"
             ],
-            "covered_options": []
+            "covered_options": [],
+            "validated": false
           },
           {
             "id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "observed": true,
             "client_observed": false,
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
+            "evidence_level": "SERVER_ADVERTISED",
+            "execution_state": "WIRE_UNPROVEN",
             "discovery_state": "ADVERTISED_ONLY",
             "wire_command": "spin",
             "purchased_feature": "freespin_buy",
@@ -2714,14 +2788,15 @@
             "required_options": [
               "PURCHASE_FREESPIN_BUY_LEVEL_2"
             ],
-            "covered_options": []
+            "covered_options": [],
+            "validated": false
           }
         ],
-        "started_at": "2026-09-14T04:44:10+00:00",
-        "finished_at": "2026-09-14T04:44:15+00:00",
-        "elapsed_ms": 4453.000000001339,
-        "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_CHANCE, PURCHASE_FREESPIN_BUY_LEVEL_0, PURCHASE_FREESPIN_BUY_LEVEL_1, PURCHASE_FREESPIN_BUY_LEVEL_2. Cobertura de ramificaciones pendiente: PURCHASE_FREESPIN_CHANCE -> ['PURCHASE_FREESPIN_CHANCE']; PURCHASE_FREESPIN_BUY_LEVEL_0 -> ['PURCHASE_FREESPIN_BUY_LEVEL_0']; PURCHASE_FREESPIN_BUY_LEVEL_1 -> ['PURCHASE_FREESPIN_BUY_LEVEL_1']; PURCHASE_FREESPIN_BUY_LEVEL_2 -> ['PURCHASE_FREESPIN_BUY_LEVEL_2'].",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-14_01-44-10-bgaming-http-api-v2",
+        "started_at": "2026-09-15T08:18:21+00:00",
+        "finished_at": "2026-09-15T08:18:26+00:00",
+        "elapsed_ms": 5327.999999994063,
+        "error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_CHANCE, PURCHASE_FREESPIN_BUY_LEVEL_0, PURCHASE_FREESPIN_BUY_LEVEL_1, PURCHASE_FREESPIN_BUY_LEVEL_2.",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-15_05-18-21-bgaming-http-api-v2",
         "attempts": [
           {
             "number": 1,
@@ -2731,7 +2806,7 @@
             "provider_bl": null,
             "provider_pur": null,
             "status_code": 200,
-            "elapsed_ms": 344.0000000045984,
+            "elapsed_ms": 358.99999999674037,
             "symbol": "DustyDuel",
             "endpoint": "https://demo.bgaming-network.com/api/DustyDuel/3799768/<session>",
             "na": "closed",
@@ -2739,7 +2814,7 @@
             "wire_steps": 1,
             "warning": "",
             "error": "",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-14_01-44-10-bgaming-http-api-v2\\SPIN\\attempt-001"
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-15_05-18-21-bgaming-http-api-v2\\SPIN\\attempt-001"
           }
         ],
         "samples_per_path": 1,
@@ -2798,23 +2873,23 @@
                 "evidence": [
                   {
                     "path": "SPIN/attempt-001/request.json",
-                    "sha256": "07d921dbbce1210e5dc8af012b193ca06acd47ea6a44c6a282bc87ae44377a22",
+                    "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
                     "bytes": 125
                   },
                   {
                     "path": "SPIN/attempt-001/response.json",
-                    "sha256": "fdf8990c5214a59a3445ab15154dec16fed68fb34603798f9d26db970fcbc8f3",
-                    "bytes": 506
+                    "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                    "bytes": 503
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-request.json",
-                    "sha256": "07d921dbbce1210e5dc8af012b193ca06acd47ea6a44c6a282bc87ae44377a22",
+                    "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
                     "bytes": 125
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-response.json",
-                    "sha256": "fdf8990c5214a59a3445ab15154dec16fed68fb34603798f9d26db970fcbc8f3",
-                    "bytes": 506
+                    "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                    "bytes": 503
                   }
                 ]
               }
@@ -2855,22 +2930,22 @@
     },
     "SPIN/attempt-001/remote-proof.json": {
       "encoding": "json",
-      "bytes": 476,
+      "bytes": 473,
       "value": {
-        "round_id": 17307334275,
-        "last_action_id": "17307334275_1",
+        "round_id": 17321407823,
+        "last_action_id": "17321407823_1",
         "flow_state": "closed",
         "flow_command": "spin",
         "purchased_feature": "",
         "bet": 20,
-        "win": 35,
-        "balance_total": 100015,
+        "win": 0,
+        "balance_total": 99980,
         "screen_sha256": "",
-        "storage_seed": 146934,
+        "storage_seed": 40158,
         "storage_mode": "0",
         "freespins_issued": null,
         "freespins_left": null,
-        "response_sha256": "75512995a55c5069",
+        "response_sha256": "215c80641530f9f4",
         "mode_id": "SPIN",
         "step": 1,
         "expected_debit": 20.0,
@@ -2886,33 +2961,33 @@
           "bet": 20
         },
         "extra_data": {
-          "round_series_id": 1789361051835
+          "round_series_id": 1789460302548
         }
       }
     },
     "SPIN/attempt-001/response.json": {
       "encoding": "json",
-      "bytes": 506,
+      "bytes": 503,
       "value": {
         "api_version": "2",
         "outcome": {
           "screen": null,
           "special_symbols": null,
           "bet": 20,
-          "win": 35,
+          "win": 0,
           "wins": [],
           "storage": {
-            "seed": 146934,
+            "seed": 40158,
             "mode": "0"
           }
         },
         "balance": {
-          "game": 35,
+          "game": 0,
           "wallet": 99980
         },
         "flow": {
-          "round_id": 17307334275,
-          "last_action_id": "17307334275_1",
+          "round_id": 17321407823,
+          "last_action_id": "17321407823_1",
           "state": "closed",
           "command": "spin",
           "available_actions": [
@@ -2925,22 +3000,22 @@
     },
     "SPIN/attempt-001/step-001-proof.json": {
       "encoding": "json",
-      "bytes": 476,
+      "bytes": 473,
       "value": {
-        "round_id": 17307334275,
-        "last_action_id": "17307334275_1",
+        "round_id": 17321407823,
+        "last_action_id": "17321407823_1",
         "flow_state": "closed",
         "flow_command": "spin",
         "purchased_feature": "",
         "bet": 20,
-        "win": 35,
-        "balance_total": 100015,
+        "win": 0,
+        "balance_total": 99980,
         "screen_sha256": "",
-        "storage_seed": 146934,
+        "storage_seed": 40158,
         "storage_mode": "0",
         "freespins_issued": null,
         "freespins_left": null,
-        "response_sha256": "75512995a55c5069",
+        "response_sha256": "215c80641530f9f4",
         "mode_id": "SPIN",
         "step": 1,
         "expected_debit": 20.0,
@@ -2956,33 +3031,33 @@
           "bet": 20
         },
         "extra_data": {
-          "round_series_id": 1789361051835
+          "round_series_id": 1789460302548
         }
       }
     },
     "SPIN/attempt-001/step-001-response.json": {
       "encoding": "json",
-      "bytes": 506,
+      "bytes": 503,
       "value": {
         "api_version": "2",
         "outcome": {
           "screen": null,
           "special_symbols": null,
           "bet": 20,
-          "win": 35,
+          "win": 0,
           "wins": [],
           "storage": {
-            "seed": 146934,
+            "seed": 40158,
             "mode": "0"
           }
         },
         "balance": {
-          "game": 35,
+          "game": 0,
           "wallet": 99980
         },
         "flow": {
-          "round_id": 17307334275,
-          "last_action_id": "17307334275_1",
+          "round_id": 17321407823,
+          "last_action_id": "17321407823_1",
           "state": "closed",
           "command": "spin",
           "available_actions": [
@@ -3004,8 +3079,8 @@
           "name": "Dusty Duel",
           "identifier": "DustyDuel"
         },
-        "generated_at": "2026-09-14T04:44:15+00:00",
-        "source_run": "2026-09-14_01-44-10-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:18:26+00:00",
+        "source_run": "2026-09-15_05-18-21-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -3053,8 +3128,8 @@
           "name": "Dusty Duel",
           "identifier": "DustyDuel"
         },
-        "generated_at": "2026-09-14T04:44:15+00:00",
-        "source_run": "2026-09-14_01-44-10-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:18:26+00:00",
+        "source_run": "2026-09-15_05-18-21-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -3107,17 +3182,17 @@
           "title": "Dusty Duel",
           "currency": "FUN",
           "balance_polling_interval": 30000,
-          "cache_id": "d248b159d4d798d718148b40db5277e6dfa752c2e98b6fc064ac71a8a392249f",
-          "cache_player_id": "6bd3727178400f420bac361f0dff57896e28294c5602ca06b40104f8fd02734f",
+          "cache_id": "093167e4e1216bcb899f48554802d1858facad7daec97f903872ef5ba4d68f10",
+          "cache_player_id": "3db7b4d2f1bda998cdf959895b3b74e8c2da86a820fac26f9c926522e378689b",
           "api": "https://demo.bgaming-network.com/api/DustyDuel/3799768/<session>",
           "rules_url": "https://rules.bgaming-network.com/en/DustyDuel.json",
           "deposit_url": null,
           "games_page_url": "https://www.bgaming.com/games.html",
           "history_url": null,
-          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09e3a-e855-759b-877c-cac69e162d29/launch",
-          "game_page_url": "https://demo.bgaming-network.com/games/DustyDuel/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDczNTAyMjZ9LCJleHAiOjE4MDQ5OTk0NTZ9.xGvg7hmOFrvolG7uGzWrLTObA4BhsKH6ZDJEcoly0Jk",
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a0a425-63e6-78ed-b03d-226eede7a369/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/DustyDuel/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDg0MDMwNjl9LCJleHAiOjE4MDUwOTg3MDl9.qst2ILIlWgXtDCqxks35auBb26xrBA2F9ntx8on53PA",
           "websocket_url": "wss://demo.bgaming-network.com:443/cable",
-          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=DustyDuel&play_token=01a09e3a-e855-759b-877c-cac69e162d29&server_id=demo",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=DustyDuel&play_token=01a0a425-63e6-78ed-b03d-226eede7a369&server_id=demo",
           "ui": {
             "home_button": true,
             "full_screen_prompt": true,
@@ -3151,7 +3226,7 @@
           "custom": {},
           "actual_currency_rate": 0.0,
           "sound_enabled": true,
-          "games_loader_source": "https://cdn.bgaming-network.com/html/DustyDuel/loader.js?1789361056",
+          "games_loader_source": "https://cdn.bgaming-network.com/html/DustyDuel/loader.js?1789460309",
           "game_bundle_source": "https://cdn.bgaming-network.com/html/DustyDuel/bundle.js",
           "provable_fair": {
             "verify_url": "https://demo.bgaming-network.com/api/games/verify"
@@ -3204,7 +3279,7 @@
             }
           },
           "lobby_v2_options": {
-            "player_id": 346099089,
+            "player_id": 347151006,
             "lobby_enabled": false,
             "drops_enabled": false,
             "drops_token": "<redacted>",
@@ -3234,7 +3309,7 @@
             "return": null,
             "history": {
               "text": null,
-              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDYwOTkwODksImd0X2lkIjozNzk5NzY4fSwiZXhwIjoxODA0OTk5NDU2fQ.BmrtY4d0sE69o_1UY8nw03zCmHIzO28houHI5voeO7M",
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcxNTEwMDYsImd0X2lkIjozNzk5NzY4fSwiZXhwIjoxODA1MDk4NzA5fQ.ZR50_GxUR42TL5bLA98bC_cUJP3dRvoH4MmY0qg_cCw",
               "mode": "open"
             }
           },
@@ -3273,12 +3348,497 @@
           "pre_bet_balance_validation": false,
           "available_games_to_switch": []
         },
-        "round_series_id": 1789361051835
+        "round_series_id": 1789460302548
+      }
+    },
+    "diagnostic.json": {
+      "encoding": "json",
+      "bytes": 16470,
+      "value": {
+        "schema": "tester-spin/run-diagnostics/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "dusty-duel",
+          "name": "Dusty Duel",
+          "symbol": "DustyDuel"
+        },
+        "started_at": "2026-09-15T08:18:21+00:00",
+        "finished_at": "2026-09-15T08:18:26+00:00",
+        "result_status": "PARCIAL",
+        "scope": "observed_paths_only",
+        "observed_error": "BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_FREESPIN_CHANCE, PURCHASE_FREESPIN_BUY_LEVEL_0, PURCHASE_FREESPIN_BUY_LEVEL_1, PURCHASE_FREESPIN_BUY_LEVEL_2.",
+        "root_cause": {
+          "status": "UNDETERMINED",
+          "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
+        },
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "status": "INCOMPLETE",
+            "validated": false,
+            "tested": true,
+            "attempt_count": 1,
+            "terminal_count": 1,
+            "missing_options": [],
+            "branches": [],
+            "provider_metadata": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": true,
+              "wire_command": "spin",
+              "evidence_level": "REMOTE_EXECUTION",
+              "execution_state": "PROVEN_TERMINAL",
+              "validated": true
+            }
+          },
+          {
+            "id": "PURCHASE_FREESPIN_CHANCE",
+            "kind": "DISCOVERED_ONLY",
+            "status": "DISCOVERED",
+            "validated": false,
+            "tested": false,
+            "attempt_count": 0,
+            "terminal_count": 0,
+            "missing_options": [],
+            "branches": [],
+            "provider_metadata": {
+              "id": "PURCHASE_FREESPIN_CHANCE",
+              "kind": "DISCOVERED_ONLY",
+              "observed": true,
+              "client_observed": false,
+              "executable": false,
+              "coverage_required": false,
+              "evidence_level": "SERVER_ADVERTISED",
+              "execution_state": "WIRE_UNPROVEN",
+              "discovery_state": "ADVERTISED_ONLY",
+              "wire_command": "spin",
+              "purchased_feature": "freespin_chance",
+              "purchased_feature_level": null,
+              "feature_multiplier": 40,
+              "base_multiplier": 20,
+              "cost_multiplier": 2.0,
+              "source": "init.feature_multipliers;wire-unproven",
+              "required_options": [
+                "PURCHASE_FREESPIN_CHANCE"
+              ],
+              "covered_options": [],
+              "validated": false
+            }
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+            "kind": "DISCOVERED_ONLY",
+            "status": "DISCOVERED",
+            "validated": false,
+            "tested": false,
+            "attempt_count": 0,
+            "terminal_count": 0,
+            "missing_options": [],
+            "branches": [],
+            "provider_metadata": {
+              "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+              "kind": "DISCOVERED_ONLY",
+              "observed": true,
+              "client_observed": false,
+              "executable": false,
+              "coverage_required": false,
+              "evidence_level": "SERVER_ADVERTISED",
+              "execution_state": "WIRE_UNPROVEN",
+              "discovery_state": "ADVERTISED_ONLY",
+              "wire_command": "spin",
+              "purchased_feature": "freespin_buy",
+              "purchased_feature_level": "0",
+              "feature_multiplier": 2000,
+              "base_multiplier": 20,
+              "cost_multiplier": 100.0,
+              "source": "init.feature_multipliers;wire-unproven",
+              "required_options": [
+                "PURCHASE_FREESPIN_BUY_LEVEL_0"
+              ],
+              "covered_options": [],
+              "validated": false
+            }
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+            "kind": "DISCOVERED_ONLY",
+            "status": "DISCOVERED",
+            "validated": false,
+            "tested": false,
+            "attempt_count": 0,
+            "terminal_count": 0,
+            "missing_options": [],
+            "branches": [],
+            "provider_metadata": {
+              "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+              "kind": "DISCOVERED_ONLY",
+              "observed": true,
+              "client_observed": false,
+              "executable": false,
+              "coverage_required": false,
+              "evidence_level": "SERVER_ADVERTISED",
+              "execution_state": "WIRE_UNPROVEN",
+              "discovery_state": "ADVERTISED_ONLY",
+              "wire_command": "spin",
+              "purchased_feature": "freespin_buy",
+              "purchased_feature_level": "1",
+              "feature_multiplier": 4000,
+              "base_multiplier": 20,
+              "cost_multiplier": 200.0,
+              "source": "init.feature_multipliers;wire-unproven",
+              "required_options": [
+                "PURCHASE_FREESPIN_BUY_LEVEL_1"
+              ],
+              "covered_options": [],
+              "validated": false
+            }
+          },
+          {
+            "id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
+            "kind": "DISCOVERED_ONLY",
+            "status": "DISCOVERED",
+            "validated": false,
+            "tested": false,
+            "attempt_count": 0,
+            "terminal_count": 0,
+            "missing_options": [],
+            "branches": [],
+            "provider_metadata": {
+              "id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
+              "kind": "DISCOVERED_ONLY",
+              "observed": true,
+              "client_observed": false,
+              "executable": false,
+              "coverage_required": false,
+              "evidence_level": "SERVER_ADVERTISED",
+              "execution_state": "WIRE_UNPROVEN",
+              "discovery_state": "ADVERTISED_ONLY",
+              "wire_command": "spin",
+              "purchased_feature": "freespin_buy",
+              "purchased_feature_level": "2",
+              "feature_multiplier": 10000,
+              "base_multiplier": 20,
+              "cost_multiplier": 500.0,
+              "source": "init.feature_multipliers;wire-unproven",
+              "required_options": [
+                "PURCHASE_FREESPIN_BUY_LEVEL_2"
+              ],
+              "covered_options": [],
+              "validated": false
+            }
+          }
+        ],
+        "attempts": [
+          {
+            "number": 1,
+            "mode_id": "SPIN",
+            "reported_ok": true,
+            "reported_terminal": true,
+            "http_status": 200,
+            "last_state": "closed",
+            "wire_steps": 1,
+            "elapsed_ms": 358.99999999674037,
+            "error": "",
+            "warning": "",
+            "evidence": [
+              {
+                "path": "SPIN/attempt-001/request.json",
+                "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
+                "bytes": 125,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/response.json",
+                "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                "bytes": 503,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/step-001-request.json",
+                "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
+                "bytes": 125,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/step-001-response.json",
+                "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                "bytes": 503,
+                "kind": "response"
+              }
+            ],
+            "first_request": "SPIN/attempt-001/request.json",
+            "last_request": "SPIN/attempt-001/request.json",
+            "last_response": "SPIN/attempt-001/response.json",
+            "ordering": "ARTIFACT_STEP_INDEX",
+            "trajectory_id": "2d5d4ed901b3756d4e28"
+          }
+        ],
+        "bootstrap_evidence": [
+          {
+            "path": "bootstrap.json",
+            "sha256": "4d903d43fe4a388f575c889aea3e61d607a14ef1c49aa894e4009af61f3849a1",
+            "bytes": 6272,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-request.json",
+            "sha256": "b9b26847af98c7432f01a53c8c82773e823fb14beb3f95074f9355b1eac5abbb",
+            "bytes": 88,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-response.json",
+            "sha256": "cf38ab2b13c3626edeab1ed5c4eb94c88b0efa74782ad478d1232b9886e8e0b5",
+            "bytes": 1280,
+            "kind": "envelope"
+          }
+        ],
+        "unknown_actions": [
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_f8c7057fd626a32e",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "PURCHASE_FREESPIN_CHANCE",
+              "kind": "DISCOVERED_ONLY",
+              "observed": true,
+              "client_observed": false,
+              "executable": false,
+              "coverage_required": false,
+              "evidence_level": "SERVER_ADVERTISED",
+              "execution_state": "WIRE_UNPROVEN",
+              "discovery_state": "ADVERTISED_ONLY",
+              "wire_command": "spin",
+              "purchased_feature": "freespin_chance",
+              "purchased_feature_level": null,
+              "feature_multiplier": 40,
+              "base_multiplier": 20,
+              "cost_multiplier": 2.0,
+              "source": "init.feature_multipliers;wire-unproven",
+              "required_options": [
+                "PURCHASE_FREESPIN_CHANCE"
+              ],
+              "covered_options": [],
+              "validated": false
+            },
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/request.json",
+                  "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
+                  "bytes": 125,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/response.json",
+                  "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                  "bytes": 503,
+                  "kind": "response"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-request.json",
+                  "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
+                  "bytes": 125,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-response.json",
+                  "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                  "bytes": 503,
+                  "kind": "response"
+                }
+              ]
+            ]
+          },
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_729479a64891948c",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
+              "kind": "DISCOVERED_ONLY",
+              "observed": true,
+              "client_observed": false,
+              "executable": false,
+              "coverage_required": false,
+              "evidence_level": "SERVER_ADVERTISED",
+              "execution_state": "WIRE_UNPROVEN",
+              "discovery_state": "ADVERTISED_ONLY",
+              "wire_command": "spin",
+              "purchased_feature": "freespin_buy",
+              "purchased_feature_level": "0",
+              "feature_multiplier": 2000,
+              "base_multiplier": 20,
+              "cost_multiplier": 100.0,
+              "source": "init.feature_multipliers;wire-unproven",
+              "required_options": [
+                "PURCHASE_FREESPIN_BUY_LEVEL_0"
+              ],
+              "covered_options": [],
+              "validated": false
+            },
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/request.json",
+                  "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
+                  "bytes": 125,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/response.json",
+                  "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                  "bytes": 503,
+                  "kind": "response"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-request.json",
+                  "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
+                  "bytes": 125,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-response.json",
+                  "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                  "bytes": 503,
+                  "kind": "response"
+                }
+              ]
+            ]
+          },
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_4aaf7294e1688a9a",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
+              "kind": "DISCOVERED_ONLY",
+              "observed": true,
+              "client_observed": false,
+              "executable": false,
+              "coverage_required": false,
+              "evidence_level": "SERVER_ADVERTISED",
+              "execution_state": "WIRE_UNPROVEN",
+              "discovery_state": "ADVERTISED_ONLY",
+              "wire_command": "spin",
+              "purchased_feature": "freespin_buy",
+              "purchased_feature_level": "1",
+              "feature_multiplier": 4000,
+              "base_multiplier": 20,
+              "cost_multiplier": 200.0,
+              "source": "init.feature_multipliers;wire-unproven",
+              "required_options": [
+                "PURCHASE_FREESPIN_BUY_LEVEL_1"
+              ],
+              "covered_options": [],
+              "validated": false
+            },
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/request.json",
+                  "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
+                  "bytes": 125,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/response.json",
+                  "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                  "bytes": 503,
+                  "kind": "response"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-request.json",
+                  "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
+                  "bytes": 125,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-response.json",
+                  "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                  "bytes": 503,
+                  "kind": "response"
+                }
+              ]
+            ]
+          },
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_6c876dcd0f806450",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
+              "kind": "DISCOVERED_ONLY",
+              "observed": true,
+              "client_observed": false,
+              "executable": false,
+              "coverage_required": false,
+              "evidence_level": "SERVER_ADVERTISED",
+              "execution_state": "WIRE_UNPROVEN",
+              "discovery_state": "ADVERTISED_ONLY",
+              "wire_command": "spin",
+              "purchased_feature": "freespin_buy",
+              "purchased_feature_level": "2",
+              "feature_multiplier": 10000,
+              "base_multiplier": 20,
+              "cost_multiplier": 500.0,
+              "source": "init.feature_multipliers;wire-unproven",
+              "required_options": [
+                "PURCHASE_FREESPIN_BUY_LEVEL_2"
+              ],
+              "covered_options": [],
+              "validated": false
+            },
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/request.json",
+                  "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
+                  "bytes": 125,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/response.json",
+                  "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                  "bytes": 503,
+                  "kind": "response"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-request.json",
+                  "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
+                  "bytes": 125,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-response.json",
+                  "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                  "bytes": 503,
+                  "kind": "response"
+                }
+              ]
+            ]
+          }
+        ],
+        "request_comparisons": [],
+        "coverage": {
+          "schema": "tester-spin/path-coverage/v1",
+          "provider": "bgaming",
+          "game": "dusty-duel",
+          "branch_points": [],
+          "complete": true,
+          "missing_count": 0
+        },
+        "sample_diagnostics": [],
+        "evidence_gaps": [],
+        "next_steps": [
+          "Revisar la respuesta que anuncia la acción/opción pendiente y el serializer del cliente de este proveedor. No inventar argumentos ni un handler.",
+          "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa."
+        ],
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\diagnostics\\20260915T081758-7ac2b59d5b9c\\events.jsonl",
+        "tree": "run-tree.html",
+        "tree_data": "run-tree.json"
       }
     },
     "emulation-contract.json": {
       "encoding": "json",
-      "bytes": 6433,
+      "bytes": 4610,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -3287,8 +3847,8 @@
           "name": "Dusty Duel",
           "identifier": "DustyDuel"
         },
-        "generated_at": "2026-09-14T04:44:15+00:00",
-        "source_run": "2026-09-14_01-44-10-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:18:26+00:00",
+        "source_run": "2026-09-15_05-18-21-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -3375,10 +3935,10 @@
           },
           {
             "id": "PURCHASE_FREESPIN_CHANCE",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "wire_command": "spin",
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
             "purchased_feature": "freespin_chance",
             "purchased_feature_level": null,
             "cost_multiplier": 2.0,
@@ -3390,10 +3950,10 @@
           },
           {
             "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "wire_command": "spin",
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
             "purchased_feature": "freespin_buy",
             "purchased_feature_level": "0",
             "cost_multiplier": 100.0,
@@ -3405,10 +3965,10 @@
           },
           {
             "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "wire_command": "spin",
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
             "purchased_feature": "freespin_buy",
             "purchased_feature_level": "1",
             "cost_multiplier": 200.0,
@@ -3420,10 +3980,10 @@
           },
           {
             "id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "wire_command": "spin",
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
             "purchased_feature": "freespin_buy",
             "purchased_feature_level": "2",
             "cost_multiplier": 500.0,
@@ -3434,68 +3994,7 @@
             "source": "init.feature_multipliers;wire-unproven"
           }
         ],
-        "unresolved_modes": [
-          {
-            "id": "PURCHASE_FREESPIN_CHANCE",
-            "kind": "PURCHASE",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "purchased_feature": "freespin_chance",
-            "purchased_feature_level": null,
-            "cost_multiplier": 2.0,
-            "required_options": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "covered_options": [],
-            "source": "init.feature_multipliers;wire-unproven"
-          },
-          {
-            "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "kind": "PURCHASE",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "purchased_feature": "freespin_buy",
-            "purchased_feature_level": "0",
-            "cost_multiplier": 100.0,
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_0"
-            ],
-            "covered_options": [],
-            "source": "init.feature_multipliers;wire-unproven"
-          },
-          {
-            "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "kind": "PURCHASE",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "purchased_feature": "freespin_buy",
-            "purchased_feature_level": "1",
-            "cost_multiplier": 200.0,
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_1"
-            ],
-            "covered_options": [],
-            "source": "init.feature_multipliers;wire-unproven"
-          },
-          {
-            "id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "kind": "PURCHASE",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "purchased_feature": "freespin_buy",
-            "purchased_feature_level": "2",
-            "cost_multiplier": 500.0,
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_2"
-            ],
-            "covered_options": [],
-            "source": "init.feature_multipliers;wire-unproven"
-          }
-        ],
+        "unresolved_modes": [],
         "dispatch": {
           "READY": {
             "SPIN": [
@@ -3518,7 +4017,7 @@
       "value": {
         "command": "init",
         "extra_data": {
-          "round_series_id": 1789361051835
+          "round_series_id": 1789460302548
         }
       }
     },
@@ -3567,7 +4066,7 @@
             "exponent": 2
           },
           "screen": [],
-          "default_seed": 17047,
+          "default_seed": 40472,
           "feature_options": {
             "feature_multipliers": {
               "base_bet": 20,
@@ -3613,8 +4112,8 @@
           "name": "Dusty Duel",
           "identifier": "DustyDuel"
         },
-        "generated_at": "2026-09-14T04:44:15+00:00",
-        "source_run": "2026-09-14_01-44-10-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:18:26+00:00",
+        "source_run": "2026-09-15_05-18-21-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -3660,7 +4159,7 @@
     },
     "path-catalog.json": {
       "encoding": "json",
-      "bytes": 2669,
+      "bytes": 2701,
       "value": {
         "schema": "tester-spin/bgaming-path-catalog/v1",
         "phase": "coverage",
@@ -3688,15 +4187,15 @@
             "terminal_successes": 1,
             "wire_steps": 1,
             "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-14_01-44-10-bgaming-http-api-v2\\SPIN\\attempt-001"
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Dusty Duel\\tests\\2026-09-15_05-18-21-bgaming-http-api-v2\\SPIN\\attempt-001"
             ]
           },
           {
             "id": "PURCHASE_FREESPIN_CHANCE",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "branch_signature": "",
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
             "required_options": [
               "PURCHASE_FREESPIN_CHANCE"
             ],
@@ -3708,10 +4207,10 @@
           },
           {
             "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "branch_signature": "",
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
             "required_options": [
               "PURCHASE_FREESPIN_BUY_LEVEL_0"
             ],
@@ -3723,10 +4222,10 @@
           },
           {
             "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "branch_signature": "",
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
             "required_options": [
               "PURCHASE_FREESPIN_BUY_LEVEL_1"
             ],
@@ -3738,10 +4237,10 @@
           },
           {
             "id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "branch_signature": "",
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
             "required_options": [
               "PURCHASE_FREESPIN_BUY_LEVEL_2"
             ],
@@ -3756,7 +4255,7 @@
     },
     "protocol-contract.json": {
       "encoding": "json",
-      "bytes": 6433,
+      "bytes": 4610,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -3765,8 +4264,8 @@
           "name": "Dusty Duel",
           "identifier": "DustyDuel"
         },
-        "generated_at": "2026-09-14T04:44:15+00:00",
-        "source_run": "2026-09-14_01-44-10-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:18:26+00:00",
+        "source_run": "2026-09-15_05-18-21-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -3853,10 +4352,10 @@
           },
           {
             "id": "PURCHASE_FREESPIN_CHANCE",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "wire_command": "spin",
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
             "purchased_feature": "freespin_chance",
             "purchased_feature_level": null,
             "cost_multiplier": 2.0,
@@ -3868,10 +4367,10 @@
           },
           {
             "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "wire_command": "spin",
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
             "purchased_feature": "freespin_buy",
             "purchased_feature_level": "0",
             "cost_multiplier": 100.0,
@@ -3883,10 +4382,10 @@
           },
           {
             "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "wire_command": "spin",
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
             "purchased_feature": "freespin_buy",
             "purchased_feature_level": "1",
             "cost_multiplier": 200.0,
@@ -3898,10 +4397,10 @@
           },
           {
             "id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "wire_command": "spin",
             "executable": false,
-            "coverage_required": true,
+            "coverage_required": false,
             "purchased_feature": "freespin_buy",
             "purchased_feature_level": "2",
             "cost_multiplier": 500.0,
@@ -3912,68 +4411,7 @@
             "source": "init.feature_multipliers;wire-unproven"
           }
         ],
-        "unresolved_modes": [
-          {
-            "id": "PURCHASE_FREESPIN_CHANCE",
-            "kind": "PURCHASE",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "purchased_feature": "freespin_chance",
-            "purchased_feature_level": null,
-            "cost_multiplier": 2.0,
-            "required_options": [
-              "PURCHASE_FREESPIN_CHANCE"
-            ],
-            "covered_options": [],
-            "source": "init.feature_multipliers;wire-unproven"
-          },
-          {
-            "id": "PURCHASE_FREESPIN_BUY_LEVEL_0",
-            "kind": "PURCHASE",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "purchased_feature": "freespin_buy",
-            "purchased_feature_level": "0",
-            "cost_multiplier": 100.0,
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_0"
-            ],
-            "covered_options": [],
-            "source": "init.feature_multipliers;wire-unproven"
-          },
-          {
-            "id": "PURCHASE_FREESPIN_BUY_LEVEL_1",
-            "kind": "PURCHASE",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "purchased_feature": "freespin_buy",
-            "purchased_feature_level": "1",
-            "cost_multiplier": 200.0,
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_1"
-            ],
-            "covered_options": [],
-            "source": "init.feature_multipliers;wire-unproven"
-          },
-          {
-            "id": "PURCHASE_FREESPIN_BUY_LEVEL_2",
-            "kind": "PURCHASE",
-            "wire_command": "spin",
-            "executable": false,
-            "coverage_required": true,
-            "purchased_feature": "freespin_buy",
-            "purchased_feature_level": "2",
-            "cost_multiplier": 500.0,
-            "required_options": [
-              "PURCHASE_FREESPIN_BUY_LEVEL_2"
-            ],
-            "covered_options": [],
-            "source": "init.feature_multipliers;wire-unproven"
-          }
-        ],
+        "unresolved_modes": [],
         "dispatch": {
           "READY": {
             "SPIN": [
@@ -4046,7 +4484,7 @@
                 "last_action_id": {
                   "type": "string",
                   "observed_enum": [
-                    "17307334275_1"
+                    "17321407823_1"
                   ]
                 },
                 "purchased_feature": {
@@ -4140,6 +4578,109 @@
           "$.outcome.storage.seed",
           "$.outcome.win"
         ]
+      }
+    },
+    "run-tree.json": {
+      "encoding": "json",
+      "bytes": 3068,
+      "value": {
+        "schema": "tester-spin/run-tree/v1",
+        "provider": "bgaming",
+        "game": "dusty-duel",
+        "scope": "observed_trajectories",
+        "exact_remote_outcome_reproducible": false,
+        "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
+        "trajectories": [
+          {
+            "id": "2d5d4ed901b3756d4e28",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": true,
+                "wire_command": "spin",
+                "evidence_level": "REMOTE_EXECUTION",
+                "execution_state": "PROVEN_TERMINAL",
+                "validated": true
+              }
+            },
+            "attempt": 1,
+            "reported_terminal": true,
+            "reported_ok": true,
+            "sequence_status": "ARTIFACT_STEP_INDEX",
+            "steps": [
+              {
+                "label": "step-001",
+                "directory": "SPIN/attempt-001",
+                "request": [
+                  {
+                    "path": "SPIN/attempt-001/request.json",
+                    "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
+                    "bytes": 125,
+                    "kind": "request"
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "66b40a5e628e2638279f7f694330c99b863fab7d3632b2bd6d6e112157851db7",
+                    "bytes": 125,
+                    "kind": "request"
+                  }
+                ],
+                "response": [
+                  {
+                    "path": "SPIN/attempt-001/response.json",
+                    "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                    "bytes": 503,
+                    "kind": "response"
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "e4bd6d037f638e00b41f6712f36926aedd5d66b98549e8284646961916dc47e9",
+                    "bytes": 503,
+                    "kind": "response"
+                  }
+                ],
+                "id": "2d5d4ed901b3756d4e28:0",
+                "parent_id": "2d5d4ed901b3756d4e28",
+                "observed_response": {
+                  "api_version": "2",
+                  "outcome": {
+                    "screen": null,
+                    "special_symbols": null,
+                    "bet": 20,
+                    "win": 0,
+                    "wins": [],
+                    "storage": {
+                      "seed": 40158,
+                      "mode": "0"
+                    }
+                  },
+                  "balance": {
+                    "game": 0,
+                    "wallet": 99980
+                  },
+                  "flow": {
+                    "round_id": 17321407823,
+                    "last_action_id": "17321407823_1",
+                    "state": "closed",
+                    "command": "spin",
+                    "available_actions": [
+                      "init",
+                      "spin"
+                    ],
+                    "purchased_feature": {}
+                  }
+                }
+              }
+            ],
+            "events": [],
+            "gaps": [],
+            "offline_replay_ready": true
+          }
+        ],
+        "announced_branches": []
       }
     },
     "server-guided-discovery.json": {
@@ -4531,8 +5072,8 @@
           "name": "Dusty Duel",
           "identifier": "DustyDuel"
         },
-        "generated_at": "2026-09-14T04:44:15+00:00",
-        "source_run": "2026-09-14_01-44-10-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:18:26+00:00",
+        "source_run": "2026-09-15_05-18-21-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
