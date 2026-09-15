@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-13T10:09:19+00:00",
-  "source_commit": "e6fb9803a301fa12d1eda2d3b8d4f2a8b881ba2a",
+  "published_at": "2026-09-15T08:59:46+00:00",
+  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
   "provider": "bgaming",
   "game": {
     "slug": "royal-beellion-hold-win",
@@ -14,9 +14,9 @@
     "slug": "royal-beellion-hold-win",
     "game_name": "Royal Beellion Hold & Win",
     "game_url": "https://demo.bgaming-network.com/play/RoyalBeellionHoldAndWin/FUN?server=demo",
-    "requested_spins": 3,
+    "requested_spins": 1,
     "successful_spins": 0,
-    "failed_spins": 3,
+    "failed_spins": 1,
     "status": "ERROR",
     "symbol": "RoyalBeellionHoldAndWin",
     "discovered_modes": [
@@ -24,44 +24,63 @@
         "id": "SPIN",
         "kind": "SPIN",
         "observed": true,
-        "wire_command": "spin"
+        "wire_command": "spin",
+        "evidence_level": "WIRE_CANDIDATE",
+        "execution_state": "ATTEMPTED_UNVALIDATED",
+        "validated": false
       },
       {
         "id": "PURCHASE_BONUS_BUY",
-        "kind": "PURCHASE",
+        "kind": "DISCOVERED_ONLY",
         "observed": true,
         "client_observed": false,
-        "executable": true,
-        "discovery_state": "SERVER_ADVERTISED_PROBE",
+        "executable": false,
+        "coverage_required": false,
+        "evidence_level": "SERVER_ADVERTISED",
+        "execution_state": "WIRE_UNPROVEN",
+        "discovery_state": "ADVERTISED_ONLY",
         "wire_command": "spin",
         "purchased_feature": "bonus_buy",
         "purchased_feature_level": null,
         "feature_multiplier": 1200,
         "base_multiplier": 20,
         "cost_multiplier": 60.0,
-        "source": "init.feature_multipliers+provider-probe"
+        "source": "init.feature_multipliers;wire-unproven",
+        "required_options": [
+          "PURCHASE_BONUS_BUY"
+        ],
+        "covered_options": [],
+        "validated": false
       },
       {
         "id": "PURCHASE_BONUS_CHANCE",
-        "kind": "PURCHASE",
+        "kind": "DISCOVERED_ONLY",
         "observed": true,
         "client_observed": false,
-        "executable": true,
-        "discovery_state": "SERVER_ADVERTISED_PROBE",
+        "executable": false,
+        "coverage_required": false,
+        "evidence_level": "SERVER_ADVERTISED",
+        "execution_state": "WIRE_UNPROVEN",
+        "discovery_state": "ADVERTISED_ONLY",
         "wire_command": "spin",
         "purchased_feature": "bonus_chance",
         "purchased_feature_level": null,
         "feature_multiplier": 30,
         "base_multiplier": 20,
         "cost_multiplier": 1.5,
-        "source": "init.feature_multipliers+provider-probe"
+        "source": "init.feature_multipliers;wire-unproven",
+        "required_options": [
+          "PURCHASE_BONUS_CHANCE"
+        ],
+        "covered_options": [],
+        "validated": false
       }
     ],
-    "started_at": "2026-09-13T10:09:10+00:00",
-    "finished_at": "2026-09-13T10:09:19+00:00",
-    "elapsed_ms": 8328.000000001339,
-    "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-    "run_dir": "2026-09-13_07-09-10-bgaming-http-api-v2",
+    "started_at": "2026-09-15T08:59:40+00:00",
+    "finished_at": "2026-09-15T08:59:46+00:00",
+    "elapsed_ms": 5797.000000005937,
+    "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session> BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_BONUS_BUY, PURCHASE_BONUS_CHANCE.",
+    "run_dir": "2026-09-15_05-59-40-bgaming-http-api-v2",
     "attempts": [
       {
         "number": 1,
@@ -71,7 +90,7 @@
         "provider_bl": null,
         "provider_pur": null,
         "status_code": null,
-        "elapsed_ms": 734.0000000003783,
+        "elapsed_ms": 702.9999999940628,
         "symbol": "RoyalBeellionHoldAndWin",
         "endpoint": "https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
         "na": "",
@@ -79,567 +98,1594 @@
         "wire_steps": 0,
         "warning": "",
         "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Royal Beellion Hold & Win\\tests\\2026-09-13_07-09-10-bgaming-http-api-v2\\SPIN\\attempt-001"
-      },
-      {
-        "number": 1,
-        "ok": false,
-        "mode_id": "PURCHASE_BONUS_BUY",
-        "mode_kind": "PURCHASE",
-        "provider_bl": null,
-        "provider_pur": null,
-        "status_code": null,
-        "elapsed_ms": 1530.9999999990396,
-        "symbol": "RoyalBeellionHoldAndWin",
-        "endpoint": "https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-        "na": "",
-        "terminal": false,
-        "wire_steps": 0,
-        "warning": "",
-        "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Royal Beellion Hold & Win\\tests\\2026-09-13_07-09-10-bgaming-http-api-v2\\PURCHASE_BONUS_BUY\\attempt-001"
-      },
-      {
-        "number": 1,
-        "ok": false,
-        "mode_id": "PURCHASE_BONUS_CHANCE",
-        "mode_kind": "PURCHASE",
-        "provider_bl": null,
-        "provider_pur": null,
-        "status_code": null,
-        "elapsed_ms": 1562.0000000017171,
-        "symbol": "RoyalBeellionHoldAndWin",
-        "endpoint": "https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-        "na": "",
-        "terminal": false,
-        "wire_steps": 0,
-        "warning": "",
-        "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Royal Beellion Hold & Win\\tests\\2026-09-13_07-09-10-bgaming-http-api-v2\\PURCHASE_BONUS_CHANCE\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Royal Beellion Hold & Win\\tests\\2026-09-15_05-59-40-bgaming-http-api-v2\\SPIN\\attempt-001"
       }
-    ]
+    ],
+    "samples_per_path": 1,
+    "structural_map": {
+      "path": "analysis/game-structure.json",
+      "schema": "tester-spin/game-structure/v1",
+      "coverage": {
+        "states": 2,
+        "decision_points": 3,
+        "choices": 2,
+        "executed": 2,
+        "outcome_observed": 1,
+        "pending": 1,
+        "unknowns": 30,
+        "complete": false,
+        "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+      },
+      "diagnostics": []
+    }
   },
-  "artifact_bytes_embedded": 25362,
+  "artifact_bytes_embedded": 100514,
   "artifacts": {
-    "backend-conformance.json": {
+    "analysis/game-structure.json": {
       "encoding": "json",
-      "bytes": 970,
+      "bytes": 54762,
       "value": {
-        "schema": "tester-spin/bgaming-backend-conformance/v1",
-        "provider": "bgaming",
-        "game": {
+        "schema": "tester-spin/game-structure/v1",
+        "metadata": {
+          "provider": "bgaming",
+          "protocol_family": "bgaming-json-flow",
+          "game_identifier": "royal-beellion-hold-win",
           "slug": "royal-beellion-hold-win",
-          "name": "Royal Beellion Hold & Win",
-          "identifier": "RoyalBeellionHoldAndWin"
-        },
-        "generated_at": "2026-09-13T10:09:19+00:00",
-        "source_run": "2026-09-13_07-09-10-bgaming-http-api-v2",
-        "runtime_families": [
-          "api-v2"
-        ],
-        "authority_order": [
-          "RUNTIME_OBSERVED",
-          "CLIENT_CONTRACT",
-          "PROVIDER_METADATA",
-          "INFERENCE"
-        ],
-        "wire_replay_complete": false,
-        "cases": [],
-        "rules": [
-          "A backend response must match the response schema for the selected outcome.",
-          "The response must move the session to the documented target state.",
-          "Every request contract valid in a source state must be dispatchable.",
-          "Observed counts must never be interpreted as RNG probabilities.",
-          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
-        ]
-      }
-    },
-    "backend-response-plan.json": {
-      "encoding": "json",
-      "bytes": 754,
-      "value": {
-        "schema": "tester-spin/bgaming-backend-response-plan/v1",
-        "provider": "bgaming",
-        "game": {
-          "slug": "royal-beellion-hold-win",
-          "name": "Royal Beellion Hold & Win",
-          "identifier": "RoyalBeellionHoldAndWin"
-        },
-        "generated_at": "2026-09-13T10:09:19+00:00",
-        "source_run": "2026-09-13_07-09-10-bgaming-http-api-v2",
-        "runtime_families": [
-          "api-v2"
-        ],
-        "authority_order": [
-          "RUNTIME_OBSERVED",
-          "CLIENT_CONTRACT",
-          "PROVIDER_METADATA",
-          "INFERENCE"
-        ],
-        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
-        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
-        "states": {}
-      }
-    },
-    "bootstrap.json": {
-      "encoding": "json",
-      "bytes": 6383,
-      "value": {
-        "identifier": "RoyalBeellionHoldAndWin",
-        "launch_url": "https://demo.bgaming-network.com/games/RoyalBeellionHoldAndWin/FUN",
-        "api_url": "https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-        "options": {
-          "env": "production",
-          "csrfTokenHeaderName": "X-CSRF-Token",
-          "csrfTokenHeaderValue": "<redacted>",
-          "play_token": "<redacted>",
-          "game": "slots/royal_beellion_hold_and_win",
-          "identifier": "RoyalBeellionHoldAndWin",
-          "title": "Royal Beellion Hold & Win",
-          "currency": "FUN",
-          "balance_polling_interval": 30000,
-          "cache_id": "f27582781ba6cbdba0abec1de3b736e49bc05983d73baf7e3ea1b2c038970a6c",
-          "cache_player_id": "7f31b117fc64f1c563a5c0b33b2ad085a7ca6e989f727aa78cd257782de0cb64",
-          "api": "https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-          "rules_url": "https://rules.bgaming-network.com/en/RoyalBeellionHoldAndWin.json",
-          "deposit_url": null,
-          "games_page_url": "https://www.bgaming.com/games.html",
-          "history_url": null,
-          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09a3e-1124-717e-9507-0b134c35d879/launch",
-          "game_page_url": "https://demo.bgaming-network.com/games/RoyalBeellionHoldAndWin/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY2MTQ1OTJ9LCJleHAiOjE4MDQ5MzI1NTR9.15rfVXrs-oi-jLszLUrvuaZ3LUjZinXPwM0KH9eezDU",
-          "websocket_url": "wss://demo.bgaming-network.com:443/cable",
-          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=RoyalBeellionHoldAndWin&play_token=01a09a3e-1124-717e-9507-0b134c35d879&server_id=demo",
-          "ui": {
-            "home_button": true,
-            "full_screen_prompt": true,
-            "logo": "standard",
-            "skin": "basic",
-            "skins": [
-              "basic"
-            ],
-            "brand_logo": null,
-            "brand": {
-              "name": "",
-              "logo": null,
-              "logo_in_game": null
-            },
-            "autospins_dialog": "standard",
-            "autospin_values": [
-              "10",
-              "25",
-              "50",
-              "100",
-              "250",
-              "500",
-              "750",
-              "1000",
-              "∞"
-            ],
-            "gamble_enabled": true,
-            "show_rtp_in_rules": true
+          "bundle_fingerprint": "038a073a88d2236e50d0ca24190ccce2e190ed820fa2e4fd2bdc37ecaa09a138",
+          "generated_at": "2026-09-15T08:59:40+00:00",
+          "compatibility": "fingerprint_scoped",
+          "source_evidence_summary": {
+            "capture": "BGaming JSON requests/responses at transport boundary",
+            "diagnostics": []
           },
-          "resources_path": "https://cdn.bgaming-network.com/html/RoyalBeellionHoldAndWin",
-          "custom": {},
-          "actual_currency_rate": 0.0,
-          "sound_enabled": true,
-          "games_loader_source": "https://cdn.bgaming-network.com/html/RoyalBeellionHoldAndWin/loader.js?1789294154",
-          "game_bundle_source": "https://cdn.bgaming-network.com/html/RoyalBeellionHoldAndWin/bundle.js",
-          "provable_fair": {
-            "verify_url": "https://demo.bgaming-network.com/api/games/verify"
-          },
-          "math": {
-            "rtp": {
-              "main": 97.0,
-              "bonus_buy": 97.0,
-              "bonus_chance": 97.0
-            },
-            "gamble_limit": 5000,
-            "max_multiplier": 5000.0,
-            "max_win_freq": 10501521
-          },
-          "rules": {
-            "min_bet": 20,
-            "max_bet": 1500,
-            "currency": {
-              "code": "FUN",
-              "symbol": "FUN",
-              "subunits": 100,
-              "exponent": 2
-            }
-          },
-          "version": "1.0.0",
-          "growthbook_flags": {
-            "tech_analytics": {
-              "value": true,
-              "variation_id": "forced",
-              "experiment_key": null
-            },
-            "tech_lobby_widget_position": {
-              "value": {
-                "desktop": "bottom",
-                "portrait": "top",
-                "landscape": "top"
-              },
-              "variation_id": "forced",
-              "experiment_key": null
-            },
-            "growth_drop_init_popup_ui": {
-              "value": {
-                "id": 602,
-                "value": "A"
-              },
-              "variation_id": "forced",
-              "experiment_key": null
-            }
-          },
-          "lobby_v2_options": {
-            "player_id": 345364295,
-            "lobby_enabled": false,
-            "drops_enabled": false,
-            "drops_token": "<redacted>",
-            "drops_api_url": "https://drops.bgaming-network.com/api/v1/",
-            "profile_enabled": false,
-            "profile_api_url": "https://loyalty-core.shared.bgaming-system.com/api/v1",
-            "profile_token": "<redacted>",
-            "gamelist_enabled": false,
-            "gamelist_api_url": "https://gamelist.bgaming-network.com",
-            "gamelist_token": "<redacted>",
-            "challenges_enabled": false,
-            "challenges_api_url": "https://challenges.bgaming-network.com/",
-            "challenges_token": "<redacted>",
-            "challenges_fe_script_url": "https://brush.bgaming-network.com/",
-            "quests_enabled": false,
-            "quests_api_url": null,
-            "quests_token": "<redacted>",
-            "shop_enabled": false,
-            "shop_api_url": "",
-            "shop_token": "<redacted>",
-            "growth_fe_url": ""
-          },
-          "server_id": "demo",
-          "locale": "en",
-          "actions": {
-            "deposit": null,
-            "return": null,
-            "history": {
-              "text": null,
-              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDUzNjQyOTUsImd0X2lkIjozNzE0ODMzfSwiZXhwIjoxODA0OTMyNTU0fQ.KwFlUUesTgk9qn5k7-sSUXz5tBCXr9_CXE-hT8zGiLM",
-              "mode": "open"
-            }
-          },
-          "show_paytable": false,
-          "license_rules": {
-            "rules_section": {
-              "show_license_requirements": false,
-              "license_requirement_show_purchase": false,
-              "license_requirement_show_autoplay": false,
-              "license_requirement_show_quick_spins": false,
-              "license_requirement_show_autospin_confirmation": false,
-              "license_requirement_reset_autospin": false,
-              "show_rtp": [
-                "main_rtp",
-                "chance_rtp",
-                "bonus_rtp"
-              ],
-              "show_gamble_round": true,
-              "show_min_max": false,
-              "show_max_win_frequency": false,
-              "show_max_multiplier": true,
-              "show_max_win_rules_text": null
-            },
-            "screen_section": {
-              "show_rtp_on_main_screen": false,
-              "show_max_win_frequency_on_main_screen": false,
-              "show_max_multiplier_on_main_screen": false
-            },
-            "lines_count": "60"
-          },
-          "open_page_method": "redirect",
-          "reset_bet_to_default": false,
-          "enable_chinese_logos": false,
-          "enable_quick_spins_by_default": null,
-          "purchased_feature_limit": null,
-          "pre_bet_balance_validation": false,
-          "available_games_to_switch": []
-        },
-        "round_series_id": 1789294152063
-      }
-    },
-    "emulation-contract.json": {
-      "encoding": "json",
-      "bytes": 2156,
-      "value": {
-        "schema": "tester-spin/bgaming-emulation-contract/v1",
-        "provider": "bgaming",
-        "game": {
-          "slug": "royal-beellion-hold-win",
-          "name": "Royal Beellion Hold & Win",
-          "identifier": "RoyalBeellionHoldAndWin"
-        },
-        "generated_at": "2026-09-13T10:09:19+00:00",
-        "source_run": "2026-09-13_07-09-10-bgaming-http-api-v2",
-        "runtime_families": [
-          "api-v2"
-        ],
-        "authority_order": [
-          "RUNTIME_OBSERVED",
-          "CLIENT_CONTRACT",
-          "PROVIDER_METADATA",
-          "INFERENCE"
-        ],
-        "status": "ERROR",
-        "wire_replay_complete": false,
-        "math_model_complete": false,
-        "rng_probabilities_known": false,
-        "request_contracts": [],
-        "modes": [
-          {
-            "id": "SPIN",
-            "kind": "SPIN",
-            "wire_command": "spin",
-            "executable": true,
-            "coverage_required": false,
-            "purchased_feature": null,
-            "purchased_feature_level": null,
-            "cost_multiplier": null,
-            "required_options": [],
-            "covered_options": [],
-            "source": null
-          },
-          {
-            "id": "PURCHASE_BONUS_BUY",
-            "kind": "PURCHASE",
-            "wire_command": "spin",
-            "executable": true,
-            "coverage_required": false,
-            "purchased_feature": "bonus_buy",
-            "purchased_feature_level": null,
-            "cost_multiplier": 60.0,
-            "required_options": [],
-            "covered_options": [],
-            "source": "init.feature_multipliers+provider-probe"
-          },
-          {
-            "id": "PURCHASE_BONUS_CHANCE",
-            "kind": "PURCHASE",
-            "wire_command": "spin",
-            "executable": true,
-            "coverage_required": false,
-            "purchased_feature": "bonus_chance",
-            "purchased_feature_level": null,
-            "cost_multiplier": 1.5,
-            "required_options": [],
-            "covered_options": [],
-            "source": "init.feature_multipliers+provider-probe"
-          }
-        ],
-        "unresolved_modes": [],
-        "dispatch": {},
-        "artifacts": {
-          "state_machine": "state-machine.json",
-          "outcome_catalog": "outcome-catalog.json",
-          "backend_response_plan": "backend-response-plan.json",
-          "backend_conformance": "backend-conformance.json",
-          "response_schemas": "response-schemas/"
-        }
-      }
-    },
-    "init-request.json": {
-      "encoding": "json",
-      "bytes": 88,
-      "value": {
-        "command": "init",
-        "extra_data": {
-          "round_series_id": 1789294152063
-        }
-      }
-    },
-    "init-response.json": {
-      "encoding": "json",
-      "bytes": 1195,
-      "value": {
-        "api_version": "2",
-        "options": {
-          "available_bets": [
-            20,
-            40,
-            60,
-            80,
-            100,
-            120,
-            140,
-            160,
-            180,
-            200,
-            240,
-            300,
-            400,
-            500,
-            600,
-            700,
-            800,
-            1000
+          "merged_runs": [
+            "run:98bdfca5ce7e90095446e420"
           ],
-          "default_bet": 100,
-          "paytable": {},
-          "paytables": {},
-          "special_symbols": [],
-          "lines": [],
-          "reels": {
-            "main": []
+          "previous_revisions": []
+        },
+        "states": {
+          "state:c6a421dee0690883d7908734": {
+            "id": "state:c6a421dee0690883d7908734",
+            "server_state": "<unobserved>",
+            "structural_signature": "",
+            "terminal": null,
+            "available_actions": [],
+            "first_seen": "2026-09-15T08:59:45+00:00",
+            "observations": 0,
+            "incoming_transitions": [],
+            "outgoing_transitions": [
+              "transition:cd9da0d87830acf90d07aaf1"
+            ],
+            "response_contracts": [],
+            "evidence": [
+              "evidence:f6bbe6bb85e075415b9afdc7"
+            ],
+            "unresolved": []
           },
-          "layout": {
-            "reels": 1,
-            "rows": 1
-          },
-          "currency": {
-            "code": "FUN",
-            "symbol": "FUN",
-            "subunits": 100,
-            "exponent": 2
-          },
-          "screen": [],
-          "default_seed": 23133,
-          "feature_options": {
-            "feature_multipliers": {
-              "bonus_buy": 1200,
-              "bonus_chance": 30,
-              "base_bet": 20
-            },
-            "disabled_features": []
-          },
-          "digit_options": {
-            "bet": 2,
-            "paytable": 2,
-            "balance": 2
+          "state:79f58bf7932615d0338c0e31": {
+            "id": "state:79f58bf7932615d0338c0e31",
+            "server_state": "ready",
+            "structural_signature": "",
+            "terminal": false,
+            "available_actions": [
+              "init",
+              "spin"
+            ],
+            "first_seen": "2026-09-15T08:59:45+00:00",
+            "observations": 1,
+            "incoming_transitions": [
+              "transition:cd9da0d87830acf90d07aaf1"
+            ],
+            "outgoing_transitions": [],
+            "response_contracts": [
+              "response_contracts:51818d2436713260912a175e"
+            ],
+            "evidence": [
+              "evidence:f6bbe6bb85e075415b9afdc7",
+              "evidence:1d535b5eddcfcccc1ffa0031"
+            ],
+            "unresolved": []
           }
         },
-        "balance": {
-          "game": 0,
-          "wallet": 100000
-        },
-        "flow": {
-          "round_id": null,
-          "last_action_id": null,
-          "state": "ready",
-          "command": "init",
-          "available_actions": [
-            "init",
-            "spin"
-          ]
-        }
-      }
-    },
-    "last-refresh-init-request.json": {
-      "encoding": "json",
-      "bytes": 88,
-      "value": {
-        "command": "init",
-        "extra_data": {
-          "round_series_id": 1789294158745
-        }
-      }
-    },
-    "last-refresh-init-response.json": {
-      "encoding": "json",
-      "bytes": 1195,
-      "value": {
-        "api_version": "2",
-        "options": {
-          "available_bets": [
-            20,
-            40,
-            60,
-            80,
-            100,
-            120,
-            140,
-            160,
-            180,
-            200,
-            240,
-            300,
-            400,
-            500,
-            600,
-            700,
-            800,
-            1000
-          ],
-          "default_bet": 100,
-          "paytable": {},
-          "paytables": {},
-          "special_symbols": [],
-          "lines": [],
-          "reels": {
-            "main": []
-          },
-          "layout": {
-            "reels": 1,
-            "rows": 1
-          },
-          "currency": {
-            "code": "FUN",
-            "symbol": "FUN",
-            "subunits": 100,
-            "exponent": 2
-          },
-          "screen": [],
-          "default_seed": 12593,
-          "feature_options": {
-            "feature_multipliers": {
-              "bonus_buy": 1200,
-              "bonus_chance": 30,
-              "base_bet": 20
+        "decision_points": {
+          "decision:9d1d5f06d8d4b10869a44689": {
+            "id": "decision:9d1d5f06d8d4b10869a44689",
+            "state_id": "state:c6a421dee0690883d7908734",
+            "command": "init",
+            "type": "observed_action",
+            "choices": [
+              "choice:d89cecf485c3c120736360ba"
+            ],
+            "cardinality": {
+              "known": 1,
+              "exhaustive": false
             },
-            "disabled_features": []
+            "mutually_exclusive": null,
+            "repeatable": null,
+            "composite": null,
+            "confirmation_required": null,
+            "evidence": [
+              "evidence:f6bbe6bb85e075415b9afdc7"
+            ],
+            "replay_prefixes": [
+              []
+            ],
+            "coverage": {
+              "discovered": 1,
+              "executed": 1,
+              "outcome_observed": 1
+            }
           },
-          "digit_options": {
-            "bet": 2,
-            "paytable": 2,
-            "balance": 2
+          "decision:cd9ba2cb87c07d3258113040": {
+            "id": "decision:cd9ba2cb87c07d3258113040",
+            "state_id": "state:79f58bf7932615d0338c0e31",
+            "command": "init",
+            "type": "observed_action",
+            "choices": [],
+            "cardinality": {
+              "known": 0,
+              "exhaustive": false
+            },
+            "mutually_exclusive": null,
+            "repeatable": null,
+            "composite": null,
+            "confirmation_required": null,
+            "evidence": [
+              "evidence:1d535b5eddcfcccc1ffa0031"
+            ],
+            "replay_prefixes": [
+              [
+                "choice:d89cecf485c3c120736360ba"
+              ]
+            ],
+            "coverage": {
+              "discovered": 0,
+              "executed": 0,
+              "outcome_observed": 0
+            }
+          },
+          "decision:dfe2c1ae083a774e264d1d0c": {
+            "id": "decision:dfe2c1ae083a774e264d1d0c",
+            "state_id": "state:79f58bf7932615d0338c0e31",
+            "command": "spin",
+            "type": "observed_action",
+            "choices": [
+              "choice:766862f03e9f3733186f2990"
+            ],
+            "cardinality": {
+              "known": 1,
+              "exhaustive": false
+            },
+            "mutually_exclusive": null,
+            "repeatable": null,
+            "composite": null,
+            "confirmation_required": null,
+            "evidence": [
+              "evidence:1d535b5eddcfcccc1ffa0031",
+              "evidence:f6bbe6bb85e075415b9afdc7"
+            ],
+            "replay_prefixes": [
+              [
+                "choice:d89cecf485c3c120736360ba"
+              ]
+            ],
+            "coverage": {
+              "discovered": 1,
+              "executed": 1,
+              "outcome_observed": 0
+            }
           }
         },
-        "balance": {
-          "game": 0,
-          "wallet": 100000
+        "choices": {
+          "choice:d89cecf485c3c120736360ba": {
+            "id": "choice:d89cecf485c3c120736360ba",
+            "decision_point_id": "decision:9d1d5f06d8d4b10869a44689",
+            "label": "init",
+            "semantic_value": null,
+            "request": {
+              "command": "init",
+              "options": {}
+            },
+            "request_contracts": [
+              "request_contracts:f04d7951fc4a6a083b8b6610"
+            ],
+            "evidence": [
+              "evidence:f6bbe6bb85e075415b9afdc7"
+            ],
+            "preconditions": [],
+            "context_mutations": [
+              {}
+            ],
+            "coverage": {
+              "discovered": true,
+              "executed": true,
+              "outcome_observed": true,
+              "outcome_derived": false,
+              "attempts": 1,
+              "successful_samples": 1
+            },
+            "unresolved_reason": ""
+          },
+          "choice:766862f03e9f3733186f2990": {
+            "id": "choice:766862f03e9f3733186f2990",
+            "decision_point_id": "decision:dfe2c1ae083a774e264d1d0c",
+            "label": "spin",
+            "semantic_value": null,
+            "request": {
+              "command": "spin",
+              "options": {
+                "bet": 20
+              }
+            },
+            "request_contracts": [
+              "request_contracts:a90b5260947a038b04acfb52"
+            ],
+            "evidence": [
+              "evidence:f6bbe6bb85e075415b9afdc7"
+            ],
+            "preconditions": [],
+            "context_mutations": [
+              {}
+            ],
+            "coverage": {
+              "discovered": true,
+              "executed": true,
+              "outcome_observed": false,
+              "outcome_derived": false,
+              "attempts": 1,
+              "successful_samples": 0
+            },
+            "unresolved_reason": "No wire outcome observed"
+          }
         },
-        "flow": {
-          "round_id": null,
-          "last_action_id": null,
-          "state": "ready",
-          "command": "init",
-          "available_actions": [
-            "init",
-            "spin"
-          ]
+        "transitions": {
+          "transition:cd9da0d87830acf90d07aaf1": {
+            "id": "transition:cd9da0d87830acf90d07aaf1",
+            "from_state": "state:c6a421dee0690883d7908734",
+            "decision_point": "decision:9d1d5f06d8d4b10869a44689",
+            "choice": "choice:d89cecf485c3c120736360ba",
+            "request_contract": "request_contracts:f04d7951fc4a6a083b8b6610",
+            "response_contract": "response_contracts:51818d2436713260912a175e",
+            "to_state": "state:79f58bf7932615d0338c0e31",
+            "observations": 1,
+            "evidence": [
+              "evidence:f6bbe6bb85e075415b9afdc7"
+            ],
+            "terminal": false,
+            "path_context": "context:8d8c223d72b04aeadb86af16",
+            "validation_results": {
+              "wire_state_observed; reward_not_validated": 1
+            }
+          }
+        },
+        "request_contracts": {
+          "request_contracts:f04d7951fc4a6a083b8b6610": {
+            "id": "request_contracts:f04d7951fc4a6a083b8b6610",
+            "schema": {
+              "samples": 1,
+              "observed_types": {
+                "object": 1
+              },
+              "nullable": false,
+              "confidence": "observed_only",
+              "role": "unknown",
+              "properties": {
+                "command": {
+                  "samples": 1,
+                  "observed_types": {
+                    "string": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "static",
+                  "observed_values": [
+                    "init"
+                  ],
+                  "values_bounded": true,
+                  "variability": "constant_in_observations",
+                  "enum_exhaustive": false,
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "extra_data": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "round_series_id": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "runtime",
+                      "observed_values": [
+                        "[runtime:round_series_id]"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                }
+              },
+              "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+            },
+            "examples": [
+              {
+                "command": "init",
+                "extra_data": {
+                  "round_series_id": "[runtime:round_series_id]"
+                }
+              }
+            ],
+            "observations": 1,
+            "evidence": [
+              "evidence:f6bbe6bb85e075415b9afdc7"
+            ],
+            "status": "observed_partial",
+            "conditional_fields": []
+          },
+          "request_contracts:a90b5260947a038b04acfb52": {
+            "id": "request_contracts:a90b5260947a038b04acfb52",
+            "schema": {
+              "samples": 1,
+              "observed_types": {
+                "object": 1
+              },
+              "nullable": false,
+              "confidence": "observed_only",
+              "role": "unknown",
+              "properties": {
+                "command": {
+                  "samples": 1,
+                  "observed_types": {
+                    "string": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "static",
+                  "observed_values": [
+                    "spin"
+                  ],
+                  "values_bounded": true,
+                  "variability": "constant_in_observations",
+                  "enum_exhaustive": false,
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "options": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "bet": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "choice",
+                      "observed_values": [
+                        20
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "extra_data": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "round_series_id": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "runtime",
+                      "observed_values": [
+                        "[runtime:round_series_id]"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                }
+              },
+              "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+            },
+            "examples": [
+              {
+                "command": "spin",
+                "options": {
+                  "bet": 20
+                },
+                "extra_data": {
+                  "round_series_id": "[runtime:round_series_id]"
+                }
+              }
+            ],
+            "observations": 1,
+            "evidence": [
+              "evidence:f6bbe6bb85e075415b9afdc7"
+            ],
+            "status": "observed_partial",
+            "conditional_fields": []
+          }
+        },
+        "response_contracts": {
+          "response_contracts:51818d2436713260912a175e": {
+            "id": "response_contracts:51818d2436713260912a175e",
+            "schema": {
+              "samples": 1,
+              "observed_types": {
+                "object": 1
+              },
+              "nullable": false,
+              "confidence": "observed_only",
+              "role": "unknown",
+              "properties": {
+                "api_version": {
+                  "samples": 1,
+                  "observed_types": {
+                    "string": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "observed_values": [
+                    "2"
+                  ],
+                  "values_bounded": true,
+                  "variability": "constant_in_observations",
+                  "enum_exhaustive": false,
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "options": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "available_bets": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 18,
+                        "max": 18
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "items": {
+                        "samples": 18,
+                        "observed_types": {
+                          "integer": 18
+                        },
+                        "nullable": false,
+                        "confidence": "observed_only",
+                        "role": "unknown",
+                        "observed_values": [
+                          20,
+                          40,
+                          60,
+                          80,
+                          100,
+                          120,
+                          140,
+                          160
+                        ],
+                        "values_bounded": true,
+                        "variability": "variable",
+                        "enum_exhaustive": false
+                      },
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "default_bet": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        100
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "paytable": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {},
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "paytables": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {},
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "special_symbols": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 0,
+                        "max": 0
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "lines": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 0,
+                        "max": 0
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "reels": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "main": {
+                          "samples": 1,
+                          "observed_types": {
+                            "array": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "length": {
+                            "min": 0,
+                            "max": 0
+                          },
+                          "position_semantics": "unknown",
+                          "collection_role": "unknown; does not establish choices",
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "layout": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "reels": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            1
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "rows": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            1
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "currency": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "code": {
+                          "samples": 1,
+                          "observed_types": {
+                            "string": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            "FUN"
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "symbol": {
+                          "samples": 1,
+                          "observed_types": {
+                            "string": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            "FUN"
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "subunits": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            100
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "exponent": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "screen": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 0,
+                        "max": 0
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "default_seed": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        14266
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "feature_options": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "feature_multipliers": {
+                          "samples": 1,
+                          "observed_types": {
+                            "object": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "properties": {
+                            "bonus_buy": {
+                              "samples": 1,
+                              "observed_types": {
+                                "integer": 1
+                              },
+                              "nullable": false,
+                              "confidence": "observed_only",
+                              "role": "unknown",
+                              "observed_values": [
+                                1200
+                              ],
+                              "values_bounded": true,
+                              "variability": "constant_in_observations",
+                              "enum_exhaustive": false,
+                              "parent_samples": 1,
+                              "optional_observed": false,
+                              "present_in_all_observed": true,
+                              "required": null
+                            },
+                            "bonus_chance": {
+                              "samples": 1,
+                              "observed_types": {
+                                "integer": 1
+                              },
+                              "nullable": false,
+                              "confidence": "observed_only",
+                              "role": "unknown",
+                              "observed_values": [
+                                30
+                              ],
+                              "values_bounded": true,
+                              "variability": "constant_in_observations",
+                              "enum_exhaustive": false,
+                              "parent_samples": 1,
+                              "optional_observed": false,
+                              "present_in_all_observed": true,
+                              "required": null
+                            },
+                            "base_bet": {
+                              "samples": 1,
+                              "observed_types": {
+                                "integer": 1
+                              },
+                              "nullable": false,
+                              "confidence": "observed_only",
+                              "role": "unknown",
+                              "observed_values": [
+                                20
+                              ],
+                              "values_bounded": true,
+                              "variability": "constant_in_observations",
+                              "enum_exhaustive": false,
+                              "parent_samples": 1,
+                              "optional_observed": false,
+                              "present_in_all_observed": true,
+                              "required": null
+                            }
+                          },
+                          "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "disabled_features": {
+                          "samples": 1,
+                          "observed_types": {
+                            "array": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "length": {
+                            "min": 0,
+                            "max": 0
+                          },
+                          "position_semantics": "unknown",
+                          "collection_role": "unknown; does not establish choices",
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "digit_options": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "bet": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "paytable": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "balance": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "balance": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "game": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        0
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "wallet": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        100000
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "flow": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "round_id": {
+                      "samples": 1,
+                      "observed_types": {
+                        "null": 1
+                      },
+                      "nullable": true,
+                      "confidence": "observed_only",
+                      "role": "runtime",
+                      "observed_values": [
+                        "[runtime:round_id]"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "last_action_id": {
+                      "samples": 1,
+                      "observed_types": {
+                        "null": 1
+                      },
+                      "nullable": true,
+                      "confidence": "observed_only",
+                      "role": "runtime",
+                      "observed_values": [
+                        "[runtime:last_action_id]"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "state": {
+                      "samples": 1,
+                      "observed_types": {
+                        "string": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        "ready"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "command": {
+                      "samples": 1,
+                      "observed_types": {
+                        "string": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        "init"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "available_actions": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 2,
+                        "max": 2
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "items": {
+                        "samples": 2,
+                        "observed_types": {
+                          "string": 2
+                        },
+                        "nullable": false,
+                        "confidence": "observed_only",
+                        "role": "unknown",
+                        "observed_values": [
+                          "init",
+                          "spin"
+                        ],
+                        "values_bounded": true,
+                        "variability": "variable",
+                        "enum_exhaustive": false
+                      },
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                }
+              },
+              "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+            },
+            "examples": [
+              {
+                "api_version": "2",
+                "options": {
+                  "available_bets": [
+                    20,
+                    40,
+                    60,
+                    80,
+                    100,
+                    120,
+                    140,
+                    160,
+                    180,
+                    200,
+                    240,
+                    300,
+                    400,
+                    500,
+                    600,
+                    700,
+                    800,
+                    1000
+                  ],
+                  "default_bet": 100,
+                  "paytable": {},
+                  "paytables": {},
+                  "special_symbols": [],
+                  "lines": [],
+                  "reels": {
+                    "main": []
+                  },
+                  "layout": {
+                    "reels": 1,
+                    "rows": 1
+                  },
+                  "currency": {
+                    "code": "FUN",
+                    "symbol": "FUN",
+                    "subunits": 100,
+                    "exponent": 2
+                  },
+                  "screen": [],
+                  "default_seed": 14266,
+                  "feature_options": {
+                    "feature_multipliers": {
+                      "bonus_buy": 1200,
+                      "bonus_chance": 30,
+                      "base_bet": 20
+                    },
+                    "disabled_features": []
+                  },
+                  "digit_options": {
+                    "bet": 2,
+                    "paytable": 2,
+                    "balance": 2
+                  }
+                },
+                "balance": {
+                  "game": 0,
+                  "wallet": 100000
+                },
+                "flow": {
+                  "round_id": "[runtime:round_id]",
+                  "last_action_id": "[runtime:last_action_id]",
+                  "state": "ready",
+                  "command": "init",
+                  "available_actions": [
+                    "init",
+                    "spin"
+                  ]
+                }
+              }
+            ],
+            "observations": 1,
+            "evidence": [
+              "evidence:f6bbe6bb85e075415b9afdc7"
+            ],
+            "status": "observed_partial",
+            "conditional_fields": []
+          }
+        },
+        "field_semantics": {
+          "semantic:81f5e34db83d73f3658596b8": {
+            "id": "semantic:81f5e34db83d73f3658596b8",
+            "path": "flow.state",
+            "semantic": "server_state",
+            "confidence": "provider_parser",
+            "evidence": [
+              "evidence:111f05fbc99cdb2ffc59a863"
+            ]
+          },
+          "semantic:5e3f0bfd35ba719160f2bd41": {
+            "id": "semantic:5e3f0bfd35ba719160f2bd41",
+            "path": "flow.available_actions",
+            "semantic": "legal_actions",
+            "confidence": "provider_parser",
+            "evidence": [
+              "evidence:111f05fbc99cdb2ffc59a863"
+            ]
+          },
+          "semantic:51c43887b88e89923da9cdcb": {
+            "id": "semantic:51c43887b88e89923da9cdcb",
+            "path": "balance.wallet",
+            "semantic": "wallet_balance_raw",
+            "confidence": "provider_parser",
+            "evidence": [
+              "evidence:111f05fbc99cdb2ffc59a863"
+            ]
+          }
+        },
+        "path_context": {
+          "context:8d8c223d72b04aeadb86af16": {
+            "id": "context:8d8c223d72b04aeadb86af16",
+            "before": {},
+            "mutation": {},
+            "after": {}
+          }
+        },
+        "unknowns": {
+          "unknown:8a0d985ef00c50664f3a1ab4": {
+            "id": "unknown:8a0d985ef00c50664f3a1ab4",
+            "kind": "decision",
+            "entity": "decision:cd9ba2cb87c07d3258113040",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client request or option domain remains unresolved"
+          },
+          "unknown:0227b1b9937933daca73eadd": {
+            "id": "unknown:0227b1b9937933daca73eadd",
+            "kind": "decision",
+            "entity": "decision:dfe2c1ae083a774e264d1d0c",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client request or option domain remains unresolved"
+          },
+          "unknown:32792dde923eb1d584d841e8": {
+            "id": "unknown:32792dde923eb1d584d841e8",
+            "kind": "choice",
+            "entity": "choice:766862f03e9f3733186f2990",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No validated next-state outcome for one or more attempts"
+          },
+          "unknown:07259f967aa6a3cd30ac19c6": {
+            "id": "unknown:07259f967aa6a3cd30ac19c6",
+            "kind": "response",
+            "entity": "choice:766862f03e9f3733186f2990",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No accepted flow.state; transition intentionally unresolved"
+          },
+          "unknown:f3259ab5321f65ffd567d448": {
+            "id": "unknown:f3259ab5321f65ffd567d448",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/api_version",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:75dac0fc3d7541d0e49dacf5": {
+            "id": "unknown:75dac0fc3d7541d0e49dacf5",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.available_bets[]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:6dbffc763695c4587700e270": {
+            "id": "unknown:6dbffc763695c4587700e270",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.default_bet",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:0c7fe1b2f882ceecac1acb25": {
+            "id": "unknown:0c7fe1b2f882ceecac1acb25",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.paytable",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:11dcfed7d7a3f06f6ddcab5e": {
+            "id": "unknown:11dcfed7d7a3f06f6ddcab5e",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.paytables",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:eb8dc46b6d64553134fe12dd": {
+            "id": "unknown:eb8dc46b6d64553134fe12dd",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.special_symbols",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:b3daff8dd3140dedae30bbc3": {
+            "id": "unknown:b3daff8dd3140dedae30bbc3",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.lines",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:45915e08dbd155a13e95e79b": {
+            "id": "unknown:45915e08dbd155a13e95e79b",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.reels.main",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:325c412cd5f2b787adb5fe10": {
+            "id": "unknown:325c412cd5f2b787adb5fe10",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.layout.reels",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:ed3432bfd5aeef495fcd939f": {
+            "id": "unknown:ed3432bfd5aeef495fcd939f",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.layout.rows",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:6f1760fb4cfdf0cc6119fb50": {
+            "id": "unknown:6f1760fb4cfdf0cc6119fb50",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.currency.code",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:40e54c209d476f297b316c6a": {
+            "id": "unknown:40e54c209d476f297b316c6a",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.currency.symbol",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:c437ee21ade3d02abb31c83c": {
+            "id": "unknown:c437ee21ade3d02abb31c83c",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.currency.subunits",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:396664c5a9d3fb8c90868065": {
+            "id": "unknown:396664c5a9d3fb8c90868065",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.currency.exponent",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:ace6acc80dcbde20941d1c0a": {
+            "id": "unknown:ace6acc80dcbde20941d1c0a",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.screen",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:f6067f357c7c8e3e248efa88": {
+            "id": "unknown:f6067f357c7c8e3e248efa88",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.default_seed",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:cfe3bef9a85b844da36c3f1c": {
+            "id": "unknown:cfe3bef9a85b844da36c3f1c",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.feature_options.feature_multipliers.bonus_buy",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:0887b5cb44fec243fe2d0488": {
+            "id": "unknown:0887b5cb44fec243fe2d0488",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.feature_options.feature_multipliers.bonus_chance",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:df559492912a4d8183a40b3b": {
+            "id": "unknown:df559492912a4d8183a40b3b",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.feature_options.feature_multipliers.base_bet",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:6f92da5803efb6cdc25881e0": {
+            "id": "unknown:6f92da5803efb6cdc25881e0",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.feature_options.disabled_features",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:37c900da2c172e25bf7cc28f": {
+            "id": "unknown:37c900da2c172e25bf7cc28f",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.digit_options.bet",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:0db2cf0b14a65403fbae83ed": {
+            "id": "unknown:0db2cf0b14a65403fbae83ed",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.digit_options.paytable",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:55964499b6eb37b6e2018fe6": {
+            "id": "unknown:55964499b6eb37b6e2018fe6",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/options.digit_options.balance",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:5e1f56c8272136b42f57849e": {
+            "id": "unknown:5e1f56c8272136b42f57849e",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/balance.game",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:873f662e9c7823359a4ea171": {
+            "id": "unknown:873f662e9c7823359a4ea171",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/flow.command",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:bf3c18895914df8a8dbbf8a8": {
+            "id": "unknown:bf3c18895914df8a8dbbf8a8",
+            "kind": "field",
+            "entity": "response_contracts:51818d2436713260912a175e/flow.available_actions[]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          }
+        },
+        "evidence": {
+          "evidence:f6bbe6bb85e075415b9afdc7": {
+            "id": "evidence:f6bbe6bb85e075415b9afdc7",
+            "kind": "WIRE_OBSERVED",
+            "source": "structured observation"
+          },
+          "evidence:111f05fbc99cdb2ffc59a863": {
+            "id": "evidence:111f05fbc99cdb2ffc59a863",
+            "kind": "CLIENT_PROVEN",
+            "source": "tester_spin/providers/bgaming/runtime.py"
+          },
+          "evidence:1d535b5eddcfcccc1ffa0031": {
+            "id": "evidence:1d535b5eddcfcccc1ffa0031",
+            "kind": "CLIENT_PROVEN",
+            "source": "server-guided-discovery.json"
+          }
+        },
+        "relations": {},
+        "artifact_references": [
+          "server-guided-discovery.json"
+        ],
+        "coverage": {
+          "states": 2,
+          "decision_points": 3,
+          "choices": 2,
+          "executed": 2,
+          "outcome_observed": 1,
+          "pending": 1,
+          "unknowns": 30,
+          "complete": false,
+          "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
         }
-      }
-    },
-    "outcome-catalog.json": {
-      "encoding": "json",
-      "bytes": 625,
-      "value": {
-        "schema": "tester-spin/bgaming-outcome-catalog/v1",
-        "provider": "bgaming",
-        "game": {
-          "slug": "royal-beellion-hold-win",
-          "name": "Royal Beellion Hold & Win",
-          "identifier": "RoyalBeellionHoldAndWin"
-        },
-        "generated_at": "2026-09-13T10:09:19+00:00",
-        "source_run": "2026-09-13_07-09-10-bgaming-http-api-v2",
-        "runtime_families": [
-          "api-v2"
-        ],
-        "authority_order": [
-          "RUNTIME_OBSERVED",
-          "CLIENT_CONTRACT",
-          "PROVIDER_METADATA",
-          "INFERENCE"
-        ],
-        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
-        "outcomes": []
       }
     },
     "path-coverage.json": {
@@ -656,7 +1702,7 @@
     },
     "profile.json": {
       "encoding": "json",
-      "bytes": 4054,
+      "bytes": 3440,
       "value": {
         "schema": "tester-spin/bgaming-profile/v1",
         "capability_version": 2,
@@ -759,42 +1805,708 @@
             "ok": false,
             "error": "HTTPError: 404 Client Error: Not Found for url: https://cdn.bgaming-network.com/assets/index-Cb8hIacB.js",
             "depth": 1
-          },
-          {
-            "kind": "http-command-error",
-            "command": "spin",
-            "status": 422,
-            "content_type": "application/json; charset=utf-8",
-            "json": {
-              "errors": [
-                {
-                  "code": 203,
-                  "desc": "invalid_options"
-                }
-              ]
-            }
-          },
-          {
-            "kind": "http-command-error",
-            "command": "spin",
-            "status": 422,
-            "content_type": "application/json; charset=utf-8",
-            "json": {
-              "errors": [
-                {
-                  "code": 203,
-                  "desc": "invalid_options"
-                }
-              ]
-            }
           }
         ],
         "validated": false
       }
     },
-    "protocol-contract.json": {
+    "result.json": {
       "encoding": "json",
-      "bytes": 2156,
+      "bytes": 3917,
+      "value": {
+        "provider": "bgaming",
+        "slug": "royal-beellion-hold-win",
+        "game_name": "Royal Beellion Hold & Win",
+        "game_url": "https://demo.bgaming-network.com/play/RoyalBeellionHoldAndWin/FUN?server=demo",
+        "requested_spins": 1,
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "ERROR",
+        "symbol": "RoyalBeellionHoldAndWin",
+        "discovered_modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "observed": true,
+            "wire_command": "spin",
+            "evidence_level": "WIRE_CANDIDATE",
+            "execution_state": "ATTEMPTED_UNVALIDATED",
+            "validated": false
+          },
+          {
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "DISCOVERED_ONLY",
+            "observed": true,
+            "client_observed": false,
+            "executable": false,
+            "coverage_required": false,
+            "evidence_level": "SERVER_ADVERTISED",
+            "execution_state": "WIRE_UNPROVEN",
+            "discovery_state": "ADVERTISED_ONLY",
+            "wire_command": "spin",
+            "purchased_feature": "bonus_buy",
+            "purchased_feature_level": null,
+            "feature_multiplier": 1200,
+            "base_multiplier": 20,
+            "cost_multiplier": 60.0,
+            "source": "init.feature_multipliers;wire-unproven",
+            "required_options": [
+              "PURCHASE_BONUS_BUY"
+            ],
+            "covered_options": [],
+            "validated": false
+          },
+          {
+            "id": "PURCHASE_BONUS_CHANCE",
+            "kind": "DISCOVERED_ONLY",
+            "observed": true,
+            "client_observed": false,
+            "executable": false,
+            "coverage_required": false,
+            "evidence_level": "SERVER_ADVERTISED",
+            "execution_state": "WIRE_UNPROVEN",
+            "discovery_state": "ADVERTISED_ONLY",
+            "wire_command": "spin",
+            "purchased_feature": "bonus_chance",
+            "purchased_feature_level": null,
+            "feature_multiplier": 30,
+            "base_multiplier": 20,
+            "cost_multiplier": 1.5,
+            "source": "init.feature_multipliers;wire-unproven",
+            "required_options": [
+              "PURCHASE_BONUS_CHANCE"
+            ],
+            "covered_options": [],
+            "validated": false
+          }
+        ],
+        "started_at": "2026-09-15T08:59:40+00:00",
+        "finished_at": "2026-09-15T08:59:46+00:00",
+        "elapsed_ms": 5797.000000005937,
+        "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session> BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_BONUS_BUY, PURCHASE_BONUS_CHANCE.",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Royal Beellion Hold & Win\\tests\\2026-09-15_05-59-40-bgaming-http-api-v2",
+        "attempts": [
+          {
+            "number": 1,
+            "ok": false,
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "provider_bl": null,
+            "provider_pur": null,
+            "status_code": null,
+            "elapsed_ms": 702.9999999940628,
+            "symbol": "RoyalBeellionHoldAndWin",
+            "endpoint": "https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
+            "na": "",
+            "terminal": false,
+            "wire_steps": 0,
+            "warning": "",
+            "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Royal Beellion Hold & Win\\tests\\2026-09-15_05-59-40-bgaming-http-api-v2\\SPIN\\attempt-001"
+          }
+        ],
+        "samples_per_path": 1,
+        "structural_map": {
+          "path": "analysis/game-structure.json",
+          "schema": "tester-spin/game-structure/v1",
+          "coverage": {
+            "states": 2,
+            "decision_points": 3,
+            "choices": 2,
+            "executed": 2,
+            "outcome_observed": 1,
+            "pending": 1,
+            "unknowns": 30,
+            "complete": false,
+            "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+          },
+          "diagnostics": []
+        }
+      }
+    },
+    "sample-catalog.json": {
+      "encoding": "json",
+      "bytes": 992,
+      "value": {
+        "schema": "tester-spin/sample-catalog/v2",
+        "provider": "bgaming",
+        "game": "royal-beellion-hold-win",
+        "scope": "observed_paths_only",
+        "samples_per_path": 1,
+        "groups": [
+          {
+            "id": "a179acbfa9295736f1e930b5ce3d37a237f56d86b16cce5a1bfd01dd210dd41a",
+            "mode_id": "SPIN",
+            "mode_kind": "SPIN",
+            "choices": [],
+            "validated_samples": 0,
+            "samples": [
+              {
+                "attempt": 1,
+                "artifact_dir": "SPIN/attempt-001",
+                "validated": false,
+                "terminal": false,
+                "observed_state_sequence": [],
+                "evidence": [
+                  {
+                    "path": "SPIN/attempt-001/http-spin-422.json",
+                    "sha256": "219130301734d3d6000c901cd53fe32f8ccb8096ccd98d7b76957820a7a75197",
+                    "bytes": 503
+                  }
+                ]
+              }
+            ],
+            "missing_samples": 1
+          }
+        ],
+        "observed_state_types": [],
+        "diagnostics": [],
+        "observed_paths_sampled": false
+      }
+    },
+    "SPIN/attempt-001/http-spin-422.json": {
+      "encoding": "json",
+      "bytes": 503,
+      "value": {
+        "status": 422,
+        "content_type": "application/json; charset=utf-8",
+        "request": {
+          "method": "POST",
+          "url": "https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
+          "json": {
+            "command": "spin",
+            "options": {
+              "bet": 20
+            },
+            "extra_data": {
+              "round_series_id": 1789462782348
+            }
+          }
+        },
+        "json": {
+          "errors": [
+            {
+              "code": 203,
+              "desc": "invalid_options"
+            }
+          ]
+        }
+      }
+    },
+    "backend-conformance.json": {
+      "encoding": "json",
+      "bytes": 970,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-conformance/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "royal-beellion-hold-win",
+          "name": "Royal Beellion Hold & Win",
+          "identifier": "RoyalBeellionHoldAndWin"
+        },
+        "generated_at": "2026-09-15T08:59:46+00:00",
+        "source_run": "2026-09-15_05-59-40-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "wire_replay_complete": false,
+        "cases": [],
+        "rules": [
+          "A backend response must match the response schema for the selected outcome.",
+          "The response must move the session to the documented target state.",
+          "Every request contract valid in a source state must be dispatchable.",
+          "Observed counts must never be interpreted as RNG probabilities.",
+          "Unknown/unresolved modes must fail closed instead of inventing wire fields."
+        ]
+      }
+    },
+    "backend-response-plan.json": {
+      "encoding": "json",
+      "bytes": 754,
+      "value": {
+        "schema": "tester-spin/bgaming-backend-response-plan/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "royal-beellion-hold-win",
+          "name": "Royal Beellion Hold & Win",
+          "identifier": "RoyalBeellionHoldAndWin"
+        },
+        "generated_at": "2026-09-15T08:59:46+00:00",
+        "source_run": "2026-09-15_05-59-40-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
+        "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
+        "states": {}
+      }
+    },
+    "bootstrap.json": {
+      "encoding": "json",
+      "bytes": 6383,
+      "value": {
+        "identifier": "RoyalBeellionHoldAndWin",
+        "launch_url": "https://demo.bgaming-network.com/games/RoyalBeellionHoldAndWin/FUN",
+        "api_url": "https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
+        "options": {
+          "env": "production",
+          "csrfTokenHeaderName": "X-CSRF-Token",
+          "csrfTokenHeaderValue": "<redacted>",
+          "play_token": "<redacted>",
+          "game": "slots/royal_beellion_hold_and_win",
+          "identifier": "RoyalBeellionHoldAndWin",
+          "title": "Royal Beellion Hold & Win",
+          "currency": "FUN",
+          "balance_polling_interval": 30000,
+          "cache_id": "945cd3282a5153fcd0f621becb2758c4019b280200ca36e5880e2ea116b38b7d",
+          "cache_player_id": "7244bdeb66eb1c6b7e4bf7d3df3132765dca7b3284a78d7b379cf94ba06dd552",
+          "api": "https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
+          "rules_url": "https://rules.bgaming-network.com/en/RoyalBeellionHoldAndWin.json",
+          "deposit_url": null,
+          "games_page_url": "https://www.bgaming.com/games.html",
+          "history_url": null,
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a0a44b-3ad4-73c5-8329-6b48950e5149/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/RoyalBeellionHoldAndWin/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDg0ODA4NDl9LCJleHAiOjE4MDUxMDExODl9.LATPA21PDX3TaMEKKZaGYz5XkqkyxATjZyqjqCy6Lxo",
+          "websocket_url": "wss://demo.bgaming-network.com:443/cable",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=RoyalBeellionHoldAndWin&play_token=01a0a44b-3ad4-73c5-8329-6b48950e5149&server_id=demo",
+          "ui": {
+            "home_button": true,
+            "full_screen_prompt": true,
+            "logo": "standard",
+            "skin": "basic",
+            "skins": [
+              "basic"
+            ],
+            "brand_logo": null,
+            "brand": {
+              "name": "",
+              "logo": null,
+              "logo_in_game": null
+            },
+            "autospins_dialog": "standard",
+            "autospin_values": [
+              "10",
+              "25",
+              "50",
+              "100",
+              "250",
+              "500",
+              "750",
+              "1000",
+              "∞"
+            ],
+            "gamble_enabled": true,
+            "show_rtp_in_rules": true
+          },
+          "resources_path": "https://cdn.bgaming-network.com/html/RoyalBeellionHoldAndWin",
+          "custom": {},
+          "actual_currency_rate": 0.0,
+          "sound_enabled": true,
+          "games_loader_source": "https://cdn.bgaming-network.com/html/RoyalBeellionHoldAndWin/loader.js?1789462789",
+          "game_bundle_source": "https://cdn.bgaming-network.com/html/RoyalBeellionHoldAndWin/bundle.js",
+          "provable_fair": {
+            "verify_url": "https://demo.bgaming-network.com/api/games/verify"
+          },
+          "math": {
+            "rtp": {
+              "main": 97.0,
+              "bonus_buy": 97.0,
+              "bonus_chance": 97.0
+            },
+            "gamble_limit": 5000,
+            "max_multiplier": 5000.0,
+            "max_win_freq": 10501521
+          },
+          "rules": {
+            "min_bet": 20,
+            "max_bet": 1500,
+            "currency": {
+              "code": "FUN",
+              "symbol": "FUN",
+              "subunits": 100,
+              "exponent": 2
+            }
+          },
+          "version": "1.0.0",
+          "growthbook_flags": {
+            "tech_analytics": {
+              "value": true,
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "tech_lobby_widget_position": {
+              "value": {
+                "desktop": "bottom",
+                "portrait": "top",
+                "landscape": "top"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            },
+            "growth_drop_init_popup_ui": {
+              "value": {
+                "id": 602,
+                "value": "A"
+              },
+              "variation_id": "forced",
+              "experiment_key": null
+            }
+          },
+          "lobby_v2_options": {
+            "player_id": 347228764,
+            "lobby_enabled": false,
+            "drops_enabled": false,
+            "drops_token": "<redacted>",
+            "drops_api_url": "https://drops.bgaming-network.com/api/v1/",
+            "profile_enabled": false,
+            "profile_api_url": "https://loyalty-core.shared.bgaming-system.com/api/v1",
+            "profile_token": "<redacted>",
+            "gamelist_enabled": false,
+            "gamelist_api_url": "https://gamelist.bgaming-network.com",
+            "gamelist_token": "<redacted>",
+            "challenges_enabled": false,
+            "challenges_api_url": "https://challenges.bgaming-network.com/",
+            "challenges_token": "<redacted>",
+            "challenges_fe_script_url": "https://brush.bgaming-network.com/",
+            "quests_enabled": false,
+            "quests_api_url": null,
+            "quests_token": "<redacted>",
+            "shop_enabled": false,
+            "shop_api_url": "",
+            "shop_token": "<redacted>",
+            "growth_fe_url": ""
+          },
+          "server_id": "demo",
+          "locale": "en",
+          "actions": {
+            "deposit": null,
+            "return": null,
+            "history": {
+              "text": null,
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcyMjg3NjQsImd0X2lkIjozNzE0ODMzfSwiZXhwIjoxODA1MTAxMTg5fQ.tJ5M9ocHuixDqG8Dw0AeRVqaZxAs4SA8Ajlqeq_1hEQ",
+              "mode": "open"
+            }
+          },
+          "show_paytable": false,
+          "license_rules": {
+            "rules_section": {
+              "show_license_requirements": false,
+              "license_requirement_show_purchase": false,
+              "license_requirement_show_autoplay": false,
+              "license_requirement_show_quick_spins": false,
+              "license_requirement_show_autospin_confirmation": false,
+              "license_requirement_reset_autospin": false,
+              "show_rtp": [
+                "main_rtp",
+                "chance_rtp",
+                "bonus_rtp"
+              ],
+              "show_gamble_round": true,
+              "show_min_max": false,
+              "show_max_win_frequency": false,
+              "show_max_multiplier": true,
+              "show_max_win_rules_text": null
+            },
+            "screen_section": {
+              "show_rtp_on_main_screen": false,
+              "show_max_win_frequency_on_main_screen": false,
+              "show_max_multiplier_on_main_screen": false
+            },
+            "lines_count": "60"
+          },
+          "open_page_method": "redirect",
+          "reset_bet_to_default": false,
+          "enable_chinese_logos": false,
+          "enable_quick_spins_by_default": null,
+          "purchased_feature_limit": null,
+          "pre_bet_balance_validation": false,
+          "available_games_to_switch": []
+        },
+        "round_series_id": 1789462782348
+      }
+    },
+    "diagnostic.json": {
+      "encoding": "json",
+      "bytes": 8729,
+      "value": {
+        "schema": "tester-spin/run-diagnostics/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "royal-beellion-hold-win",
+          "name": "Royal Beellion Hold & Win",
+          "symbol": "RoyalBeellionHoldAndWin"
+        },
+        "started_at": "2026-09-15T08:59:40+00:00",
+        "finished_at": "2026-09-15T08:59:46+00:00",
+        "result_status": "ERROR",
+        "scope": "observed_paths_only",
+        "observed_error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session> BGaming compras anunciadas sin wire cliente demostrado: PURCHASE_BONUS_BUY, PURCHASE_BONUS_CHANCE.",
+        "root_cause": {
+          "status": "UNDETERMINED",
+          "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
+        },
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "status": "INCOMPLETE",
+            "validated": false,
+            "tested": true,
+            "attempt_count": 1,
+            "terminal_count": 0,
+            "missing_options": [],
+            "branches": [],
+            "provider_metadata": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": true,
+              "wire_command": "spin",
+              "evidence_level": "WIRE_CANDIDATE",
+              "execution_state": "ATTEMPTED_UNVALIDATED",
+              "validated": false
+            }
+          },
+          {
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "DISCOVERED_ONLY",
+            "status": "DISCOVERED",
+            "validated": false,
+            "tested": false,
+            "attempt_count": 0,
+            "terminal_count": 0,
+            "missing_options": [],
+            "branches": [],
+            "provider_metadata": {
+              "id": "PURCHASE_BONUS_BUY",
+              "kind": "DISCOVERED_ONLY",
+              "observed": true,
+              "client_observed": false,
+              "executable": false,
+              "coverage_required": false,
+              "evidence_level": "SERVER_ADVERTISED",
+              "execution_state": "WIRE_UNPROVEN",
+              "discovery_state": "ADVERTISED_ONLY",
+              "wire_command": "spin",
+              "purchased_feature": "bonus_buy",
+              "purchased_feature_level": null,
+              "feature_multiplier": 1200,
+              "base_multiplier": 20,
+              "cost_multiplier": 60.0,
+              "source": "init.feature_multipliers;wire-unproven",
+              "required_options": [
+                "PURCHASE_BONUS_BUY"
+              ],
+              "covered_options": [],
+              "validated": false
+            }
+          },
+          {
+            "id": "PURCHASE_BONUS_CHANCE",
+            "kind": "DISCOVERED_ONLY",
+            "status": "DISCOVERED",
+            "validated": false,
+            "tested": false,
+            "attempt_count": 0,
+            "terminal_count": 0,
+            "missing_options": [],
+            "branches": [],
+            "provider_metadata": {
+              "id": "PURCHASE_BONUS_CHANCE",
+              "kind": "DISCOVERED_ONLY",
+              "observed": true,
+              "client_observed": false,
+              "executable": false,
+              "coverage_required": false,
+              "evidence_level": "SERVER_ADVERTISED",
+              "execution_state": "WIRE_UNPROVEN",
+              "discovery_state": "ADVERTISED_ONLY",
+              "wire_command": "spin",
+              "purchased_feature": "bonus_chance",
+              "purchased_feature_level": null,
+              "feature_multiplier": 30,
+              "base_multiplier": 20,
+              "cost_multiplier": 1.5,
+              "source": "init.feature_multipliers;wire-unproven",
+              "required_options": [
+                "PURCHASE_BONUS_CHANCE"
+              ],
+              "covered_options": [],
+              "validated": false
+            }
+          }
+        ],
+        "attempts": [
+          {
+            "number": 1,
+            "mode_id": "SPIN",
+            "reported_ok": false,
+            "reported_terminal": false,
+            "http_status": null,
+            "last_state": "",
+            "wire_steps": 0,
+            "elapsed_ms": 702.9999999940628,
+            "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
+            "warning": "",
+            "evidence": [
+              {
+                "path": "SPIN/attempt-001/http-spin-422.json",
+                "sha256": "219130301734d3d6000c901cd53fe32f8ccb8096ccd98d7b76957820a7a75197",
+                "bytes": 503,
+                "kind": "envelope"
+              }
+            ],
+            "first_request": null,
+            "last_request": null,
+            "last_response": null,
+            "ordering": "UNRESOLVED",
+            "trajectory_id": "6ad6716f74acc183bf07"
+          }
+        ],
+        "bootstrap_evidence": [
+          {
+            "path": "bootstrap.json",
+            "sha256": "423ef338df32980b3c90909f193b748d19c0550ea40af53704905f9b88bdc554",
+            "bytes": 6383,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-request.json",
+            "sha256": "3f462a2936d0bfe2ce52c1bb96d744ee8bd39a8746525163d7d5193184908128",
+            "bytes": 88,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-response.json",
+            "sha256": "26af51cfa0108034167d26acecd677de8a32e87b3b7a939b4f70303e0f5a8b15",
+            "bytes": 1195,
+            "kind": "envelope"
+          }
+        ],
+        "unknown_actions": [
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_466edb0f2e59420f",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "PURCHASE_BONUS_BUY",
+              "kind": "DISCOVERED_ONLY",
+              "observed": true,
+              "client_observed": false,
+              "executable": false,
+              "coverage_required": false,
+              "evidence_level": "SERVER_ADVERTISED",
+              "execution_state": "WIRE_UNPROVEN",
+              "discovery_state": "ADVERTISED_ONLY",
+              "wire_command": "spin",
+              "purchased_feature": "bonus_buy",
+              "purchased_feature_level": null,
+              "feature_multiplier": 1200,
+              "base_multiplier": 20,
+              "cost_multiplier": 60.0,
+              "source": "init.feature_multipliers;wire-unproven",
+              "required_options": [
+                "PURCHASE_BONUS_BUY"
+              ],
+              "covered_options": [],
+              "validated": false
+            },
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/http-spin-422.json",
+                  "sha256": "219130301734d3d6000c901cd53fe32f8ccb8096ccd98d7b76957820a7a75197",
+                  "bytes": 503,
+                  "kind": "envelope"
+                }
+              ]
+            ]
+          },
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_3b87187400ca7ff7",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "PURCHASE_BONUS_CHANCE",
+              "kind": "DISCOVERED_ONLY",
+              "observed": true,
+              "client_observed": false,
+              "executable": false,
+              "coverage_required": false,
+              "evidence_level": "SERVER_ADVERTISED",
+              "execution_state": "WIRE_UNPROVEN",
+              "discovery_state": "ADVERTISED_ONLY",
+              "wire_command": "spin",
+              "purchased_feature": "bonus_chance",
+              "purchased_feature_level": null,
+              "feature_multiplier": 30,
+              "base_multiplier": 20,
+              "cost_multiplier": 1.5,
+              "source": "init.feature_multipliers;wire-unproven",
+              "required_options": [
+                "PURCHASE_BONUS_CHANCE"
+              ],
+              "covered_options": [],
+              "validated": false
+            },
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/http-spin-422.json",
+                  "sha256": "219130301734d3d6000c901cd53fe32f8ccb8096ccd98d7b76957820a7a75197",
+                  "bytes": 503,
+                  "kind": "envelope"
+                }
+              ]
+            ]
+          }
+        ],
+        "request_comparisons": [],
+        "coverage": {
+          "schema": "tester-spin/path-coverage/v1",
+          "provider": "bgaming",
+          "game": "royal-beellion-hold-win",
+          "branch_points": [],
+          "complete": true,
+          "missing_count": 0
+        },
+        "sample_diagnostics": [],
+        "evidence_gaps": [
+          {
+            "code": "CAPTURE_ORDER_UNRESOLVED",
+            "attempt": 1
+          },
+          {
+            "code": "SEPARATE_WIRE_PAIR_UNAVAILABLE",
+            "attempt": 1,
+            "detail": "Request/response may be embedded in envelope; no invented pairing.",
+            "envelopes": [
+              "SPIN/attempt-001/http-spin-422.json"
+            ]
+          }
+        ],
+        "next_steps": [
+          "Revisar la respuesta que anuncia la acción/opción pendiente y el serializer del cliente de este proveedor. No inventar argumentos ni un handler.",
+          "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa.",
+          "Resolver los huecos de evidencia indicados antes de atribuir el fallo al servidor o al juego."
+        ],
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Royal Beellion Hold & Win\\diagnostics\\20260915T085918-d664002223f9\\events.jsonl",
+        "tree": "run-tree.html",
+        "tree_data": "run-tree.json"
+      }
+    },
+    "emulation-contract.json": {
+      "encoding": "json",
+      "bytes": 2249,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -803,8 +2515,8 @@
           "name": "Royal Beellion Hold & Win",
           "identifier": "RoyalBeellionHoldAndWin"
         },
-        "generated_at": "2026-09-13T10:09:19+00:00",
-        "source_run": "2026-09-13_07-09-10-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:59:46+00:00",
+        "source_run": "2026-09-15_05-59-40-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -835,29 +2547,33 @@
           },
           {
             "id": "PURCHASE_BONUS_BUY",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "wire_command": "spin",
-            "executable": true,
+            "executable": false,
             "coverage_required": false,
             "purchased_feature": "bonus_buy",
             "purchased_feature_level": null,
             "cost_multiplier": 60.0,
-            "required_options": [],
+            "required_options": [
+              "PURCHASE_BONUS_BUY"
+            ],
             "covered_options": [],
-            "source": "init.feature_multipliers+provider-probe"
+            "source": "init.feature_multipliers;wire-unproven"
           },
           {
             "id": "PURCHASE_BONUS_CHANCE",
-            "kind": "PURCHASE",
+            "kind": "DISCOVERED_ONLY",
             "wire_command": "spin",
-            "executable": true,
+            "executable": false,
             "coverage_required": false,
             "purchased_feature": "bonus_chance",
             "purchased_feature_level": null,
             "cost_multiplier": 1.5,
-            "required_options": [],
+            "required_options": [
+              "PURCHASE_BONUS_CHANCE"
+            ],
             "covered_options": [],
-            "source": "init.feature_multipliers+provider-probe"
+            "source": "init.feature_multipliers;wire-unproven"
           }
         ],
         "unresolved_modes": [],
@@ -871,166 +2587,603 @@
         }
       }
     },
-    "PURCHASE_BONUS_BUY/attempt-001/http-spin-422.json": {
+    "init-request.json": {
       "encoding": "json",
-      "bytes": 193,
+      "bytes": 88,
       "value": {
-        "status": 422,
-        "content_type": "application/json; charset=utf-8",
-        "json": {
-          "errors": [
-            {
-              "code": 203,
-              "desc": "invalid_options"
-            }
+        "command": "init",
+        "extra_data": {
+          "round_series_id": 1789462782348
+        }
+      }
+    },
+    "init-response.json": {
+      "encoding": "json",
+      "bytes": 1195,
+      "value": {
+        "api_version": "2",
+        "options": {
+          "available_bets": [
+            20,
+            40,
+            60,
+            80,
+            100,
+            120,
+            140,
+            160,
+            180,
+            200,
+            240,
+            300,
+            400,
+            500,
+            600,
+            700,
+            800,
+            1000
+          ],
+          "default_bet": 100,
+          "paytable": {},
+          "paytables": {},
+          "special_symbols": [],
+          "lines": [],
+          "reels": {
+            "main": []
+          },
+          "layout": {
+            "reels": 1,
+            "rows": 1
+          },
+          "currency": {
+            "code": "FUN",
+            "symbol": "FUN",
+            "subunits": 100,
+            "exponent": 2
+          },
+          "screen": [],
+          "default_seed": 14266,
+          "feature_options": {
+            "feature_multipliers": {
+              "bonus_buy": 1200,
+              "bonus_chance": 30,
+              "base_bet": 20
+            },
+            "disabled_features": []
+          },
+          "digit_options": {
+            "bet": 2,
+            "paytable": 2,
+            "balance": 2
+          }
+        },
+        "balance": {
+          "game": 0,
+          "wallet": 100000
+        },
+        "flow": {
+          "round_id": null,
+          "last_action_id": null,
+          "state": "ready",
+          "command": "init",
+          "available_actions": [
+            "init",
+            "spin"
           ]
         }
       }
     },
-    "PURCHASE_BONUS_CHANCE/attempt-001/http-spin-422.json": {
+    "outcome-catalog.json": {
       "encoding": "json",
-      "bytes": 193,
+      "bytes": 625,
       "value": {
-        "status": 422,
-        "content_type": "application/json; charset=utf-8",
-        "json": {
-          "errors": [
-            {
-              "code": 203,
-              "desc": "invalid_options"
-            }
-          ]
-        }
-      }
-    },
-    "result.json": {
-      "encoding": "json",
-      "bytes": 4368,
-      "value": {
+        "schema": "tester-spin/bgaming-outcome-catalog/v1",
         "provider": "bgaming",
-        "slug": "royal-beellion-hold-win",
-        "game_name": "Royal Beellion Hold & Win",
-        "game_url": "https://demo.bgaming-network.com/play/RoyalBeellionHoldAndWin/FUN?server=demo",
-        "requested_spins": 3,
-        "successful_spins": 0,
-        "failed_spins": 3,
-        "status": "ERROR",
-        "symbol": "RoyalBeellionHoldAndWin",
-        "discovered_modes": [
+        "game": {
+          "slug": "royal-beellion-hold-win",
+          "name": "Royal Beellion Hold & Win",
+          "identifier": "RoyalBeellionHoldAndWin"
+        },
+        "generated_at": "2026-09-15T08:59:46+00:00",
+        "source_run": "2026-09-15_05-59-40-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
+        "outcomes": []
+      }
+    },
+    "path-catalog.json": {
+      "encoding": "json",
+      "bytes": 1912,
+      "value": {
+        "schema": "tester-spin/bgaming-path-catalog/v1",
+        "phase": "coverage",
+        "provider": "bgaming",
+        "game": {
+          "slug": "royal-beellion-hold-win",
+          "name": "Royal Beellion Hold & Win",
+          "symbol": "RoyalBeellionHoldAndWin"
+        },
+        "semantics": {
+          "path_completeness": "Every provider/client-demonstrated executable branch must be traversed.",
+          "rng_completeness": "Observed random outcomes are samples, not proof that every RNG outcome exists or was exhausted.",
+          "future_sampling_unit": "Repeat each executable path independently; do not multiply unrelated modes by a scoped selector."
+        },
+        "paths": [
           {
             "id": "SPIN",
             "kind": "SPIN",
-            "observed": true,
-            "wire_command": "spin"
+            "branch_signature": "",
+            "executable": null,
+            "coverage_required": false,
+            "required_options": [],
+            "covered_options": [],
+            "attempts_observed": 1,
+            "terminal_successes": 0,
+            "wire_steps": 0,
+            "artifacts": [
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Royal Beellion Hold & Win\\tests\\2026-09-15_05-59-40-bgaming-http-api-v2\\SPIN\\attempt-001"
+            ]
           },
           {
             "id": "PURCHASE_BONUS_BUY",
-            "kind": "PURCHASE",
-            "observed": true,
-            "client_observed": false,
-            "executable": true,
-            "discovery_state": "SERVER_ADVERTISED_PROBE",
-            "wire_command": "spin",
-            "purchased_feature": "bonus_buy",
-            "purchased_feature_level": null,
-            "feature_multiplier": 1200,
-            "base_multiplier": 20,
-            "cost_multiplier": 60.0,
-            "source": "init.feature_multipliers+provider-probe"
+            "kind": "DISCOVERED_ONLY",
+            "branch_signature": "",
+            "executable": false,
+            "coverage_required": false,
+            "required_options": [
+              "PURCHASE_BONUS_BUY"
+            ],
+            "covered_options": [],
+            "attempts_observed": 0,
+            "terminal_successes": 0,
+            "wire_steps": 0,
+            "artifacts": []
           },
           {
             "id": "PURCHASE_BONUS_CHANCE",
-            "kind": "PURCHASE",
-            "observed": true,
-            "client_observed": false,
-            "executable": true,
-            "discovery_state": "SERVER_ADVERTISED_PROBE",
-            "wire_command": "spin",
-            "purchased_feature": "bonus_chance",
-            "purchased_feature_level": null,
-            "feature_multiplier": 30,
-            "base_multiplier": 20,
-            "cost_multiplier": 1.5,
-            "source": "init.feature_multipliers+provider-probe"
-          }
-        ],
-        "started_at": "2026-09-13T10:09:10+00:00",
-        "finished_at": "2026-09-13T10:09:19+00:00",
-        "elapsed_ms": 8328.000000001339,
-        "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Royal Beellion Hold & Win\\tests\\2026-09-13_07-09-10-bgaming-http-api-v2",
-        "attempts": [
-          {
-            "number": 1,
-            "ok": false,
-            "mode_id": "SPIN",
-            "mode_kind": "SPIN",
-            "provider_bl": null,
-            "provider_pur": null,
-            "status_code": null,
-            "elapsed_ms": 734.0000000003783,
-            "symbol": "RoyalBeellionHoldAndWin",
-            "endpoint": "https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-            "na": "",
-            "terminal": false,
+            "kind": "DISCOVERED_ONLY",
+            "branch_signature": "",
+            "executable": false,
+            "coverage_required": false,
+            "required_options": [
+              "PURCHASE_BONUS_CHANCE"
+            ],
+            "covered_options": [],
+            "attempts_observed": 0,
+            "terminal_successes": 0,
             "wire_steps": 0,
-            "warning": "",
-            "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Royal Beellion Hold & Win\\tests\\2026-09-13_07-09-10-bgaming-http-api-v2\\SPIN\\attempt-001"
-          },
-          {
-            "number": 1,
-            "ok": false,
-            "mode_id": "PURCHASE_BONUS_BUY",
-            "mode_kind": "PURCHASE",
-            "provider_bl": null,
-            "provider_pur": null,
-            "status_code": null,
-            "elapsed_ms": 1530.9999999990396,
-            "symbol": "RoyalBeellionHoldAndWin",
-            "endpoint": "https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-            "na": "",
-            "terminal": false,
-            "wire_steps": 0,
-            "warning": "",
-            "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Royal Beellion Hold & Win\\tests\\2026-09-13_07-09-10-bgaming-http-api-v2\\PURCHASE_BONUS_BUY\\attempt-001"
-          },
-          {
-            "number": 1,
-            "ok": false,
-            "mode_id": "PURCHASE_BONUS_CHANCE",
-            "mode_kind": "PURCHASE",
-            "provider_bl": null,
-            "provider_pur": null,
-            "status_code": null,
-            "elapsed_ms": 1562.0000000017171,
-            "symbol": "RoyalBeellionHoldAndWin",
-            "endpoint": "https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-            "na": "",
-            "terminal": false,
-            "wire_steps": 0,
-            "warning": "",
-            "error": "HTTPError: 422 Client Error: Unprocessable Entity for url: https://demo.bgaming-network.com/api/RoyalBeellionHoldAndWin/3714833/<session>",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Royal Beellion Hold & Win\\tests\\2026-09-13_07-09-10-bgaming-http-api-v2\\PURCHASE_BONUS_CHANCE\\attempt-001"
+            "artifacts": []
           }
         ]
       }
     },
-    "SPIN/attempt-001/http-spin-422.json": {
+    "protocol-contract.json": {
       "encoding": "json",
-      "bytes": 193,
+      "bytes": 2249,
       "value": {
-        "status": 422,
-        "content_type": "application/json; charset=utf-8",
-        "json": {
-          "errors": [
-            {
-              "code": 203,
-              "desc": "invalid_options"
-            }
-          ]
+        "schema": "tester-spin/bgaming-emulation-contract/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "royal-beellion-hold-win",
+          "name": "Royal Beellion Hold & Win",
+          "identifier": "RoyalBeellionHoldAndWin"
+        },
+        "generated_at": "2026-09-15T08:59:46+00:00",
+        "source_run": "2026-09-15_05-59-40-bgaming-http-api-v2",
+        "runtime_families": [
+          "api-v2"
+        ],
+        "authority_order": [
+          "RUNTIME_OBSERVED",
+          "CLIENT_CONTRACT",
+          "PROVIDER_METADATA",
+          "INFERENCE"
+        ],
+        "status": "ERROR",
+        "wire_replay_complete": false,
+        "math_model_complete": false,
+        "rng_probabilities_known": false,
+        "request_contracts": [],
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "wire_command": "spin",
+            "executable": true,
+            "coverage_required": false,
+            "purchased_feature": null,
+            "purchased_feature_level": null,
+            "cost_multiplier": null,
+            "required_options": [],
+            "covered_options": [],
+            "source": null
+          },
+          {
+            "id": "PURCHASE_BONUS_BUY",
+            "kind": "DISCOVERED_ONLY",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": "bonus_buy",
+            "purchased_feature_level": null,
+            "cost_multiplier": 60.0,
+            "required_options": [
+              "PURCHASE_BONUS_BUY"
+            ],
+            "covered_options": [],
+            "source": "init.feature_multipliers;wire-unproven"
+          },
+          {
+            "id": "PURCHASE_BONUS_CHANCE",
+            "kind": "DISCOVERED_ONLY",
+            "wire_command": "spin",
+            "executable": false,
+            "coverage_required": false,
+            "purchased_feature": "bonus_chance",
+            "purchased_feature_level": null,
+            "cost_multiplier": 1.5,
+            "required_options": [
+              "PURCHASE_BONUS_CHANCE"
+            ],
+            "covered_options": [],
+            "source": "init.feature_multipliers;wire-unproven"
+          }
+        ],
+        "unresolved_modes": [],
+        "dispatch": {},
+        "artifacts": {
+          "state_machine": "state-machine.json",
+          "outcome_catalog": "outcome-catalog.json",
+          "backend_response_plan": "backend-response-plan.json",
+          "backend_conformance": "backend-conformance.json",
+          "response_schemas": "response-schemas/"
         }
+      }
+    },
+    "run-tree.json": {
+      "encoding": "json",
+      "bytes": 1083,
+      "value": {
+        "schema": "tester-spin/run-tree/v1",
+        "provider": "bgaming",
+        "game": "royal-beellion-hold-win",
+        "scope": "observed_trajectories",
+        "exact_remote_outcome_reproducible": false,
+        "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
+        "trajectories": [
+          {
+            "id": "6ad6716f74acc183bf07",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": true,
+                "wire_command": "spin",
+                "evidence_level": "WIRE_CANDIDATE",
+                "execution_state": "ATTEMPTED_UNVALIDATED",
+                "validated": false
+              }
+            },
+            "attempt": 1,
+            "reported_terminal": false,
+            "reported_ok": false,
+            "sequence_status": "UNRESOLVED",
+            "steps": [],
+            "events": [],
+            "gaps": [
+              "Capture ordering is not proven; no sequential edges invented."
+            ],
+            "offline_replay_ready": false
+          }
+        ],
+        "announced_branches": []
+      }
+    },
+    "server-guided-discovery.json": {
+      "encoding": "json",
+      "bytes": 8369,
+      "value": {
+        "schema": "tester-spin/bgaming-server-guided-run/v1",
+        "provider": "bgaming",
+        "game": "royal-beellion-hold-win",
+        "states": [
+          {
+            "schema": "tester-spin/bgaming-server-guided-discovery/v1",
+            "flow": {
+              "state": "ready",
+              "command": "init",
+              "available_actions": [
+                "init",
+                "spin"
+              ]
+            },
+            "client": {
+              "source": "https://boost2.bgaming-network.com/wrapper.js",
+              "bundle_sha256": "038a073a88d2236e50d0ca24190ccce2e190ed820fa2e4fd2bdc37ecaa09a138"
+            },
+            "actions": [
+              {
+                "action": "init",
+                "advertised": true,
+                "client_command_literal_hits": 0,
+                "option_fields": [],
+                "parameterless": false,
+                "option_variants": [],
+                "unresolved_option_variants": [],
+                "client_wrappers": [],
+                "forwarded_options_parameters": [],
+                "serializer_shape_proven": false,
+                "replay_eligible": false,
+                "execution_authority": "evidence-only"
+              },
+              {
+                "action": "spin",
+                "advertised": true,
+                "client_command_literal_hits": 0,
+                "option_fields": [],
+                "parameterless": false,
+                "option_variants": [],
+                "unresolved_option_variants": [],
+                "client_wrappers": [],
+                "forwarded_options_parameters": [],
+                "serializer_shape_proven": false,
+                "replay_eligible": false,
+                "execution_authority": "evidence-only"
+              }
+            ],
+            "search_seeds": [
+              {
+                "token": "ready",
+                "path": "$.flow.state",
+                "kind": "flow-state",
+                "client_hits": 25,
+                "near_actions": []
+              },
+              {
+                "token": "init",
+                "path": "$.flow.command",
+                "kind": "flow-command",
+                "client_hits": 103,
+                "near_actions": [
+                  "init"
+                ]
+              },
+              {
+                "token": "init",
+                "path": "$.flow.available_actions[0]",
+                "kind": "available-action",
+                "client_hits": 103,
+                "near_actions": [
+                  "init"
+                ]
+              },
+              {
+                "token": "spin",
+                "path": "$.flow.available_actions[1]",
+                "kind": "available-action",
+                "client_hits": 35,
+                "near_actions": [
+                  "spin"
+                ]
+              },
+              {
+                "token": "available_bets",
+                "path": "$.options.available_bets",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "default_bet",
+                "path": "$.options.default_bet",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "paytable",
+                "path": "$.options.paytable",
+                "kind": "field",
+                "client_hits": 2,
+                "near_actions": []
+              },
+              {
+                "token": "paytables",
+                "path": "$.options.paytables",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "special_symbols",
+                "path": "$.options.special_symbols",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "lines",
+                "path": "$.options.lines",
+                "kind": "field",
+                "client_hits": 1,
+                "near_actions": []
+              },
+              {
+                "token": "reels",
+                "path": "$.options.reels",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "main",
+                "path": "$.options.reels.main",
+                "kind": "field",
+                "client_hits": 57,
+                "near_actions": []
+              },
+              {
+                "token": "layout",
+                "path": "$.options.layout",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "reels",
+                "path": "$.options.layout.reels",
+                "kind": "mapping-key",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "rows",
+                "path": "$.options.layout.rows",
+                "kind": "mapping-key",
+                "client_hits": 56,
+                "near_actions": []
+              },
+              {
+                "token": "currency",
+                "path": "$.options.currency",
+                "kind": "field",
+                "client_hits": 12,
+                "near_actions": []
+              },
+              {
+                "token": "code",
+                "path": "$.options.currency.code",
+                "kind": "mapping-key",
+                "client_hits": 15,
+                "near_actions": []
+              },
+              {
+                "token": "FUN",
+                "path": "$.options.currency.code",
+                "kind": "enum-value",
+                "client_hits": 1,
+                "near_actions": []
+              },
+              {
+                "token": "symbol",
+                "path": "$.options.currency.symbol",
+                "kind": "mapping-key",
+                "client_hits": 3,
+                "near_actions": []
+              },
+              {
+                "token": "FUN",
+                "path": "$.options.currency.symbol",
+                "kind": "enum-value",
+                "client_hits": 1,
+                "near_actions": []
+              },
+              {
+                "token": "subunits",
+                "path": "$.options.currency.subunits",
+                "kind": "mapping-key",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "exponent",
+                "path": "$.options.currency.exponent",
+                "kind": "mapping-key",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "screen",
+                "path": "$.options.screen",
+                "kind": "field",
+                "client_hits": 13,
+                "near_actions": []
+              },
+              {
+                "token": "default_seed",
+                "path": "$.options.default_seed",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "feature_options",
+                "path": "$.options.feature_options",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "feature_multipliers",
+                "path": "$.options.feature_options.feature_multipliers",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "bonus_buy",
+                "path": "$.options.feature_options.feature_multipliers.bonus_buy",
+                "kind": "mapping-key",
+                "client_hits": 1,
+                "near_actions": []
+              },
+              {
+                "token": "bonus_chance",
+                "path": "$.options.feature_options.feature_multipliers.bonus_chance",
+                "kind": "mapping-key",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "base_bet",
+                "path": "$.options.feature_options.feature_multipliers.base_bet",
+                "kind": "mapping-key",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "disabled_features",
+                "path": "$.options.feature_options.disabled_features",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "digit_options",
+                "path": "$.options.digit_options",
+                "kind": "field",
+                "client_hits": 0,
+                "near_actions": []
+              },
+              {
+                "token": "bet",
+                "path": "$.options.digit_options.bet",
+                "kind": "mapping-key",
+                "client_hits": 8,
+                "near_actions": []
+              },
+              {
+                "token": "paytable",
+                "path": "$.options.digit_options.paytable",
+                "kind": "mapping-key",
+                "client_hits": 2,
+                "near_actions": []
+              }
+            ]
+          }
+        ],
+        "diagnostics": [],
+        "execution_policy": "server advertisement or textual client hits alone do not authorize unknown requests; only exact client-proven fully literal payload variants marked replay_eligible may be replayed"
       }
     },
     "state-machine.json": {
@@ -1044,8 +3197,8 @@
           "name": "Royal Beellion Hold & Win",
           "identifier": "RoyalBeellionHoldAndWin"
         },
-        "generated_at": "2026-09-13T10:09:19+00:00",
-        "source_run": "2026-09-13_07-09-10-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:59:46+00:00",
+        "source_run": "2026-09-15_05-59-40-bgaming-http-api-v2",
         "runtime_families": [
           "api-v2"
         ],
@@ -1058,6 +3211,63 @@
         "initial_state": "READY",
         "states": {},
         "transitions": []
+      }
+    },
+    "wager-catalog.json": {
+      "encoding": "json",
+      "bytes": 1543,
+      "value": {
+        "schema": "tester-spin/bgaming-wager-catalog/v1",
+        "policy": {
+          "coverage": "Use the minimum provider-advertised wager for exhaustive protocol/path traversal; never invent a lower wager.",
+          "sampling": "Preserve default and full wager domain so future statistical sampling can be scheduled independently per path.",
+          "purchase_identity": "purchased_feature and purchased_feature_level are scoped to PURCHASE_* modes and are not global spin-option dimensions."
+        },
+        "plans": [
+          {
+            "default_bet": 100.0,
+            "coverage_bet": 20.0,
+            "available_bets": [
+              20.0,
+              40.0,
+              60.0,
+              80.0,
+              100.0,
+              120.0,
+              140.0,
+              160.0,
+              180.0,
+              200.0,
+              240.0,
+              300.0,
+              400.0,
+              500.0,
+              600.0,
+              700.0,
+              800.0,
+              1000.0
+            ],
+            "balance": 100000.0,
+            "source": "options.available_bets:min",
+            "evidence": "init-response.json",
+            "purchase_costs": [
+              {
+                "mode_id": "PURCHASE_BONUS_BUY",
+                "purchased_feature": "bonus_buy",
+                "purchased_feature_level": null,
+                "cost_multiplier": 60.0,
+                "estimated_debit_at_coverage_bet": 1200.0
+              },
+              {
+                "mode_id": "PURCHASE_BONUS_CHANCE",
+                "purchased_feature": "bonus_chance",
+                "purchased_feature_level": null,
+                "cost_multiplier": 1.5,
+                "estimated_debit_at_coverage_bet": 30.0
+              }
+            ]
+          }
+        ]
       }
     }
   },
