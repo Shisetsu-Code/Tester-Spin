@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-13T13:08:40+00:00",
-  "source_commit": "299ba3374f3740551aa66a66eabf02c0d7ba03ad",
+  "published_at": "2026-09-15T08:32:47+00:00",
+  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
   "provider": "bgaming",
   "game": {
     "slug": "hot-rocket-5x-3x-2x",
@@ -32,14 +32,16 @@
           "bet_type": "bet",
           "action": "spin"
         },
-        "source": "selected-har-script-contract"
+        "source": "selected-har-script-contract",
+        "evidence_level": "REMOTE_REJECTION",
+        "execution_state": "REJECTED_REMOTE"
       }
     ],
-    "started_at": "2026-09-13T13:08:17+00:00",
-    "finished_at": "2026-09-13T13:08:40+00:00",
-    "elapsed_ms": 22530.99999999995,
+    "started_at": "2026-09-15T08:32:21+00:00",
+    "finished_at": "2026-09-15T08:32:46+00:00",
+    "elapsed_ms": 25687.000000005355,
     "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-    "run_dir": "2026-09-13_10-08-17-bgaming-hyperhive-jsonrpc",
+    "run_dir": "2026-09-15_05-32-21-bgaming-hyperhive-jsonrpc",
     "attempts": [
       {
         "number": 1,
@@ -49,7 +51,7 @@
         "provider_bl": null,
         "provider_pur": null,
         "status_code": null,
-        "elapsed_ms": 1030.999999999949,
+        "elapsed_ms": 2296.9999999913853,
         "symbol": "HotRocket532",
         "endpoint": "https://hot-rocket532.demo.bgaming-network.com/api",
         "na": "",
@@ -57,13 +59,91 @@
         "wire_steps": 0,
         "warning": "",
         "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\HOT ROCKET 5x 3x 2x\\tests\\2026-09-13_10-08-17-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\HOT ROCKET 5x 3x 2x\\tests\\2026-09-15_05-32-21-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
       }
     ],
-    "samples_per_path": 1
+    "samples_per_path": 1,
+    "structural_map": {
+      "path": "analysis/game-structure.json",
+      "schema": "tester-spin/game-structure/v1",
+      "coverage": {
+        "states": 0,
+        "decision_points": 0,
+        "choices": 0,
+        "executed": 0,
+        "outcome_observed": 0,
+        "pending": 0,
+        "unknowns": 2,
+        "complete": false,
+        "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+      },
+      "diagnostics": []
+    }
   },
-  "artifact_bytes_embedded": 16197,
+  "artifact_bytes_embedded": 26997,
   "artifacts": {
+    "analysis/game-structure.json": {
+      "encoding": "json",
+      "bytes": 1723,
+      "value": {
+        "schema": "tester-spin/game-structure/v1",
+        "metadata": {
+          "provider": "bgaming",
+          "protocol_family": "bgaming-json-flow",
+          "game_identifier": "hot-rocket-5x-3x-2x",
+          "slug": "hot-rocket-5x-3x-2x",
+          "bundle_fingerprint": "",
+          "generated_at": "2026-09-15T08:32:20+00:00",
+          "compatibility": "unverified",
+          "source_evidence_summary": {
+            "capture": "BGaming JSON requests/responses at transport boundary",
+            "diagnostics": []
+          },
+          "merged_runs": [
+            "run:7ce9e4fe228b0421734886c4"
+          ],
+          "previous_revisions": []
+        },
+        "states": {},
+        "decision_points": {},
+        "choices": {},
+        "transitions": {},
+        "request_contracts": {},
+        "response_contracts": {},
+        "field_semantics": {},
+        "path_context": {},
+        "unknowns": {
+          "unknown:8e309cedf950caa13f526b87": {
+            "id": "unknown:8e309cedf950caa13f526b87",
+            "kind": "protocol",
+            "entity": "bgaming",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No supported JSON flow observations; protocol adapter required"
+          },
+          "unknown:a0811d74020f7930a40509a2": {
+            "id": "unknown:a0811d74020f7930a40509a2",
+            "kind": "client",
+            "entity": "fingerprint",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client compatibility unverified; only observed protocol evidence"
+          }
+        },
+        "evidence": {},
+        "relations": {},
+        "artifact_references": [],
+        "coverage": {
+          "states": 0,
+          "decision_points": 0,
+          "choices": 0,
+          "executed": 0,
+          "outcome_observed": 0,
+          "pending": 0,
+          "unknowns": 2,
+          "complete": false,
+          "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+        }
+      }
+    },
     "path-coverage.json": {
       "encoding": "json",
       "bytes": 539,
@@ -95,7 +175,7 @@
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 1876,
+      "bytes": 2435,
       "value": {
         "provider": "bgaming",
         "slug": "hot-rocket-5x-3x-2x",
@@ -119,14 +199,16 @@
               "bet_type": "bet",
               "action": "spin"
             },
-            "source": "selected-har-script-contract"
+            "source": "selected-har-script-contract",
+            "evidence_level": "REMOTE_REJECTION",
+            "execution_state": "REJECTED_REMOTE"
           }
         ],
-        "started_at": "2026-09-13T13:08:17+00:00",
-        "finished_at": "2026-09-13T13:08:40+00:00",
-        "elapsed_ms": 22530.99999999995,
+        "started_at": "2026-09-15T08:32:21+00:00",
+        "finished_at": "2026-09-15T08:32:46+00:00",
+        "elapsed_ms": 25687.000000005355,
         "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\HOT ROCKET 5x 3x 2x\\tests\\2026-09-13_10-08-17-bgaming-hyperhive-jsonrpc",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\HOT ROCKET 5x 3x 2x\\tests\\2026-09-15_05-32-21-bgaming-hyperhive-jsonrpc",
         "attempts": [
           {
             "number": 1,
@@ -136,7 +218,7 @@
             "provider_bl": null,
             "provider_pur": null,
             "status_code": null,
-            "elapsed_ms": 1030.999999999949,
+            "elapsed_ms": 2296.9999999913853,
             "symbol": "HotRocket532",
             "endpoint": "https://hot-rocket532.demo.bgaming-network.com/api",
             "na": "",
@@ -144,10 +226,26 @@
             "wire_steps": 0,
             "warning": "",
             "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\HOT ROCKET 5x 3x 2x\\tests\\2026-09-13_10-08-17-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\HOT ROCKET 5x 3x 2x\\tests\\2026-09-15_05-32-21-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
           }
         ],
-        "samples_per_path": 1
+        "samples_per_path": 1,
+        "structural_map": {
+          "path": "analysis/game-structure.json",
+          "schema": "tester-spin/game-structure/v1",
+          "coverage": {
+            "states": 0,
+            "decision_points": 0,
+            "choices": 0,
+            "executed": 0,
+            "outcome_observed": 0,
+            "pending": 0,
+            "unknowns": 2,
+            "complete": false,
+            "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+          },
+          "diagnostics": []
+        }
       }
     },
     "sample-catalog.json": {
@@ -176,7 +274,7 @@
                 "evidence": [
                   {
                     "path": "SPIN/attempt-001/rpc-error-request.json",
-                    "sha256": "acd0582cbbb7022031a321428f3a7d79c6f8183fe554fd085244c9dd86e257b7",
+                    "sha256": "4c8f9ce2c32ef8e3ec5bed7a73982e8d81b01c25afee050cb3bddbaf69660554",
                     "bytes": 345
                   },
                   {
@@ -199,7 +297,7 @@
       "encoding": "json",
       "bytes": 345,
       "value": {
-        "id": "c885ad34-1dfd-4c52-9650-cc95010f312c",
+        "id": "4a0c3222-7359-4bb3-aa6a-e3de00d822c8",
         "jsonrpc": "2.0",
         "method": "play",
         "params": {
@@ -240,8 +338,8 @@
           "name": "HOT ROCKET 5x 3x 2x",
           "identifier": "HotRocket532"
         },
-        "generated_at": "2026-09-13T13:08:40+00:00",
-        "source_run": "2026-09-13_10-08-17-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:32:46+00:00",
+        "source_run": "2026-09-15_05-32-21-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -271,8 +369,8 @@
           "name": "HOT ROCKET 5x 3x 2x",
           "identifier": "HotRocket532"
         },
-        "generated_at": "2026-09-13T13:08:40+00:00",
-        "source_run": "2026-09-13_10-08-17-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:32:46+00:00",
+        "source_run": "2026-09-15_05-32-21-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -331,6 +429,196 @@
         "base_discovery_state": "HAR_SCRIPT_OBSERVED"
       }
     },
+    "diagnostic.json": {
+      "encoding": "json",
+      "bytes": 5899,
+      "value": {
+        "schema": "tester-spin/run-diagnostics/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "hot-rocket-5x-3x-2x",
+          "name": "HOT ROCKET 5x 3x 2x",
+          "symbol": "HotRocket532"
+        },
+        "started_at": "2026-09-15T08:32:21+00:00",
+        "finished_at": "2026-09-15T08:32:46+00:00",
+        "result_status": "ERROR",
+        "scope": "observed_paths_only",
+        "observed_error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "root_cause": {
+          "status": "UNDETERMINED",
+          "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
+        },
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "status": "INCOMPLETE",
+            "validated": false,
+            "tested": true,
+            "attempt_count": 1,
+            "terminal_count": 0,
+            "missing_options": [
+              "SPIN"
+            ],
+            "branches": [
+              {
+                "source": "discovered_modes_fail_closed",
+                "mode_id": "SPIN",
+                "signature": "SPIN:UNEXECUTED",
+                "required": [
+                  "SPIN"
+                ],
+                "covered": [],
+                "missing": [
+                  "SPIN"
+                ],
+                "complete": false,
+                "required_samples": 1,
+                "sample_counts": null,
+                "sample_deficits": {}
+              }
+            ],
+            "provider_metadata": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "REJECTED_51100",
+              "wire_method": "play",
+              "request_options": {
+                "bet_type": "bet",
+                "action": "spin"
+              },
+              "source": "selected-har-script-contract",
+              "evidence_level": "REMOTE_REJECTION",
+              "execution_state": "REJECTED_REMOTE"
+            }
+          }
+        ],
+        "attempts": [
+          {
+            "number": 1,
+            "mode_id": "SPIN",
+            "reported_ok": false,
+            "reported_terminal": false,
+            "http_status": null,
+            "last_state": "",
+            "wire_steps": 0,
+            "elapsed_ms": 2296.9999999913853,
+            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+            "warning": "",
+            "evidence": [
+              {
+                "path": "SPIN/attempt-001/rpc-error-request.json",
+                "sha256": "4c8f9ce2c32ef8e3ec5bed7a73982e8d81b01c25afee050cb3bddbaf69660554",
+                "bytes": 345,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/rpc-error-response.json",
+                "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                "bytes": 136,
+                "kind": "response"
+              }
+            ],
+            "first_request": "SPIN/attempt-001/rpc-error-request.json",
+            "last_request": "SPIN/attempt-001/rpc-error-request.json",
+            "last_response": "SPIN/attempt-001/rpc-error-response.json",
+            "ordering": "SINGLE_EXCHANGE",
+            "trajectory_id": "780472c5a2b4707699e9"
+          }
+        ],
+        "bootstrap_evidence": [
+          {
+            "path": "init-request.json",
+            "sha256": "5954956f33726975c82be95e9af3965bc089c5ad451d1011a75b535d964ebf03",
+            "bytes": 142,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-response.json",
+            "sha256": "d4792735a1cef56d720fb6411c472273ae50f237885b7e8bb604ce11f00cc20c",
+            "bytes": 1893,
+            "kind": "envelope"
+          }
+        ],
+        "unknown_actions": [
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_b05c000d48224aaf",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "REJECTED_51100",
+              "wire_method": "play",
+              "request_options": {
+                "bet_type": "bet",
+                "action": "spin"
+              },
+              "source": "selected-har-script-contract",
+              "evidence_level": "REMOTE_REJECTION",
+              "execution_state": "REJECTED_REMOTE"
+            },
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/rpc-error-request.json",
+                  "sha256": "4c8f9ce2c32ef8e3ec5bed7a73982e8d81b01c25afee050cb3bddbaf69660554",
+                  "bytes": 345,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/rpc-error-response.json",
+                  "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                  "bytes": 136,
+                  "kind": "response"
+                }
+              ]
+            ]
+          }
+        ],
+        "request_comparisons": [],
+        "coverage": {
+          "schema": "tester-spin/path-coverage/v1",
+          "provider": "bgaming",
+          "game": "hot-rocket-5x-3x-2x",
+          "branch_points": [
+            {
+              "source": "discovered_modes_fail_closed",
+              "mode_id": "SPIN",
+              "signature": "SPIN:UNEXECUTED",
+              "required": [
+                "SPIN"
+              ],
+              "covered": [],
+              "missing": [
+                "SPIN"
+              ],
+              "complete": false,
+              "required_samples": 1,
+              "sample_counts": null,
+              "sample_deficits": {}
+            }
+          ],
+          "complete": false,
+          "missing_count": 1
+        },
+        "sample_diagnostics": [],
+        "evidence_gaps": [],
+        "next_steps": [
+          "Revisar la respuesta que anuncia la acción/opción pendiente y el serializer del cliente de este proveedor. No inventar argumentos ni un handler.",
+          "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa."
+        ],
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\HOT ROCKET 5x 3x 2x\\diagnostics\\20260915T083204-513c87a2d32c\\events.jsonl",
+        "tree": "run-tree.html",
+        "tree_data": "run-tree.json"
+      }
+    },
     "emulation-contract.json": {
       "encoding": "json",
       "bytes": 1702,
@@ -342,8 +630,8 @@
           "name": "HOT ROCKET 5x 3x 2x",
           "identifier": "HotRocket532"
         },
-        "generated_at": "2026-09-13T13:08:40+00:00",
-        "source_run": "2026-09-13_10-08-17-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:32:46+00:00",
+        "source_run": "2026-09-15_05-32-21-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -400,7 +688,7 @@
       "encoding": "json",
       "bytes": 142,
       "value": {
-        "id": "38328d1b-8b7c-4458-af63-336e9cc50d59",
+        "id": "b629eb25-0636-447d-9f65-e1eb430e4693",
         "jsonrpc": "2.0",
         "method": "init",
         "params": {
@@ -412,7 +700,7 @@
       "encoding": "json",
       "bytes": 1893,
       "value": {
-        "id": "38328d1b-8b7c-4458-af63-336e9cc50d59",
+        "id": "b629eb25-0636-447d-9f65-e1eb430e4693",
         "jsonrpc": "2.0",
         "result": {
           "freebets": null,
@@ -497,7 +785,7 @@
           "urls": {
             "deposit_url": null,
             "return_url": null,
-            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDU0NzM1OTIsImd0X2lkIjozODQ1MDgwfSwiZXhwIjoxODA0OTQzMzEyfQ.4a016pFY0jqKKWJLoNzbdWJIRdSJv2JcGHErDrChwio"
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcxNzczMDcsImd0X2lkIjozODQ1MDgwfSwiZXhwIjoxODA1MDk5NTU4fQ.TarXDlSbxuc11UuapHGp4FXUuLw3jkYznau5F7pGUaE"
           },
           "balance": 100000,
           "state_lock": "<redacted>"
@@ -515,8 +803,8 @@
           "name": "HOT ROCKET 5x 3x 2x",
           "identifier": "HotRocket532"
         },
-        "generated_at": "2026-09-13T13:08:40+00:00",
-        "source_run": "2026-09-13_10-08-17-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:32:46+00:00",
+        "source_run": "2026-09-15_05-32-21-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -558,7 +846,7 @@
             "terminal_successes": 0,
             "wire_steps": 0,
             "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\HOT ROCKET 5x 3x 2x\\tests\\2026-09-13_10-08-17-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\HOT ROCKET 5x 3x 2x\\tests\\2026-09-15_05-32-21-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
             ]
           }
         ]
@@ -575,8 +863,8 @@
           "name": "HOT ROCKET 5x 3x 2x",
           "identifier": "HotRocket532"
         },
-        "generated_at": "2026-09-13T13:08:40+00:00",
-        "source_run": "2026-09-13_10-08-17-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:32:46+00:00",
+        "source_run": "2026-09-15_05-32-21-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -629,6 +917,100 @@
         }
       }
     },
+    "run-tree.json": {
+      "encoding": "json",
+      "bytes": 2619,
+      "value": {
+        "schema": "tester-spin/run-tree/v1",
+        "provider": "bgaming",
+        "game": "hot-rocket-5x-3x-2x",
+        "scope": "observed_trajectories",
+        "exact_remote_outcome_reproducible": false,
+        "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
+        "trajectories": [
+          {
+            "id": "780472c5a2b4707699e9",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": false,
+                "validated": false,
+                "executable": false,
+                "discovery_state": "REJECTED_51100",
+                "wire_method": "play",
+                "request_options": {
+                  "bet_type": "bet",
+                  "action": "spin"
+                },
+                "source": "selected-har-script-contract",
+                "evidence_level": "REMOTE_REJECTION",
+                "execution_state": "REJECTED_REMOTE"
+              }
+            },
+            "attempt": 1,
+            "reported_terminal": false,
+            "reported_ok": false,
+            "sequence_status": "SINGLE_EXCHANGE",
+            "steps": [
+              {
+                "label": "rpc-error",
+                "directory": "SPIN/attempt-001",
+                "request": [
+                  {
+                    "path": "SPIN/attempt-001/rpc-error-request.json",
+                    "sha256": "4c8f9ce2c32ef8e3ec5bed7a73982e8d81b01c25afee050cb3bddbaf69660554",
+                    "bytes": 345,
+                    "kind": "request"
+                  }
+                ],
+                "response": [
+                  {
+                    "path": "SPIN/attempt-001/rpc-error-response.json",
+                    "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                    "bytes": 136,
+                    "kind": "response"
+                  }
+                ],
+                "id": "780472c5a2b4707699e9:0",
+                "parent_id": "780472c5a2b4707699e9",
+                "observed_response": {
+                  "id": "x",
+                  "jsonrpc": "2.0",
+                  "error": {
+                    "code": 51100,
+                    "message": "Something went wrong. Refresh the page."
+                  }
+                }
+              }
+            ],
+            "events": [],
+            "gaps": [],
+            "offline_replay_ready": true
+          }
+        ],
+        "announced_branches": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          }
+        ]
+      }
+    },
     "state-machine.json": {
       "encoding": "json",
       "bytes": 538,
@@ -640,8 +1022,8 @@
           "name": "HOT ROCKET 5x 3x 2x",
           "identifier": "HotRocket532"
         },
-        "generated_at": "2026-09-13T13:08:40+00:00",
-        "source_run": "2026-09-13_10-08-17-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:32:46+00:00",
+        "source_run": "2026-09-15_05-32-21-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
