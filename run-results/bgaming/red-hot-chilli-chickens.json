@@ -1,6 +1,6 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-15T08:58:52+00:00",
+  "published_at": "2026-09-15T18:12:08+00:00",
   "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
   "provider": "bgaming",
   "game": {
@@ -15,26 +15,26 @@
     "game_name": "Red Hot Chilli Chickens",
     "game_url": "https://demo.bgaming-network.com/play/RedHotChilliChickens/FUN",
     "requested_spins": 1,
-    "successful_spins": 1,
-    "failed_spins": 0,
+    "successful_spins": 0,
+    "failed_spins": 1,
     "status": "PARCIAL",
     "symbol": "RedHotChilliChickens",
     "discovered_modes": [
       {
         "id": "SPIN",
         "kind": "SPIN",
-        "observed": true,
-        "validated": true,
+        "observed": false,
+        "validated": false,
         "executable": true,
-        "discovery_state": "VALIDATED",
+        "discovery_state": "HAR_SCRIPT_OBSERVED",
         "wire_method": "play",
         "request_options": {
           "bet_type": "betting",
           "action": "spin"
         },
         "source": "selected-har-script-contract",
-        "evidence_level": "REMOTE_EXECUTION",
-        "execution_state": "PROVEN_TERMINAL"
+        "evidence_level": "WIRE_CANDIDATE",
+        "execution_state": "ATTEMPTED_UNVALIDATED"
       },
       {
         "id": "PURCHASE_BONUS_BUY",
@@ -53,29 +53,29 @@
         "execution_state": "NOT_EXECUTABLE"
       }
     ],
-    "started_at": "2026-09-15T08:58:39+00:00",
-    "finished_at": "2026-09-15T08:58:52+00:00",
-    "elapsed_ms": 12750.0,
-    "error": "Cobertura de ramificaciones pendiente: PURCHASE_BONUS_BUY -> ['PURCHASE_BONUS_BUY'].",
-    "run_dir": "2026-09-15_05-58-39-bgaming-hyperhive-jsonrpc",
+    "started_at": "2026-09-15T18:11:35+00:00",
+    "finished_at": "2026-09-15T18:12:08+00:00",
+    "elapsed_ms": 33062.999999994645,
+    "error": "BGaming HyperHive respondió 1/1; modos validados=0/1. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN']; PURCHASE_BONUS_BUY -> ['PURCHASE_BONUS_BUY'].",
+    "run_dir": "2026-09-15_15-11-35-bgaming-hyperhive-jsonrpc",
     "attempts": [
       {
         "number": 1,
-        "ok": true,
+        "ok": false,
         "mode_id": "SPIN",
         "mode_kind": "SPIN",
         "provider_bl": null,
         "provider_pur": null,
         "status_code": 200,
-        "elapsed_ms": 765.9999999887077,
+        "elapsed_ms": 11657.00000000652,
         "symbol": "RedHotChilliChickens",
         "endpoint": "https://red-hot-chilli-chickens.demo.bgaming-network.com/api",
         "na": "",
         "terminal": true,
         "wire_steps": 1,
-        "warning": "",
+        "warning": "Regreso al juego base pendiente: REVIEW_REQUIRED",
         "error": "",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Red Hot Chilli Chickens\\tests\\2026-09-15_05-58-39-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Red Hot Chilli Chickens\\tests\\2026-09-15_15-11-35-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
       }
     ],
     "samples_per_path": 1,
@@ -96,11 +96,11 @@
       "diagnostics": []
     }
   },
-  "artifact_bytes_embedded": 61060,
+  "artifact_bytes_embedded": 111854,
   "artifacts": {
     "analysis/game-structure.json": {
       "encoding": "json",
-      "bytes": 1731,
+      "bytes": 1770,
       "value": {
         "schema": "tester-spin/game-structure/v1",
         "metadata": {
@@ -109,14 +109,15 @@
           "game_identifier": "red-hot-chilli-chickens",
           "slug": "red-hot-chilli-chickens",
           "bundle_fingerprint": "",
-          "generated_at": "2026-09-15T08:58:39+00:00",
+          "generated_at": "2026-09-15T18:12:08+00:00",
           "compatibility": "unverified",
           "source_evidence_summary": {
             "capture": "BGaming JSON requests/responses at transport boundary",
             "diagnostics": []
           },
           "merged_runs": [
-            "run:29606ea9277d072b41c4a12d"
+            "run:29606ea9277d072b41c4a12d",
+            "run:b3c7b5a2e9198f0127e72e84"
           ],
           "previous_revisions": []
         },
@@ -162,12 +163,28 @@
     },
     "path-coverage.json": {
       "encoding": "json",
-      "bytes": 599,
+      "bytes": 958,
       "value": {
         "schema": "tester-spin/path-coverage/v1",
         "provider": "bgaming",
         "game": "red-hot-chilli-chickens",
         "branch_points": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          },
           {
             "source": "discovered_modes_fail_closed",
             "mode_id": "PURCHASE_BONUS_BUY",
@@ -186,38 +203,38 @@
           }
         ],
         "complete": false,
-        "missing_count": 1
+        "missing_count": 2
       }
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 2792,
+      "bytes": 2941,
       "value": {
         "provider": "bgaming",
         "slug": "red-hot-chilli-chickens",
         "game_name": "Red Hot Chilli Chickens",
         "game_url": "https://demo.bgaming-network.com/play/RedHotChilliChickens/FUN",
         "requested_spins": 1,
-        "successful_spins": 1,
-        "failed_spins": 0,
+        "successful_spins": 0,
+        "failed_spins": 1,
         "status": "PARCIAL",
         "symbol": "RedHotChilliChickens",
         "discovered_modes": [
           {
             "id": "SPIN",
             "kind": "SPIN",
-            "observed": true,
-            "validated": true,
+            "observed": false,
+            "validated": false,
             "executable": true,
-            "discovery_state": "VALIDATED",
+            "discovery_state": "HAR_SCRIPT_OBSERVED",
             "wire_method": "play",
             "request_options": {
               "bet_type": "betting",
               "action": "spin"
             },
             "source": "selected-har-script-contract",
-            "evidence_level": "REMOTE_EXECUTION",
-            "execution_state": "PROVEN_TERMINAL"
+            "evidence_level": "WIRE_CANDIDATE",
+            "execution_state": "ATTEMPTED_UNVALIDATED"
           },
           {
             "id": "PURCHASE_BONUS_BUY",
@@ -236,29 +253,29 @@
             "execution_state": "NOT_EXECUTABLE"
           }
         ],
-        "started_at": "2026-09-15T08:58:39+00:00",
-        "finished_at": "2026-09-15T08:58:52+00:00",
-        "elapsed_ms": 12750.0,
-        "error": "Cobertura de ramificaciones pendiente: PURCHASE_BONUS_BUY -> ['PURCHASE_BONUS_BUY'].",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Red Hot Chilli Chickens\\tests\\2026-09-15_05-58-39-bgaming-hyperhive-jsonrpc",
+        "started_at": "2026-09-15T18:11:35+00:00",
+        "finished_at": "2026-09-15T18:12:08+00:00",
+        "elapsed_ms": 33062.999999994645,
+        "error": "BGaming HyperHive respondió 1/1; modos validados=0/1. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN']; PURCHASE_BONUS_BUY -> ['PURCHASE_BONUS_BUY'].",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Red Hot Chilli Chickens\\tests\\2026-09-15_15-11-35-bgaming-hyperhive-jsonrpc",
         "attempts": [
           {
             "number": 1,
-            "ok": true,
+            "ok": false,
             "mode_id": "SPIN",
             "mode_kind": "SPIN",
             "provider_bl": null,
             "provider_pur": null,
             "status_code": 200,
-            "elapsed_ms": 765.9999999887077,
+            "elapsed_ms": 11657.00000000652,
             "symbol": "RedHotChilliChickens",
             "endpoint": "https://red-hot-chilli-chickens.demo.bgaming-network.com/api",
             "na": "",
             "terminal": true,
             "wire_steps": 1,
-            "warning": "",
+            "warning": "Regreso al juego base pendiente: REVIEW_REQUIRED",
             "error": "",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Red Hot Chilli Chickens\\tests\\2026-09-15_05-58-39-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Red Hot Chilli Chickens\\tests\\2026-09-15_15-11-35-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
           }
         ],
         "samples_per_path": 1,
@@ -282,7 +299,7 @@
     },
     "sample-catalog.json": {
       "encoding": "json",
-      "bytes": 1211,
+      "bytes": 2162,
       "value": {
         "schema": "tester-spin/sample-catalog/v2",
         "provider": "bgaming",
@@ -295,34 +312,54 @@
             "mode_id": "SPIN",
             "mode_kind": "SPIN",
             "choices": [],
-            "validated_samples": 1,
+            "validated_samples": 0,
             "samples": [
               {
                 "attempt": 1,
                 "artifact_dir": "SPIN/attempt-001",
-                "validated": true,
+                "validated": false,
                 "terminal": true,
                 "observed_state_sequence": [],
                 "evidence": [
                   {
+                    "path": "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl",
+                    "sha256": "413316ef85bc766291bdaf50f138a35ef042eaf55d0c30d6537bb3fe2d5d9ed5",
+                    "bytes": 2359
+                  },
+                  {
+                    "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+                    "sha256": "ab60374ae71f0326bf98d6b70f85ba24fa7f68925650986346c1a3948c4d1dac",
+                    "bytes": 299
+                  },
+                  {
+                    "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-response.json",
+                    "sha256": "961dca15e91d0d03ac860fed96069df89a5e697086f73c43362ca6173709f316",
+                    "bytes": 5098
+                  },
+                  {
+                    "path": "SPIN/attempt-001/server-responses.jsonl",
+                    "sha256": "7b5a48a895e1528692b7e951cadf3abbf91a218ace09263285e0deba9d7d7c7d",
+                    "bytes": 2349
+                  },
+                  {
                     "path": "SPIN/attempt-001/step-001-request.json",
-                    "sha256": "171fe27fcb53c4c123769412fbdb4e0980588259f674ceac51b5cc5984381e96",
+                    "sha256": "7f17d06913f86806f4877007d6e53b75eb4423fef974adbf9860379a95321190",
                     "bytes": 269
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-response.json",
-                    "sha256": "633fb79f72d53d5fe014bbbf205e901b0dc27ed4d83384593bc12047b3e36bf2",
-                    "bytes": 5058
+                    "sha256": "843c53fc74671da5d85d7f23847498e20827e8cd3c6ca3d12cb6e5e3a4908e54",
+                    "bytes": 5054
                   }
                 ]
               }
             ],
-            "missing_samples": 0
+            "missing_samples": 1
           }
         ],
         "observed_state_types": [],
         "diagnostics": [],
-        "observed_paths_sampled": true
+        "observed_paths_sampled": false
       }
     },
     "SPIN/attempt-001/remote-proof.json": {
@@ -343,32 +380,308 @@
         "freespins": null,
         "next_action": "SPIN",
         "table_sha256": "",
-        "response_sha256": "7584477d74a9bd30"
+        "response_sha256": "cad6ec05c0e0945a"
       }
     },
-    "SPIN/attempt-001/step-001-request.json": {
+    "SPIN/attempt-001/return-to-base.json": {
       "encoding": "json",
-      "bytes": 269,
+      "bytes": 8584,
       "value": {
-        "id": "547ed5cc-4240-4b7a-bceb-0ddbcfbcc4ec",
+        "schema": "tester-spin/return-to-base/v1",
+        "status": "REVIEW_REQUIRED",
+        "connection_reused": true,
+        "required": 2,
+        "max_probes": 10,
+        "consecutive_base": 0,
+        "cause": "UNDETERMINED",
+        "probes": [
+          {
+            "ok": true,
+            "base": false,
+            "known": false,
+            "captures": [
+              {
+                "step": 1,
+                "request": {
+                  "id": "fcdca4f7-e592-468a-a30c-b9c3b12f1220",
+                  "jsonrpc": "2.0",
+                  "method": "play",
+                  "params": {
+                    "token": "[REDACTED]",
+                    "req": {
+                      "bet": 20,
+                      "bet_type": "betting",
+                      "action": "spin"
+                    },
+                    "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
+                  }
+                },
+                "response": {
+                  "id": "fcdca4f7-e592-468a-a30c-b9c3b12f1220",
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "final": true,
+                    "resp": {
+                      "game": {
+                        "gameRoundId": null,
+                        "spin": {
+                          "reels": [
+                            {
+                              "symbols": [
+                                "H4",
+                                "H4",
+                                "H4"
+                              ],
+                              "multipliers": [
+                                0,
+                                0,
+                                0
+                              ],
+                              "coins": [
+                                "BLUE_COIN",
+                                "RED_COIN",
+                                ""
+                              ],
+                              "isMystery": [
+                                true,
+                                true,
+                                true
+                              ],
+                              "isJackpot": [
+                                false,
+                                false,
+                                false
+                              ]
+                            },
+                            {
+                              "symbols": [
+                                "H1",
+                                "L4",
+                                "L5"
+                              ],
+                              "multipliers": [
+                                0,
+                                0,
+                                0
+                              ],
+                              "coins": [
+                                "",
+                                "",
+                                ""
+                              ],
+                              "isMystery": [
+                                false,
+                                false,
+                                false
+                              ],
+                              "isJackpot": [
+                                false,
+                                false,
+                                false
+                              ]
+                            },
+                            {
+                              "symbols": [
+                                "H5",
+                                "L1",
+                                "WD"
+                              ],
+                              "multipliers": [
+                                0,
+                                0,
+                                0
+                              ],
+                              "coins": [
+                                "",
+                                "",
+                                ""
+                              ],
+                              "isMystery": [
+                                false,
+                                false,
+                                false
+                              ],
+                              "isJackpot": [
+                                false,
+                                false,
+                                false
+                              ]
+                            },
+                            {
+                              "symbols": [
+                                "H3",
+                                "L3",
+                                "L5"
+                              ],
+                              "multipliers": [
+                                0,
+                                0,
+                                0
+                              ],
+                              "coins": [
+                                "",
+                                "",
+                                ""
+                              ],
+                              "isMystery": [
+                                false,
+                                false,
+                                false
+                              ],
+                              "isJackpot": [
+                                false,
+                                false,
+                                false
+                              ]
+                            },
+                            {
+                              "symbols": [
+                                "L3",
+                                "H5",
+                                "H3"
+                              ],
+                              "multipliers": [
+                                0,
+                                0,
+                                0
+                              ],
+                              "coins": [
+                                "",
+                                "",
+                                ""
+                              ],
+                              "isMystery": [
+                                false,
+                                false,
+                                false
+                              ],
+                              "isJackpot": [
+                                false,
+                                false,
+                                false
+                              ]
+                            }
+                          ],
+                          "payLineWins": [],
+                          "totalWin": 0,
+                          "payLineTotalWin": 0,
+                          "bonusTotalWin": 0,
+                          "redCoinsAwarded": 1,
+                          "blueCoinsAwarded": 1,
+                          "whiteCoinsAwarded": 0
+                        },
+                        "totalWin": 0,
+                        "bonusTotalWin": 0,
+                        "payLineTotalWin": 0,
+                        "pots": [
+                          {
+                            "stake": 20,
+                            "blueCoins": 12,
+                            "redCoins": 12,
+                            "whiteCoins": 12,
+                            "jackpotValueMini": 200,
+                            "jackpotValueMinor": 400,
+                            "jackpotValueMajor": 1000,
+                            "jackpotValueMega": 20000,
+                            "jackpotValueMax": 100000,
+                            "coins": [
+                              {
+                                "type": "BLUE",
+                                "count": 12,
+                                "max": 12
+                              },
+                              {
+                                "type": "RED",
+                                "count": 12,
+                                "max": 12
+                              },
+                              {
+                                "type": "WHITE",
+                                "count": 12,
+                                "max": 12
+                              }
+                            ],
+                            "jackpots": [
+                              {
+                                "type": "JACKPOT_MINI",
+                                "amount": 200
+                              },
+                              {
+                                "type": "JACKPOT_MINOR",
+                                "amount": 400
+                              },
+                              {
+                                "type": "JACKPOT_MAJOR",
+                                "amount": 1000
+                              },
+                              {
+                                "type": "JACKPOT_MEGA",
+                                "amount": 20000
+                              },
+                              {
+                                "type": "JACKPOT_MAX",
+                                "amount": 100000
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "nextAction": "SPIN",
+                      "maxWinExceeded": false
+                    },
+                    "balance": 99960,
+                    "freebets": null,
+                    "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
+                  }
+                }
+              }
+            ],
+            "summary": {
+              "final": true,
+              "balance": 99960,
+              "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
+              "round_step": null,
+              "bet": null,
+              "total_win": 0,
+              "freespins": null,
+              "next_action": "SPIN",
+              "table_sha256": "",
+              "response_sha256": "4309e5565378ef81"
+            },
+            "directory": "return-to-base\\probe-001"
+          }
+        ],
+        "updated_at": "2026-09-15T18:12:08.202583+00:00"
+      }
+    },
+    "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl": {
+      "encoding": "text",
+      "bytes": 2359,
+      "value": "{\"classification\": \"SEEN\", \"signature\": \"57068577ebdf3b1792df88818906c81fc4e0fe64e88162b4b6096b9e9adb7fa6\", \"changed_paths\": [], \"review_required\": false, \"action\": \"play\", \"response\": {\"id\": \"fcdca4f7-e592-468a-a30c-b9c3b12f1220\", \"jsonrpc\": \"2.0\", \"result\": {\"final\": true, \"resp\": {\"game\": {\"gameRoundId\": null, \"spin\": {\"reels\": [{\"symbols\": [\"H4\", \"H4\", \"H4\"], \"multipliers\": [0, 0, 0], \"coins\": [\"BLUE_COIN\", \"RED_COIN\", \"\"], \"isMystery\": [true, true, true], \"isJackpot\": [false, false, false]}, {\"symbols\": [\"H1\", \"L4\", \"L5\"], \"multipliers\": [0, 0, 0], \"coins\": [\"\", \"\", \"\"], \"isMystery\": [false, false, false], \"isJackpot\": [false, false, false]}, {\"symbols\": [\"H5\", \"L1\", \"WD\"], \"multipliers\": [0, 0, 0], \"coins\": [\"\", \"\", \"\"], \"isMystery\": [false, false, false], \"isJackpot\": [false, false, false]}, {\"symbols\": [\"H3\", \"L3\", \"L5\"], \"multipliers\": [0, 0, 0], \"coins\": [\"\", \"\", \"\"], \"isMystery\": [false, false, false], \"isJackpot\": [false, false, false]}, {\"symbols\": [\"L3\", \"H5\", \"H3\"], \"multipliers\": [0, 0, 0], \"coins\": [\"\", \"\", \"\"], \"isMystery\": [false, false, false], \"isJackpot\": [false, false, false]}], \"payLineWins\": [], \"totalWin\": 0, \"payLineTotalWin\": 0, \"bonusTotalWin\": 0, \"redCoinsAwarded\": 1, \"blueCoinsAwarded\": 1, \"whiteCoinsAwarded\": 0}, \"totalWin\": 0, \"bonusTotalWin\": 0, \"payLineTotalWin\": 0, \"pots\": [{\"stake\": 20, \"blueCoins\": 12, \"redCoins\": 12, \"whiteCoins\": 12, \"jackpotValueMini\": 200, \"jackpotValueMinor\": 400, \"jackpotValueMajor\": 1000, \"jackpotValueMega\": 20000, \"jackpotValueMax\": 100000, \"coins\": [{\"type\": \"BLUE\", \"count\": 12, \"max\": 12}, {\"type\": \"RED\", \"count\": 12, \"max\": 12}, {\"type\": \"WHITE\", \"count\": 12, \"max\": 12}], \"jackpots\": [{\"type\": \"JACKPOT_MINI\", \"amount\": 200}, {\"type\": \"JACKPOT_MINOR\", \"amount\": 400}, {\"type\": \"JACKPOT_MAJOR\", \"amount\": 1000}, {\"type\": \"JACKPOT_MEGA\", \"amount\": 20000}, {\"type\": \"JACKPOT_MAX\", \"amount\": 100000}]}]}, \"nextAction\": \"SPIN\", \"maxWinExceeded\": false}, \"balance\": 99960, \"freebets\": null, \"state_lock\": \"b6589fc6ab0dc82cf12099d1c2d40ab994e8410c\"}}, \"request\": {\"id\": \"fcdca4f7-e592-468a-a30c-b9c3b12f1220\", \"jsonrpc\": \"2.0\", \"method\": \"play\", \"params\": {\"token\": \"[REDACTED]\", \"req\": {\"bet\": 20, \"bet_type\": \"betting\", \"action\": \"spin\"}, \"state_lock\": \"b6589fc6ab0dc82cf12099d1c2d40ab994e8410c\"}}, \"http_status\": 200, \"captured_at\": \"2026-09-15T18:12:08.194618+00:00\"}\n"
+    },
+    "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 299,
+      "value": {
+        "id": "fcdca4f7-e592-468a-a30c-b9c3b12f1220",
         "jsonrpc": "2.0",
         "method": "play",
         "params": {
-          "token": "<redacted>",
+          "token": "[REDACTED]",
           "req": {
             "bet": 20,
             "bet_type": "betting",
             "action": "spin"
           },
-          "state_lock": "<redacted>"
+          "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
         }
       }
     },
-    "SPIN/attempt-001/step-001-response.json": {
+    "SPIN/attempt-001/return-to-base/probe-001/step-001-response.json": {
       "encoding": "json",
-      "bytes": 5058,
+      "bytes": 5098,
       "value": {
-        "id": "547ed5cc-4240-4b7a-bceb-0ddbcfbcc4ec",
+        "id": "fcdca4f7-e592-468a-a30c-b9c3b12f1220",
         "jsonrpc": "2.0",
         "result": {
           "final": true,
@@ -379,9 +692,9 @@
                 "reels": [
                   {
                     "symbols": [
-                      "L2",
-                      "L5",
-                      "H3"
+                      "H4",
+                      "H4",
+                      "H4"
                     ],
                     "multipliers": [
                       0,
@@ -389,35 +702,8 @@
                       0
                     ],
                     "coins": [
-                      "",
-                      "",
-                      ""
-                    ],
-                    "isMystery": [
-                      false,
-                      false,
-                      false
-                    ],
-                    "isJackpot": [
-                      false,
-                      false,
-                      false
-                    ]
-                  },
-                  {
-                    "symbols": [
-                      "H2",
-                      "H2",
-                      "H2"
-                    ],
-                    "multipliers": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "coins": [
-                      "",
-                      "",
+                      "BLUE_COIN",
+                      "RED_COIN",
                       ""
                     ],
                     "isMystery": [
@@ -433,9 +719,36 @@
                   },
                   {
                     "symbols": [
-                      "H2",
-                      "L3",
-                      "L2"
+                      "H1",
+                      "L4",
+                      "L5"
+                    ],
+                    "multipliers": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "coins": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "isMystery": [
+                      false,
+                      false,
+                      false
+                    ],
+                    "isJackpot": [
+                      false,
+                      false,
+                      false
+                    ]
+                  },
+                  {
+                    "symbols": [
+                      "H5",
+                      "L1",
+                      "WD"
                     ],
                     "multipliers": [
                       0,
@@ -461,8 +774,8 @@
                   {
                     "symbols": [
                       "H3",
-                      "WD",
-                      "L2"
+                      "L3",
+                      "L5"
                     ],
                     "multipliers": [
                       0,
@@ -487,9 +800,9 @@
                   },
                   {
                     "symbols": [
-                      "H2",
-                      "H2",
-                      "H2"
+                      "L3",
+                      "H5",
+                      "H3"
                     ],
                     "multipliers": [
                       0,
@@ -497,14 +810,259 @@
                       0
                     ],
                     "coins": [
-                      "WHITE_COIN",
+                      "",
                       "",
                       ""
                     ],
                     "isMystery": [
-                      true,
-                      true,
-                      true
+                      false,
+                      false,
+                      false
+                    ],
+                    "isJackpot": [
+                      false,
+                      false,
+                      false
+                    ]
+                  }
+                ],
+                "payLineWins": [],
+                "totalWin": 0,
+                "payLineTotalWin": 0,
+                "bonusTotalWin": 0,
+                "redCoinsAwarded": 1,
+                "blueCoinsAwarded": 1,
+                "whiteCoinsAwarded": 0
+              },
+              "totalWin": 0,
+              "bonusTotalWin": 0,
+              "payLineTotalWin": 0,
+              "pots": [
+                {
+                  "stake": 20,
+                  "blueCoins": 12,
+                  "redCoins": 12,
+                  "whiteCoins": 12,
+                  "jackpotValueMini": 200,
+                  "jackpotValueMinor": 400,
+                  "jackpotValueMajor": 1000,
+                  "jackpotValueMega": 20000,
+                  "jackpotValueMax": 100000,
+                  "coins": [
+                    {
+                      "type": "BLUE",
+                      "count": 12,
+                      "max": 12
+                    },
+                    {
+                      "type": "RED",
+                      "count": 12,
+                      "max": 12
+                    },
+                    {
+                      "type": "WHITE",
+                      "count": 12,
+                      "max": 12
+                    }
+                  ],
+                  "jackpots": [
+                    {
+                      "type": "JACKPOT_MINI",
+                      "amount": 200
+                    },
+                    {
+                      "type": "JACKPOT_MINOR",
+                      "amount": 400
+                    },
+                    {
+                      "type": "JACKPOT_MAJOR",
+                      "amount": 1000
+                    },
+                    {
+                      "type": "JACKPOT_MEGA",
+                      "amount": 20000
+                    },
+                    {
+                      "type": "JACKPOT_MAX",
+                      "amount": 100000
+                    }
+                  ]
+                }
+              ]
+            },
+            "nextAction": "SPIN",
+            "maxWinExceeded": false
+          },
+          "balance": 99960,
+          "freebets": null,
+          "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
+        }
+      }
+    },
+    "SPIN/attempt-001/server-responses.jsonl": {
+      "encoding": "text",
+      "bytes": 2349,
+      "value": "{\"classification\": \"BASELINE\", \"signature\": \"57068577ebdf3b1792df88818906c81fc4e0fe64e88162b4b6096b9e9adb7fa6\", \"changed_paths\": [], \"review_required\": false, \"action\": \"play\", \"response\": {\"id\": \"d55567bb-545c-4d5a-8d48-11cf0d7e7b1a\", \"jsonrpc\": \"2.0\", \"result\": {\"final\": true, \"resp\": {\"game\": {\"gameRoundId\": null, \"spin\": {\"reels\": [{\"symbols\": [\"L5\", \"H1\", \"L3\"], \"multipliers\": [0, 0, 0], \"coins\": [\"\", \"\", \"\"], \"isMystery\": [false, false, false], \"isJackpot\": [false, false, false]}, {\"symbols\": [\"L4\", \"H5\", \"L1\"], \"multipliers\": [0, 0, 0], \"coins\": [\"\", \"\", \"\"], \"isMystery\": [false, false, false], \"isJackpot\": [false, false, false]}, {\"symbols\": [\"L2\", \"H5\", \"L4\"], \"multipliers\": [0, 0, 0], \"coins\": [\"\", \"\", \"\"], \"isMystery\": [false, false, false], \"isJackpot\": [false, false, false]}, {\"symbols\": [\"L2\", \"H4\", \"L4\"], \"multipliers\": [0, 0, 0], \"coins\": [\"\", \"\", \"\"], \"isMystery\": [false, false, false], \"isJackpot\": [false, false, false]}, {\"symbols\": [\"H3\", \"L4\", \"H1\"], \"multipliers\": [0, 0, 0], \"coins\": [\"\", \"\", \"\"], \"isMystery\": [false, false, false], \"isJackpot\": [false, false, false]}], \"payLineWins\": [], \"totalWin\": 0, \"payLineTotalWin\": 0, \"bonusTotalWin\": 0, \"redCoinsAwarded\": 0, \"blueCoinsAwarded\": 0, \"whiteCoinsAwarded\": 0}, \"totalWin\": 0, \"bonusTotalWin\": 0, \"payLineTotalWin\": 0, \"pots\": [{\"stake\": 20, \"blueCoins\": 12, \"redCoins\": 12, \"whiteCoins\": 12, \"jackpotValueMini\": 200, \"jackpotValueMinor\": 400, \"jackpotValueMajor\": 1000, \"jackpotValueMega\": 20000, \"jackpotValueMax\": 100000, \"coins\": [{\"type\": \"BLUE\", \"count\": 12, \"max\": 12}, {\"type\": \"RED\", \"count\": 12, \"max\": 12}, {\"type\": \"WHITE\", \"count\": 12, \"max\": 12}], \"jackpots\": [{\"type\": \"JACKPOT_MINI\", \"amount\": 200}, {\"type\": \"JACKPOT_MINOR\", \"amount\": 400}, {\"type\": \"JACKPOT_MAJOR\", \"amount\": 1000}, {\"type\": \"JACKPOT_MEGA\", \"amount\": 20000}, {\"type\": \"JACKPOT_MAX\", \"amount\": 100000}]}]}, \"nextAction\": \"SPIN\", \"maxWinExceeded\": false}, \"balance\": 99980, \"freebets\": null, \"state_lock\": \"b6589fc6ab0dc82cf12099d1c2d40ab994e8410c\"}}, \"request\": {\"id\": \"d55567bb-545c-4d5a-8d48-11cf0d7e7b1a\", \"jsonrpc\": \"2.0\", \"method\": \"play\", \"params\": {\"token\": \"[REDACTED]\", \"req\": {\"bet\": 20, \"bet_type\": \"betting\", \"action\": \"spin\"}, \"state_lock\": \"b6589fc6ab0dc82cf12099d1c2d40ab994e8410c\"}}, \"http_status\": 200, \"captured_at\": \"2026-09-15T18:12:07.423306+00:00\"}\n"
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 269,
+      "value": {
+        "id": "d55567bb-545c-4d5a-8d48-11cf0d7e7b1a",
+        "jsonrpc": "2.0",
+        "method": "play",
+        "params": {
+          "token": "<redacted>",
+          "req": {
+            "bet": 20,
+            "bet_type": "betting",
+            "action": "spin"
+          },
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 5054,
+      "value": {
+        "id": "d55567bb-545c-4d5a-8d48-11cf0d7e7b1a",
+        "jsonrpc": "2.0",
+        "result": {
+          "final": true,
+          "resp": {
+            "game": {
+              "gameRoundId": null,
+              "spin": {
+                "reels": [
+                  {
+                    "symbols": [
+                      "L5",
+                      "H1",
+                      "L3"
+                    ],
+                    "multipliers": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "coins": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "isMystery": [
+                      false,
+                      false,
+                      false
+                    ],
+                    "isJackpot": [
+                      false,
+                      false,
+                      false
+                    ]
+                  },
+                  {
+                    "symbols": [
+                      "L4",
+                      "H5",
+                      "L1"
+                    ],
+                    "multipliers": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "coins": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "isMystery": [
+                      false,
+                      false,
+                      false
+                    ],
+                    "isJackpot": [
+                      false,
+                      false,
+                      false
+                    ]
+                  },
+                  {
+                    "symbols": [
+                      "L2",
+                      "H5",
+                      "L4"
+                    ],
+                    "multipliers": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "coins": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "isMystery": [
+                      false,
+                      false,
+                      false
+                    ],
+                    "isJackpot": [
+                      false,
+                      false,
+                      false
+                    ]
+                  },
+                  {
+                    "symbols": [
+                      "L2",
+                      "H4",
+                      "L4"
+                    ],
+                    "multipliers": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "coins": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "isMystery": [
+                      false,
+                      false,
+                      false
+                    ],
+                    "isJackpot": [
+                      false,
+                      false,
+                      false
+                    ]
+                  },
+                  {
+                    "symbols": [
+                      "H3",
+                      "L4",
+                      "H1"
+                    ],
+                    "multipliers": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "coins": [
+                      "",
+                      "",
+                      ""
+                    ],
+                    "isMystery": [
+                      false,
+                      false,
+                      false
                     ],
                     "isJackpot": [
                       false,
@@ -519,7 +1077,7 @@
                 "bonusTotalWin": 0,
                 "redCoinsAwarded": 0,
                 "blueCoinsAwarded": 0,
-                "whiteCoinsAwarded": 1
+                "whiteCoinsAwarded": 0
               },
               "totalWin": 0,
               "bonusTotalWin": 0,
@@ -588,7 +1146,7 @@
     },
     "backend-conformance.json": {
       "encoding": "json",
-      "bytes": 1529,
+      "bytes": 1605,
       "value": {
         "schema": "tester-spin/bgaming-backend-conformance/v1",
         "provider": "bgaming",
@@ -597,8 +1155,8 @@
           "name": "Red Hot Chilli Chickens",
           "identifier": "RedHotChilliChickens"
         },
-        "generated_at": "2026-09-15T08:58:52+00:00",
-        "source_run": "2026-09-15_05-58-39-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T18:12:08+00:00",
+        "source_run": "2026-09-15_15-11-35-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -623,6 +1181,7 @@
             "response_schema": "response-schemas/rpc_play__action_spin__to__ready.json",
             "authority": "RUNTIME_OBSERVED",
             "evidence": [
+              "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
               "SPIN/attempt-001/step-001-request.json"
             ]
           }
@@ -647,8 +1206,8 @@
           "name": "Red Hot Chilli Chickens",
           "identifier": "RedHotChilliChickens"
         },
-        "generated_at": "2026-09-15T08:58:52+00:00",
-        "source_run": "2026-09-15_05-58-39-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T18:12:08+00:00",
+        "source_run": "2026-09-15_15-11-35-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -739,7 +1298,7 @@
     },
     "diagnostic.json": {
       "encoding": "json",
-      "bytes": 6715,
+      "bytes": 22187,
       "value": {
         "schema": "tester-spin/run-diagnostics/v1",
         "provider": "bgaming",
@@ -748,11 +1307,11 @@
           "name": "Red Hot Chilli Chickens",
           "symbol": "RedHotChilliChickens"
         },
-        "started_at": "2026-09-15T08:58:39+00:00",
-        "finished_at": "2026-09-15T08:58:52+00:00",
+        "started_at": "2026-09-15T18:11:35+00:00",
+        "finished_at": "2026-09-15T18:12:08+00:00",
         "result_status": "PARCIAL",
         "scope": "observed_paths_only",
-        "observed_error": "Cobertura de ramificaciones pendiente: PURCHASE_BONUS_BUY -> ['PURCHASE_BONUS_BUY'].",
+        "observed_error": "BGaming HyperHive respondió 1/1; modos validados=0/1. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN']; PURCHASE_BONUS_BUY -> ['PURCHASE_BONUS_BUY'].",
         "root_cause": {
           "status": "UNDETERMINED",
           "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
@@ -765,24 +1324,43 @@
             "validated": false,
             "tested": true,
             "attempt_count": 1,
-            "terminal_count": 1,
-            "missing_options": [],
-            "branches": [],
+            "terminal_count": 0,
+            "missing_options": [
+              "SPIN"
+            ],
+            "branches": [
+              {
+                "source": "discovered_modes_fail_closed",
+                "mode_id": "SPIN",
+                "signature": "SPIN:UNEXECUTED",
+                "required": [
+                  "SPIN"
+                ],
+                "covered": [],
+                "missing": [
+                  "SPIN"
+                ],
+                "complete": false,
+                "required_samples": 1,
+                "sample_counts": null,
+                "sample_deficits": {}
+              }
+            ],
             "provider_metadata": {
               "id": "SPIN",
               "kind": "SPIN",
-              "observed": true,
-              "validated": true,
+              "observed": false,
+              "validated": false,
               "executable": true,
-              "discovery_state": "VALIDATED",
+              "discovery_state": "HAR_SCRIPT_OBSERVED",
               "wire_method": "play",
               "request_options": {
                 "bet_type": "betting",
                 "action": "spin"
               },
               "source": "selected-har-script-contract",
-              "evidence_level": "REMOTE_EXECUTION",
-              "execution_state": "PROVEN_TERMINAL"
+              "evidence_level": "WIRE_CANDIDATE",
+              "execution_state": "ATTEMPTED_UNVALIDATED"
             }
           },
           {
@@ -834,27 +1412,318 @@
         ],
         "attempts": [
           {
+            "return_to_base": {
+              "schema": "tester-spin/return-to-base/v1",
+              "status": "REVIEW_REQUIRED",
+              "connection_reused": true,
+              "required": 2,
+              "max_probes": 10,
+              "consecutive_base": 0,
+              "cause": "UNDETERMINED",
+              "probes": [
+                {
+                  "ok": true,
+                  "base": false,
+                  "known": false,
+                  "captures": [
+                    {
+                      "step": 1,
+                      "request": {
+                        "id": "fcdca4f7-e592-468a-a30c-b9c3b12f1220",
+                        "jsonrpc": "2.0",
+                        "method": "play",
+                        "params": {
+                          "token": "[REDACTED]",
+                          "req": {
+                            "bet": 20,
+                            "bet_type": "betting",
+                            "action": "spin"
+                          },
+                          "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
+                        }
+                      },
+                      "response": {
+                        "id": "fcdca4f7-e592-468a-a30c-b9c3b12f1220",
+                        "jsonrpc": "2.0",
+                        "result": {
+                          "final": true,
+                          "resp": {
+                            "game": {
+                              "gameRoundId": null,
+                              "spin": {
+                                "reels": [
+                                  {
+                                    "symbols": [
+                                      "H4",
+                                      "H4",
+                                      "H4"
+                                    ],
+                                    "multipliers": [
+                                      0,
+                                      0,
+                                      0
+                                    ],
+                                    "coins": [
+                                      "BLUE_COIN",
+                                      "RED_COIN",
+                                      ""
+                                    ],
+                                    "isMystery": [
+                                      true,
+                                      true,
+                                      true
+                                    ],
+                                    "isJackpot": [
+                                      false,
+                                      false,
+                                      false
+                                    ]
+                                  },
+                                  {
+                                    "symbols": [
+                                      "H1",
+                                      "L4",
+                                      "L5"
+                                    ],
+                                    "multipliers": [
+                                      0,
+                                      0,
+                                      0
+                                    ],
+                                    "coins": [
+                                      "",
+                                      "",
+                                      ""
+                                    ],
+                                    "isMystery": [
+                                      false,
+                                      false,
+                                      false
+                                    ],
+                                    "isJackpot": [
+                                      false,
+                                      false,
+                                      false
+                                    ]
+                                  },
+                                  {
+                                    "symbols": [
+                                      "H5",
+                                      "L1",
+                                      "WD"
+                                    ],
+                                    "multipliers": [
+                                      0,
+                                      0,
+                                      0
+                                    ],
+                                    "coins": [
+                                      "",
+                                      "",
+                                      ""
+                                    ],
+                                    "isMystery": [
+                                      false,
+                                      false,
+                                      false
+                                    ],
+                                    "isJackpot": [
+                                      false,
+                                      false,
+                                      false
+                                    ]
+                                  },
+                                  {
+                                    "symbols": [
+                                      "H3",
+                                      "L3",
+                                      "L5"
+                                    ],
+                                    "multipliers": [
+                                      0,
+                                      0,
+                                      0
+                                    ],
+                                    "coins": [
+                                      "",
+                                      "",
+                                      ""
+                                    ],
+                                    "isMystery": [
+                                      false,
+                                      false,
+                                      false
+                                    ],
+                                    "isJackpot": [
+                                      false,
+                                      false,
+                                      false
+                                    ]
+                                  },
+                                  {
+                                    "symbols": [
+                                      "L3",
+                                      "H5",
+                                      "H3"
+                                    ],
+                                    "multipliers": [
+                                      0,
+                                      0,
+                                      0
+                                    ],
+                                    "coins": [
+                                      "",
+                                      "",
+                                      ""
+                                    ],
+                                    "isMystery": [
+                                      false,
+                                      false,
+                                      false
+                                    ],
+                                    "isJackpot": [
+                                      false,
+                                      false,
+                                      false
+                                    ]
+                                  }
+                                ],
+                                "payLineWins": [],
+                                "totalWin": 0,
+                                "payLineTotalWin": 0,
+                                "bonusTotalWin": 0,
+                                "redCoinsAwarded": 1,
+                                "blueCoinsAwarded": 1,
+                                "whiteCoinsAwarded": 0
+                              },
+                              "totalWin": 0,
+                              "bonusTotalWin": 0,
+                              "payLineTotalWin": 0,
+                              "pots": [
+                                {
+                                  "stake": 20,
+                                  "blueCoins": 12,
+                                  "redCoins": 12,
+                                  "whiteCoins": 12,
+                                  "jackpotValueMini": 200,
+                                  "jackpotValueMinor": 400,
+                                  "jackpotValueMajor": 1000,
+                                  "jackpotValueMega": 20000,
+                                  "jackpotValueMax": 100000,
+                                  "coins": [
+                                    {
+                                      "type": "BLUE",
+                                      "count": 12,
+                                      "max": 12
+                                    },
+                                    {
+                                      "type": "RED",
+                                      "count": 12,
+                                      "max": 12
+                                    },
+                                    {
+                                      "type": "WHITE",
+                                      "count": 12,
+                                      "max": 12
+                                    }
+                                  ],
+                                  "jackpots": [
+                                    {
+                                      "type": "JACKPOT_MINI",
+                                      "amount": 200
+                                    },
+                                    {
+                                      "type": "JACKPOT_MINOR",
+                                      "amount": 400
+                                    },
+                                    {
+                                      "type": "JACKPOT_MAJOR",
+                                      "amount": 1000
+                                    },
+                                    {
+                                      "type": "JACKPOT_MEGA",
+                                      "amount": 20000
+                                    },
+                                    {
+                                      "type": "JACKPOT_MAX",
+                                      "amount": 100000
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            "nextAction": "SPIN",
+                            "maxWinExceeded": false
+                          },
+                          "balance": 99960,
+                          "freebets": null,
+                          "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
+                        }
+                      }
+                    }
+                  ],
+                  "summary": {
+                    "final": true,
+                    "balance": 99960,
+                    "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
+                    "round_step": null,
+                    "bet": null,
+                    "total_win": 0,
+                    "freespins": null,
+                    "next_action": "SPIN",
+                    "table_sha256": "",
+                    "response_sha256": "4309e5565378ef81"
+                  },
+                  "directory": "return-to-base\\probe-001"
+                }
+              ],
+              "updated_at": "2026-09-15T18:12:08.202583+00:00"
+            },
             "number": 1,
             "mode_id": "SPIN",
-            "reported_ok": true,
+            "reported_ok": false,
             "reported_terminal": true,
             "http_status": 200,
             "last_state": "",
             "wire_steps": 1,
-            "elapsed_ms": 765.9999999887077,
+            "elapsed_ms": 11657.00000000652,
             "error": "",
-            "warning": "",
+            "warning": "Regreso al juego base pendiente: REVIEW_REQUIRED",
             "evidence": [
               {
+                "path": "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl",
+                "sha256": "413316ef85bc766291bdaf50f138a35ef042eaf55d0c30d6537bb3fe2d5d9ed5",
+                "bytes": 2359,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+                "sha256": "ab60374ae71f0326bf98d6b70f85ba24fa7f68925650986346c1a3948c4d1dac",
+                "bytes": 299,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-response.json",
+                "sha256": "961dca15e91d0d03ac860fed96069df89a5e697086f73c43362ca6173709f316",
+                "bytes": 5098,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/server-responses.jsonl",
+                "sha256": "7b5a48a895e1528692b7e951cadf3abbf91a218ace09263285e0deba9d7d7c7d",
+                "bytes": 2349,
+                "kind": "response"
+              },
+              {
                 "path": "SPIN/attempt-001/step-001-request.json",
-                "sha256": "171fe27fcb53c4c123769412fbdb4e0980588259f674ceac51b5cc5984381e96",
+                "sha256": "7f17d06913f86806f4877007d6e53b75eb4423fef974adbf9860379a95321190",
                 "bytes": 269,
                 "kind": "request"
               },
               {
                 "path": "SPIN/attempt-001/step-001-response.json",
-                "sha256": "633fb79f72d53d5fe014bbbf205e901b0dc27ed4d83384593bc12047b3e36bf2",
-                "bytes": 5058,
+                "sha256": "843c53fc74671da5d85d7f23847498e20827e8cd3c6ca3d12cb6e5e3a4908e54",
+                "bytes": 5054,
                 "kind": "response"
               }
             ],
@@ -868,18 +1737,78 @@
         "bootstrap_evidence": [
           {
             "path": "init-request.json",
-            "sha256": "19e11fd2b431b245ddd593fd8f913f11daaa53cedd8f1478bc80b03ce62f5e22",
+            "sha256": "4bc4b1c03121b097622b38de024cbbb2f581aca3e543cc382e387444c2e091f8",
             "bytes": 142,
             "kind": "envelope"
           },
           {
             "path": "init-response.json",
-            "sha256": "a25aa1f6a4e3fb617097d390e7f6ca6c9df3517be10f045c88a465d5e19920a7",
+            "sha256": "21407b22c74b698b31391163e9f4686cc0eb56f20e429e4773cda70bd82363fb",
             "bytes": 1894,
             "kind": "envelope"
           }
         ],
         "unknown_actions": [
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_f0f92397e10bcb47",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": true,
+              "discovery_state": "HAR_SCRIPT_OBSERVED",
+              "wire_method": "play",
+              "request_options": {
+                "bet_type": "betting",
+                "action": "spin"
+              },
+              "source": "selected-har-script-contract",
+              "evidence_level": "WIRE_CANDIDATE",
+              "execution_state": "ATTEMPTED_UNVALIDATED"
+            },
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl",
+                  "sha256": "413316ef85bc766291bdaf50f138a35ef042eaf55d0c30d6537bb3fe2d5d9ed5",
+                  "bytes": 2359,
+                  "kind": "response"
+                },
+                {
+                  "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+                  "sha256": "ab60374ae71f0326bf98d6b70f85ba24fa7f68925650986346c1a3948c4d1dac",
+                  "bytes": 299,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-response.json",
+                  "sha256": "961dca15e91d0d03ac860fed96069df89a5e697086f73c43362ca6173709f316",
+                  "bytes": 5098,
+                  "kind": "response"
+                },
+                {
+                  "path": "SPIN/attempt-001/server-responses.jsonl",
+                  "sha256": "7b5a48a895e1528692b7e951cadf3abbf91a218ace09263285e0deba9d7d7c7d",
+                  "bytes": 2349,
+                  "kind": "response"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-request.json",
+                  "sha256": "7f17d06913f86806f4877007d6e53b75eb4423fef974adbf9860379a95321190",
+                  "bytes": 269,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/step-001-response.json",
+                  "sha256": "843c53fc74671da5d85d7f23847498e20827e8cd3c6ca3d12cb6e5e3a4908e54",
+                  "bytes": 5054,
+                  "kind": "response"
+                }
+              ]
+            ]
+          },
           {
             "id": "UNCLASSIFIED_WIRE_VARIANT_e85498d13bcf96c0",
             "signature_scope": "provider-reported unresolved observation; not a semantic classification",
@@ -902,15 +1831,39 @@
             "evidence": [
               [
                 {
+                  "path": "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl",
+                  "sha256": "413316ef85bc766291bdaf50f138a35ef042eaf55d0c30d6537bb3fe2d5d9ed5",
+                  "bytes": 2359,
+                  "kind": "response"
+                },
+                {
+                  "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+                  "sha256": "ab60374ae71f0326bf98d6b70f85ba24fa7f68925650986346c1a3948c4d1dac",
+                  "bytes": 299,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-response.json",
+                  "sha256": "961dca15e91d0d03ac860fed96069df89a5e697086f73c43362ca6173709f316",
+                  "bytes": 5098,
+                  "kind": "response"
+                },
+                {
+                  "path": "SPIN/attempt-001/server-responses.jsonl",
+                  "sha256": "7b5a48a895e1528692b7e951cadf3abbf91a218ace09263285e0deba9d7d7c7d",
+                  "bytes": 2349,
+                  "kind": "response"
+                },
+                {
                   "path": "SPIN/attempt-001/step-001-request.json",
-                  "sha256": "171fe27fcb53c4c123769412fbdb4e0980588259f674ceac51b5cc5984381e96",
+                  "sha256": "7f17d06913f86806f4877007d6e53b75eb4423fef974adbf9860379a95321190",
                   "bytes": 269,
                   "kind": "request"
                 },
                 {
                   "path": "SPIN/attempt-001/step-001-response.json",
-                  "sha256": "633fb79f72d53d5fe014bbbf205e901b0dc27ed4d83384593bc12047b3e36bf2",
-                  "bytes": 5058,
+                  "sha256": "843c53fc74671da5d85d7f23847498e20827e8cd3c6ca3d12cb6e5e3a4908e54",
+                  "bytes": 5054,
                   "kind": "response"
                 }
               ]
@@ -923,6 +1876,22 @@
           "provider": "bgaming",
           "game": "red-hot-chilli-chickens",
           "branch_points": [
+            {
+              "source": "discovered_modes_fail_closed",
+              "mode_id": "SPIN",
+              "signature": "SPIN:UNEXECUTED",
+              "required": [
+                "SPIN"
+              ],
+              "covered": [],
+              "missing": [
+                "SPIN"
+              ],
+              "complete": false,
+              "required_samples": 1,
+              "sample_counts": null,
+              "sample_deficits": {}
+            },
             {
               "source": "discovered_modes_fail_closed",
               "mode_id": "PURCHASE_BONUS_BUY",
@@ -941,7 +1910,7 @@
             }
           ],
           "complete": false,
-          "missing_count": 1
+          "missing_count": 2
         },
         "sample_diagnostics": [],
         "evidence_gaps": [],
@@ -949,14 +1918,14 @@
           "Revisar la respuesta que anuncia la acción/opción pendiente y el serializer del cliente de este proveedor. No inventar argumentos ni un handler.",
           "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa."
         ],
-        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Red Hot Chilli Chickens\\diagnostics\\20260915T085817-2b89231a7a86\\events.jsonl",
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Red Hot Chilli Chickens\\diagnostics\\20260915T181115-92adb3686540\\events.jsonl",
         "tree": "run-tree.html",
         "tree_data": "run-tree.json"
       }
     },
     "emulation-contract.json": {
       "encoding": "json",
-      "bytes": 4876,
+      "bytes": 5027,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -965,8 +1934,8 @@
           "name": "Red Hot Chilli Chickens",
           "identifier": "RedHotChilliChickens"
         },
-        "generated_at": "2026-09-15T08:58:52+00:00",
-        "source_run": "2026-09-15_05-58-39-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T18:12:08+00:00",
+        "source_run": "2026-09-15_15-11-35-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -998,14 +1967,15 @@
               }
             ],
             "authority": "RUNTIME_OBSERVED",
-            "sample_count": 1,
+            "sample_count": 2,
             "request_schema": {
               "type": "object",
               "properties": {
                 "id": {
                   "type": "string",
                   "observed_enum": [
-                    "547ed5cc-4240-4b7a-bceb-0ddbcfbcc4ec"
+                    "d55567bb-545c-4d5a-8d48-11cf0d7e7b1a",
+                    "fcdca4f7-e592-468a-a30c-b9c3b12f1220"
                   ]
                 },
                 "jsonrpc": {
@@ -1052,13 +2022,15 @@
                     "state_lock": {
                       "type": "string",
                       "observed_enum": [
-                        "<redacted>"
+                        "<redacted>",
+                        "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
                       ]
                     },
                     "token": {
                       "type": "string",
                       "observed_enum": [
-                        "<redacted>"
+                        "<redacted>",
+                        "[REDACTED]"
                       ]
                     }
                   },
@@ -1148,7 +2120,7 @@
       "encoding": "json",
       "bytes": 142,
       "value": {
-        "id": "8732ff6d-4cad-4eec-aad2-74940f451f52",
+        "id": "efff28ca-eadb-4b5a-ad91-26dc84052a35",
         "jsonrpc": "2.0",
         "method": "init",
         "params": {
@@ -1160,7 +2132,7 @@
       "encoding": "json",
       "bytes": 1894,
       "value": {
-        "id": "8732ff6d-4cad-4eec-aad2-74940f451f52",
+        "id": "efff28ca-eadb-4b5a-ad91-26dc84052a35",
         "jsonrpc": "2.0",
         "result": {
           "freebets": null,
@@ -1245,7 +2217,7 @@
           "urls": {
             "deposit_url": null,
             "return_url": null,
-            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcyMjY1NjYsImd0X2lkIjo0NDM3OTU0fSwiZXhwIjoxODA1MTAxMTM2fQ.FuS3GYmse_dQ305Lg-KLV7cNXZUp-5TmsVf7XN9zgNQ"
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDc5OTAzMDMsImd0X2lkIjo0NDM3OTU0fSwiZXhwIjoxODA1MTM0MzIxfQ.qcGjU7cjW4CdbnHQ_ZsMklDV2kwqzNS6bQsVz8jYvU4"
           },
           "balance": 100000,
           "state_lock": "<redacted>"
@@ -1254,7 +2226,7 @@
     },
     "outcome-catalog.json": {
       "encoding": "json",
-      "bytes": 1360,
+      "bytes": 1436,
       "value": {
         "schema": "tester-spin/bgaming-outcome-catalog/v1",
         "provider": "bgaming",
@@ -1263,8 +2235,8 @@
           "name": "Red Hot Chilli Chickens",
           "identifier": "RedHotChilliChickens"
         },
-        "generated_at": "2026-09-15T08:58:52+00:00",
-        "source_run": "2026-09-15_05-58-39-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T18:12:08+00:00",
+        "source_run": "2026-09-15_15-11-35-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -1289,7 +2261,7 @@
             ],
             "available_actions": [],
             "terminal_observed": true,
-            "observed_count": 1,
+            "observed_count": 2,
             "response_schema": "response-schemas/rpc_play__action_spin__to__ready.json",
             "authority": "RUNTIME_OBSERVED",
             "wire_known": true,
@@ -1297,6 +2269,7 @@
             "math_probability_known": false,
             "probability": null,
             "evidence": [
+              "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
               "SPIN/attempt-001/step-001-request.json"
             ]
           }
@@ -1330,10 +2303,10 @@
             "required_options": [],
             "covered_options": [],
             "attempts_observed": 1,
-            "terminal_successes": 1,
+            "terminal_successes": 0,
             "wire_steps": 1,
             "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Red Hot Chilli Chickens\\tests\\2026-09-15_05-58-39-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Red Hot Chilli Chickens\\tests\\2026-09-15_15-11-35-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
             ]
           },
           {
@@ -1354,7 +2327,7 @@
     },
     "protocol-contract.json": {
       "encoding": "json",
-      "bytes": 4876,
+      "bytes": 5027,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -1363,8 +2336,8 @@
           "name": "Red Hot Chilli Chickens",
           "identifier": "RedHotChilliChickens"
         },
-        "generated_at": "2026-09-15T08:58:52+00:00",
-        "source_run": "2026-09-15_05-58-39-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T18:12:08+00:00",
+        "source_run": "2026-09-15_15-11-35-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -1396,14 +2369,15 @@
               }
             ],
             "authority": "RUNTIME_OBSERVED",
-            "sample_count": 1,
+            "sample_count": 2,
             "request_schema": {
               "type": "object",
               "properties": {
                 "id": {
                   "type": "string",
                   "observed_enum": [
-                    "547ed5cc-4240-4b7a-bceb-0ddbcfbcc4ec"
+                    "d55567bb-545c-4d5a-8d48-11cf0d7e7b1a",
+                    "fcdca4f7-e592-468a-a30c-b9c3b12f1220"
                   ]
                 },
                 "jsonrpc": {
@@ -1450,13 +2424,15 @@
                     "state_lock": {
                       "type": "string",
                       "observed_enum": [
-                        "<redacted>"
+                        "<redacted>",
+                        "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
                       ]
                     },
                     "token": {
                       "type": "string",
                       "observed_enum": [
-                        "<redacted>"
+                        "<redacted>",
+                        "[REDACTED]"
                       ]
                     }
                   },
@@ -1544,20 +2520,21 @@
     },
     "response-schemas/rpc_play__action_spin__to__ready.json": {
       "encoding": "json",
-      "bytes": 11335,
+      "bytes": 12794,
       "value": {
         "schema": "tester-spin/observed-json-shape/v1",
         "provider": "bgaming",
         "outcome_id": "RPC_PLAY__ACTION_SPIN__TO__READY",
         "authority": "RUNTIME_OBSERVED",
-        "sample_count": 1,
+        "sample_count": 2,
         "json_schema": {
           "type": "object",
           "properties": {
             "id": {
               "type": "string",
               "observed_enum": [
-                "547ed5cc-4240-4b7a-bceb-0ddbcfbcc4ec"
+                "d55567bb-545c-4d5a-8d48-11cf0d7e7b1a",
+                "fcdca4f7-e592-468a-a30c-b9c3b12f1220"
               ]
             },
             "jsonrpc": {
@@ -1729,7 +2706,8 @@
                                       "type": "string",
                                       "observed_enum": [
                                         "",
-                                        "WHITE_COIN"
+                                        "BLUE_COIN",
+                                        "RED_COIN"
                                       ]
                                     }
                                   },
@@ -1763,10 +2741,14 @@
                                     "items": {
                                       "type": "string",
                                       "observed_enum": [
-                                        "H2",
+                                        "H1",
                                         "H3",
+                                        "H4",
+                                        "H5",
+                                        "L1",
                                         "L2",
                                         "L3",
+                                        "L4",
                                         "L5",
                                         "WD"
                                       ]
@@ -1839,7 +2821,8 @@
                 "state_lock": {
                   "type": "string",
                   "observed_enum": [
-                    "<redacted>"
+                    "<redacted>",
+                    "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
                   ]
                 }
               },
@@ -1866,8 +2849,30 @@
           "$.result.resp.game.bonusTotalWin",
           "$.result.resp.game.gameRoundId",
           "$.result.resp.game.payLineTotalWin",
+          "$.result.resp.game.spin.blueCoinsAwarded",
           "$.result.resp.game.spin.bonusTotalWin",
           "$.result.resp.game.spin.payLineTotalWin",
+          "$.result.resp.game.spin.redCoinsAwarded",
+          "$.result.resp.game.spin.reels[0].coins[0]",
+          "$.result.resp.game.spin.reels[0].coins[1]",
+          "$.result.resp.game.spin.reels[0].isMystery[0]",
+          "$.result.resp.game.spin.reels[0].isMystery[1]",
+          "$.result.resp.game.spin.reels[0].isMystery[2]",
+          "$.result.resp.game.spin.reels[0].symbols[0]",
+          "$.result.resp.game.spin.reels[0].symbols[1]",
+          "$.result.resp.game.spin.reels[0].symbols[2]",
+          "$.result.resp.game.spin.reels[1].symbols[0]",
+          "$.result.resp.game.spin.reels[1].symbols[1]",
+          "$.result.resp.game.spin.reels[1].symbols[2]",
+          "$.result.resp.game.spin.reels[2].symbols[0]",
+          "$.result.resp.game.spin.reels[2].symbols[1]",
+          "$.result.resp.game.spin.reels[2].symbols[2]",
+          "$.result.resp.game.spin.reels[3].symbols[0]",
+          "$.result.resp.game.spin.reels[3].symbols[1]",
+          "$.result.resp.game.spin.reels[3].symbols[2]",
+          "$.result.resp.game.spin.reels[4].symbols[0]",
+          "$.result.resp.game.spin.reels[4].symbols[1]",
+          "$.result.resp.game.spin.reels[4].symbols[2]",
           "$.result.resp.game.spin.totalWin",
           "$.result.resp.game.totalWin",
           "$.result.resp.maxWinExceeded",
@@ -1877,7 +2882,7 @@
     },
     "run-tree.json": {
       "encoding": "json",
-      "bytes": 9697,
+      "bytes": 20514,
       "value": {
         "schema": "tester-spin/run-tree/v1",
         "provider": "bgaming",
@@ -1887,6 +2892,278 @@
         "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
         "trajectories": [
           {
+            "capture_directory": "SPIN\\attempt-001",
+            "return_to_base": {
+              "schema": "tester-spin/return-to-base/v1",
+              "status": "REVIEW_REQUIRED",
+              "connection_reused": true,
+              "required": 2,
+              "max_probes": 10,
+              "consecutive_base": 0,
+              "cause": "UNDETERMINED",
+              "probes": [
+                {
+                  "ok": true,
+                  "base": false,
+                  "known": false,
+                  "captures": [
+                    {
+                      "step": 1,
+                      "request": {
+                        "id": "fcdca4f7-e592-468a-a30c-b9c3b12f1220",
+                        "jsonrpc": "2.0",
+                        "method": "play",
+                        "params": {
+                          "token": "[REDACTED]",
+                          "req": {
+                            "bet": 20,
+                            "bet_type": "betting",
+                            "action": "spin"
+                          },
+                          "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
+                        }
+                      },
+                      "response": {
+                        "id": "fcdca4f7-e592-468a-a30c-b9c3b12f1220",
+                        "jsonrpc": "2.0",
+                        "result": {
+                          "final": true,
+                          "resp": {
+                            "game": {
+                              "gameRoundId": null,
+                              "spin": {
+                                "reels": [
+                                  {
+                                    "symbols": [
+                                      "H4",
+                                      "H4",
+                                      "H4"
+                                    ],
+                                    "multipliers": [
+                                      0,
+                                      0,
+                                      0
+                                    ],
+                                    "coins": [
+                                      "BLUE_COIN",
+                                      "RED_COIN",
+                                      ""
+                                    ],
+                                    "isMystery": [
+                                      true,
+                                      true,
+                                      true
+                                    ],
+                                    "isJackpot": [
+                                      false,
+                                      false,
+                                      false
+                                    ]
+                                  },
+                                  {
+                                    "symbols": [
+                                      "H1",
+                                      "L4",
+                                      "L5"
+                                    ],
+                                    "multipliers": [
+                                      0,
+                                      0,
+                                      0
+                                    ],
+                                    "coins": [
+                                      "",
+                                      "",
+                                      ""
+                                    ],
+                                    "isMystery": [
+                                      false,
+                                      false,
+                                      false
+                                    ],
+                                    "isJackpot": [
+                                      false,
+                                      false,
+                                      false
+                                    ]
+                                  },
+                                  {
+                                    "symbols": [
+                                      "H5",
+                                      "L1",
+                                      "WD"
+                                    ],
+                                    "multipliers": [
+                                      0,
+                                      0,
+                                      0
+                                    ],
+                                    "coins": [
+                                      "",
+                                      "",
+                                      ""
+                                    ],
+                                    "isMystery": [
+                                      false,
+                                      false,
+                                      false
+                                    ],
+                                    "isJackpot": [
+                                      false,
+                                      false,
+                                      false
+                                    ]
+                                  },
+                                  {
+                                    "symbols": [
+                                      "H3",
+                                      "L3",
+                                      "L5"
+                                    ],
+                                    "multipliers": [
+                                      0,
+                                      0,
+                                      0
+                                    ],
+                                    "coins": [
+                                      "",
+                                      "",
+                                      ""
+                                    ],
+                                    "isMystery": [
+                                      false,
+                                      false,
+                                      false
+                                    ],
+                                    "isJackpot": [
+                                      false,
+                                      false,
+                                      false
+                                    ]
+                                  },
+                                  {
+                                    "symbols": [
+                                      "L3",
+                                      "H5",
+                                      "H3"
+                                    ],
+                                    "multipliers": [
+                                      0,
+                                      0,
+                                      0
+                                    ],
+                                    "coins": [
+                                      "",
+                                      "",
+                                      ""
+                                    ],
+                                    "isMystery": [
+                                      false,
+                                      false,
+                                      false
+                                    ],
+                                    "isJackpot": [
+                                      false,
+                                      false,
+                                      false
+                                    ]
+                                  }
+                                ],
+                                "payLineWins": [],
+                                "totalWin": 0,
+                                "payLineTotalWin": 0,
+                                "bonusTotalWin": 0,
+                                "redCoinsAwarded": 1,
+                                "blueCoinsAwarded": 1,
+                                "whiteCoinsAwarded": 0
+                              },
+                              "totalWin": 0,
+                              "bonusTotalWin": 0,
+                              "payLineTotalWin": 0,
+                              "pots": [
+                                {
+                                  "stake": 20,
+                                  "blueCoins": 12,
+                                  "redCoins": 12,
+                                  "whiteCoins": 12,
+                                  "jackpotValueMini": 200,
+                                  "jackpotValueMinor": 400,
+                                  "jackpotValueMajor": 1000,
+                                  "jackpotValueMega": 20000,
+                                  "jackpotValueMax": 100000,
+                                  "coins": [
+                                    {
+                                      "type": "BLUE",
+                                      "count": 12,
+                                      "max": 12
+                                    },
+                                    {
+                                      "type": "RED",
+                                      "count": 12,
+                                      "max": 12
+                                    },
+                                    {
+                                      "type": "WHITE",
+                                      "count": 12,
+                                      "max": 12
+                                    }
+                                  ],
+                                  "jackpots": [
+                                    {
+                                      "type": "JACKPOT_MINI",
+                                      "amount": 200
+                                    },
+                                    {
+                                      "type": "JACKPOT_MINOR",
+                                      "amount": 400
+                                    },
+                                    {
+                                      "type": "JACKPOT_MAJOR",
+                                      "amount": 1000
+                                    },
+                                    {
+                                      "type": "JACKPOT_MEGA",
+                                      "amount": 20000
+                                    },
+                                    {
+                                      "type": "JACKPOT_MAX",
+                                      "amount": 100000
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            "nextAction": "SPIN",
+                            "maxWinExceeded": false
+                          },
+                          "balance": 99960,
+                          "freebets": null,
+                          "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
+                        }
+                      }
+                    }
+                  ],
+                  "summary": {
+                    "final": true,
+                    "balance": 99960,
+                    "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
+                    "round_step": null,
+                    "bet": null,
+                    "total_win": 0,
+                    "freespins": null,
+                    "next_action": "SPIN",
+                    "table_sha256": "",
+                    "response_sha256": "4309e5565378ef81"
+                  },
+                  "directory": "return-to-base\\probe-001"
+                }
+              ],
+              "updated_at": "2026-09-15T18:12:08.202583+00:00"
+            },
+            "return_to_base_evidence": {
+              "path": "SPIN/attempt-001/return-to-base.json",
+              "sha256": "ef394579c21b0b4a55346718cd98e9798275ff2156661e570cd5a0420041bdd1"
+            },
             "id": "394e2a29ac65fc307147",
             "origin": {
               "mode_id": "SPIN",
@@ -1894,23 +3171,23 @@
               "provider_metadata": {
                 "id": "SPIN",
                 "kind": "SPIN",
-                "observed": true,
-                "validated": true,
+                "observed": false,
+                "validated": false,
                 "executable": true,
-                "discovery_state": "VALIDATED",
+                "discovery_state": "HAR_SCRIPT_OBSERVED",
                 "wire_method": "play",
                 "request_options": {
                   "bet_type": "betting",
                   "action": "spin"
                 },
                 "source": "selected-har-script-contract",
-                "evidence_level": "REMOTE_EXECUTION",
-                "execution_state": "PROVEN_TERMINAL"
+                "evidence_level": "WIRE_CANDIDATE",
+                "execution_state": "ATTEMPTED_UNVALIDATED"
               }
             },
             "attempt": 1,
             "reported_terminal": true,
-            "reported_ok": true,
+            "reported_ok": false,
             "sequence_status": "ARTIFACT_STEP_INDEX",
             "steps": [
               {
@@ -1919,7 +3196,7 @@
                 "request": [
                   {
                     "path": "SPIN/attempt-001/step-001-request.json",
-                    "sha256": "171fe27fcb53c4c123769412fbdb4e0980588259f674ceac51b5cc5984381e96",
+                    "sha256": "7f17d06913f86806f4877007d6e53b75eb4423fef974adbf9860379a95321190",
                     "bytes": 269,
                     "kind": "request"
                   }
@@ -1927,15 +3204,15 @@
                 "response": [
                   {
                     "path": "SPIN/attempt-001/step-001-response.json",
-                    "sha256": "633fb79f72d53d5fe014bbbf205e901b0dc27ed4d83384593bc12047b3e36bf2",
-                    "bytes": 5058,
+                    "sha256": "843c53fc74671da5d85d7f23847498e20827e8cd3c6ca3d12cb6e5e3a4908e54",
+                    "bytes": 5054,
                     "kind": "response"
                   }
                 ],
                 "id": "394e2a29ac65fc307147:0",
                 "parent_id": "394e2a29ac65fc307147",
                 "observed_response": {
-                  "id": "547ed5cc-4240-4b7a-bceb-0ddbcfbcc4ec",
+                  "id": "d55567bb-545c-4d5a-8d48-11cf0d7e7b1a",
                   "jsonrpc": "2.0",
                   "result": {
                     "final": true,
@@ -1946,9 +3223,9 @@
                           "reels": [
                             {
                               "symbols": [
-                                "L2",
                                 "L5",
-                                "H3"
+                                "H1",
+                                "L3"
                               ],
                               "multipliers": [
                                 0,
@@ -1973,9 +3250,9 @@
                             },
                             {
                               "symbols": [
-                                "H2",
-                                "H2",
-                                "H2"
+                                "L4",
+                                "H5",
+                                "L1"
                               ],
                               "multipliers": [
                                 0,
@@ -1988,9 +3265,9 @@
                                 ""
                               ],
                               "isMystery": [
-                                true,
-                                true,
-                                true
+                                false,
+                                false,
+                                false
                               ],
                               "isJackpot": [
                                 false,
@@ -2000,9 +3277,36 @@
                             },
                             {
                               "symbols": [
-                                "H2",
-                                "L3",
-                                "L2"
+                                "L2",
+                                "H5",
+                                "L4"
+                              ],
+                              "multipliers": [
+                                0,
+                                0,
+                                0
+                              ],
+                              "coins": [
+                                "",
+                                "",
+                                ""
+                              ],
+                              "isMystery": [
+                                false,
+                                false,
+                                false
+                              ],
+                              "isJackpot": [
+                                false,
+                                false,
+                                false
+                              ]
+                            },
+                            {
+                              "symbols": [
+                                "L2",
+                                "H4",
+                                "L4"
                               ],
                               "multipliers": [
                                 0,
@@ -2028,8 +3332,8 @@
                             {
                               "symbols": [
                                 "H3",
-                                "WD",
-                                "L2"
+                                "L4",
+                                "H1"
                               ],
                               "multipliers": [
                                 0,
@@ -2045,33 +3349,6 @@
                                 false,
                                 false,
                                 false
-                              ],
-                              "isJackpot": [
-                                false,
-                                false,
-                                false
-                              ]
-                            },
-                            {
-                              "symbols": [
-                                "H2",
-                                "H2",
-                                "H2"
-                              ],
-                              "multipliers": [
-                                0,
-                                0,
-                                0
-                              ],
-                              "coins": [
-                                "WHITE_COIN",
-                                "",
-                                ""
-                              ],
-                              "isMystery": [
-                                true,
-                                true,
-                                true
                               ],
                               "isJackpot": [
                                 false,
@@ -2086,7 +3363,7 @@
                           "bonusTotalWin": 0,
                           "redCoinsAwarded": 0,
                           "blueCoinsAwarded": 0,
-                          "whiteCoinsAwarded": 1
+                          "whiteCoinsAwarded": 0
                         },
                         "totalWin": 0,
                         "bonusTotalWin": 0,
@@ -2162,6 +3439,22 @@
         "announced_branches": [
           {
             "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          },
+          {
+            "source": "discovered_modes_fail_closed",
             "mode_id": "PURCHASE_BONUS_BUY",
             "signature": "PURCHASE_BONUS_BUY:UNEXECUTED",
             "required": [
@@ -2179,9 +3472,85 @@
         ]
       }
     },
+    "server-observations.json": {
+      "encoding": "json",
+      "bytes": 2333,
+      "value": {
+        "schema": "tester-spin/server-observations/v1",
+        "provider": "bgaming",
+        "scope": "this_game_this_run",
+        "baseline_is_not_contract": true,
+        "new_responses": 0,
+        "unparsed": 0,
+        "observations": [
+          {
+            "classification": "SEEN",
+            "signature": "57068577ebdf3b1792df88818906c81fc4e0fe64e88162b4b6096b9e9adb7fa6",
+            "changed_paths": [],
+            "review_required": false,
+            "action": "play",
+            "http_status": 200,
+            "captured_at": "2026-09-15T18:12:08.194618+00:00",
+            "trajectory_id": "394e2a29ac65fc307147",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": false,
+                "validated": false,
+                "executable": true,
+                "discovery_state": "HAR_SCRIPT_OBSERVED",
+                "wire_method": "play",
+                "request_options": {
+                  "bet_type": "betting",
+                  "action": "spin"
+                },
+                "source": "selected-har-script-contract",
+                "evidence_level": "WIRE_CANDIDATE",
+                "execution_state": "ATTEMPTED_UNVALIDATED"
+              }
+            },
+            "source": "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl#line=1"
+          },
+          {
+            "classification": "BASELINE",
+            "signature": "57068577ebdf3b1792df88818906c81fc4e0fe64e88162b4b6096b9e9adb7fa6",
+            "changed_paths": [],
+            "review_required": false,
+            "action": "play",
+            "http_status": 200,
+            "captured_at": "2026-09-15T18:12:07.423306+00:00",
+            "trajectory_id": "394e2a29ac65fc307147",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": false,
+                "validated": false,
+                "executable": true,
+                "discovery_state": "HAR_SCRIPT_OBSERVED",
+                "wire_method": "play",
+                "request_options": {
+                  "bet_type": "betting",
+                  "action": "spin"
+                },
+                "source": "selected-har-script-contract",
+                "evidence_level": "WIRE_CANDIDATE",
+                "execution_state": "ATTEMPTED_UNVALIDATED"
+              }
+            },
+            "source": "SPIN/attempt-001/server-responses.jsonl#line=1"
+          }
+        ]
+      }
+    },
     "state-machine.json": {
       "encoding": "json",
-      "bytes": 1201,
+      "bytes": 1277,
       "value": {
         "schema": "tester-spin/bgaming-state-machine/v1",
         "provider": "bgaming",
@@ -2190,8 +3559,8 @@
           "name": "Red Hot Chilli Chickens",
           "identifier": "RedHotChilliChickens"
         },
-        "generated_at": "2026-09-15T08:58:52+00:00",
-        "source_run": "2026-09-15_05-58-39-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T18:12:08+00:00",
+        "source_run": "2026-09-15_15-11-35-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -2223,9 +3592,10 @@
             ],
             "outcome": "RPC_PLAY__ACTION_SPIN__TO__READY",
             "target": "READY",
-            "observed_count": 1,
+            "observed_count": 2,
             "authority": "RUNTIME_OBSERVED",
             "evidence": [
+              "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
               "SPIN/attempt-001/step-001-request.json"
             ]
           }
