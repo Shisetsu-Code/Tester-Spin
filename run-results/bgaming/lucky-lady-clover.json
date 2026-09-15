@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-13T13:18:37+00:00",
-  "source_commit": "299ba3374f3740551aa66a66eabf02c0d7ba03ad",
+  "published_at": "2026-09-15T08:45:48+00:00",
+  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
   "provider": "bgaming",
   "game": {
     "slug": "lucky-lady-clover",
@@ -24,14 +24,17 @@
         "id": "SPIN",
         "kind": "SPIN",
         "observed": true,
-        "wire_command": "spin"
+        "wire_command": "spin",
+        "evidence_level": "REMOTE_EXECUTION",
+        "execution_state": "PROVEN_TERMINAL",
+        "validated": true
       }
     ],
-    "started_at": "2026-09-13T13:18:32+00:00",
-    "finished_at": "2026-09-13T13:18:36+00:00",
-    "elapsed_ms": 3734.0000000003783,
+    "started_at": "2026-09-15T08:45:43+00:00",
+    "finished_at": "2026-09-15T08:45:47+00:00",
+    "elapsed_ms": 4031.0000000026776,
     "error": "",
-    "run_dir": "2026-09-13_10-18-32-bgaming-http-api-v2",
+    "run_dir": "2026-09-15_05-45-43-bgaming-http-api-v2",
     "attempts": [
       {
         "number": 1,
@@ -41,7 +44,7 @@
         "provider_bl": null,
         "provider_pur": null,
         "status_code": 200,
-        "elapsed_ms": 328.0000000004293,
+        "elapsed_ms": 343.99999999732245,
         "symbol": "LuckyLadyClover",
         "endpoint": "https://demo.bgaming-network.com/api/LuckyLadyClover/2366874/<session>",
         "na": "closed",
@@ -49,13 +52,3629 @@
         "wire_steps": 1,
         "warning": "",
         "error": "",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Lucky Lady's Clover\\tests\\2026-09-13_10-18-32-bgaming-http-api-v2\\SPIN\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Lucky Lady's Clover\\tests\\2026-09-15_05-45-43-bgaming-http-api-v2\\SPIN\\attempt-001"
       }
     ],
-    "samples_per_path": 1
+    "samples_per_path": 1,
+    "structural_map": {
+      "path": "analysis/game-structure.json",
+      "schema": "tester-spin/game-structure/v1",
+      "coverage": {
+        "states": 1,
+        "decision_points": 2,
+        "choices": 2,
+        "executed": 2,
+        "outcome_observed": 0,
+        "pending": 2,
+        "unknowns": 83,
+        "complete": false,
+        "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+      },
+      "diagnostics": []
+    }
   },
-  "artifact_bytes_embedded": 40987,
+  "artifact_bytes_embedded": 182718,
   "artifacts": {
+    "analysis/game-structure.json": {
+      "encoding": "json",
+      "bytes": 133054,
+      "value": {
+        "schema": "tester-spin/game-structure/v1",
+        "metadata": {
+          "provider": "bgaming",
+          "protocol_family": "bgaming-json-flow",
+          "game_identifier": "lucky-lady-clover",
+          "slug": "lucky-lady-clover",
+          "bundle_fingerprint": "",
+          "generated_at": "2026-09-15T08:45:43+00:00",
+          "compatibility": "unverified",
+          "source_evidence_summary": {
+            "capture": "BGaming JSON requests/responses at transport boundary",
+            "diagnostics": []
+          },
+          "merged_runs": [
+            "run:cd222f7bc60955bfae5b7b90"
+          ],
+          "previous_revisions": []
+        },
+        "states": {
+          "state:8c8fa17009f2c400a297adfb": {
+            "id": "state:8c8fa17009f2c400a297adfb",
+            "server_state": "<unobserved>",
+            "structural_signature": "",
+            "terminal": null,
+            "available_actions": [],
+            "first_seen": "2026-09-15T08:45:47+00:00",
+            "observations": 0,
+            "incoming_transitions": [],
+            "outgoing_transitions": [],
+            "response_contracts": [],
+            "evidence": [
+              "evidence:805a84d847dbc30e44d695e3"
+            ],
+            "unresolved": []
+          }
+        },
+        "decision_points": {
+          "decision:a9de595b4b4ccbe3339a2272": {
+            "id": "decision:a9de595b4b4ccbe3339a2272",
+            "state_id": "state:8c8fa17009f2c400a297adfb",
+            "command": "init",
+            "type": "observed_action",
+            "choices": [
+              "choice:b05a32e4c2ea3e556b79de7b"
+            ],
+            "cardinality": {
+              "known": 1,
+              "exhaustive": false
+            },
+            "mutually_exclusive": null,
+            "repeatable": null,
+            "composite": null,
+            "confirmation_required": null,
+            "evidence": [
+              "evidence:805a84d847dbc30e44d695e3"
+            ],
+            "replay_prefixes": [
+              []
+            ],
+            "coverage": {
+              "discovered": 1,
+              "executed": 1,
+              "outcome_observed": 0
+            }
+          },
+          "decision:d7ff536dd19a526ec9299330": {
+            "id": "decision:d7ff536dd19a526ec9299330",
+            "state_id": "state:8c8fa17009f2c400a297adfb",
+            "command": "spin",
+            "type": "observed_action",
+            "choices": [
+              "choice:4bef8b61184a001c3aad829a"
+            ],
+            "cardinality": {
+              "known": 1,
+              "exhaustive": false
+            },
+            "mutually_exclusive": null,
+            "repeatable": null,
+            "composite": null,
+            "confirmation_required": null,
+            "evidence": [
+              "evidence:805a84d847dbc30e44d695e3"
+            ],
+            "replay_prefixes": [
+              []
+            ],
+            "coverage": {
+              "discovered": 1,
+              "executed": 1,
+              "outcome_observed": 0
+            }
+          }
+        },
+        "choices": {
+          "choice:b05a32e4c2ea3e556b79de7b": {
+            "id": "choice:b05a32e4c2ea3e556b79de7b",
+            "decision_point_id": "decision:a9de595b4b4ccbe3339a2272",
+            "label": "init",
+            "semantic_value": null,
+            "request": {
+              "command": "init",
+              "options": {}
+            },
+            "request_contracts": [
+              "request_contracts:a9de595b4b4ccbe3339a2272"
+            ],
+            "evidence": [
+              "evidence:805a84d847dbc30e44d695e3"
+            ],
+            "preconditions": [],
+            "context_mutations": [
+              {}
+            ],
+            "coverage": {
+              "discovered": true,
+              "executed": true,
+              "outcome_observed": false,
+              "outcome_derived": false,
+              "attempts": 1,
+              "successful_samples": 0
+            },
+            "unresolved_reason": "No wire outcome observed"
+          },
+          "choice:4bef8b61184a001c3aad829a": {
+            "id": "choice:4bef8b61184a001c3aad829a",
+            "decision_point_id": "decision:d7ff536dd19a526ec9299330",
+            "label": "spin",
+            "semantic_value": null,
+            "request": {
+              "command": "spin",
+              "options": {
+                "bets": {
+                  "0": 10,
+                  "1": 10,
+                  "2": 10,
+                  "3": 10,
+                  "4": 10,
+                  "5": 10,
+                  "6": 10,
+                  "7": 10,
+                  "8": 10
+                }
+              }
+            },
+            "request_contracts": [
+              "request_contracts:d7ff536dd19a526ec9299330"
+            ],
+            "evidence": [
+              "evidence:805a84d847dbc30e44d695e3"
+            ],
+            "preconditions": [],
+            "context_mutations": [
+              {}
+            ],
+            "coverage": {
+              "discovered": true,
+              "executed": true,
+              "outcome_observed": false,
+              "outcome_derived": false,
+              "attempts": 1,
+              "successful_samples": 0
+            },
+            "unresolved_reason": "No wire outcome observed"
+          }
+        },
+        "transitions": {},
+        "request_contracts": {
+          "request_contracts:a9de595b4b4ccbe3339a2272": {
+            "id": "request_contracts:a9de595b4b4ccbe3339a2272",
+            "schema": {
+              "samples": 1,
+              "observed_types": {
+                "object": 1
+              },
+              "nullable": false,
+              "confidence": "observed_only",
+              "role": "unknown",
+              "properties": {
+                "command": {
+                  "samples": 1,
+                  "observed_types": {
+                    "string": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "static",
+                  "observed_values": [
+                    "init"
+                  ],
+                  "values_bounded": true,
+                  "variability": "constant_in_observations",
+                  "enum_exhaustive": false,
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "extra_data": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "round_series_id": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "runtime",
+                      "observed_values": [
+                        "[runtime:round_series_id]"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                }
+              },
+              "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+            },
+            "examples": [
+              {
+                "command": "init",
+                "extra_data": {
+                  "round_series_id": "[runtime:round_series_id]"
+                }
+              }
+            ],
+            "observations": 1,
+            "evidence": [
+              "evidence:805a84d847dbc30e44d695e3"
+            ],
+            "status": "observed_partial",
+            "conditional_fields": []
+          },
+          "request_contracts:d7ff536dd19a526ec9299330": {
+            "id": "request_contracts:d7ff536dd19a526ec9299330",
+            "schema": {
+              "samples": 1,
+              "observed_types": {
+                "object": 1
+              },
+              "nullable": false,
+              "confidence": "observed_only",
+              "role": "unknown",
+              "properties": {
+                "command": {
+                  "samples": 1,
+                  "observed_types": {
+                    "string": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "static",
+                  "observed_values": [
+                    "spin"
+                  ],
+                  "values_bounded": true,
+                  "variability": "constant_in_observations",
+                  "enum_exhaustive": false,
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "options": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "bets": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "choice",
+                      "properties": {
+                        "0": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "1": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "2": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "3": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "4": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "5": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "6": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "7": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "8": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "extra_data": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "round_series_id": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "runtime",
+                      "observed_values": [
+                        "[runtime:round_series_id]"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "client_seed": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        4109
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                }
+              },
+              "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+            },
+            "examples": [
+              {
+                "command": "spin",
+                "options": {
+                  "bets": {
+                    "0": 10,
+                    "1": 10,
+                    "2": 10,
+                    "3": 10,
+                    "4": 10,
+                    "5": 10,
+                    "6": 10,
+                    "7": 10,
+                    "8": 10
+                  }
+                },
+                "extra_data": {
+                  "round_series_id": "[runtime:round_series_id]",
+                  "client_seed": 4109
+                }
+              }
+            ],
+            "observations": 1,
+            "evidence": [
+              "evidence:805a84d847dbc30e44d695e3"
+            ],
+            "status": "observed_partial",
+            "conditional_fields": []
+          }
+        },
+        "response_contracts": {
+          "response_contracts:27f9979f18cba9fd8031eb5b": {
+            "id": "response_contracts:27f9979f18cba9fd8031eb5b",
+            "schema": {
+              "samples": 1,
+              "observed_types": {
+                "object": 1
+              },
+              "nullable": false,
+              "confidence": "observed_only",
+              "role": "unknown",
+              "properties": {
+                "options": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "line_bets": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 5,
+                        "max": 5
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "items": {
+                        "samples": 5,
+                        "observed_types": {
+                          "integer": 5
+                        },
+                        "nullable": false,
+                        "confidence": "observed_only",
+                        "role": "unknown",
+                        "observed_values": [
+                          10,
+                          25,
+                          50,
+                          75,
+                          100
+                        ],
+                        "values_bounded": true,
+                        "variability": "variable",
+                        "enum_exhaustive": false
+                      },
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "default_bet": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        10
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "scatter_bet_factors": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "2": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            3
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "3": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "4": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            50
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "5": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            600
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "paytable": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "[\"lady\", \"lady\", \"lady\", \"lady\", \"lady\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10000
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"lady\", \"lady\", \"lady\", \"lady\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            3000
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"lady\", \"lady\", \"lady\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            500
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"lady\", \"lady\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            15
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"clover\", \"clover\", \"clover\", \"clover\", \"clover\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            400
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"clover\", \"clover\", \"clover\", \"clover\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            100
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"clover\", \"clover\", \"clover\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            20
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"coin\", \"coin\", \"coin\", \"coin\", \"coin\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            400
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"coin\", \"coin\", \"coin\", \"coin\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            100
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"coin\", \"coin\", \"coin\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            20
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"tail\", \"tail\", \"tail\", \"tail\", \"tail\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            800
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"tail\", \"tail\", \"tail\", \"tail\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            200
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"tail\", \"tail\", \"tail\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            40
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"tail\", \"tail\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            5
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"ladybug\", \"ladybug\", \"ladybug\", \"ladybug\", \"ladybug\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            800
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"ladybug\", \"ladybug\", \"ladybug\", \"ladybug\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            200
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"ladybug\", \"ladybug\", \"ladybug\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            40
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"ladybug\", \"ladybug\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            5
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"horseshoe\", \"horseshoe\", \"horseshoe\", \"horseshoe\", \"horseshoe\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            500
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"horseshoe\", \"horseshoe\", \"horseshoe\", \"horseshoe\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            125
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"horseshoe\", \"horseshoe\", \"horseshoe\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            25
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"a\", \"a\", \"a\", \"a\", \"a\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            150
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"a\", \"a\", \"a\", \"a\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            75
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"a\", \"a\", \"a\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            15
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"k\", \"k\", \"k\", \"k\", \"k\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            150
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"k\", \"k\", \"k\", \"k\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            75
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"k\", \"k\", \"k\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            15
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"q\", \"q\", \"q\", \"q\", \"q\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            125
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"q\", \"q\", \"q\", \"q\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            50
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"q\", \"q\", \"q\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"j\", \"j\", \"j\", \"j\", \"j\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            125
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"j\", \"j\", \"j\", \"j\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            50
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"j\", \"j\", \"j\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"t\", \"t\", \"t\", \"t\", \"t\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            125
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"t\", \"t\", \"t\", \"t\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            50
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"t\", \"t\", \"t\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"n\", \"n\", \"n\", \"n\", \"n\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            125
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"n\", \"n\", \"n\", \"n\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            50
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"n\", \"n\", \"n\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "[\"n\", \"n\"]": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            5
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "lines": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 9,
+                        "max": 9
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "items": {
+                        "samples": 9,
+                        "observed_types": {
+                          "array": 9
+                        },
+                        "nullable": false,
+                        "confidence": "observed_only",
+                        "role": "unknown",
+                        "length": {
+                          "min": 5,
+                          "max": 5
+                        },
+                        "position_semantics": "unknown",
+                        "collection_role": "unknown; does not establish choices",
+                        "items": {
+                          "samples": 45,
+                          "observed_types": {
+                            "integer": 45
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            1,
+                            0,
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "variable",
+                          "enum_exhaustive": false
+                        }
+                      },
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "reels": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 5,
+                        "max": 5
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "items": {
+                        "samples": 5,
+                        "observed_types": {
+                          "array": 5
+                        },
+                        "nullable": false,
+                        "confidence": "observed_only",
+                        "role": "unknown",
+                        "length": {
+                          "min": 41,
+                          "max": 49
+                        },
+                        "position_semantics": "unknown",
+                        "collection_role": "unknown; does not establish choices",
+                        "items": {
+                          "samples": 217,
+                          "observed_types": {
+                            "string": 217
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            "a",
+                            "q",
+                            "j",
+                            "horseshoe",
+                            "t",
+                            "clover",
+                            "n",
+                            "coin"
+                          ],
+                          "values_bounded": true,
+                          "variability": "variable",
+                          "enum_exhaustive": false
+                        }
+                      },
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "column_height": {
+                      "samples": 1,
+                      "observed_types": {
+                        "integer": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        3
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "currency": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "code": {
+                          "samples": 1,
+                          "observed_types": {
+                            "string": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            "FUN"
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "symbol": {
+                          "samples": 1,
+                          "observed_types": {
+                            "string": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            "FUN"
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "subunits": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            100
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "exponent": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "digit_options": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "bet": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "paytable": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "balance": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            2
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "game": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "state": {
+                      "samples": 1,
+                      "observed_types": {
+                        "string": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        "idle"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "balance": {
+                  "samples": 1,
+                  "observed_types": {
+                    "integer": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "observed_values": [
+                    100000
+                  ],
+                  "values_bounded": true,
+                  "variability": "constant_in_observations",
+                  "enum_exhaustive": false,
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "extra_data": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "provable_data": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "items": {
+                        "samples": 1,
+                        "observed_types": {
+                          "object": 1
+                        },
+                        "nullable": false,
+                        "confidence": "observed_only",
+                        "role": "unknown",
+                        "properties": {
+                          "hash": {
+                            "samples": 1,
+                            "observed_types": {
+                              "string": 1
+                            },
+                            "nullable": false,
+                            "confidence": "observed_only",
+                            "role": "unknown",
+                            "observed_values": [
+                              "a526bffbed8dc6b0aa952ddc7d679b5664c4cd5f678787a6f0ace99aec228d88"
+                            ],
+                            "values_bounded": true,
+                            "variability": "constant_in_observations",
+                            "enum_exhaustive": false,
+                            "parent_samples": 1,
+                            "optional_observed": false,
+                            "present_in_all_observed": true,
+                            "required": null
+                          }
+                        },
+                        "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+                      },
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "available_commands": {
+                  "samples": 1,
+                  "observed_types": {
+                    "array": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "length": {
+                    "min": 2,
+                    "max": 2
+                  },
+                  "position_semantics": "unknown",
+                  "collection_role": "unknown; does not establish choices",
+                  "items": {
+                    "samples": 2,
+                    "observed_types": {
+                      "string": 2
+                    },
+                    "nullable": false,
+                    "confidence": "observed_only",
+                    "role": "unknown",
+                    "observed_values": [
+                      "init",
+                      "spin"
+                    ],
+                    "values_bounded": true,
+                    "variability": "variable",
+                    "enum_exhaustive": false
+                  },
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                }
+              },
+              "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+            },
+            "examples": [
+              {
+                "options": {
+                  "line_bets": [
+                    10,
+                    25,
+                    50,
+                    75,
+                    100
+                  ],
+                  "default_bet": 10,
+                  "scatter_bet_factors": {
+                    "2": 3,
+                    "3": 10,
+                    "4": 50,
+                    "5": 600
+                  },
+                  "paytable": {
+                    "[\"lady\", \"lady\", \"lady\", \"lady\", \"lady\"]": 10000,
+                    "[\"lady\", \"lady\", \"lady\", \"lady\"]": 3000,
+                    "[\"lady\", \"lady\", \"lady\"]": 500,
+                    "[\"lady\", \"lady\"]": 15,
+                    "[\"clover\", \"clover\", \"clover\", \"clover\", \"clover\"]": 400,
+                    "[\"clover\", \"clover\", \"clover\", \"clover\"]": 100,
+                    "[\"clover\", \"clover\", \"clover\"]": 20,
+                    "[\"coin\", \"coin\", \"coin\", \"coin\", \"coin\"]": 400,
+                    "[\"coin\", \"coin\", \"coin\", \"coin\"]": 100,
+                    "[\"coin\", \"coin\", \"coin\"]": 20,
+                    "[\"tail\", \"tail\", \"tail\", \"tail\", \"tail\"]": 800,
+                    "[\"tail\", \"tail\", \"tail\", \"tail\"]": 200,
+                    "[\"tail\", \"tail\", \"tail\"]": 40,
+                    "[\"tail\", \"tail\"]": 5,
+                    "[\"ladybug\", \"ladybug\", \"ladybug\", \"ladybug\", \"ladybug\"]": 800,
+                    "[\"ladybug\", \"ladybug\", \"ladybug\", \"ladybug\"]": 200,
+                    "[\"ladybug\", \"ladybug\", \"ladybug\"]": 40,
+                    "[\"ladybug\", \"ladybug\"]": 5,
+                    "[\"horseshoe\", \"horseshoe\", \"horseshoe\", \"horseshoe\", \"horseshoe\"]": 500,
+                    "[\"horseshoe\", \"horseshoe\", \"horseshoe\", \"horseshoe\"]": 125,
+                    "[\"horseshoe\", \"horseshoe\", \"horseshoe\"]": 25,
+                    "[\"a\", \"a\", \"a\", \"a\", \"a\"]": 150,
+                    "[\"a\", \"a\", \"a\", \"a\"]": 75,
+                    "[\"a\", \"a\", \"a\"]": 15,
+                    "[\"k\", \"k\", \"k\", \"k\", \"k\"]": 150,
+                    "[\"k\", \"k\", \"k\", \"k\"]": 75,
+                    "[\"k\", \"k\", \"k\"]": 15,
+                    "[\"q\", \"q\", \"q\", \"q\", \"q\"]": 125,
+                    "[\"q\", \"q\", \"q\", \"q\"]": 50,
+                    "[\"q\", \"q\", \"q\"]": 10,
+                    "[\"j\", \"j\", \"j\", \"j\", \"j\"]": 125,
+                    "[\"j\", \"j\", \"j\", \"j\"]": 50,
+                    "[\"j\", \"j\", \"j\"]": 10,
+                    "[\"t\", \"t\", \"t\", \"t\", \"t\"]": 125,
+                    "[\"t\", \"t\", \"t\", \"t\"]": 50,
+                    "[\"t\", \"t\", \"t\"]": 10,
+                    "[\"n\", \"n\", \"n\", \"n\", \"n\"]": 125,
+                    "[\"n\", \"n\", \"n\", \"n\"]": 50,
+                    "[\"n\", \"n\", \"n\"]": 10,
+                    "[\"n\", \"n\"]": 5
+                  },
+                  "lines": [
+                    [
+                      1,
+                      1,
+                      1,
+                      1,
+                      1
+                    ],
+                    [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      2,
+                      2,
+                      2,
+                      2,
+                      2
+                    ],
+                    [
+                      0,
+                      1,
+                      2,
+                      1,
+                      0
+                    ],
+                    [
+                      2,
+                      1,
+                      0,
+                      1,
+                      2
+                    ],
+                    [
+                      0,
+                      0,
+                      1,
+                      2,
+                      2
+                    ],
+                    [
+                      2,
+                      2,
+                      1,
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      0,
+                      1,
+                      2,
+                      1
+                    ],
+                    [
+                      1,
+                      2,
+                      1,
+                      0,
+                      1
+                    ]
+                  ],
+                  "reels": [
+                    [
+                      "a",
+                      "q",
+                      "j",
+                      "horseshoe",
+                      "t",
+                      "clover",
+                      "q",
+                      "n",
+                      "coin",
+                      "a",
+                      "j",
+                      "ladybug",
+                      "k",
+                      "clover",
+                      "j",
+                      "q",
+                      "k",
+                      "coin",
+                      "q",
+                      "n",
+                      "a",
+                      "t",
+                      "hands",
+                      "k",
+                      "clover",
+                      "j",
+                      "a",
+                      "clover",
+                      "horseshoe",
+                      "t",
+                      "tail",
+                      "q",
+                      "t",
+                      "n",
+                      "tail",
+                      "q",
+                      "horseshoe",
+                      "lady",
+                      "q",
+                      "ladybug",
+                      "clover",
+                      "k",
+                      "j",
+                      "clover"
+                    ],
+                    [
+                      "j",
+                      "clover",
+                      "hands",
+                      "horseshoe",
+                      "t",
+                      "q",
+                      "horseshoe",
+                      "n",
+                      "k",
+                      "t",
+                      "j",
+                      "a",
+                      "n",
+                      "tail",
+                      "k",
+                      "q",
+                      "j",
+                      "horseshoe",
+                      "tail",
+                      "k",
+                      "a",
+                      "clover",
+                      "k",
+                      "ladybug",
+                      "coin",
+                      "n",
+                      "j",
+                      "t",
+                      "horseshoe",
+                      "coin",
+                      "n",
+                      "t",
+                      "a",
+                      "q",
+                      "j",
+                      "clover",
+                      "q",
+                      "k",
+                      "t",
+                      "coin",
+                      "a",
+                      "t",
+                      "lady",
+                      "a",
+                      "n",
+                      "horseshoe",
+                      "q",
+                      "tail",
+                      "a"
+                    ],
+                    [
+                      "j",
+                      "t",
+                      "horseshoe",
+                      "clover",
+                      "hands",
+                      "a",
+                      "t",
+                      "j",
+                      "clover",
+                      "q",
+                      "n",
+                      "tail",
+                      "t",
+                      "a",
+                      "q",
+                      "tail",
+                      "a",
+                      "lady",
+                      "clover",
+                      "coin",
+                      "horseshoe",
+                      "q",
+                      "k",
+                      "j",
+                      "q",
+                      "t",
+                      "clover",
+                      "ladybug",
+                      "a",
+                      "n",
+                      "j",
+                      "k",
+                      "q",
+                      "j",
+                      "n",
+                      "a",
+                      "tail",
+                      "k",
+                      "q",
+                      "n",
+                      "coin",
+                      "tail"
+                    ],
+                    [
+                      "lady",
+                      "a",
+                      "k",
+                      "n",
+                      "ladybug",
+                      "horseshoe",
+                      "j",
+                      "a",
+                      "q",
+                      "j",
+                      "clover",
+                      "tail",
+                      "q",
+                      "j",
+                      "t",
+                      "k",
+                      "a",
+                      "clover",
+                      "q",
+                      "coin",
+                      "ladybug",
+                      "k",
+                      "q",
+                      "a",
+                      "ladybug",
+                      "t",
+                      "j",
+                      "q",
+                      "ladybug",
+                      "k",
+                      "q",
+                      "t",
+                      "j",
+                      "clover",
+                      "n",
+                      "k",
+                      "clover",
+                      "a",
+                      "n",
+                      "q",
+                      "hands"
+                    ],
+                    [
+                      "j",
+                      "lady",
+                      "t",
+                      "tail",
+                      "j",
+                      "coin",
+                      "n",
+                      "j",
+                      "q",
+                      "horseshoe",
+                      "t",
+                      "n",
+                      "k",
+                      "coin",
+                      "j",
+                      "t",
+                      "clover",
+                      "j",
+                      "q",
+                      "ladybug",
+                      "k",
+                      "clover",
+                      "q",
+                      "j",
+                      "t",
+                      "a",
+                      "k",
+                      "t",
+                      "j",
+                      "coin",
+                      "q",
+                      "j",
+                      "t",
+                      "n",
+                      "clover",
+                      "coin",
+                      "t",
+                      "hands",
+                      "horseshoe",
+                      "a",
+                      "t"
+                    ]
+                  ],
+                  "column_height": 3,
+                  "currency": {
+                    "code": "FUN",
+                    "symbol": "FUN",
+                    "subunits": 100,
+                    "exponent": 2
+                  },
+                  "digit_options": {
+                    "bet": 2,
+                    "paytable": 2,
+                    "balance": 2
+                  }
+                },
+                "game": {
+                  "state": "idle"
+                },
+                "balance": 100000,
+                "extra_data": {
+                  "provable_data": [
+                    {
+                      "hash": "a526bffbed8dc6b0aa952ddc7d679b5664c4cd5f678787a6f0ace99aec228d88"
+                    }
+                  ]
+                },
+                "available_commands": [
+                  "init",
+                  "spin"
+                ]
+              }
+            ],
+            "observations": 1,
+            "evidence": [
+              "evidence:805a84d847dbc30e44d695e3"
+            ],
+            "status": "observed_partial",
+            "conditional_fields": []
+          },
+          "response_contracts:e1954657c59aee1cdc29d2b5": {
+            "id": "response_contracts:e1954657c59aee1cdc29d2b5",
+            "schema": {
+              "samples": 1,
+              "observed_types": {
+                "object": 1
+              },
+              "nullable": false,
+              "confidence": "observed_only",
+              "role": "unknown",
+              "properties": {
+                "bets": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "lines": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "0": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "1": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "2": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "3": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "4": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "5": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "6": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "7": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "8": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "game": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "span_indices": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 5,
+                        "max": 5
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "items": {
+                        "samples": 5,
+                        "observed_types": {
+                          "integer": 5
+                        },
+                        "nullable": false,
+                        "confidence": "observed_only",
+                        "role": "unknown",
+                        "observed_values": [
+                          14,
+                          8,
+                          2,
+                          3,
+                          30
+                        ],
+                        "values_bounded": true,
+                        "variability": "variable",
+                        "enum_exhaustive": false
+                      },
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "scatters": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "indices": {
+                          "samples": 1,
+                          "observed_types": {
+                            "array": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "length": {
+                            "min": 1,
+                            "max": 1
+                          },
+                          "position_semantics": "unknown",
+                          "collection_role": "unknown; does not establish choices",
+                          "items": {
+                            "samples": 1,
+                            "observed_types": {
+                              "array": 1
+                            },
+                            "nullable": false,
+                            "confidence": "observed_only",
+                            "role": "unknown",
+                            "length": {
+                              "min": 2,
+                              "max": 2
+                            },
+                            "position_semantics": "unknown",
+                            "collection_role": "unknown; does not establish choices",
+                            "items": {
+                              "samples": 2,
+                              "observed_types": {
+                                "integer": 2
+                              },
+                              "nullable": false,
+                              "confidence": "observed_only",
+                              "role": "unknown",
+                              "observed_values": [
+                                2
+                              ],
+                              "values_bounded": true,
+                              "variability": "constant_in_observations",
+                              "enum_exhaustive": false
+                            }
+                          },
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "state": {
+                      "samples": 1,
+                      "observed_types": {
+                        "string": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        "closed"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "action": {
+                      "samples": 1,
+                      "observed_types": {
+                        "string": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "observed_values": [
+                        "spin"
+                      ],
+                      "values_bounded": true,
+                      "variability": "constant_in_observations",
+                      "enum_exhaustive": false,
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "balance": {
+                  "samples": 1,
+                  "observed_types": {
+                    "integer": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "observed_values": [
+                    99910
+                  ],
+                  "values_bounded": true,
+                  "variability": "constant_in_observations",
+                  "enum_exhaustive": false,
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "extra_data": {
+                  "samples": 1,
+                  "observed_types": {
+                    "object": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "properties": {
+                    "provable_data": {
+                      "samples": 1,
+                      "observed_types": {
+                        "array": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "length": {
+                        "min": 2,
+                        "max": 2
+                      },
+                      "position_semantics": "unknown",
+                      "collection_role": "unknown; does not establish choices",
+                      "items": {
+                        "samples": 2,
+                        "observed_types": {
+                          "object": 2
+                        },
+                        "nullable": false,
+                        "confidence": "observed_only",
+                        "role": "unknown",
+                        "properties": {
+                          "hash": {
+                            "samples": 2,
+                            "observed_types": {
+                              "string": 2
+                            },
+                            "nullable": false,
+                            "confidence": "observed_only",
+                            "role": "unknown",
+                            "observed_values": [
+                              "6f672a330b22fcf74ed50deb0c5b047b3f1b66049ba0aa64d397f46754b8efe5",
+                              "a526bffbed8dc6b0aa952ddc7d679b5664c4cd5f678787a6f0ace99aec228d88"
+                            ],
+                            "values_bounded": true,
+                            "variability": "variable",
+                            "enum_exhaustive": false,
+                            "parent_samples": 2,
+                            "optional_observed": false,
+                            "present_in_all_observed": true,
+                            "required": null
+                          },
+                          "secret": {
+                            "samples": 1,
+                            "observed_types": {
+                              "string": 1
+                            },
+                            "nullable": false,
+                            "confidence": "observed_only",
+                            "role": "session",
+                            "observed_values": [
+                              "[runtime:secret]"
+                            ],
+                            "values_bounded": true,
+                            "variability": "constant_in_observations",
+                            "enum_exhaustive": false,
+                            "parent_samples": 2,
+                            "optional_observed": true,
+                            "present_in_all_observed": false,
+                            "required": null
+                          },
+                          "client_seed": {
+                            "samples": 1,
+                            "observed_types": {
+                              "string": 1
+                            },
+                            "nullable": false,
+                            "confidence": "observed_only",
+                            "role": "unknown",
+                            "observed_values": [
+                              "04109"
+                            ],
+                            "values_bounded": true,
+                            "variability": "constant_in_observations",
+                            "enum_exhaustive": false,
+                            "parent_samples": 2,
+                            "optional_observed": true,
+                            "present_in_all_observed": false,
+                            "required": null
+                          },
+                          "result": {
+                            "samples": 1,
+                            "observed_types": {
+                              "string": 1
+                            },
+                            "nullable": false,
+                            "confidence": "observed_only",
+                            "role": "unknown",
+                            "observed_values": [
+                              "{\"symbols\":[[\"j\",\"k\",\"horseshoe\",\"n\",\"q\"],[\"q\",\"t\",\"clover\",\"ladybug\",\"j\"],[\"k\",\"j\",\"hands\",\"horseshoe\",\"t\"]],\"card\":\"9S\"}"
+                            ],
+                            "values_bounded": true,
+                            "variability": "constant_in_observations",
+                            "enum_exhaustive": false,
+                            "parent_samples": 2,
+                            "optional_observed": true,
+                            "present_in_all_observed": false,
+                            "required": null
+                          }
+                        },
+                        "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+                      },
+                      "parent_samples": 1,
+                      "optional_observed": false,
+                      "present_in_all_observed": true,
+                      "required": null
+                    }
+                  },
+                  "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                },
+                "available_commands": {
+                  "samples": 1,
+                  "observed_types": {
+                    "array": 1
+                  },
+                  "nullable": false,
+                  "confidence": "observed_only",
+                  "role": "unknown",
+                  "length": {
+                    "min": 2,
+                    "max": 2
+                  },
+                  "position_semantics": "unknown",
+                  "collection_role": "unknown; does not establish choices",
+                  "items": {
+                    "samples": 2,
+                    "observed_types": {
+                      "string": 2
+                    },
+                    "nullable": false,
+                    "confidence": "observed_only",
+                    "role": "unknown",
+                    "observed_values": [
+                      "init",
+                      "spin"
+                    ],
+                    "values_bounded": true,
+                    "variability": "variable",
+                    "enum_exhaustive": false
+                  },
+                  "parent_samples": 1,
+                  "optional_observed": false,
+                  "present_in_all_observed": true,
+                  "required": null
+                }
+              },
+              "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
+            },
+            "examples": [
+              {
+                "bets": {
+                  "lines": {
+                    "0": 10,
+                    "1": 10,
+                    "2": 10,
+                    "3": 10,
+                    "4": 10,
+                    "5": 10,
+                    "6": 10,
+                    "7": 10,
+                    "8": 10
+                  }
+                },
+                "game": {
+                  "span_indices": [
+                    14,
+                    8,
+                    2,
+                    3,
+                    30
+                  ],
+                  "scatters": {
+                    "indices": [
+                      [
+                        2,
+                        2
+                      ]
+                    ]
+                  },
+                  "state": "closed",
+                  "action": "spin"
+                },
+                "balance": 99910,
+                "extra_data": {
+                  "provable_data": [
+                    {
+                      "hash": "6f672a330b22fcf74ed50deb0c5b047b3f1b66049ba0aa64d397f46754b8efe5"
+                    },
+                    {
+                      "hash": "a526bffbed8dc6b0aa952ddc7d679b5664c4cd5f678787a6f0ace99aec228d88",
+                      "secret": "[runtime:secret]",
+                      "client_seed": "04109",
+                      "result": "{\"symbols\":[[\"j\",\"k\",\"horseshoe\",\"n\",\"q\"],[\"q\",\"t\",\"clover\",\"ladybug\",\"j\"],[\"k\",\"j\",\"hands\",\"horseshoe\",\"t\"]],\"card\":\"9S\"}"
+                    }
+                  ]
+                },
+                "available_commands": [
+                  "init",
+                  "spin"
+                ]
+              }
+            ],
+            "observations": 1,
+            "evidence": [
+              "evidence:805a84d847dbc30e44d695e3"
+            ],
+            "status": "observed_partial",
+            "conditional_fields": []
+          }
+        },
+        "field_semantics": {},
+        "path_context": {
+          "context:8327d6820ef364adf422efab": {
+            "id": "context:8327d6820ef364adf422efab",
+            "before": {},
+            "mutation": {},
+            "after": {}
+          }
+        },
+        "unknowns": {
+          "unknown:344c3bef5b97677ec26e38c5": {
+            "id": "unknown:344c3bef5b97677ec26e38c5",
+            "kind": "choice",
+            "entity": "choice:b05a32e4c2ea3e556b79de7b",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No validated next-state outcome for one or more attempts"
+          },
+          "unknown:ed7c5662f9a3b564228a02e3": {
+            "id": "unknown:ed7c5662f9a3b564228a02e3",
+            "kind": "response",
+            "entity": "choice:b05a32e4c2ea3e556b79de7b",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No accepted flow.state; transition intentionally unresolved"
+          },
+          "unknown:851e87a4b529beadd152efc0": {
+            "id": "unknown:851e87a4b529beadd152efc0",
+            "kind": "choice",
+            "entity": "choice:4bef8b61184a001c3aad829a",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No validated next-state outcome for one or more attempts"
+          },
+          "unknown:ab3541e86814120987ce3256": {
+            "id": "unknown:ab3541e86814120987ce3256",
+            "kind": "response",
+            "entity": "choice:4bef8b61184a001c3aad829a",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No accepted flow.state; transition intentionally unresolved"
+          },
+          "unknown:3086c0958ec6e1d81d70c0a3": {
+            "id": "unknown:3086c0958ec6e1d81d70c0a3",
+            "kind": "client",
+            "entity": "fingerprint",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client compatibility unverified; only observed protocol evidence"
+          },
+          "unknown:0d9ff5e8441fb63d25ce36f7": {
+            "id": "unknown:0d9ff5e8441fb63d25ce36f7",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.line_bets[]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:d349465006f498af58ffe326": {
+            "id": "unknown:d349465006f498af58ffe326",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.default_bet",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:5561fff3196473dc276c68b9": {
+            "id": "unknown:5561fff3196473dc276c68b9",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.scatter_bet_factors.2",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:77105e6dab2b5ddaf6289c36": {
+            "id": "unknown:77105e6dab2b5ddaf6289c36",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.scatter_bet_factors.3",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:3c11cddec22e21bbe6bd577f": {
+            "id": "unknown:3c11cddec22e21bbe6bd577f",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.scatter_bet_factors.4",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:ee3370a4255554c178c1c9df": {
+            "id": "unknown:ee3370a4255554c178c1c9df",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.scatter_bet_factors.5",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:ab304ec037588d26bf28feb5": {
+            "id": "unknown:ab304ec037588d26bf28feb5",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"lady\", \"lady\", \"lady\", \"lady\", \"lady\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:d0a28cb3cd43d8495609be28": {
+            "id": "unknown:d0a28cb3cd43d8495609be28",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"lady\", \"lady\", \"lady\", \"lady\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:4479b84f6b96a94243e85cfa": {
+            "id": "unknown:4479b84f6b96a94243e85cfa",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"lady\", \"lady\", \"lady\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:c92016b72b06e5bde3db7b8b": {
+            "id": "unknown:c92016b72b06e5bde3db7b8b",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"lady\", \"lady\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:9c67c44a7f11fdb42a312378": {
+            "id": "unknown:9c67c44a7f11fdb42a312378",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"clover\", \"clover\", \"clover\", \"clover\", \"clover\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:63e51016e9c06b58f94abdfc": {
+            "id": "unknown:63e51016e9c06b58f94abdfc",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"clover\", \"clover\", \"clover\", \"clover\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:7fedbcb87249447b46148e27": {
+            "id": "unknown:7fedbcb87249447b46148e27",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"clover\", \"clover\", \"clover\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:c5e29b468b9b7ab7f55e9736": {
+            "id": "unknown:c5e29b468b9b7ab7f55e9736",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"coin\", \"coin\", \"coin\", \"coin\", \"coin\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:7902fc4091d754080f32e55b": {
+            "id": "unknown:7902fc4091d754080f32e55b",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"coin\", \"coin\", \"coin\", \"coin\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:6a4da245625f999e3006120c": {
+            "id": "unknown:6a4da245625f999e3006120c",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"coin\", \"coin\", \"coin\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:418705f711c75511e717bc13": {
+            "id": "unknown:418705f711c75511e717bc13",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"tail\", \"tail\", \"tail\", \"tail\", \"tail\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:51f94c5a0dca7d7de239b5ca": {
+            "id": "unknown:51f94c5a0dca7d7de239b5ca",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"tail\", \"tail\", \"tail\", \"tail\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:b3236cbb1241b5b425623faf": {
+            "id": "unknown:b3236cbb1241b5b425623faf",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"tail\", \"tail\", \"tail\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:bbdb4562a8867baf26fd1001": {
+            "id": "unknown:bbdb4562a8867baf26fd1001",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"tail\", \"tail\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:bf5db39ea5a82c79d2303344": {
+            "id": "unknown:bf5db39ea5a82c79d2303344",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"ladybug\", \"ladybug\", \"ladybug\", \"ladybug\", \"ladybug\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:7be57c616b5febb2dbf8ffa6": {
+            "id": "unknown:7be57c616b5febb2dbf8ffa6",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"ladybug\", \"ladybug\", \"ladybug\", \"ladybug\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:d29e73c991fe670e03965517": {
+            "id": "unknown:d29e73c991fe670e03965517",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"ladybug\", \"ladybug\", \"ladybug\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:d531477858853250a0e2cc11": {
+            "id": "unknown:d531477858853250a0e2cc11",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"ladybug\", \"ladybug\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:8582f4df43f6f5fdaf7da5f4": {
+            "id": "unknown:8582f4df43f6f5fdaf7da5f4",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"horseshoe\", \"horseshoe\", \"horseshoe\", \"horseshoe\", \"horseshoe\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:5de2843bdf5d5939ba6d7be5": {
+            "id": "unknown:5de2843bdf5d5939ba6d7be5",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"horseshoe\", \"horseshoe\", \"horseshoe\", \"horseshoe\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:d6efb0652008ed8ebedd9342": {
+            "id": "unknown:d6efb0652008ed8ebedd9342",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"horseshoe\", \"horseshoe\", \"horseshoe\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:88ac6afccd2caf6ba638e140": {
+            "id": "unknown:88ac6afccd2caf6ba638e140",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"a\", \"a\", \"a\", \"a\", \"a\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:724f1be96fa054161dec315f": {
+            "id": "unknown:724f1be96fa054161dec315f",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"a\", \"a\", \"a\", \"a\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:b879acb765c2cb0b9116e66e": {
+            "id": "unknown:b879acb765c2cb0b9116e66e",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"a\", \"a\", \"a\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:f943a9aa28c5de0d12f3ec6d": {
+            "id": "unknown:f943a9aa28c5de0d12f3ec6d",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"k\", \"k\", \"k\", \"k\", \"k\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:3db61d34966026b8f682d497": {
+            "id": "unknown:3db61d34966026b8f682d497",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"k\", \"k\", \"k\", \"k\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:187f9c915ea25d8f5c318498": {
+            "id": "unknown:187f9c915ea25d8f5c318498",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"k\", \"k\", \"k\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:a408f1d8bd8528c73f3fde34": {
+            "id": "unknown:a408f1d8bd8528c73f3fde34",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"q\", \"q\", \"q\", \"q\", \"q\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:27ed16a045c4ee2d3dfa1f82": {
+            "id": "unknown:27ed16a045c4ee2d3dfa1f82",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"q\", \"q\", \"q\", \"q\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:16b9e2d350838fed181e16d9": {
+            "id": "unknown:16b9e2d350838fed181e16d9",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"q\", \"q\", \"q\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:107aba8319c8e73db3d61817": {
+            "id": "unknown:107aba8319c8e73db3d61817",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"j\", \"j\", \"j\", \"j\", \"j\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:c29240649ccdc3dffe197d3e": {
+            "id": "unknown:c29240649ccdc3dffe197d3e",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"j\", \"j\", \"j\", \"j\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:04ecd1db05cb69aafda500bd": {
+            "id": "unknown:04ecd1db05cb69aafda500bd",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"j\", \"j\", \"j\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:9befb38f8d56e47bc8648154": {
+            "id": "unknown:9befb38f8d56e47bc8648154",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"t\", \"t\", \"t\", \"t\", \"t\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:b88d86afeeedd4aeeba271f5": {
+            "id": "unknown:b88d86afeeedd4aeeba271f5",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"t\", \"t\", \"t\", \"t\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:62ec3c1971ad2f5f77aad032": {
+            "id": "unknown:62ec3c1971ad2f5f77aad032",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"t\", \"t\", \"t\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:d2e272dc022c6193061531a8": {
+            "id": "unknown:d2e272dc022c6193061531a8",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"n\", \"n\", \"n\", \"n\", \"n\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:7b3f340b0a3c804b716a88eb": {
+            "id": "unknown:7b3f340b0a3c804b716a88eb",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"n\", \"n\", \"n\", \"n\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:d7c685bce616724d64a28162": {
+            "id": "unknown:d7c685bce616724d64a28162",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"n\", \"n\", \"n\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:b393c4ae41cd110c0efda946": {
+            "id": "unknown:b393c4ae41cd110c0efda946",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.paytable.[\"n\", \"n\"]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:2592653e23a52c6b627063dd": {
+            "id": "unknown:2592653e23a52c6b627063dd",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.lines[][]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:8852d611de819b3db93a120d": {
+            "id": "unknown:8852d611de819b3db93a120d",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.reels[][]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:cce03f2b1dabbee2f75c3767": {
+            "id": "unknown:cce03f2b1dabbee2f75c3767",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.column_height",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:29fa10244e5d80f23ff53606": {
+            "id": "unknown:29fa10244e5d80f23ff53606",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.currency.code",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:13a7ee2a707768cb984e7ed9": {
+            "id": "unknown:13a7ee2a707768cb984e7ed9",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.currency.symbol",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:f8ca53317aecc2d40966f2b1": {
+            "id": "unknown:f8ca53317aecc2d40966f2b1",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.currency.subunits",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:19caad5bd64f73d382289be6": {
+            "id": "unknown:19caad5bd64f73d382289be6",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.currency.exponent",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:d75f063dfb5fce43aff38604": {
+            "id": "unknown:d75f063dfb5fce43aff38604",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.digit_options.bet",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:3d6f3ef4d9d1f05d460e232e": {
+            "id": "unknown:3d6f3ef4d9d1f05d460e232e",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.digit_options.paytable",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:fd002027d8587e0c0eb219c7": {
+            "id": "unknown:fd002027d8587e0c0eb219c7",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/options.digit_options.balance",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:3052c4220713511cc5a7f7f8": {
+            "id": "unknown:3052c4220713511cc5a7f7f8",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/game.state",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:78635f881b4e22980e64cc00": {
+            "id": "unknown:78635f881b4e22980e64cc00",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/balance",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:1bebaec236748d0846228c29": {
+            "id": "unknown:1bebaec236748d0846228c29",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/extra_data.provable_data[].hash",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:c3182f381f62e7a59cff9619": {
+            "id": "unknown:c3182f381f62e7a59cff9619",
+            "kind": "field",
+            "entity": "response_contracts:27f9979f18cba9fd8031eb5b/available_commands[]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:129495bc441091f187d1c823": {
+            "id": "unknown:129495bc441091f187d1c823",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/bets.lines.0",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:9d7fefb18747246a2254b108": {
+            "id": "unknown:9d7fefb18747246a2254b108",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/bets.lines.1",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:763500a62411e533acca7906": {
+            "id": "unknown:763500a62411e533acca7906",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/bets.lines.2",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:eb5d8ab6126141b6d6b56a29": {
+            "id": "unknown:eb5d8ab6126141b6d6b56a29",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/bets.lines.3",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:b80ee4a2f12fc750fdab843e": {
+            "id": "unknown:b80ee4a2f12fc750fdab843e",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/bets.lines.4",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:758e0b8a36377fbae30f2c14": {
+            "id": "unknown:758e0b8a36377fbae30f2c14",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/bets.lines.5",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:61b54d5c883171727296d2c0": {
+            "id": "unknown:61b54d5c883171727296d2c0",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/bets.lines.6",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:5b6021cd9988e70cb4c0e938": {
+            "id": "unknown:5b6021cd9988e70cb4c0e938",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/bets.lines.7",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:51aa04942747f0c23c21d559": {
+            "id": "unknown:51aa04942747f0c23c21d559",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/bets.lines.8",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:90d217c421c2f2fac92021a5": {
+            "id": "unknown:90d217c421c2f2fac92021a5",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/game.span_indices[]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:c8ebae6b974df7fb7874c236": {
+            "id": "unknown:c8ebae6b974df7fb7874c236",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/game.scatters.indices[][]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:145478b0b6f50d849169864b": {
+            "id": "unknown:145478b0b6f50d849169864b",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/game.state",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:53b8ae9603b48ecd2e1bca05": {
+            "id": "unknown:53b8ae9603b48ecd2e1bca05",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/game.action",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:96f3fb4a2f07f5c76118a998": {
+            "id": "unknown:96f3fb4a2f07f5c76118a998",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/balance",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:c457d0b921982284a93a44a0": {
+            "id": "unknown:c457d0b921982284a93a44a0",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/extra_data.provable_data[].hash",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:de29e4c1df9f58af6b8beab6": {
+            "id": "unknown:de29e4c1df9f58af6b8beab6",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/extra_data.provable_data[].client_seed",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:27e942a46faaccd68bb00f14": {
+            "id": "unknown:27e942a46faaccd68bb00f14",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/extra_data.provable_data[].result",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:333c5028d00d464fb0eb147b": {
+            "id": "unknown:333c5028d00d464fb0eb147b",
+            "kind": "field",
+            "entity": "response_contracts:e1954657c59aee1cdc29d2b5/available_commands[]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          }
+        },
+        "evidence": {
+          "evidence:805a84d847dbc30e44d695e3": {
+            "id": "evidence:805a84d847dbc30e44d695e3",
+            "kind": "WIRE_OBSERVED",
+            "source": "structured observation"
+          },
+          "evidence:c42da6fa74f806dddec8985b": {
+            "id": "evidence:c42da6fa74f806dddec8985b",
+            "kind": "CLIENT_PROVEN",
+            "source": "tester_spin/providers/bgaming/runtime.py"
+          }
+        },
+        "relations": {},
+        "artifact_references": [],
+        "coverage": {
+          "states": 1,
+          "decision_points": 2,
+          "choices": 2,
+          "executed": 2,
+          "outcome_observed": 0,
+          "pending": 2,
+          "unknowns": 83,
+          "complete": false,
+          "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+        }
+      }
+    },
     "path-coverage.json": {
       "encoding": "json",
       "bytes": 174,
@@ -101,7 +3720,7 @@
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 1430,
+      "bytes": 2015,
       "value": {
         "provider": "bgaming",
         "slug": "lucky-lady-clover",
@@ -117,14 +3736,17 @@
             "id": "SPIN",
             "kind": "SPIN",
             "observed": true,
-            "wire_command": "spin"
+            "wire_command": "spin",
+            "evidence_level": "REMOTE_EXECUTION",
+            "execution_state": "PROVEN_TERMINAL",
+            "validated": true
           }
         ],
-        "started_at": "2026-09-13T13:18:32+00:00",
-        "finished_at": "2026-09-13T13:18:36+00:00",
-        "elapsed_ms": 3734.0000000003783,
+        "started_at": "2026-09-15T08:45:43+00:00",
+        "finished_at": "2026-09-15T08:45:47+00:00",
+        "elapsed_ms": 4031.0000000026776,
         "error": "",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Lucky Lady's Clover\\tests\\2026-09-13_10-18-32-bgaming-http-api-v2",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Lucky Lady's Clover\\tests\\2026-09-15_05-45-43-bgaming-http-api-v2",
         "attempts": [
           {
             "number": 1,
@@ -134,7 +3756,7 @@
             "provider_bl": null,
             "provider_pur": null,
             "status_code": 200,
-            "elapsed_ms": 328.0000000004293,
+            "elapsed_ms": 343.99999999732245,
             "symbol": "LuckyLadyClover",
             "endpoint": "https://demo.bgaming-network.com/api/LuckyLadyClover/2366874/<session>",
             "na": "closed",
@@ -142,10 +3764,26 @@
             "wire_steps": 1,
             "warning": "",
             "error": "",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Lucky Lady's Clover\\tests\\2026-09-13_10-18-32-bgaming-http-api-v2\\SPIN\\attempt-001"
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Lucky Lady's Clover\\tests\\2026-09-15_05-45-43-bgaming-http-api-v2\\SPIN\\attempt-001"
           }
         ],
-        "samples_per_path": 1
+        "samples_per_path": 1,
+        "structural_map": {
+          "path": "analysis/game-structure.json",
+          "schema": "tester-spin/game-structure/v1",
+          "coverage": {
+            "states": 1,
+            "decision_points": 2,
+            "choices": 2,
+            "executed": 2,
+            "outcome_observed": 0,
+            "pending": 2,
+            "unknowns": 83,
+            "complete": false,
+            "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+          },
+          "diagnostics": []
+        }
       }
     },
     "sample-catalog.json": {
@@ -185,23 +3823,23 @@
                 "evidence": [
                   {
                     "path": "SPIN/attempt-001/request.json",
-                    "sha256": "00e6db90235f9b4b497bd17717a538affa81c78e8cb686b70c0004b4c7270bd3",
-                    "bytes": 302
+                    "sha256": "dc53fe4178b2efe1b562fb5c65c3011fe4d247adc9e47ccd55de05ed622e1106",
+                    "bytes": 301
                   },
                   {
                     "path": "SPIN/attempt-001/response.json",
-                    "sha256": "fec30344fea4e08f23da00ad47856b8f8208d7f59bf629075be5b3fef844b29b",
-                    "bytes": 1484
+                    "sha256": "a501dfdf8103ee47cc11bc291962e8810810ccf6ea9247cd0fe9809819b6b221",
+                    "bytes": 1587
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-request.json",
-                    "sha256": "00e6db90235f9b4b497bd17717a538affa81c78e8cb686b70c0004b4c7270bd3",
-                    "bytes": 302
+                    "sha256": "dc53fe4178b2efe1b562fb5c65c3011fe4d247adc9e47ccd55de05ed622e1106",
+                    "bytes": 301
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-response.json",
-                    "sha256": "fec30344fea4e08f23da00ad47856b8f8208d7f59bf629075be5b3fef844b29b",
-                    "bytes": 1484
+                    "sha256": "a501dfdf8103ee47cc11bc291962e8810810ccf6ea9247cd0fe9809819b6b221",
+                    "bytes": 1587
                   }
                 ]
               }
@@ -254,12 +3892,12 @@
         "balance_total": 99910,
         "game_state": "closed",
         "game_action": "spin",
-        "response_sha256": "f46c3b935d5207e9"
+        "response_sha256": "4bc4a793a18050f5"
       }
     },
     "SPIN/attempt-001/request.json": {
       "encoding": "json",
-      "bytes": 302,
+      "bytes": 301,
       "value": {
         "command": "spin",
         "options": {
@@ -276,14 +3914,14 @@
           }
         },
         "extra_data": {
-          "round_series_id": 1789305513373,
-          "client_seed": 35999
+          "round_series_id": 1789461944842,
+          "client_seed": 4109
         }
       }
     },
     "SPIN/attempt-001/response.json": {
       "encoding": "json",
-      "bytes": 1484,
+      "bytes": 1587,
       "value": {
         "bets": {
           "lines": {
@@ -300,12 +3938,20 @@
         },
         "game": {
           "span_indices": [
-            3,
-            35,
-            12,
             14,
-            17
+            8,
+            2,
+            3,
+            30
           ],
+          "scatters": {
+            "indices": [
+              [
+                2,
+                2
+              ]
+            ]
+          },
           "state": "closed",
           "action": "spin"
         },
@@ -313,13 +3959,13 @@
         "extra_data": {
           "provable_data": [
             {
-              "hash": "35291439191ca0ca5151ca5d590a61dadc4b81bd204651e7731a33ffd6b98971"
+              "hash": "6f672a330b22fcf74ed50deb0c5b047b3f1b66049ba0aa64d397f46754b8efe5"
             },
             {
-              "hash": "19ce7a676268f9a270dbbc9e390bdb402d39f6b6f3f59087ebcfb4dc78cbedc0",
-              "secret": "{\"symbols\":[[\"a\",\"n\",\"clover\",\"horseshoe\",\"q\"],[\"q\",\"t\",\"hands\",\"j\",\"horseshoe\"],[\"j\",\"a\",\"a\",\"a\",\"t\"],[\"horseshoe\",\"q\",\"t\",\"q\",\"n\"],[\"t\",\"j\",\"j\",\"j\",\"k\"],[\"clover\",\"clover\",\"clover\",\"clover\",\"coin\"],[\"q\",\"q\",\"q\",\"tail\",\"j\"],[\"n\",\"k\",\"n\",\"q\",\"t\"],[\"coin\",\"t\",\"tail\",\"j\",\"clover\"],[\"a\",\"coin\",\"t\",\"t\",\"j\"],[\"j\",\"a\",\"a\",\"k\",\"q\"],[\"ladybug\",\"t\",\"q\",\"a\",\"ladybug\"]],\"card\":\"3S\",\"game\":\"LuckyLadyClover\",\"secret\":\"4c4faa0d296d17e6f8a1588aa3af403a\"}",
-              "client_seed": "35999",
-              "result": "{\"symbols\":[[\"horseshoe\",\"clover\",\"t\",\"t\",\"j\"],[\"t\",\"q\",\"a\",\"k\",\"q\"],[\"clover\",\"k\",\"q\",\"a\",\"ladybug\"]],\"card\":\"3C\"}"
+              "hash": "a526bffbed8dc6b0aa952ddc7d679b5664c4cd5f678787a6f0ace99aec228d88",
+              "secret": "{\"symbols\":[[\"j\",\"t\",\"t\",\"n\",\"clover\"],[\"q\",\"q\",\"horseshoe\",\"ladybug\",\"q\"],[\"k\",\"horseshoe\",\"clover\",\"horseshoe\",\"j\"],[\"coin\",\"n\",\"hands\",\"j\",\"t\"],[\"q\",\"k\",\"a\",\"a\",\"a\"],[\"n\",\"t\",\"t\",\"q\",\"k\"],[\"a\",\"j\",\"j\",\"j\",\"t\"],[\"t\",\"a\",\"clover\",\"clover\",\"j\"],[\"hands\",\"n\",\"q\",\"tail\",\"coin\"],[\"k\",\"tail\",\"n\",\"q\",\"q\"],[\"clover\",\"k\",\"tail\",\"j\",\"j\"],[\"j\",\"q\",\"t\",\"t\",\"t\"]],\"card\":\"9C\",\"game\":\"LuckyLadyClover\",\"secret\":\"1eae362fe7f685a85f9e3b27a605d330\"}",
+              "client_seed": "04109",
+              "result": "{\"symbols\":[[\"j\",\"k\",\"horseshoe\",\"n\",\"q\"],[\"q\",\"t\",\"clover\",\"ladybug\",\"j\"],[\"k\",\"j\",\"hands\",\"horseshoe\",\"t\"]],\"card\":\"9S\"}"
             }
           ]
         },
@@ -331,7 +3977,7 @@
     },
     "SPIN/attempt-001/step-001-request.json": {
       "encoding": "json",
-      "bytes": 302,
+      "bytes": 301,
       "value": {
         "command": "spin",
         "options": {
@@ -348,14 +3994,14 @@
           }
         },
         "extra_data": {
-          "round_series_id": 1789305513373,
-          "client_seed": 35999
+          "round_series_id": 1789461944842,
+          "client_seed": 4109
         }
       }
     },
     "SPIN/attempt-001/step-001-response.json": {
       "encoding": "json",
-      "bytes": 1484,
+      "bytes": 1587,
       "value": {
         "bets": {
           "lines": {
@@ -372,12 +4018,20 @@
         },
         "game": {
           "span_indices": [
-            3,
-            35,
-            12,
             14,
-            17
+            8,
+            2,
+            3,
+            30
           ],
+          "scatters": {
+            "indices": [
+              [
+                2,
+                2
+              ]
+            ]
+          },
           "state": "closed",
           "action": "spin"
         },
@@ -385,13 +4039,13 @@
         "extra_data": {
           "provable_data": [
             {
-              "hash": "35291439191ca0ca5151ca5d590a61dadc4b81bd204651e7731a33ffd6b98971"
+              "hash": "6f672a330b22fcf74ed50deb0c5b047b3f1b66049ba0aa64d397f46754b8efe5"
             },
             {
-              "hash": "19ce7a676268f9a270dbbc9e390bdb402d39f6b6f3f59087ebcfb4dc78cbedc0",
-              "secret": "{\"symbols\":[[\"a\",\"n\",\"clover\",\"horseshoe\",\"q\"],[\"q\",\"t\",\"hands\",\"j\",\"horseshoe\"],[\"j\",\"a\",\"a\",\"a\",\"t\"],[\"horseshoe\",\"q\",\"t\",\"q\",\"n\"],[\"t\",\"j\",\"j\",\"j\",\"k\"],[\"clover\",\"clover\",\"clover\",\"clover\",\"coin\"],[\"q\",\"q\",\"q\",\"tail\",\"j\"],[\"n\",\"k\",\"n\",\"q\",\"t\"],[\"coin\",\"t\",\"tail\",\"j\",\"clover\"],[\"a\",\"coin\",\"t\",\"t\",\"j\"],[\"j\",\"a\",\"a\",\"k\",\"q\"],[\"ladybug\",\"t\",\"q\",\"a\",\"ladybug\"]],\"card\":\"3S\",\"game\":\"LuckyLadyClover\",\"secret\":\"4c4faa0d296d17e6f8a1588aa3af403a\"}",
-              "client_seed": "35999",
-              "result": "{\"symbols\":[[\"horseshoe\",\"clover\",\"t\",\"t\",\"j\"],[\"t\",\"q\",\"a\",\"k\",\"q\"],[\"clover\",\"k\",\"q\",\"a\",\"ladybug\"]],\"card\":\"3C\"}"
+              "hash": "a526bffbed8dc6b0aa952ddc7d679b5664c4cd5f678787a6f0ace99aec228d88",
+              "secret": "{\"symbols\":[[\"j\",\"t\",\"t\",\"n\",\"clover\"],[\"q\",\"q\",\"horseshoe\",\"ladybug\",\"q\"],[\"k\",\"horseshoe\",\"clover\",\"horseshoe\",\"j\"],[\"coin\",\"n\",\"hands\",\"j\",\"t\"],[\"q\",\"k\",\"a\",\"a\",\"a\"],[\"n\",\"t\",\"t\",\"q\",\"k\"],[\"a\",\"j\",\"j\",\"j\",\"t\"],[\"t\",\"a\",\"clover\",\"clover\",\"j\"],[\"hands\",\"n\",\"q\",\"tail\",\"coin\"],[\"k\",\"tail\",\"n\",\"q\",\"q\"],[\"clover\",\"k\",\"tail\",\"j\",\"j\"],[\"j\",\"q\",\"t\",\"t\",\"t\"]],\"card\":\"9C\",\"game\":\"LuckyLadyClover\",\"secret\":\"1eae362fe7f685a85f9e3b27a605d330\"}",
+              "client_seed": "04109",
+              "result": "{\"symbols\":[[\"j\",\"k\",\"horseshoe\",\"n\",\"q\"],[\"q\",\"t\",\"clover\",\"ladybug\",\"j\"],[\"k\",\"j\",\"hands\",\"horseshoe\",\"t\"]],\"card\":\"9S\"}"
             }
           ]
         },
@@ -412,8 +4066,8 @@
           "name": "Lucky Lady's Clover",
           "identifier": "LuckyLadyClover"
         },
-        "generated_at": "2026-09-13T13:18:36+00:00",
-        "source_run": "2026-09-13_10-18-32-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:45:47+00:00",
+        "source_run": "2026-09-15_05-45-43-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -461,8 +4115,8 @@
           "name": "Lucky Lady's Clover",
           "identifier": "LuckyLadyClover"
         },
-        "generated_at": "2026-09-13T13:18:36+00:00",
-        "source_run": "2026-09-13_10-18-32-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:45:47+00:00",
+        "source_run": "2026-09-15_05-45-43-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -515,17 +4169,17 @@
           "title": "Lucky Lady's Clover",
           "currency": "FUN",
           "balance_polling_interval": 30000,
-          "cache_id": "79088ebdd278c494a39e9daee9b389732624bfdb8f916e66dc611b25588a556a",
-          "cache_player_id": "c094c0ea7a5a13f7a2c1a32d59dad11544f8353b0f75e804465341b7e5aa15d3",
+          "cache_id": "8a525ee367090c5353250e331ec32041f0f3056640349849e81450530777feea",
+          "cache_player_id": "3cef604f542ebd630a27291fee4d4a2e93bed951e5a6ad41e402f5fc727297d8",
           "api": "https://demo.bgaming-network.com/api/LuckyLadyClover/2366874/<session>",
           "rules_url": "https://rules.bgaming-network.com/en/LuckyLadyClover.json",
           "deposit_url": null,
           "games_page_url": "https://www.bgaming.com/games.html",
           "history_url": null,
-          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a09aeb-6f9e-78bf-9f29-dd820965c7b8/launch",
-          "game_page_url": "https://demo.bgaming-network.com/games/LuckyLadyClover/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDY3MzAyOTh9LCJleHAiOjE4MDQ5NDM5MTZ9.XjMm03lBxr-LajYD0ivI1EfisMBWch9B-gqVu-Qm8bs",
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a0a43e-736e-7bd3-b679-eb4a124c03eb/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/LuckyLadyClover/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDg0NTIyNDh9LCJleHAiOjE4MDUxMDAzNTF9.NZ3cD9t4vv4uHqdmmrVRUw_dc2BdB6CAEX66m9Qbnx8",
           "websocket_url": "wss://demo.bgaming-network.com:443/cable",
-          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=LuckyLadyClover&play_token=01a09aeb-6f9e-78bf-9f29-dd820965c7b8&server_id=demo",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=LuckyLadyClover&play_token=01a0a43e-736e-7bd3-b679-eb4a124c03eb&server_id=demo",
           "ui": {
             "home_button": true,
             "full_screen_prompt": true,
@@ -600,7 +4254,7 @@
             }
           },
           "lobby_v2_options": {
-            "player_id": 345479874,
+            "player_id": 347200172,
             "lobby_enabled": false,
             "drops_enabled": false,
             "drops_token": "<redacted>",
@@ -630,7 +4284,7 @@
             "return": null,
             "history": {
               "text": null,
-              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDU0Nzk4NzQsImd0X2lkIjoyMzY2ODc0fSwiZXhwIjoxODA0OTQzOTE2fQ.B6IfR3Uay097JY7NcjIFStfCmXaiyUQB6nfIEcR1310",
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcyMDAxNzIsImd0X2lkIjoyMzY2ODc0fSwiZXhwIjoxODA1MTAwMzUxfQ.JNu6uR7Hh7aNLXGkZJaybtZnlyNccOgd5Zodbh-9kTs",
               "mode": "open"
             }
           },
@@ -669,7 +4323,134 @@
           "pre_bet_balance_validation": false,
           "available_games_to_switch": []
         },
-        "round_series_id": 1789305513373
+        "round_series_id": 1789461944842
+      }
+    },
+    "diagnostic.json": {
+      "encoding": "json",
+      "bytes": 3792,
+      "value": {
+        "schema": "tester-spin/run-diagnostics/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "lucky-lady-clover",
+          "name": "Lucky Lady's Clover",
+          "symbol": "LuckyLadyClover"
+        },
+        "started_at": "2026-09-15T08:45:43+00:00",
+        "finished_at": "2026-09-15T08:45:47+00:00",
+        "result_status": "OK",
+        "scope": "observed_paths_only",
+        "observed_error": "",
+        "root_cause": {
+          "status": "UNDETERMINED",
+          "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
+        },
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "status": "VALIDATED",
+            "validated": true,
+            "tested": true,
+            "attempt_count": 1,
+            "terminal_count": 1,
+            "missing_options": [],
+            "branches": [],
+            "provider_metadata": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": true,
+              "wire_command": "spin",
+              "evidence_level": "REMOTE_EXECUTION",
+              "execution_state": "PROVEN_TERMINAL",
+              "validated": true
+            }
+          }
+        ],
+        "attempts": [
+          {
+            "number": 1,
+            "mode_id": "SPIN",
+            "reported_ok": true,
+            "reported_terminal": true,
+            "http_status": 200,
+            "last_state": "closed",
+            "wire_steps": 1,
+            "elapsed_ms": 343.99999999732245,
+            "error": "",
+            "warning": "",
+            "evidence": [
+              {
+                "path": "SPIN/attempt-001/request.json",
+                "sha256": "dc53fe4178b2efe1b562fb5c65c3011fe4d247adc9e47ccd55de05ed622e1106",
+                "bytes": 301,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/response.json",
+                "sha256": "a501dfdf8103ee47cc11bc291962e8810810ccf6ea9247cd0fe9809819b6b221",
+                "bytes": 1587,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/step-001-request.json",
+                "sha256": "dc53fe4178b2efe1b562fb5c65c3011fe4d247adc9e47ccd55de05ed622e1106",
+                "bytes": 301,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/step-001-response.json",
+                "sha256": "a501dfdf8103ee47cc11bc291962e8810810ccf6ea9247cd0fe9809819b6b221",
+                "bytes": 1587,
+                "kind": "response"
+              }
+            ],
+            "first_request": "SPIN/attempt-001/request.json",
+            "last_request": "SPIN/attempt-001/request.json",
+            "last_response": "SPIN/attempt-001/response.json",
+            "ordering": "ARTIFACT_STEP_INDEX",
+            "trajectory_id": "7195b2b9a15100876fb2"
+          }
+        ],
+        "bootstrap_evidence": [
+          {
+            "path": "bootstrap.json",
+            "sha256": "4ba61828cde5da2f9a19cc31725abfa8057b0d54790e7eb7d4cb5e95ce0cf229",
+            "bytes": 5848,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-request.json",
+            "sha256": "d9a92be201dfc66eeda7f02ce733ed3d392a21bdac1e414862a78656807107de",
+            "bytes": 88,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-response.json",
+            "sha256": "2acf8e41091feb4d4812f9ba64a1b0fc78fa87f034dff5612ef956bff8a380c9",
+            "bytes": 7051,
+            "kind": "envelope"
+          }
+        ],
+        "unknown_actions": [],
+        "request_comparisons": [],
+        "coverage": {
+          "schema": "tester-spin/path-coverage/v1",
+          "provider": "bgaming",
+          "game": "lucky-lady-clover",
+          "branch_points": [],
+          "complete": true,
+          "missing_count": 0
+        },
+        "sample_diagnostics": [],
+        "evidence_gaps": [],
+        "next_steps": [
+          "Las rutas observadas terminaron; una muestra corta no prueba ausencia de otras compras o estados naturales."
+        ],
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Lucky Lady's Clover\\diagnostics\\20260915T084543-c0d0642baddd\\events.jsonl",
+        "tree": "run-tree.html",
+        "tree_data": "run-tree.json"
       }
     },
     "emulation-contract.json": {
@@ -683,8 +4464,8 @@
           "name": "Lucky Lady's Clover",
           "identifier": "LuckyLadyClover"
         },
-        "generated_at": "2026-09-13T13:18:36+00:00",
-        "source_run": "2026-09-13_10-18-32-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:45:47+00:00",
+        "source_run": "2026-09-15_05-45-43-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -839,7 +4620,7 @@
       "value": {
         "command": "init",
         "extra_data": {
-          "round_series_id": 1789305513373
+          "round_series_id": 1789461944842
         }
       }
     },
@@ -1218,7 +4999,7 @@
         "extra_data": {
           "provable_data": [
             {
-              "hash": "19ce7a676268f9a270dbbc9e390bdb402d39f6b6f3f59087ebcfb4dc78cbedc0"
+              "hash": "a526bffbed8dc6b0aa952ddc7d679b5664c4cd5f678787a6f0ace99aec228d88"
             }
           ]
         },
@@ -1239,8 +5020,8 @@
           "name": "Lucky Lady's Clover",
           "identifier": "LuckyLadyClover"
         },
-        "generated_at": "2026-09-13T13:18:36+00:00",
-        "source_run": "2026-09-13_10-18-32-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:45:47+00:00",
+        "source_run": "2026-09-15_05-45-43-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -1311,7 +5092,7 @@
             "terminal_successes": 1,
             "wire_steps": 1,
             "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Lucky Lady's Clover\\tests\\2026-09-13_10-18-32-bgaming-http-api-v2\\SPIN\\attempt-001"
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Lucky Lady's Clover\\tests\\2026-09-15_05-45-43-bgaming-http-api-v2\\SPIN\\attempt-001"
             ]
           }
         ]
@@ -1328,8 +5109,8 @@
           "name": "Lucky Lady's Clover",
           "identifier": "LuckyLadyClover"
         },
-        "generated_at": "2026-09-13T13:18:36+00:00",
-        "source_run": "2026-09-13_10-18-32-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:45:47+00:00",
+        "source_run": "2026-09-15_05-45-43-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -1480,7 +5261,7 @@
     },
     "response-schemas/spin__to__unknown.json": {
       "encoding": "json",
-      "bytes": 4065,
+      "bytes": 4330,
       "value": {
         "schema": "tester-spin/observed-json-shape/v1",
         "provider": "bgaming",
@@ -1567,21 +5348,18 @@
                       "client_seed": {
                         "type": "string",
                         "observed_enum": [
-                          "35999"
+                          "04109"
                         ]
                       },
                       "hash": {
                         "type": "string",
                         "observed_enum": [
-                          "19ce7a676268f9a270dbbc9e390bdb402d39f6b6f3f59087ebcfb4dc78cbedc0",
-                          "35291439191ca0ca5151ca5d590a61dadc4b81bd204651e7731a33ffd6b98971"
+                          "6f672a330b22fcf74ed50deb0c5b047b3f1b66049ba0aa64d397f46754b8efe5",
+                          "a526bffbed8dc6b0aa952ddc7d679b5664c4cd5f678787a6f0ace99aec228d88"
                         ]
                       },
                       "result": {
-                        "type": "string",
-                        "observed_enum": [
-                          "{\"symbols\":[[\"horseshoe\",\"clover\",\"t\",\"t\",\"j\"],[\"t\",\"q\",\"a\",\"k\",\"q\"],[\"clover\",\"k\",\"q\",\"a\",\"ladybug\"]],\"card\":\"3C\"}"
-                        ]
+                        "type": "string"
                       },
                       "secret": {
                         "type": "string"
@@ -1608,6 +5386,24 @@
                     "spin"
                   ]
                 },
+                "scatters": {
+                  "type": "object",
+                  "properties": {
+                    "indices": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "indices"
+                  ],
+                  "additionalProperties": true
+                },
                 "span_indices": {
                   "type": "array",
                   "items": {
@@ -1623,6 +5419,7 @@
               },
               "required": [
                 "action",
+                "scatters",
                 "span_indices",
                 "state"
               ],
@@ -1644,6 +5441,132 @@
         ]
       }
     },
+    "run-tree.json": {
+      "encoding": "json",
+      "bytes": 3831,
+      "value": {
+        "schema": "tester-spin/run-tree/v1",
+        "provider": "bgaming",
+        "game": "lucky-lady-clover",
+        "scope": "observed_trajectories",
+        "exact_remote_outcome_reproducible": false,
+        "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
+        "trajectories": [
+          {
+            "id": "7195b2b9a15100876fb2",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": true,
+                "wire_command": "spin",
+                "evidence_level": "REMOTE_EXECUTION",
+                "execution_state": "PROVEN_TERMINAL",
+                "validated": true
+              }
+            },
+            "attempt": 1,
+            "reported_terminal": true,
+            "reported_ok": true,
+            "sequence_status": "ARTIFACT_STEP_INDEX",
+            "steps": [
+              {
+                "label": "step-001",
+                "directory": "SPIN/attempt-001",
+                "request": [
+                  {
+                    "path": "SPIN/attempt-001/request.json",
+                    "sha256": "dc53fe4178b2efe1b562fb5c65c3011fe4d247adc9e47ccd55de05ed622e1106",
+                    "bytes": 301,
+                    "kind": "request"
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "dc53fe4178b2efe1b562fb5c65c3011fe4d247adc9e47ccd55de05ed622e1106",
+                    "bytes": 301,
+                    "kind": "request"
+                  }
+                ],
+                "response": [
+                  {
+                    "path": "SPIN/attempt-001/response.json",
+                    "sha256": "a501dfdf8103ee47cc11bc291962e8810810ccf6ea9247cd0fe9809819b6b221",
+                    "bytes": 1587,
+                    "kind": "response"
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "a501dfdf8103ee47cc11bc291962e8810810ccf6ea9247cd0fe9809819b6b221",
+                    "bytes": 1587,
+                    "kind": "response"
+                  }
+                ],
+                "id": "7195b2b9a15100876fb2:0",
+                "parent_id": "7195b2b9a15100876fb2",
+                "observed_response": {
+                  "bets": {
+                    "lines": {
+                      "0": 10,
+                      "1": 10,
+                      "2": 10,
+                      "3": 10,
+                      "4": 10,
+                      "5": 10,
+                      "6": 10,
+                      "7": 10,
+                      "8": 10
+                    }
+                  },
+                  "game": {
+                    "span_indices": [
+                      14,
+                      8,
+                      2,
+                      3,
+                      30
+                    ],
+                    "scatters": {
+                      "indices": [
+                        [
+                          2,
+                          2
+                        ]
+                      ]
+                    },
+                    "state": "closed",
+                    "action": "spin"
+                  },
+                  "balance": 99910,
+                  "extra_data": {
+                    "provable_data": [
+                      {
+                        "hash": "6f672a330b22fcf74ed50deb0c5b047b3f1b66049ba0aa64d397f46754b8efe5"
+                      },
+                      {
+                        "hash": "a526bffbed8dc6b0aa952ddc7d679b5664c4cd5f678787a6f0ace99aec228d88",
+                        "secret": "[REDACTED]",
+                        "client_seed": "04109",
+                        "result": "{\"symbols\":[[\"j\",\"k\",\"horseshoe\",\"n\",\"q\"],[\"q\",\"t\",\"clover\",\"ladybug\",\"j\"],[\"k\",\"j\",\"hands\",\"horseshoe\",\"t\"]],\"card\":\"9S\"}"
+                      }
+                    ]
+                  },
+                  "available_commands": [
+                    "init",
+                    "spin"
+                  ]
+                }
+              }
+            ],
+            "events": [],
+            "gaps": [],
+            "offline_replay_ready": true
+          }
+        ],
+        "announced_branches": []
+      }
+    },
     "state-machine.json": {
       "encoding": "json",
       "bytes": 1239,
@@ -1655,8 +5578,8 @@
           "name": "Lucky Lady's Clover",
           "identifier": "LuckyLadyClover"
         },
-        "generated_at": "2026-09-13T13:18:36+00:00",
-        "source_run": "2026-09-13_10-18-32-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:45:47+00:00",
+        "source_run": "2026-09-15_05-45-43-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
