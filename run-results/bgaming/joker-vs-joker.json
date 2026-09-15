@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-13T13:11:27+00:00",
-  "source_commit": "299ba3374f3740551aa66a66eabf02c0d7ba03ad",
+  "published_at": "2026-09-15T08:36:43+00:00",
+  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
   "provider": "bgaming",
   "game": {
     "slug": "joker-vs-joker",
@@ -31,14 +31,16 @@
         "request_options": {
           "bet_type": "bet"
         },
-        "source": "game_bundle_source"
+        "source": "game_bundle_source",
+        "evidence_level": "REMOTE_REJECTION",
+        "execution_state": "REJECTED_REMOTE"
       }
     ],
-    "started_at": "2026-09-13T13:11:17+00:00",
-    "finished_at": "2026-09-13T13:11:27+00:00",
-    "elapsed_ms": 9921.99999999957,
+    "started_at": "2026-09-15T08:36:30+00:00",
+    "finished_at": "2026-09-15T08:36:43+00:00",
+    "elapsed_ms": 12375.0,
     "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-    "run_dir": "2026-09-13_10-11-17-bgaming-hyperhive-jsonrpc",
+    "run_dir": "2026-09-15_05-36-30-bgaming-hyperhive-jsonrpc",
     "attempts": [
       {
         "number": 1,
@@ -48,7 +50,7 @@
         "provider_bl": null,
         "provider_pur": null,
         "status_code": null,
-        "elapsed_ms": 672.0000000004802,
+        "elapsed_ms": 562.9999999946449,
         "symbol": "JokerVsJoker",
         "endpoint": "https://joker-vs-joker.demo.bgaming-network.com/api",
         "na": "",
@@ -56,13 +58,91 @@
         "wire_steps": 0,
         "warning": "",
         "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Joker vs Joker\\tests\\2026-09-13_10-11-17-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Joker vs Joker\\tests\\2026-09-15_05-36-30-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
       }
     ],
-    "samples_per_path": 1
+    "samples_per_path": 1,
+    "structural_map": {
+      "path": "analysis/game-structure.json",
+      "schema": "tester-spin/game-structure/v1",
+      "coverage": {
+        "states": 0,
+        "decision_points": 0,
+        "choices": 0,
+        "executed": 0,
+        "outcome_observed": 0,
+        "pending": 0,
+        "unknowns": 2,
+        "complete": false,
+        "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+      },
+      "diagnostics": []
+    }
   },
-  "artifact_bytes_embedded": 14818,
+  "artifact_bytes_embedded": 25452,
   "artifacts": {
+    "analysis/game-structure.json": {
+      "encoding": "json",
+      "bytes": 1713,
+      "value": {
+        "schema": "tester-spin/game-structure/v1",
+        "metadata": {
+          "provider": "bgaming",
+          "protocol_family": "bgaming-json-flow",
+          "game_identifier": "joker-vs-joker",
+          "slug": "joker-vs-joker",
+          "bundle_fingerprint": "",
+          "generated_at": "2026-09-15T08:36:30+00:00",
+          "compatibility": "unverified",
+          "source_evidence_summary": {
+            "capture": "BGaming JSON requests/responses at transport boundary",
+            "diagnostics": []
+          },
+          "merged_runs": [
+            "run:602f1940e3a49fda371332bb"
+          ],
+          "previous_revisions": []
+        },
+        "states": {},
+        "decision_points": {},
+        "choices": {},
+        "transitions": {},
+        "request_contracts": {},
+        "response_contracts": {},
+        "field_semantics": {},
+        "path_context": {},
+        "unknowns": {
+          "unknown:fbd28ee026c44b7169332943": {
+            "id": "unknown:fbd28ee026c44b7169332943",
+            "kind": "protocol",
+            "entity": "bgaming",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No supported JSON flow observations; protocol adapter required"
+          },
+          "unknown:4a90bd9ae970cc78b8eb557d": {
+            "id": "unknown:4a90bd9ae970cc78b8eb557d",
+            "kind": "client",
+            "entity": "fingerprint",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client compatibility unverified; only observed protocol evidence"
+          }
+        },
+        "evidence": {},
+        "relations": {},
+        "artifact_references": [],
+        "coverage": {
+          "states": 0,
+          "decision_points": 0,
+          "choices": 0,
+          "executed": 0,
+          "outcome_observed": 0,
+          "pending": 0,
+          "unknowns": 2,
+          "complete": false,
+          "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+        }
+      }
+    },
     "path-coverage.json": {
       "encoding": "json",
       "bytes": 534,
@@ -94,7 +174,7 @@
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 1819,
+      "bytes": 2367,
       "value": {
         "provider": "bgaming",
         "slug": "joker-vs-joker",
@@ -117,14 +197,16 @@
             "request_options": {
               "bet_type": "bet"
             },
-            "source": "game_bundle_source"
+            "source": "game_bundle_source",
+            "evidence_level": "REMOTE_REJECTION",
+            "execution_state": "REJECTED_REMOTE"
           }
         ],
-        "started_at": "2026-09-13T13:11:17+00:00",
-        "finished_at": "2026-09-13T13:11:27+00:00",
-        "elapsed_ms": 9921.99999999957,
+        "started_at": "2026-09-15T08:36:30+00:00",
+        "finished_at": "2026-09-15T08:36:43+00:00",
+        "elapsed_ms": 12375.0,
         "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Joker vs Joker\\tests\\2026-09-13_10-11-17-bgaming-hyperhive-jsonrpc",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Joker vs Joker\\tests\\2026-09-15_05-36-30-bgaming-hyperhive-jsonrpc",
         "attempts": [
           {
             "number": 1,
@@ -134,7 +216,7 @@
             "provider_bl": null,
             "provider_pur": null,
             "status_code": null,
-            "elapsed_ms": 672.0000000004802,
+            "elapsed_ms": 562.9999999946449,
             "symbol": "JokerVsJoker",
             "endpoint": "https://joker-vs-joker.demo.bgaming-network.com/api",
             "na": "",
@@ -142,10 +224,26 @@
             "wire_steps": 0,
             "warning": "",
             "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Joker vs Joker\\tests\\2026-09-13_10-11-17-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Joker vs Joker\\tests\\2026-09-15_05-36-30-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
           }
         ],
-        "samples_per_path": 1
+        "samples_per_path": 1,
+        "structural_map": {
+          "path": "analysis/game-structure.json",
+          "schema": "tester-spin/game-structure/v1",
+          "coverage": {
+            "states": 0,
+            "decision_points": 0,
+            "choices": 0,
+            "executed": 0,
+            "outcome_observed": 0,
+            "pending": 0,
+            "unknowns": 2,
+            "complete": false,
+            "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+          },
+          "diagnostics": []
+        }
       }
     },
     "sample-catalog.json": {
@@ -233,8 +331,8 @@
           "name": "Joker vs Joker",
           "identifier": "JokerVsJoker"
         },
-        "generated_at": "2026-09-13T13:11:27+00:00",
-        "source_run": "2026-09-13_10-11-17-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:36:43+00:00",
+        "source_run": "2026-09-15_05-36-30-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -264,8 +362,8 @@
           "name": "Joker vs Joker",
           "identifier": "JokerVsJoker"
         },
-        "generated_at": "2026-09-13T13:11:27+00:00",
-        "source_run": "2026-09-13_10-11-17-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:36:43+00:00",
+        "source_run": "2026-09-15_05-36-30-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -300,6 +398,194 @@
         "base_discovery_state": "BASE_CONTRACT"
       }
     },
+    "diagnostic.json": {
+      "encoding": "json",
+      "bytes": 5800,
+      "value": {
+        "schema": "tester-spin/run-diagnostics/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "joker-vs-joker",
+          "name": "Joker vs Joker",
+          "symbol": "JokerVsJoker"
+        },
+        "started_at": "2026-09-15T08:36:30+00:00",
+        "finished_at": "2026-09-15T08:36:43+00:00",
+        "result_status": "ERROR",
+        "scope": "observed_paths_only",
+        "observed_error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "root_cause": {
+          "status": "UNDETERMINED",
+          "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
+        },
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "status": "INCOMPLETE",
+            "validated": false,
+            "tested": true,
+            "attempt_count": 1,
+            "terminal_count": 0,
+            "missing_options": [
+              "SPIN"
+            ],
+            "branches": [
+              {
+                "source": "discovered_modes_fail_closed",
+                "mode_id": "SPIN",
+                "signature": "SPIN:UNEXECUTED",
+                "required": [
+                  "SPIN"
+                ],
+                "covered": [],
+                "missing": [
+                  "SPIN"
+                ],
+                "complete": false,
+                "required_samples": 1,
+                "sample_counts": null,
+                "sample_deficits": {}
+              }
+            ],
+            "provider_metadata": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "REJECTED_51100",
+              "wire_method": "play",
+              "request_options": {
+                "bet_type": "bet"
+              },
+              "source": "game_bundle_source",
+              "evidence_level": "REMOTE_REJECTION",
+              "execution_state": "REJECTED_REMOTE"
+            }
+          }
+        ],
+        "attempts": [
+          {
+            "number": 1,
+            "mode_id": "SPIN",
+            "reported_ok": false,
+            "reported_terminal": false,
+            "http_status": null,
+            "last_state": "",
+            "wire_steps": 0,
+            "elapsed_ms": 562.9999999946449,
+            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+            "warning": "",
+            "evidence": [
+              {
+                "path": "SPIN/attempt-001/rpc-error-request.json",
+                "sha256": "48cea05966194c967ac3ad58359fc509d84b41d495f4197ce24ecf5850fab0f9",
+                "bytes": 203,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/rpc-error-response.json",
+                "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                "bytes": 136,
+                "kind": "response"
+              }
+            ],
+            "first_request": "SPIN/attempt-001/rpc-error-request.json",
+            "last_request": "SPIN/attempt-001/rpc-error-request.json",
+            "last_response": "SPIN/attempt-001/rpc-error-response.json",
+            "ordering": "SINGLE_EXCHANGE",
+            "trajectory_id": "8bcd225a23a292dcf5db"
+          }
+        ],
+        "bootstrap_evidence": [
+          {
+            "path": "init-request.json",
+            "sha256": "5c3f6b66145b2c8c170914a0b2b618ff11d0ad71efc0f79bb3e0db51f52cb573",
+            "bytes": 105,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-response.json",
+            "sha256": "b27c761f97bbf5adef0ad0692563619c49809db40c55feceb0329e1e57a0856c",
+            "bytes": 1852,
+            "kind": "envelope"
+          }
+        ],
+        "unknown_actions": [
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_5059bf6e72435b43",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "REJECTED_51100",
+              "wire_method": "play",
+              "request_options": {
+                "bet_type": "bet"
+              },
+              "source": "game_bundle_source",
+              "evidence_level": "REMOTE_REJECTION",
+              "execution_state": "REJECTED_REMOTE"
+            },
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/rpc-error-request.json",
+                  "sha256": "48cea05966194c967ac3ad58359fc509d84b41d495f4197ce24ecf5850fab0f9",
+                  "bytes": 203,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/rpc-error-response.json",
+                  "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                  "bytes": 136,
+                  "kind": "response"
+                }
+              ]
+            ]
+          }
+        ],
+        "request_comparisons": [],
+        "coverage": {
+          "schema": "tester-spin/path-coverage/v1",
+          "provider": "bgaming",
+          "game": "joker-vs-joker",
+          "branch_points": [
+            {
+              "source": "discovered_modes_fail_closed",
+              "mode_id": "SPIN",
+              "signature": "SPIN:UNEXECUTED",
+              "required": [
+                "SPIN"
+              ],
+              "covered": [],
+              "missing": [
+                "SPIN"
+              ],
+              "complete": false,
+              "required_samples": 1,
+              "sample_counts": null,
+              "sample_deficits": {}
+            }
+          ],
+          "complete": false,
+          "missing_count": 1
+        },
+        "sample_diagnostics": [],
+        "evidence_gaps": [],
+        "next_steps": [
+          "Revisar la respuesta que anuncia la acción/opción pendiente y el serializer del cliente de este proveedor. No inventar argumentos ni un handler.",
+          "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa."
+        ],
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Joker vs Joker\\diagnostics\\20260915T083612-1c9b135bf6b6\\events.jsonl",
+        "tree": "run-tree.html",
+        "tree_data": "run-tree.json"
+      }
+    },
     "emulation-contract.json": {
       "encoding": "json",
       "bytes": 1672,
@@ -311,8 +597,8 @@
           "name": "Joker vs Joker",
           "identifier": "JokerVsJoker"
         },
-        "generated_at": "2026-09-13T13:11:27+00:00",
-        "source_run": "2026-09-13_10-11-17-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:36:43+00:00",
+        "source_run": "2026-09-15_05-36-30-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -466,7 +752,7 @@
           "urls": {
             "deposit_url": null,
             "return_url": null,
-            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDU0NzU0MjQsImd0X2lkIjo0MzY1Mzk0fSwiZXhwIjoxODA0OTQzNDg4fQ.JAEBJNJ_O769egBOvUlmlyz4mKVmvrmSByKbULMuQdQ"
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcxODMzMzgsImd0X2lkIjo0MzY1Mzk0fSwiZXhwIjoxODA1MDk5ODA3fQ.09JL0mPVAS0RTrAFs75laaAi2FRMPtppuKS4bCIFLo4"
           },
           "balance": 100000,
           "state_lock": "<redacted>"
@@ -484,8 +770,8 @@
           "name": "Joker vs Joker",
           "identifier": "JokerVsJoker"
         },
-        "generated_at": "2026-09-13T13:11:27+00:00",
-        "source_run": "2026-09-13_10-11-17-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:36:43+00:00",
+        "source_run": "2026-09-15_05-36-30-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -527,7 +813,7 @@
             "terminal_successes": 0,
             "wire_steps": 0,
             "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Joker vs Joker\\tests\\2026-09-13_10-11-17-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Joker vs Joker\\tests\\2026-09-15_05-36-30-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
             ]
           }
         ]
@@ -544,8 +830,8 @@
           "name": "Joker vs Joker",
           "identifier": "JokerVsJoker"
         },
-        "generated_at": "2026-09-13T13:11:27+00:00",
-        "source_run": "2026-09-13_10-11-17-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:36:43+00:00",
+        "source_run": "2026-09-15_05-36-30-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -598,6 +884,99 @@
         }
       }
     },
+    "run-tree.json": {
+      "encoding": "json",
+      "bytes": 2573,
+      "value": {
+        "schema": "tester-spin/run-tree/v1",
+        "provider": "bgaming",
+        "game": "joker-vs-joker",
+        "scope": "observed_trajectories",
+        "exact_remote_outcome_reproducible": false,
+        "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
+        "trajectories": [
+          {
+            "id": "8bcd225a23a292dcf5db",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": false,
+                "validated": false,
+                "executable": false,
+                "discovery_state": "REJECTED_51100",
+                "wire_method": "play",
+                "request_options": {
+                  "bet_type": "bet"
+                },
+                "source": "game_bundle_source",
+                "evidence_level": "REMOTE_REJECTION",
+                "execution_state": "REJECTED_REMOTE"
+              }
+            },
+            "attempt": 1,
+            "reported_terminal": false,
+            "reported_ok": false,
+            "sequence_status": "SINGLE_EXCHANGE",
+            "steps": [
+              {
+                "label": "rpc-error",
+                "directory": "SPIN/attempt-001",
+                "request": [
+                  {
+                    "path": "SPIN/attempt-001/rpc-error-request.json",
+                    "sha256": "48cea05966194c967ac3ad58359fc509d84b41d495f4197ce24ecf5850fab0f9",
+                    "bytes": 203,
+                    "kind": "request"
+                  }
+                ],
+                "response": [
+                  {
+                    "path": "SPIN/attempt-001/rpc-error-response.json",
+                    "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                    "bytes": 136,
+                    "kind": "response"
+                  }
+                ],
+                "id": "8bcd225a23a292dcf5db:0",
+                "parent_id": "8bcd225a23a292dcf5db",
+                "observed_response": {
+                  "id": "x",
+                  "jsonrpc": "2.0",
+                  "error": {
+                    "code": 51100,
+                    "message": "Something went wrong. Refresh the page."
+                  }
+                }
+              }
+            ],
+            "events": [],
+            "gaps": [],
+            "offline_replay_ready": true
+          }
+        ],
+        "announced_branches": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          }
+        ]
+      }
+    },
     "state-machine.json": {
       "encoding": "json",
       "bytes": 528,
@@ -609,8 +988,8 @@
           "name": "Joker vs Joker",
           "identifier": "JokerVsJoker"
         },
-        "generated_at": "2026-09-13T13:11:27+00:00",
-        "source_run": "2026-09-13_10-11-17-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:36:43+00:00",
+        "source_run": "2026-09-15_05-36-30-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
