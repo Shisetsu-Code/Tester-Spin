@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-14T04:38:40+00:00",
-  "source_commit": "4ec388284beff71637abd35983ad815cc048afc8",
+  "published_at": "2026-09-15T08:15:20+00:00",
+  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
   "provider": "bgaming",
   "game": {
     "slug": "divine-queen-power-of-sun",
@@ -20,16 +20,16 @@
     "status": "SIN_DEMO",
     "symbol": "",
     "discovered_modes": [],
-    "started_at": "2026-09-14T04:38:37+00:00",
-    "finished_at": "2026-09-14T04:38:38+00:00",
-    "elapsed_ms": 593.9999999973224,
+    "started_at": "2026-09-15T08:15:17+00:00",
+    "finished_at": "2026-09-15T08:15:18+00:00",
+    "elapsed_ms": 625.0,
     "error": "BGaming: juego catalogado sin Play Demo resoluble.",
-    "run_dir": "2026-09-14_01-38-37-bgaming-http-api-v2",
+    "run_dir": "2026-09-15_05-15-17-bgaming-http-api-v2",
     "attempts": [],
     "samples_per_path": 1,
     "structural_map": {}
   },
-  "artifact_bytes_embedded": 5620,
+  "artifact_bytes_embedded": 7726,
   "artifacts": {
     "path-coverage.json": {
       "encoding": "json",
@@ -45,7 +45,7 @@
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 738,
+      "bytes": 726,
       "value": {
         "provider": "bgaming",
         "slug": "divine-queen-power-of-sun",
@@ -57,11 +57,11 @@
         "status": "SIN_DEMO",
         "symbol": "",
         "discovered_modes": [],
-        "started_at": "2026-09-14T04:38:37+00:00",
-        "finished_at": "2026-09-14T04:38:38+00:00",
-        "elapsed_ms": 593.9999999973224,
+        "started_at": "2026-09-15T08:15:17+00:00",
+        "finished_at": "2026-09-15T08:15:18+00:00",
+        "elapsed_ms": 625.0,
         "error": "BGaming: juego catalogado sin Play Demo resoluble.",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Divine Queen_ Power of Sun\\tests\\2026-09-14_01-38-37-bgaming-http-api-v2",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Divine Queen_ Power of Sun\\tests\\2026-09-15_05-15-17-bgaming-http-api-v2",
         "attempts": [],
         "samples_per_path": 1,
         "structural_map": {}
@@ -78,8 +78,8 @@
           "name": "Divine Queen: Power of Sun",
           "identifier": ""
         },
-        "generated_at": "2026-09-14T04:38:38+00:00",
-        "source_run": "2026-09-14_01-38-37-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:15:18+00:00",
+        "source_run": "2026-09-15_05-15-17-bgaming-http-api-v2",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -109,8 +109,8 @@
           "name": "Divine Queen: Power of Sun",
           "identifier": ""
         },
-        "generated_at": "2026-09-14T04:38:38+00:00",
-        "source_run": "2026-09-14_01-38-37-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:15:18+00:00",
+        "source_run": "2026-09-15_05-15-17-bgaming-http-api-v2",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -121,6 +121,56 @@
         "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
         "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
         "states": {}
+      }
+    },
+    "diagnostic.json": {
+      "encoding": "json",
+      "bytes": 1764,
+      "value": {
+        "schema": "tester-spin/run-diagnostics/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "divine-queen-power-of-sun",
+          "name": "Divine Queen: Power of Sun",
+          "symbol": ""
+        },
+        "started_at": "2026-09-15T08:15:17+00:00",
+        "finished_at": "2026-09-15T08:15:18+00:00",
+        "result_status": "SIN_DEMO",
+        "scope": "observed_paths_only",
+        "observed_error": "BGaming: juego catalogado sin Play Demo resoluble.",
+        "root_cause": {
+          "status": "UNDETERMINED",
+          "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
+        },
+        "modes": [],
+        "attempts": [],
+        "bootstrap_evidence": [],
+        "unknown_actions": [],
+        "request_comparisons": [],
+        "coverage": {
+          "schema": "tester-spin/path-coverage/v1",
+          "provider": "bgaming",
+          "game": "divine-queen-power-of-sun",
+          "branch_points": [],
+          "complete": true,
+          "missing_count": 0
+        },
+        "sample_diagnostics": [],
+        "evidence_gaps": [
+          {
+            "code": "INDEX_UNAVAILABLE",
+            "file": "sample-catalog.json",
+            "detail": "[Errno 2] No such file or directory: 'C:\\\\Proyectos\\\\Tester-Spin\\\\data\\\\providers\\\\bgaming\\\\Divine Queen_ Power of Sun\\\\tests\\\\2026-09-15_05-15-17-bgaming-http-api-v2\\\\sample-catalog.json'"
+          }
+        ],
+        "next_steps": [
+          "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa.",
+          "Resolver los huecos de evidencia indicados antes de atribuir el fallo al servidor o al juego."
+        ],
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Divine Queen_ Power of Sun\\diagnostics\\20260915T081513-8834f12ddfc6\\events.jsonl",
+        "tree": "run-tree.html",
+        "tree_data": "run-tree.json"
       }
     },
     "emulation-contract.json": {
@@ -134,8 +184,8 @@
           "name": "Divine Queen: Power of Sun",
           "identifier": ""
         },
-        "generated_at": "2026-09-14T04:38:38+00:00",
-        "source_run": "2026-09-14_01-38-37-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:15:18+00:00",
+        "source_run": "2026-09-15_05-15-17-bgaming-http-api-v2",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -171,8 +221,8 @@
           "name": "Divine Queen: Power of Sun",
           "identifier": ""
         },
-        "generated_at": "2026-09-14T04:38:38+00:00",
-        "source_run": "2026-09-14_01-38-37-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:15:18+00:00",
+        "source_run": "2026-09-15_05-15-17-bgaming-http-api-v2",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -195,8 +245,8 @@
           "name": "Divine Queen: Power of Sun",
           "identifier": ""
         },
-        "generated_at": "2026-09-14T04:38:38+00:00",
-        "source_run": "2026-09-14_01-38-37-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:15:18+00:00",
+        "source_run": "2026-09-15_05-15-17-bgaming-http-api-v2",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -221,6 +271,20 @@
         }
       }
     },
+    "run-tree.json": {
+      "encoding": "json",
+      "bytes": 354,
+      "value": {
+        "schema": "tester-spin/run-tree/v1",
+        "provider": "bgaming",
+        "game": "divine-queen-power-of-sun",
+        "scope": "observed_trajectories",
+        "exact_remote_outcome_reproducible": false,
+        "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
+        "trajectories": [],
+        "announced_branches": []
+      }
+    },
     "state-machine.json": {
       "encoding": "json",
       "bytes": 533,
@@ -232,8 +296,8 @@
           "name": "Divine Queen: Power of Sun",
           "identifier": ""
         },
-        "generated_at": "2026-09-14T04:38:38+00:00",
-        "source_run": "2026-09-14_01-38-37-bgaming-http-api-v2",
+        "generated_at": "2026-09-15T08:15:18+00:00",
+        "source_run": "2026-09-15_05-15-17-bgaming-http-api-v2",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
