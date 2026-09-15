@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-13T13:05:33+00:00",
-  "source_commit": "299ba3374f3740551aa66a66eabf02c0d7ba03ad",
+  "published_at": "2026-09-15T08:30:28+00:00",
+  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
   "provider": "bgaming",
   "game": {
     "slug": "grand-patron",
@@ -29,19 +29,99 @@
         "discovery_state": "CONTRACT_UNRESOLVED",
         "wire_method": "play",
         "request_options": {},
-        "source": "live-client-evidence-incomplete"
+        "source": "live-client-evidence-incomplete",
+        "evidence_level": "DISCOVERED",
+        "execution_state": "NOT_EXECUTABLE"
       }
     ],
-    "started_at": "2026-09-13T13:05:25+00:00",
-    "finished_at": "2026-09-13T13:05:33+00:00",
-    "elapsed_ms": 7484.000000000378,
+    "started_at": "2026-09-15T08:30:20+00:00",
+    "finished_at": "2026-09-15T08:30:28+00:00",
+    "elapsed_ms": 7703.000000008615,
     "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
-    "run_dir": "2026-09-13_10-05-25-bgaming-hyperhive-jsonrpc",
+    "run_dir": "2026-09-15_05-30-20-bgaming-hyperhive-jsonrpc",
     "attempts": [],
-    "samples_per_path": 1
+    "samples_per_path": 1,
+    "structural_map": {
+      "path": "analysis/game-structure.json",
+      "schema": "tester-spin/game-structure/v1",
+      "coverage": {
+        "states": 0,
+        "decision_points": 0,
+        "choices": 0,
+        "executed": 0,
+        "outcome_observed": 0,
+        "pending": 0,
+        "unknowns": 2,
+        "complete": false,
+        "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+      },
+      "diagnostics": []
+    }
   },
-  "artifact_bytes_embedded": 12763,
+  "artifact_bytes_embedded": 19869,
   "artifacts": {
+    "analysis/game-structure.json": {
+      "encoding": "json",
+      "bytes": 1709,
+      "value": {
+        "schema": "tester-spin/game-structure/v1",
+        "metadata": {
+          "provider": "bgaming",
+          "protocol_family": "bgaming-json-flow",
+          "game_identifier": "grand-patron",
+          "slug": "grand-patron",
+          "bundle_fingerprint": "",
+          "generated_at": "2026-09-15T08:30:20+00:00",
+          "compatibility": "unverified",
+          "source_evidence_summary": {
+            "capture": "BGaming JSON requests/responses at transport boundary",
+            "diagnostics": []
+          },
+          "merged_runs": [
+            "run:4aade33475fec72002134680"
+          ],
+          "previous_revisions": []
+        },
+        "states": {},
+        "decision_points": {},
+        "choices": {},
+        "transitions": {},
+        "request_contracts": {},
+        "response_contracts": {},
+        "field_semantics": {},
+        "path_context": {},
+        "unknowns": {
+          "unknown:62283a2dba9980d2eb36ae73": {
+            "id": "unknown:62283a2dba9980d2eb36ae73",
+            "kind": "protocol",
+            "entity": "bgaming",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No supported JSON flow observations; protocol adapter required"
+          },
+          "unknown:66a843996df8862b202699bf": {
+            "id": "unknown:66a843996df8862b202699bf",
+            "kind": "client",
+            "entity": "fingerprint",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client compatibility unverified; only observed protocol evidence"
+          }
+        },
+        "evidence": {},
+        "relations": {},
+        "artifact_references": [],
+        "coverage": {
+          "states": 0,
+          "decision_points": 0,
+          "choices": 0,
+          "executed": 0,
+          "outcome_observed": 0,
+          "pending": 0,
+          "unknowns": 2,
+          "complete": false,
+          "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+        }
+      }
+    },
     "path-coverage.json": {
       "encoding": "json",
       "bytes": 532,
@@ -73,7 +153,7 @@
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 1159,
+      "bytes": 1709,
       "value": {
         "provider": "bgaming",
         "slug": "grand-patron",
@@ -94,16 +174,34 @@
             "discovery_state": "CONTRACT_UNRESOLVED",
             "wire_method": "play",
             "request_options": {},
-            "source": "live-client-evidence-incomplete"
+            "source": "live-client-evidence-incomplete",
+            "evidence_level": "DISCOVERED",
+            "execution_state": "NOT_EXECUTABLE"
           }
         ],
-        "started_at": "2026-09-13T13:05:25+00:00",
-        "finished_at": "2026-09-13T13:05:33+00:00",
-        "elapsed_ms": 7484.000000000378,
+        "started_at": "2026-09-15T08:30:20+00:00",
+        "finished_at": "2026-09-15T08:30:28+00:00",
+        "elapsed_ms": 7703.000000008615,
         "error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Grand Patron\\tests\\2026-09-13_10-05-25-bgaming-hyperhive-jsonrpc",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Grand Patron\\tests\\2026-09-15_05-30-20-bgaming-hyperhive-jsonrpc",
         "attempts": [],
-        "samples_per_path": 1
+        "samples_per_path": 1,
+        "structural_map": {
+          "path": "analysis/game-structure.json",
+          "schema": "tester-spin/game-structure/v1",
+          "coverage": {
+            "states": 0,
+            "decision_points": 0,
+            "choices": 0,
+            "executed": 0,
+            "outcome_observed": 0,
+            "pending": 0,
+            "unknowns": 2,
+            "complete": false,
+            "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+          },
+          "diagnostics": []
+        }
       }
     },
     "sample-catalog.json": {
@@ -132,8 +230,8 @@
           "name": "Grand Patron",
           "identifier": "GrandPatron7rst"
         },
-        "generated_at": "2026-09-13T13:05:33+00:00",
-        "source_run": "2026-09-13_10-05-25-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:30:28+00:00",
+        "source_run": "2026-09-15_05-30-20-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -163,8 +261,8 @@
           "name": "Grand Patron",
           "identifier": "GrandPatron7rst"
         },
-        "generated_at": "2026-09-13T13:05:33+00:00",
-        "source_run": "2026-09-13_10-05-25-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:30:28+00:00",
+        "source_run": "2026-09-15_05-30-20-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -200,6 +298,143 @@
         "base_discovery_state": "CONTRACT_UNRESOLVED"
       }
     },
+    "diagnostic.json": {
+      "encoding": "json",
+      "bytes": 4144,
+      "value": {
+        "schema": "tester-spin/run-diagnostics/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "grand-patron",
+          "name": "Grand Patron",
+          "symbol": "GrandPatron7rst"
+        },
+        "started_at": "2026-09-15T08:30:20+00:00",
+        "finished_at": "2026-09-15T08:30:28+00:00",
+        "result_status": "PARCIAL",
+        "scope": "observed_paths_only",
+        "observed_error": "BGaming HyperHive CONTRACT_UNRESOLVED: init válido, pero los scripts cargados no demostraron el wire-shape de play; no se envió un request adivinado. Cobertura de ramificaciones pendiente: SPIN -> ['SPIN'].",
+        "root_cause": {
+          "status": "UNDETERMINED",
+          "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
+        },
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "status": "DISCOVERED",
+            "validated": false,
+            "tested": false,
+            "attempt_count": 0,
+            "terminal_count": 0,
+            "missing_options": [
+              "SPIN"
+            ],
+            "branches": [
+              {
+                "source": "discovered_modes_fail_closed",
+                "mode_id": "SPIN",
+                "signature": "SPIN:UNEXECUTED",
+                "required": [
+                  "SPIN"
+                ],
+                "covered": [],
+                "missing": [
+                  "SPIN"
+                ],
+                "complete": false,
+                "required_samples": 1,
+                "sample_counts": null,
+                "sample_deficits": {}
+              }
+            ],
+            "provider_metadata": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "CONTRACT_UNRESOLVED",
+              "wire_method": "play",
+              "request_options": {},
+              "source": "live-client-evidence-incomplete",
+              "evidence_level": "DISCOVERED",
+              "execution_state": "NOT_EXECUTABLE"
+            }
+          }
+        ],
+        "attempts": [],
+        "bootstrap_evidence": [
+          {
+            "path": "init-request.json",
+            "sha256": "14d479295df028f511751aabc1ba2f11827bc7f768695fa5e79191c5f003957b",
+            "bytes": 142,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-response.json",
+            "sha256": "f97dc3e3ae30f70666c55a6ed0d7e58c8b5b2fc8261fa66139b10e51605b89b2",
+            "bytes": 1751,
+            "kind": "envelope"
+          }
+        ],
+        "unknown_actions": [
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_8db9d2a00dfce1b5",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "CONTRACT_UNRESOLVED",
+              "wire_method": "play",
+              "request_options": {},
+              "source": "live-client-evidence-incomplete",
+              "evidence_level": "DISCOVERED",
+              "execution_state": "NOT_EXECUTABLE"
+            },
+            "evidence": []
+          }
+        ],
+        "request_comparisons": [],
+        "coverage": {
+          "schema": "tester-spin/path-coverage/v1",
+          "provider": "bgaming",
+          "game": "grand-patron",
+          "branch_points": [
+            {
+              "source": "discovered_modes_fail_closed",
+              "mode_id": "SPIN",
+              "signature": "SPIN:UNEXECUTED",
+              "required": [
+                "SPIN"
+              ],
+              "covered": [],
+              "missing": [
+                "SPIN"
+              ],
+              "complete": false,
+              "required_samples": 1,
+              "sample_counts": null,
+              "sample_deficits": {}
+            }
+          ],
+          "complete": false,
+          "missing_count": 1
+        },
+        "sample_diagnostics": [],
+        "evidence_gaps": [],
+        "next_steps": [
+          "Revisar la respuesta que anuncia la acción/opción pendiente y el serializer del cliente de este proveedor. No inventar argumentos ni un handler.",
+          "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa."
+        ],
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Grand Patron\\diagnostics\\20260915T083004-5a1e547dc170\\events.jsonl",
+        "tree": "run-tree.html",
+        "tree_data": "run-tree.json"
+      }
+    },
     "emulation-contract.json": {
       "encoding": "json",
       "bytes": 1699,
@@ -211,8 +446,8 @@
           "name": "Grand Patron",
           "identifier": "GrandPatron7rst"
         },
-        "generated_at": "2026-09-13T13:05:33+00:00",
-        "source_run": "2026-09-13_10-05-25-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:30:28+00:00",
+        "source_run": "2026-09-15_05-30-20-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -269,7 +504,7 @@
       "encoding": "json",
       "bytes": 142,
       "value": {
-        "id": "81ad30cd-11be-43d0-b82f-d34429a6ccc2",
+        "id": "95cf4167-bd3a-46cb-af25-96915603d9bb",
         "jsonrpc": "2.0",
         "method": "init",
         "params": {
@@ -281,7 +516,7 @@
       "encoding": "json",
       "bytes": 1751,
       "value": {
-        "id": "81ad30cd-11be-43d0-b82f-d34429a6ccc2",
+        "id": "95cf4167-bd3a-46cb-af25-96915603d9bb",
         "jsonrpc": "2.0",
         "result": {
           "freebets": null,
@@ -356,7 +591,7 @@
           "urls": {
             "deposit_url": null,
             "return_url": null,
-            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDU0NzE4NDcsImd0X2lkIjo0MzY1Mzk2fSwiZXhwIjoxODA0OTQzMTM0fQ.Fg48vsAAt7poRqPcibBJPCPZEBXFwODm0KG92nMABUk"
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcxNzQyOTcsImd0X2lkIjo0MzY1Mzk2fSwiZXhwIjoxODA1MDk5NDMzfQ.DSP8JWBsIy5Ck45dZv5q9jL7NGqeHijSQXkosoh7MbY"
           },
           "balance": 100000,
           "state_lock": "<redacted>"
@@ -374,8 +609,8 @@
           "name": "Grand Patron",
           "identifier": "GrandPatron7rst"
         },
-        "generated_at": "2026-09-13T13:05:33+00:00",
-        "source_run": "2026-09-13_10-05-25-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:30:28+00:00",
+        "source_run": "2026-09-15_05-30-20-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -432,8 +667,8 @@
           "name": "Grand Patron",
           "identifier": "GrandPatron7rst"
         },
-        "generated_at": "2026-09-13T13:05:33+00:00",
-        "source_run": "2026-09-13_10-05-25-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:30:28+00:00",
+        "source_run": "2026-09-15_05-30-20-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -486,6 +721,37 @@
         }
       }
     },
+    "run-tree.json": {
+      "encoding": "json",
+      "bytes": 703,
+      "value": {
+        "schema": "tester-spin/run-tree/v1",
+        "provider": "bgaming",
+        "game": "grand-patron",
+        "scope": "observed_trajectories",
+        "exact_remote_outcome_reproducible": false,
+        "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
+        "trajectories": [],
+        "announced_branches": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          }
+        ]
+      }
+    },
     "state-machine.json": {
       "encoding": "json",
       "bytes": 527,
@@ -497,8 +763,8 @@
           "name": "Grand Patron",
           "identifier": "GrandPatron7rst"
         },
-        "generated_at": "2026-09-13T13:05:33+00:00",
-        "source_run": "2026-09-13_10-05-25-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:30:28+00:00",
+        "source_run": "2026-09-15_05-30-20-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
