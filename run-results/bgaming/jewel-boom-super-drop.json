@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-13T13:10:15+00:00",
-  "source_commit": "299ba3374f3740551aa66a66eabf02c0d7ba03ad",
+  "published_at": "2026-09-15T08:34:26+00:00",
+  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
   "provider": "bgaming",
   "game": {
     "slug": "jewel-boom-super-drop",
@@ -32,14 +32,16 @@
           "bet_type": "bet",
           "action": "spin"
         },
-        "source": "selected-har-script-contract"
+        "source": "selected-har-script-contract",
+        "evidence_level": "REMOTE_REJECTION",
+        "execution_state": "REJECTED_REMOTE"
       }
     ],
-    "started_at": "2026-09-13T13:09:55+00:00",
-    "finished_at": "2026-09-13T13:10:15+00:00",
-    "elapsed_ms": 19641.00000000053,
+    "started_at": "2026-09-15T08:34:03+00:00",
+    "finished_at": "2026-09-15T08:34:26+00:00",
+    "elapsed_ms": 23312.000000005355,
     "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-    "run_dir": "2026-09-13_10-09-55-bgaming-hyperhive-jsonrpc",
+    "run_dir": "2026-09-15_05-34-03-bgaming-hyperhive-jsonrpc",
     "attempts": [
       {
         "number": 1,
@@ -49,7 +51,7 @@
         "provider_bl": null,
         "provider_pur": null,
         "status_code": null,
-        "elapsed_ms": 1014.9999999994179,
+        "elapsed_ms": 1547.0000000059372,
         "symbol": "JewelBoom",
         "endpoint": "https://jewel-boom.demo.bgaming-network.com/api",
         "na": "",
@@ -57,13 +59,91 @@
         "wire_steps": 0,
         "warning": "",
         "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jewel Boom Super Drop\\tests\\2026-09-13_10-09-55-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jewel Boom Super Drop\\tests\\2026-09-15_05-34-03-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
       }
     ],
-    "samples_per_path": 1
+    "samples_per_path": 1,
+    "structural_map": {
+      "path": "analysis/game-structure.json",
+      "schema": "tester-spin/game-structure/v1",
+      "coverage": {
+        "states": 0,
+        "decision_points": 0,
+        "choices": 0,
+        "executed": 0,
+        "outcome_observed": 0,
+        "pending": 0,
+        "unknowns": 2,
+        "complete": false,
+        "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+      },
+      "diagnostics": []
+    }
   },
-  "artifact_bytes_embedded": 16162,
+  "artifact_bytes_embedded": 26972,
   "artifacts": {
+    "analysis/game-structure.json": {
+      "encoding": "json",
+      "bytes": 1727,
+      "value": {
+        "schema": "tester-spin/game-structure/v1",
+        "metadata": {
+          "provider": "bgaming",
+          "protocol_family": "bgaming-json-flow",
+          "game_identifier": "jewel-boom-super-drop",
+          "slug": "jewel-boom-super-drop",
+          "bundle_fingerprint": "",
+          "generated_at": "2026-09-15T08:34:03+00:00",
+          "compatibility": "unverified",
+          "source_evidence_summary": {
+            "capture": "BGaming JSON requests/responses at transport boundary",
+            "diagnostics": []
+          },
+          "merged_runs": [
+            "run:be77b225b2c23411afe29e08"
+          ],
+          "previous_revisions": []
+        },
+        "states": {},
+        "decision_points": {},
+        "choices": {},
+        "transitions": {},
+        "request_contracts": {},
+        "response_contracts": {},
+        "field_semantics": {},
+        "path_context": {},
+        "unknowns": {
+          "unknown:e7106762f15b62af0e53dd88": {
+            "id": "unknown:e7106762f15b62af0e53dd88",
+            "kind": "protocol",
+            "entity": "bgaming",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "No supported JSON flow observations; protocol adapter required"
+          },
+          "unknown:eaa9aae5c3c88a30be9b8b86": {
+            "id": "unknown:eaa9aae5c3c88a30be9b8b86",
+            "kind": "client",
+            "entity": "fingerprint",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Client compatibility unverified; only observed protocol evidence"
+          }
+        },
+        "evidence": {},
+        "relations": {},
+        "artifact_references": [],
+        "coverage": {
+          "states": 0,
+          "decision_points": 0,
+          "choices": 0,
+          "executed": 0,
+          "outcome_observed": 0,
+          "pending": 0,
+          "unknowns": 2,
+          "complete": false,
+          "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+        }
+      }
+    },
     "path-coverage.json": {
       "encoding": "json",
       "bytes": 541,
@@ -95,7 +175,7 @@
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 1873,
+      "bytes": 2431,
       "value": {
         "provider": "bgaming",
         "slug": "jewel-boom-super-drop",
@@ -119,14 +199,16 @@
               "bet_type": "bet",
               "action": "spin"
             },
-            "source": "selected-har-script-contract"
+            "source": "selected-har-script-contract",
+            "evidence_level": "REMOTE_REJECTION",
+            "execution_state": "REJECTED_REMOTE"
           }
         ],
-        "started_at": "2026-09-13T13:09:55+00:00",
-        "finished_at": "2026-09-13T13:10:15+00:00",
-        "elapsed_ms": 19641.00000000053,
+        "started_at": "2026-09-15T08:34:03+00:00",
+        "finished_at": "2026-09-15T08:34:26+00:00",
+        "elapsed_ms": 23312.000000005355,
         "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jewel Boom Super Drop\\tests\\2026-09-13_10-09-55-bgaming-hyperhive-jsonrpc",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jewel Boom Super Drop\\tests\\2026-09-15_05-34-03-bgaming-hyperhive-jsonrpc",
         "attempts": [
           {
             "number": 1,
@@ -136,7 +218,7 @@
             "provider_bl": null,
             "provider_pur": null,
             "status_code": null,
-            "elapsed_ms": 1014.9999999994179,
+            "elapsed_ms": 1547.0000000059372,
             "symbol": "JewelBoom",
             "endpoint": "https://jewel-boom.demo.bgaming-network.com/api",
             "na": "",
@@ -144,10 +226,26 @@
             "wire_steps": 0,
             "warning": "",
             "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jewel Boom Super Drop\\tests\\2026-09-13_10-09-55-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jewel Boom Super Drop\\tests\\2026-09-15_05-34-03-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
           }
         ],
-        "samples_per_path": 1
+        "samples_per_path": 1,
+        "structural_map": {
+          "path": "analysis/game-structure.json",
+          "schema": "tester-spin/game-structure/v1",
+          "coverage": {
+            "states": 0,
+            "decision_points": 0,
+            "choices": 0,
+            "executed": 0,
+            "outcome_observed": 0,
+            "pending": 0,
+            "unknowns": 2,
+            "complete": false,
+            "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
+          },
+          "diagnostics": []
+        }
       }
     },
     "sample-catalog.json": {
@@ -176,7 +274,7 @@
                 "evidence": [
                   {
                     "path": "SPIN/attempt-001/rpc-error-request.json",
-                    "sha256": "96f8121c0b615c0f9329f31bfae56e5fb9f655f9c9c3bfeaeb02243638f7861e",
+                    "sha256": "e29d68959abf4aaa798dbe9dd2f16c3a3ea880e71cd78b66961645c4a8878a01",
                     "bytes": 345
                   },
                   {
@@ -199,7 +297,7 @@
       "encoding": "json",
       "bytes": 345,
       "value": {
-        "id": "fd1d7293-1b01-4f0f-a0b6-e7d831121612",
+        "id": "3e7e107d-3f2b-4e1d-9e14-206cf275b78e",
         "jsonrpc": "2.0",
         "method": "play",
         "params": {
@@ -240,8 +338,8 @@
           "name": "Jewel Boom Super Drop",
           "identifier": "JewelBoom"
         },
-        "generated_at": "2026-09-13T13:10:15+00:00",
-        "source_run": "2026-09-13_10-09-55-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:34:26+00:00",
+        "source_run": "2026-09-15_05-34-03-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -271,8 +369,8 @@
           "name": "Jewel Boom Super Drop",
           "identifier": "JewelBoom"
         },
-        "generated_at": "2026-09-13T13:10:15+00:00",
-        "source_run": "2026-09-13_10-09-55-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:34:26+00:00",
+        "source_run": "2026-09-15_05-34-03-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -331,6 +429,196 @@
         "base_discovery_state": "HAR_SCRIPT_OBSERVED"
       }
     },
+    "diagnostic.json": {
+      "encoding": "json",
+      "bytes": 5904,
+      "value": {
+        "schema": "tester-spin/run-diagnostics/v1",
+        "provider": "bgaming",
+        "game": {
+          "slug": "jewel-boom-super-drop",
+          "name": "Jewel Boom Super Drop",
+          "symbol": "JewelBoom"
+        },
+        "started_at": "2026-09-15T08:34:03+00:00",
+        "finished_at": "2026-09-15T08:34:26+00:00",
+        "result_status": "ERROR",
+        "scope": "observed_paths_only",
+        "observed_error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "root_cause": {
+          "status": "UNDETERMINED",
+          "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
+        },
+        "modes": [
+          {
+            "id": "SPIN",
+            "kind": "SPIN",
+            "status": "INCOMPLETE",
+            "validated": false,
+            "tested": true,
+            "attempt_count": 1,
+            "terminal_count": 0,
+            "missing_options": [
+              "SPIN"
+            ],
+            "branches": [
+              {
+                "source": "discovered_modes_fail_closed",
+                "mode_id": "SPIN",
+                "signature": "SPIN:UNEXECUTED",
+                "required": [
+                  "SPIN"
+                ],
+                "covered": [],
+                "missing": [
+                  "SPIN"
+                ],
+                "complete": false,
+                "required_samples": 1,
+                "sample_counts": null,
+                "sample_deficits": {}
+              }
+            ],
+            "provider_metadata": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "REJECTED_51100",
+              "wire_method": "play",
+              "request_options": {
+                "bet_type": "bet",
+                "action": "spin"
+              },
+              "source": "selected-har-script-contract",
+              "evidence_level": "REMOTE_REJECTION",
+              "execution_state": "REJECTED_REMOTE"
+            }
+          }
+        ],
+        "attempts": [
+          {
+            "number": 1,
+            "mode_id": "SPIN",
+            "reported_ok": false,
+            "reported_terminal": false,
+            "http_status": null,
+            "last_state": "",
+            "wire_steps": 0,
+            "elapsed_ms": 1547.0000000059372,
+            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+            "warning": "",
+            "evidence": [
+              {
+                "path": "SPIN/attempt-001/rpc-error-request.json",
+                "sha256": "e29d68959abf4aaa798dbe9dd2f16c3a3ea880e71cd78b66961645c4a8878a01",
+                "bytes": 345,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/rpc-error-response.json",
+                "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                "bytes": 136,
+                "kind": "response"
+              }
+            ],
+            "first_request": "SPIN/attempt-001/rpc-error-request.json",
+            "last_request": "SPIN/attempt-001/rpc-error-request.json",
+            "last_response": "SPIN/attempt-001/rpc-error-response.json",
+            "ordering": "SINGLE_EXCHANGE",
+            "trajectory_id": "581a6266d74320f2847a"
+          }
+        ],
+        "bootstrap_evidence": [
+          {
+            "path": "init-request.json",
+            "sha256": "4333a70b44b299357551eecdedf91009f9cf7761703fdb163c979e1ba48b113c",
+            "bytes": 142,
+            "kind": "envelope"
+          },
+          {
+            "path": "init-response.json",
+            "sha256": "bcf36b63d99acb36c67f35aaef8a078d399c6c92a861dec7c236c6ba8de742bc",
+            "bytes": 1891,
+            "kind": "envelope"
+          }
+        ],
+        "unknown_actions": [
+          {
+            "id": "UNCLASSIFIED_WIRE_VARIANT_b05c000d48224aaf",
+            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
+            "observation": {
+              "id": "SPIN",
+              "kind": "SPIN",
+              "observed": false,
+              "validated": false,
+              "executable": false,
+              "discovery_state": "REJECTED_51100",
+              "wire_method": "play",
+              "request_options": {
+                "bet_type": "bet",
+                "action": "spin"
+              },
+              "source": "selected-har-script-contract",
+              "evidence_level": "REMOTE_REJECTION",
+              "execution_state": "REJECTED_REMOTE"
+            },
+            "evidence": [
+              [
+                {
+                  "path": "SPIN/attempt-001/rpc-error-request.json",
+                  "sha256": "e29d68959abf4aaa798dbe9dd2f16c3a3ea880e71cd78b66961645c4a8878a01",
+                  "bytes": 345,
+                  "kind": "request"
+                },
+                {
+                  "path": "SPIN/attempt-001/rpc-error-response.json",
+                  "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                  "bytes": 136,
+                  "kind": "response"
+                }
+              ]
+            ]
+          }
+        ],
+        "request_comparisons": [],
+        "coverage": {
+          "schema": "tester-spin/path-coverage/v1",
+          "provider": "bgaming",
+          "game": "jewel-boom-super-drop",
+          "branch_points": [
+            {
+              "source": "discovered_modes_fail_closed",
+              "mode_id": "SPIN",
+              "signature": "SPIN:UNEXECUTED",
+              "required": [
+                "SPIN"
+              ],
+              "covered": [],
+              "missing": [
+                "SPIN"
+              ],
+              "complete": false,
+              "required_samples": 1,
+              "sample_counts": null,
+              "sample_deficits": {}
+            }
+          ],
+          "complete": false,
+          "missing_count": 1
+        },
+        "sample_diagnostics": [],
+        "evidence_gaps": [],
+        "next_steps": [
+          "Revisar la respuesta que anuncia la acción/opción pendiente y el serializer del cliente de este proveedor. No inventar argumentos ni un handler.",
+          "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa."
+        ],
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jewel Boom Super Drop\\diagnostics\\20260915T083347-55fc08a27ca0\\events.jsonl",
+        "tree": "run-tree.html",
+        "tree_data": "run-tree.json"
+      }
+    },
     "emulation-contract.json": {
       "encoding": "json",
       "bytes": 1703,
@@ -342,8 +630,8 @@
           "name": "Jewel Boom Super Drop",
           "identifier": "JewelBoom"
         },
-        "generated_at": "2026-09-13T13:10:15+00:00",
-        "source_run": "2026-09-13_10-09-55-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:34:26+00:00",
+        "source_run": "2026-09-15_05-34-03-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -400,7 +688,7 @@
       "encoding": "json",
       "bytes": 142,
       "value": {
-        "id": "8f9509be-ce8f-4c7b-8654-ab9213d6c134",
+        "id": "47f2ceea-75e1-4dc9-820b-1233ebc541bb",
         "jsonrpc": "2.0",
         "method": "init",
         "params": {
@@ -412,7 +700,7 @@
       "encoding": "json",
       "bytes": 1891,
       "value": {
-        "id": "8f9509be-ce8f-4c7b-8654-ab9213d6c134",
+        "id": "47f2ceea-75e1-4dc9-820b-1233ebc541bb",
         "jsonrpc": "2.0",
         "result": {
           "freebets": null,
@@ -497,7 +785,7 @@
           "urls": {
             "deposit_url": null,
             "return_url": null,
-            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDU0NzQ2MDQsImd0X2lkIjozNzIyNDExfSwiZXhwIjoxODA0OTQzNDA4fQ.SbGUm22SjNyXEw-Imin_lZYEqPXGqJ4Ga5h_JE5E2dk"
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcxNzk0ODEsImd0X2lkIjozNzIyNDExfSwiZXhwIjoxODA1MDk5NjYwfQ.Q9AvV15tevIsgQjZUnCTOp23vSVTi9YbVn4tjfOs1-A"
           },
           "balance": 100000,
           "state_lock": "<redacted>"
@@ -515,8 +803,8 @@
           "name": "Jewel Boom Super Drop",
           "identifier": "JewelBoom"
         },
-        "generated_at": "2026-09-13T13:10:15+00:00",
-        "source_run": "2026-09-13_10-09-55-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:34:26+00:00",
+        "source_run": "2026-09-15_05-34-03-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -558,7 +846,7 @@
             "terminal_successes": 0,
             "wire_steps": 0,
             "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jewel Boom Super Drop\\tests\\2026-09-13_10-09-55-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Jewel Boom Super Drop\\tests\\2026-09-15_05-34-03-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
             ]
           }
         ]
@@ -575,8 +863,8 @@
           "name": "Jewel Boom Super Drop",
           "identifier": "JewelBoom"
         },
-        "generated_at": "2026-09-13T13:10:15+00:00",
-        "source_run": "2026-09-13_10-09-55-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:34:26+00:00",
+        "source_run": "2026-09-15_05-34-03-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -629,6 +917,100 @@
         }
       }
     },
+    "run-tree.json": {
+      "encoding": "json",
+      "bytes": 2621,
+      "value": {
+        "schema": "tester-spin/run-tree/v1",
+        "provider": "bgaming",
+        "game": "jewel-boom-super-drop",
+        "scope": "observed_trajectories",
+        "exact_remote_outcome_reproducible": false,
+        "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
+        "trajectories": [
+          {
+            "id": "581a6266d74320f2847a",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": false,
+                "validated": false,
+                "executable": false,
+                "discovery_state": "REJECTED_51100",
+                "wire_method": "play",
+                "request_options": {
+                  "bet_type": "bet",
+                  "action": "spin"
+                },
+                "source": "selected-har-script-contract",
+                "evidence_level": "REMOTE_REJECTION",
+                "execution_state": "REJECTED_REMOTE"
+              }
+            },
+            "attempt": 1,
+            "reported_terminal": false,
+            "reported_ok": false,
+            "sequence_status": "SINGLE_EXCHANGE",
+            "steps": [
+              {
+                "label": "rpc-error",
+                "directory": "SPIN/attempt-001",
+                "request": [
+                  {
+                    "path": "SPIN/attempt-001/rpc-error-request.json",
+                    "sha256": "e29d68959abf4aaa798dbe9dd2f16c3a3ea880e71cd78b66961645c4a8878a01",
+                    "bytes": 345,
+                    "kind": "request"
+                  }
+                ],
+                "response": [
+                  {
+                    "path": "SPIN/attempt-001/rpc-error-response.json",
+                    "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
+                    "bytes": 136,
+                    "kind": "response"
+                  }
+                ],
+                "id": "581a6266d74320f2847a:0",
+                "parent_id": "581a6266d74320f2847a",
+                "observed_response": {
+                  "id": "x",
+                  "jsonrpc": "2.0",
+                  "error": {
+                    "code": 51100,
+                    "message": "Something went wrong. Refresh the page."
+                  }
+                }
+              }
+            ],
+            "events": [],
+            "gaps": [],
+            "offline_replay_ready": true
+          }
+        ],
+        "announced_branches": [
+          {
+            "source": "discovered_modes_fail_closed",
+            "mode_id": "SPIN",
+            "signature": "SPIN:UNEXECUTED",
+            "required": [
+              "SPIN"
+            ],
+            "covered": [],
+            "missing": [
+              "SPIN"
+            ],
+            "complete": false,
+            "required_samples": 1,
+            "sample_counts": null,
+            "sample_deficits": {}
+          }
+        ]
+      }
+    },
     "state-machine.json": {
       "encoding": "json",
       "bytes": 539,
@@ -640,8 +1022,8 @@
           "name": "Jewel Boom Super Drop",
           "identifier": "JewelBoom"
         },
-        "generated_at": "2026-09-13T13:10:15+00:00",
-        "source_run": "2026-09-13_10-09-55-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-15T08:34:26+00:00",
+        "source_run": "2026-09-15_05-34-03-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
