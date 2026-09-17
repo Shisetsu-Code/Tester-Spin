@@ -1,6 +1,6 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-17T04:28:28+00:00",
+  "published_at": "2026-09-17T10:09:18+00:00",
   "source_commit": "28232d3e4a210eaba35701fa23e187c5e3fa4336",
   "provider": "bgaming",
   "game": {
@@ -15,50 +15,50 @@
     "game_name": "Treasure Explorer",
     "game_url": "https://demo.bgaming-network.com/play/TreasureExplorer/FUN",
     "requested_spins": 1,
-    "successful_spins": 0,
-    "failed_spins": 1,
-    "status": "ERROR",
+    "successful_spins": 1,
+    "failed_spins": 0,
+    "status": "OK",
     "symbol": "TreasureExplorer",
     "discovered_modes": [
       {
         "id": "SPIN",
         "kind": "SPIN",
-        "observed": false,
-        "validated": false,
-        "executable": false,
-        "discovery_state": "REJECTED_51100",
+        "observed": true,
+        "validated": true,
+        "executable": true,
+        "discovery_state": "VALIDATED",
         "wire_method": "play",
         "request_options": {
-          "bet_type": "bet"
+          "machineId": 6
         },
-        "source": "game_bundle_source",
-        "evidence_level": "REMOTE_REJECTION",
-        "execution_state": "REJECTED_REMOTE"
+        "source": "selected-har",
+        "evidence_level": "REMOTE_EXECUTION",
+        "execution_state": "PROVEN_TERMINAL"
       }
     ],
-    "started_at": "2026-09-17T04:28:12+00:00",
-    "finished_at": "2026-09-17T04:28:24+00:00",
-    "elapsed_ms": 12250.0,
-    "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-    "run_dir": "2026-09-17_01-28-12-bgaming-hyperhive-jsonrpc",
+    "started_at": "2026-09-17T10:09:03+00:00",
+    "finished_at": "2026-09-17T10:09:15+00:00",
+    "elapsed_ms": 11875.0,
+    "error": "",
+    "run_dir": "2026-09-17_07-09-03-bgaming-hyperhive-jsonrpc",
     "attempts": [
       {
         "number": 1,
-        "ok": false,
+        "ok": true,
         "mode_id": "SPIN",
         "mode_kind": "SPIN",
         "provider_bl": null,
         "provider_pur": null,
-        "status_code": null,
-        "elapsed_ms": 687.0000000053551,
+        "status_code": 200,
+        "elapsed_ms": 2108.9999999967404,
         "symbol": "TreasureExplorer",
         "endpoint": "https://treasure-explorer.demo.bgaming-network.com/api",
         "na": "",
-        "terminal": false,
-        "wire_steps": 0,
+        "terminal": true,
+        "wire_steps": 1,
         "warning": "",
-        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\tests\\2026-09-17_01-28-12-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+        "error": "",
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\tests\\2026-09-17_07-09-03-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
       }
     ],
     "samples_per_path": 1,
@@ -79,11 +79,11 @@
       "diagnostics": []
     }
   },
-  "artifact_bytes_embedded": 29079,
+  "artifact_bytes_embedded": 96181,
   "artifacts": {
     "analysis/game-structure.json": {
       "encoding": "json",
-      "bytes": 1953,
+      "bytes": 1992,
       "value": {
         "schema": "tester-spin/game-structure/v1",
         "metadata": {
@@ -92,7 +92,7 @@
           "game_identifier": "treasure-explorer",
           "slug": "treasure-explorer",
           "bundle_fingerprint": "",
-          "generated_at": "2026-09-17T04:28:24+00:00",
+          "generated_at": "2026-09-17T10:09:15+00:00",
           "compatibility": "unverified",
           "source_evidence_summary": {
             "capture": "BGaming JSON requests/responses at transport boundary",
@@ -105,7 +105,8 @@
             "run:d5db37da25e83995dac8234a",
             "run:b324c25ffbe7b737a5754170",
             "run:a004d24c6ccab3b1cb0bfb67",
-            "run:61c5e715f6bd50cd559f5d64"
+            "run:61c5e715f6bd50cd559f5d64",
+            "run:17777ef6768df2217060e348"
           ],
           "previous_revisions": []
         },
@@ -151,86 +152,69 @@
     },
     "path-coverage.json": {
       "encoding": "json",
-      "bytes": 537,
+      "bytes": 174,
       "value": {
         "schema": "tester-spin/path-coverage/v1",
         "provider": "bgaming",
         "game": "treasure-explorer",
-        "branch_points": [
-          {
-            "source": "discovered_modes_fail_closed",
-            "mode_id": "SPIN",
-            "signature": "SPIN:UNEXECUTED",
-            "required": [
-              "SPIN"
-            ],
-            "covered": [],
-            "missing": [
-              "SPIN"
-            ],
-            "complete": false,
-            "required_samples": 1,
-            "sample_counts": null,
-            "sample_deficits": {}
-          }
-        ],
-        "complete": false,
-        "missing_count": 1
+        "branch_points": [],
+        "complete": true,
+        "missing_count": 0
       }
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 2394,
+      "bytes": 2138,
       "value": {
         "provider": "bgaming",
         "slug": "treasure-explorer",
         "game_name": "Treasure Explorer",
         "game_url": "https://demo.bgaming-network.com/play/TreasureExplorer/FUN",
         "requested_spins": 1,
-        "successful_spins": 0,
-        "failed_spins": 1,
-        "status": "ERROR",
+        "successful_spins": 1,
+        "failed_spins": 0,
+        "status": "OK",
         "symbol": "TreasureExplorer",
         "discovered_modes": [
           {
             "id": "SPIN",
             "kind": "SPIN",
-            "observed": false,
-            "validated": false,
-            "executable": false,
-            "discovery_state": "REJECTED_51100",
+            "observed": true,
+            "validated": true,
+            "executable": true,
+            "discovery_state": "VALIDATED",
             "wire_method": "play",
             "request_options": {
-              "bet_type": "bet"
+              "machineId": 6
             },
-            "source": "game_bundle_source",
-            "evidence_level": "REMOTE_REJECTION",
-            "execution_state": "REJECTED_REMOTE"
+            "source": "selected-har",
+            "evidence_level": "REMOTE_EXECUTION",
+            "execution_state": "PROVEN_TERMINAL"
           }
         ],
-        "started_at": "2026-09-17T04:28:12+00:00",
-        "finished_at": "2026-09-17T04:28:24+00:00",
-        "elapsed_ms": 12250.0,
-        "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\tests\\2026-09-17_01-28-12-bgaming-hyperhive-jsonrpc",
+        "started_at": "2026-09-17T10:09:03+00:00",
+        "finished_at": "2026-09-17T10:09:15+00:00",
+        "elapsed_ms": 11875.0,
+        "error": "",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\tests\\2026-09-17_07-09-03-bgaming-hyperhive-jsonrpc",
         "attempts": [
           {
             "number": 1,
-            "ok": false,
+            "ok": true,
             "mode_id": "SPIN",
             "mode_kind": "SPIN",
             "provider_bl": null,
             "provider_pur": null,
-            "status_code": null,
-            "elapsed_ms": 687.0000000053551,
+            "status_code": 200,
+            "elapsed_ms": 2108.9999999967404,
             "symbol": "TreasureExplorer",
             "endpoint": "https://treasure-explorer.demo.bgaming-network.com/api",
             "na": "",
-            "terminal": false,
-            "wire_steps": 0,
+            "terminal": true,
+            "wire_steps": 1,
             "warning": "",
-            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\tests\\2026-09-17_01-28-12-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+            "error": "",
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\tests\\2026-09-17_07-09-03-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
           }
         ],
         "samples_per_path": 1,
@@ -254,7 +238,7 @@
     },
     "sample-catalog.json": {
       "encoding": "json",
-      "bytes": 1427,
+      "bytes": 2884,
       "value": {
         "schema": "tester-spin/sample-catalog/v2",
         "provider": "bgaming",
@@ -267,78 +251,816 @@
             "mode_id": "SPIN",
             "mode_kind": "SPIN",
             "choices": [],
-            "validated_samples": 0,
+            "validated_samples": 1,
             "samples": [
               {
                 "attempt": 1,
                 "artifact_dir": "SPIN/attempt-001",
-                "validated": false,
-                "terminal": false,
+                "validated": true,
+                "terminal": true,
                 "observed_state_sequence": [],
                 "evidence": [
                   {
-                    "path": "SPIN/attempt-001/rpc-error-request.json",
-                    "sha256": "6b59f4ceaf507b02d1d13b4f555672018542f123982ae7211cefe8e3fe48bd86",
-                    "bytes": 240
+                    "path": "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl",
+                    "sha256": "e366e8421ec66588c3d7b83a1492fb11ae0f82c0122393301267781f7af903d7",
+                    "bytes": 1624
                   },
                   {
-                    "path": "SPIN/attempt-001/rpc-error-response.json",
-                    "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
-                    "bytes": 136
+                    "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+                    "sha256": "145ac6abbb7d7a63f0ab656f9a37885fc3a0e5eff77c9c9b5a1c6bdbfd31e0aa",
+                    "bytes": 238
+                  },
+                  {
+                    "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-response.json",
+                    "sha256": "41d8b1385dbccaa75bb6f760c74b2014fead1eaa9d28dabcc6c2770562e2bdb7",
+                    "bytes": 2793
+                  },
+                  {
+                    "path": "SPIN/attempt-001/return-to-base/probe-002/server-responses.jsonl",
+                    "sha256": "72916f27e075b821267d06596efa813391e2211de00f2f39550f853b8fd3f2f6",
+                    "bytes": 2602
+                  },
+                  {
+                    "path": "SPIN/attempt-001/return-to-base/probe-002/step-001-request.json",
+                    "sha256": "e971f82c5ed8c77e1b25bb2a838daf296ecf5db9762652149d0678f4591011a8",
+                    "bytes": 238
+                  },
+                  {
+                    "path": "SPIN/attempt-001/return-to-base/probe-002/step-001-response.json",
+                    "sha256": "a18bf39a829ba67d63439ecb1d39fb16bb4feb0112b6df503927b0f396dc927a",
+                    "bytes": 1095
                   },
                   {
                     "path": "SPIN/attempt-001/server-responses.jsonl",
-                    "sha256": "cd54b4d8f47aeb9ba0496586b1bbf6bfd4122613f1778e69d0f4773f1f3a44af",
-                    "bytes": 597
+                    "sha256": "fc0c2bc1b9d531bd052edb1bc722ee0a5e8602663447f12aa21cef046b0e3730",
+                    "bytes": 1627
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "3c4d7e91a54aba65e226551cce3fd8f5dc67ff61707bc4c08a3c6d75dd8edc4d",
+                    "bytes": 238
+                  },
+                  {
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "615ccfac3a897d91d5562b540205cb991ee7ebc45080701fae26dcbcbe9ca1cb",
+                    "bytes": 2792
                   }
                 ]
               }
             ],
-            "missing_samples": 1
+            "missing_samples": 0
           }
         ],
         "observed_state_types": [],
         "diagnostics": [],
-        "observed_paths_sampled": false
+        "observed_paths_sampled": true
       }
     },
-    "SPIN/attempt-001/rpc-error-request.json": {
+    "SPIN/attempt-001/remote-proof.json": {
       "encoding": "json",
-      "bytes": 240,
+      "bytes": 421,
       "value": {
-        "id": "23c17683-c22a-42dd-9727-5af788adf67d",
+        "runtime": "hyperhive-jsonrpc",
+        "mode_id": "SPIN",
+        "steps": 1,
+        "before_balance": 100000.0,
+        "observed_debit": 200.0,
+        "final": true,
+        "balance": 99816,
+        "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
+        "round_step": null,
+        "bet": null,
+        "total_win": 16,
+        "cost": null,
+        "freespins": null,
+        "next_action": null,
+        "table_sha256": "",
+        "response_sha256": "26ec5ef951b7ce19"
+      }
+    },
+    "SPIN/attempt-001/return-to-base.json": {
+      "encoding": "json",
+      "bytes": 8093,
+      "value": {
+        "schema": "tester-spin/return-to-base/v1",
+        "status": "CONFIRMED",
+        "connection_reused": true,
+        "required": 2,
+        "max_probes": 10,
+        "consecutive_base": 2,
+        "cause": "UNDETERMINED",
+        "probes": [
+          {
+            "ok": true,
+            "base": true,
+            "known": true,
+            "captures": [
+              {
+                "step": 1,
+                "request": {
+                  "id": "70f59a65-178d-4294-8c7a-9dd1b6e09122",
+                  "jsonrpc": "2.0",
+                  "method": "play",
+                  "params": {
+                    "token": "[REDACTED]",
+                    "req": {
+                      "bet": 200,
+                      "machineId": 6
+                    },
+                    "state_lock": "[REDACTED]"
+                  }
+                },
+                "response": {
+                  "id": "70f59a65-178d-4294-8c7a-9dd1b6e09122",
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "final": true,
+                    "resp": {
+                      "machineId": 6,
+                      "spinId": "95e0662c-d786-4371-93db-5422ce531624",
+                      "viewReels": [
+                        [
+                          6,
+                          3,
+                          6,
+                          9
+                        ],
+                        [
+                          5,
+                          3,
+                          5,
+                          0
+                        ],
+                        [
+                          9,
+                          6,
+                          9,
+                          4
+                        ],
+                        [
+                          5,
+                          1,
+                          6,
+                          7
+                        ],
+                        [
+                          7,
+                          2,
+                          5,
+                          8
+                        ]
+                      ],
+                      "lastReels": [],
+                      "aboveReels": [],
+                      "belowReels": [],
+                      "winLines": [
+                        {
+                          "lineNumber": 15,
+                          "symbol": 9,
+                          "win": 1,
+                          "positions": [
+                            15,
+                            16,
+                            12
+                          ],
+                          "multiplier": 1,
+                          "lineDescription": [
+                            15,
+                            16,
+                            12,
+                            18,
+                            19
+                          ]
+                        }
+                      ],
+                      "winPositions": [],
+                      "defaultSpecGroups": [
+                        {
+                          "subType": null,
+                          "type": "Multiplier",
+                          "symbolId": 0,
+                          "previousSymbolId": 0,
+                          "collectCount": 1,
+                          "totalWin": 0,
+                          "totalWinDouble": 0,
+                          "positions": [],
+                          "positionsWin": []
+                        }
+                      ],
+                      "freeSpinsInfo": null,
+                      "reSpinsInfo": null,
+                      "collapseInfo": {
+                        "groups": [
+                          {
+                            "viewReels": [
+                              [
+                                5,
+                                6,
+                                3,
+                                6
+                              ],
+                              [
+                                9,
+                                5,
+                                3,
+                                5
+                              ],
+                              [
+                                1,
+                                9,
+                                6,
+                                4
+                              ],
+                              [
+                                5,
+                                1,
+                                6,
+                                7
+                              ],
+                              [
+                                7,
+                                2,
+                                5,
+                                8
+                              ]
+                            ],
+                            "newReels": [
+                              5,
+                              9,
+                              1
+                            ],
+                            "winLines": [],
+                            "multiplier": 1,
+                            "positions": [
+                              0,
+                              1,
+                              2
+                            ],
+                            "symbolId": 0,
+                            "roundWin": 8,
+                            "type": "collapsingGroup"
+                          }
+                        ],
+                        "initialWin": 0
+                      },
+                      "bonusInfo": null,
+                      "totalWin": 8,
+                      "totalWinWithoutBooster": 0,
+                      "totalLost": 200,
+                      "winningName": null
+                    },
+                    "balance": 99624,
+                    "freebets": null,
+                    "state_lock": "[REDACTED]"
+                  }
+                }
+              }
+            ],
+            "summary": {
+              "final": true,
+              "balance": 99624,
+              "state_lock": "[REDACTED]",
+              "round_step": null,
+              "bet": null,
+              "total_win": 8,
+              "cost": null,
+              "freespins": null,
+              "next_action": null,
+              "table_sha256": "",
+              "response_sha256": "45a85f4dbfee0dff"
+            },
+            "directory": "return-to-base\\probe-001"
+          },
+          {
+            "ok": true,
+            "base": true,
+            "known": true,
+            "captures": [
+              {
+                "step": 1,
+                "request": {
+                  "id": "3514fd94-8457-4894-a844-52521fc29689",
+                  "jsonrpc": "2.0",
+                  "method": "play",
+                  "params": {
+                    "token": "[REDACTED]",
+                    "req": {
+                      "bet": 200,
+                      "machineId": 6
+                    },
+                    "state_lock": "[REDACTED]"
+                  }
+                },
+                "response": {
+                  "id": "3514fd94-8457-4894-a844-52521fc29689",
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "final": true,
+                    "resp": {
+                      "machineId": 6,
+                      "spinId": "3eca4d78-5ea3-4566-83c4-5c75895a4ba0",
+                      "viewReels": [
+                        [
+                          7,
+                          1,
+                          7,
+                          0
+                        ],
+                        [
+                          1,
+                          5,
+                          6,
+                          4
+                        ],
+                        [
+                          4,
+                          8,
+                          9,
+                          1
+                        ],
+                        [
+                          4,
+                          9,
+                          4,
+                          9
+                        ],
+                        [
+                          7,
+                          0,
+                          6,
+                          3
+                        ]
+                      ],
+                      "lastReels": [],
+                      "aboveReels": [],
+                      "belowReels": [],
+                      "winLines": [],
+                      "winPositions": [],
+                      "defaultSpecGroups": [],
+                      "freeSpinsInfo": null,
+                      "reSpinsInfo": null,
+                      "collapseInfo": null,
+                      "bonusInfo": null,
+                      "totalWin": 0,
+                      "totalWinWithoutBooster": 0,
+                      "totalLost": 200,
+                      "winningName": null
+                    },
+                    "balance": 99424,
+                    "freebets": null,
+                    "state_lock": "[REDACTED]"
+                  }
+                }
+              }
+            ],
+            "summary": {
+              "final": true,
+              "balance": 99424,
+              "state_lock": "[REDACTED]",
+              "round_step": null,
+              "bet": null,
+              "total_win": 0,
+              "cost": null,
+              "freespins": null,
+              "next_action": null,
+              "table_sha256": "",
+              "response_sha256": "3a861def646e4090"
+            },
+            "directory": "return-to-base\\probe-002"
+          }
+        ],
+        "updated_at": "2026-09-17T10:09:15.442295+00:00"
+      }
+    },
+    "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl": {
+      "encoding": "text",
+      "bytes": 1624,
+      "value": "{\"change_kind\": \"REFERENCE\", \"classification\": \"SEEN\", \"signature\": \"6f24d5ee2c845bcb88a9f6ca342f36fac1635ffcea123bec91100300c5846790\", \"changed_paths\": [], \"review_required\": false, \"action\": \"play\", \"response\": {\"id\": \"70f59a65-178d-4294-8c7a-9dd1b6e09122\", \"jsonrpc\": \"2.0\", \"result\": {\"final\": true, \"resp\": {\"machineId\": 6, \"spinId\": \"95e0662c-d786-4371-93db-5422ce531624\", \"viewReels\": [[6, 3, 6, 9], [5, 3, 5, 0], [9, 6, 9, 4], [5, 1, 6, 7], [7, 2, 5, 8]], \"lastReels\": [], \"aboveReels\": [], \"belowReels\": [], \"winLines\": [{\"lineNumber\": 15, \"symbol\": 9, \"win\": 1, \"positions\": [15, 16, 12], \"multiplier\": 1, \"lineDescription\": [15, 16, 12, 18, 19]}], \"winPositions\": [], \"defaultSpecGroups\": [{\"subType\": null, \"type\": \"Multiplier\", \"symbolId\": 0, \"previousSymbolId\": 0, \"collectCount\": 1, \"totalWin\": 0, \"totalWinDouble\": 0, \"positions\": [], \"positionsWin\": []}], \"freeSpinsInfo\": null, \"reSpinsInfo\": null, \"collapseInfo\": {\"groups\": [{\"viewReels\": [[5, 6, 3, 6], [9, 5, 3, 5], [1, 9, 6, 4], [5, 1, 6, 7], [7, 2, 5, 8]], \"newReels\": [5, 9, 1], \"winLines\": [], \"multiplier\": 1, \"positions\": [0, 1, 2], \"symbolId\": 0, \"roundWin\": 8, \"type\": \"collapsingGroup\"}], \"initialWin\": 0}, \"bonusInfo\": null, \"totalWin\": 8, \"totalWinWithoutBooster\": 0, \"totalLost\": 200, \"winningName\": null}, \"balance\": 99624, \"freebets\": null, \"state_lock\": \"[REDACTED]\"}}, \"request\": {\"id\": \"70f59a65-178d-4294-8c7a-9dd1b6e09122\", \"jsonrpc\": \"2.0\", \"method\": \"play\", \"params\": {\"token\": \"[REDACTED]\", \"req\": {\"bet\": 200, \"machineId\": 6}, \"state_lock\": \"[REDACTED]\"}}, \"http_status\": 200, \"captured_at\": \"2026-09-17T10:09:15.127824+00:00\"}\n"
+    },
+    "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 238,
+      "value": {
+        "id": "70f59a65-178d-4294-8c7a-9dd1b6e09122",
         "jsonrpc": "2.0",
         "method": "play",
         "params": {
-          "token": "<redacted>",
+          "token": "[REDACTED]",
           "req": {
-            "bet": 25,
-            "bet_type": "bet"
+            "bet": 200,
+            "machineId": 6
           },
-          "state_lock": "<redacted>"
+          "state_lock": "[REDACTED]"
         }
       }
     },
-    "SPIN/attempt-001/rpc-error-response.json": {
+    "SPIN/attempt-001/return-to-base/probe-001/step-001-response.json": {
       "encoding": "json",
-      "bytes": 136,
+      "bytes": 2793,
       "value": {
-        "id": "x",
+        "id": "70f59a65-178d-4294-8c7a-9dd1b6e09122",
         "jsonrpc": "2.0",
-        "error": {
-          "code": 51100,
-          "message": "Something went wrong. Refresh the page."
+        "result": {
+          "final": true,
+          "resp": {
+            "machineId": 6,
+            "spinId": "95e0662c-d786-4371-93db-5422ce531624",
+            "viewReels": [
+              [
+                6,
+                3,
+                6,
+                9
+              ],
+              [
+                5,
+                3,
+                5,
+                0
+              ],
+              [
+                9,
+                6,
+                9,
+                4
+              ],
+              [
+                5,
+                1,
+                6,
+                7
+              ],
+              [
+                7,
+                2,
+                5,
+                8
+              ]
+            ],
+            "lastReels": [],
+            "aboveReels": [],
+            "belowReels": [],
+            "winLines": [
+              {
+                "lineNumber": 15,
+                "symbol": 9,
+                "win": 1,
+                "positions": [
+                  15,
+                  16,
+                  12
+                ],
+                "multiplier": 1,
+                "lineDescription": [
+                  15,
+                  16,
+                  12,
+                  18,
+                  19
+                ]
+              }
+            ],
+            "winPositions": [],
+            "defaultSpecGroups": [
+              {
+                "subType": null,
+                "type": "Multiplier",
+                "symbolId": 0,
+                "previousSymbolId": 0,
+                "collectCount": 1,
+                "totalWin": 0,
+                "totalWinDouble": 0,
+                "positions": [],
+                "positionsWin": []
+              }
+            ],
+            "freeSpinsInfo": null,
+            "reSpinsInfo": null,
+            "collapseInfo": {
+              "groups": [
+                {
+                  "viewReels": [
+                    [
+                      5,
+                      6,
+                      3,
+                      6
+                    ],
+                    [
+                      9,
+                      5,
+                      3,
+                      5
+                    ],
+                    [
+                      1,
+                      9,
+                      6,
+                      4
+                    ],
+                    [
+                      5,
+                      1,
+                      6,
+                      7
+                    ],
+                    [
+                      7,
+                      2,
+                      5,
+                      8
+                    ]
+                  ],
+                  "newReels": [
+                    5,
+                    9,
+                    1
+                  ],
+                  "winLines": [],
+                  "multiplier": 1,
+                  "positions": [
+                    0,
+                    1,
+                    2
+                  ],
+                  "symbolId": 0,
+                  "roundWin": 8,
+                  "type": "collapsingGroup"
+                }
+              ],
+              "initialWin": 0
+            },
+            "bonusInfo": null,
+            "totalWin": 8,
+            "totalWinWithoutBooster": 0,
+            "totalLost": 200,
+            "winningName": null
+          },
+          "balance": 99624,
+          "freebets": null,
+          "state_lock": "[REDACTED]"
+        }
+      }
+    },
+    "SPIN/attempt-001/return-to-base/probe-002/server-responses.jsonl": {
+      "encoding": "text",
+      "bytes": 2602,
+      "value": "{\"change_kind\": \"PROTOCOL_CHANGE\", \"classification\": \"NEW_RESPONSE\", \"signature\": \"51b120a6a1241641d5e299e1aedd7e0063137c29ea1bc70234ca2a2fc6a377a0\", \"changed_paths\": [\"/result/resp/collapseInfo\", \"/result/resp/collapseInfo/groups\", \"/result/resp/collapseInfo/groups/*\", \"/result/resp/collapseInfo/groups/*/multiplier\", \"/result/resp/collapseInfo/groups/*/newReels\", \"/result/resp/collapseInfo/groups/*/newReels/*\", \"/result/resp/collapseInfo/groups/*/positions\", \"/result/resp/collapseInfo/groups/*/positions/*\", \"/result/resp/collapseInfo/groups/*/roundWin\", \"/result/resp/collapseInfo/groups/*/symbolId\", \"/result/resp/collapseInfo/groups/*/type\", \"/result/resp/collapseInfo/groups/*/viewReels\", \"/result/resp/collapseInfo/groups/*/viewReels/*\", \"/result/resp/collapseInfo/groups/*/viewReels/*/*\", \"/result/resp/collapseInfo/groups/*/winLines\", \"/result/resp/collapseInfo/initialWin\", \"/result/resp/defaultSpecGroups/*\", \"/result/resp/defaultSpecGroups/*/collectCount\", \"/result/resp/defaultSpecGroups/*/positions\", \"/result/resp/defaultSpecGroups/*/positionsWin\", \"/result/resp/defaultSpecGroups/*/previousSymbolId\", \"/result/resp/defaultSpecGroups/*/subType\", \"/result/resp/defaultSpecGroups/*/symbolId\", \"/result/resp/defaultSpecGroups/*/totalWin\", \"/result/resp/defaultSpecGroups/*/totalWinDouble\", \"/result/resp/defaultSpecGroups/*/type\", \"/result/resp/winLines/*\", \"/result/resp/winLines/*/lineDescription\", \"/result/resp/winLines/*/lineDescription/*\", \"/result/resp/winLines/*/lineNumber\", \"/result/resp/winLines/*/multiplier\", \"/result/resp/winLines/*/positions\", \"/result/resp/winLines/*/positions/*\", \"/result/resp/winLines/*/symbol\", \"/result/resp/winLines/*/win\"], \"review_required\": true, \"action\": \"play\", \"response\": {\"id\": \"3514fd94-8457-4894-a844-52521fc29689\", \"jsonrpc\": \"2.0\", \"result\": {\"final\": true, \"resp\": {\"machineId\": 6, \"spinId\": \"3eca4d78-5ea3-4566-83c4-5c75895a4ba0\", \"viewReels\": [[7, 1, 7, 0], [1, 5, 6, 4], [4, 8, 9, 1], [4, 9, 4, 9], [7, 0, 6, 3]], \"lastReels\": [], \"aboveReels\": [], \"belowReels\": [], \"winLines\": [], \"winPositions\": [], \"defaultSpecGroups\": [], \"freeSpinsInfo\": null, \"reSpinsInfo\": null, \"collapseInfo\": null, \"bonusInfo\": null, \"totalWin\": 0, \"totalWinWithoutBooster\": 0, \"totalLost\": 200, \"winningName\": null}, \"balance\": 99424, \"freebets\": null, \"state_lock\": \"[REDACTED]\"}}, \"request\": {\"id\": \"3514fd94-8457-4894-a844-52521fc29689\", \"jsonrpc\": \"2.0\", \"method\": \"play\", \"params\": {\"token\": \"[REDACTED]\", \"req\": {\"bet\": 200, \"machineId\": 6}, \"state_lock\": \"[REDACTED]\"}}, \"http_status\": 200, \"captured_at\": \"2026-09-17T10:09:15.436266+00:00\"}\n"
+    },
+    "SPIN/attempt-001/return-to-base/probe-002/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 238,
+      "value": {
+        "id": "3514fd94-8457-4894-a844-52521fc29689",
+        "jsonrpc": "2.0",
+        "method": "play",
+        "params": {
+          "token": "[REDACTED]",
+          "req": {
+            "bet": 200,
+            "machineId": 6
+          },
+          "state_lock": "[REDACTED]"
+        }
+      }
+    },
+    "SPIN/attempt-001/return-to-base/probe-002/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 1095,
+      "value": {
+        "id": "3514fd94-8457-4894-a844-52521fc29689",
+        "jsonrpc": "2.0",
+        "result": {
+          "final": true,
+          "resp": {
+            "machineId": 6,
+            "spinId": "3eca4d78-5ea3-4566-83c4-5c75895a4ba0",
+            "viewReels": [
+              [
+                7,
+                1,
+                7,
+                0
+              ],
+              [
+                1,
+                5,
+                6,
+                4
+              ],
+              [
+                4,
+                8,
+                9,
+                1
+              ],
+              [
+                4,
+                9,
+                4,
+                9
+              ],
+              [
+                7,
+                0,
+                6,
+                3
+              ]
+            ],
+            "lastReels": [],
+            "aboveReels": [],
+            "belowReels": [],
+            "winLines": [],
+            "winPositions": [],
+            "defaultSpecGroups": [],
+            "freeSpinsInfo": null,
+            "reSpinsInfo": null,
+            "collapseInfo": null,
+            "bonusInfo": null,
+            "totalWin": 0,
+            "totalWinWithoutBooster": 0,
+            "totalLost": 200,
+            "winningName": null
+          },
+          "balance": 99424,
+          "freebets": null,
+          "state_lock": "[REDACTED]"
         }
       }
     },
     "SPIN/attempt-001/server-responses.jsonl": {
       "encoding": "text",
-      "bytes": 597,
-      "value": "{\"change_kind\": \"REFERENCE\", \"classification\": \"BASELINE\", \"signature\": \"348872fa55683d89868cd23f3b05d7010da818c51f4f78a20536e86b758b97b1\", \"changed_paths\": [], \"review_required\": false, \"action\": \"play\", \"response\": {\"id\": \"x\", \"jsonrpc\": \"2.0\", \"error\": {\"code\": 51100, \"message\": \"Something went wrong. Refresh the page.\"}}, \"request\": {\"id\": \"23c17683-c22a-42dd-9727-5af788adf67d\", \"jsonrpc\": \"2.0\", \"method\": \"play\", \"params\": {\"token\": \"[REDACTED]\", \"req\": {\"bet\": 25, \"bet_type\": \"bet\"}, \"state_lock\": \"[REDACTED]\"}}, \"http_status\": 200, \"captured_at\": \"2026-09-17T04:28:24.777756+00:00\"}\n"
+      "bytes": 1627,
+      "value": "{\"change_kind\": \"REFERENCE\", \"classification\": \"BASELINE\", \"signature\": \"6f24d5ee2c845bcb88a9f6ca342f36fac1635ffcea123bec91100300c5846790\", \"changed_paths\": [], \"review_required\": false, \"action\": \"play\", \"response\": {\"id\": \"925e48b4-bbf3-425a-8b23-e81a34419dc0\", \"jsonrpc\": \"2.0\", \"result\": {\"final\": true, \"resp\": {\"machineId\": 6, \"spinId\": \"10c8bdad-8a27-4fdd-b1ea-5a222a3b0ad8\", \"viewReels\": [[6, 4, 7, 3], [2, 7, 5, 2], [3, 8, 7, 6], [1, 5, 2, 7], [4, 7, 3, 7]], \"lastReels\": [], \"aboveReels\": [], \"belowReels\": [], \"winLines\": [{\"lineNumber\": 11, \"symbol\": 7, \"win\": 2, \"positions\": [10, 6, 12], \"multiplier\": 1, \"lineDescription\": [10, 6, 12, 8, 14]}], \"winPositions\": [], \"defaultSpecGroups\": [{\"subType\": null, \"type\": \"Multiplier\", \"symbolId\": 0, \"previousSymbolId\": 0, \"collectCount\": 1, \"totalWin\": 0, \"totalWinDouble\": 0, \"positions\": [], \"positionsWin\": []}], \"freeSpinsInfo\": null, \"reSpinsInfo\": null, \"collapseInfo\": {\"groups\": [{\"viewReels\": [[5, 6, 4, 3], [2, 2, 5, 2], [1, 3, 8, 6], [1, 5, 2, 7], [4, 7, 3, 7]], \"newReels\": [5, 2, 1], \"winLines\": [], \"multiplier\": 1, \"positions\": [0, 1, 2], \"symbolId\": 0, \"roundWin\": 16, \"type\": \"collapsingGroup\"}], \"initialWin\": 0}, \"bonusInfo\": null, \"totalWin\": 16, \"totalWinWithoutBooster\": 0, \"totalLost\": 200, \"winningName\": null}, \"balance\": 99816, \"freebets\": null, \"state_lock\": \"[REDACTED]\"}}, \"request\": {\"id\": \"925e48b4-bbf3-425a-8b23-e81a34419dc0\", \"jsonrpc\": \"2.0\", \"method\": \"play\", \"params\": {\"token\": \"[REDACTED]\", \"req\": {\"bet\": 200, \"machineId\": 6}, \"state_lock\": \"[REDACTED]\"}}, \"http_status\": 200, \"captured_at\": \"2026-09-17T10:09:14.606369+00:00\"}\n"
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 238,
+      "value": {
+        "id": "925e48b4-bbf3-425a-8b23-e81a34419dc0",
+        "jsonrpc": "2.0",
+        "method": "play",
+        "params": {
+          "token": "<redacted>",
+          "req": {
+            "bet": 200,
+            "machineId": 6
+          },
+          "state_lock": "<redacted>"
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 2792,
+      "value": {
+        "id": "925e48b4-bbf3-425a-8b23-e81a34419dc0",
+        "jsonrpc": "2.0",
+        "result": {
+          "final": true,
+          "resp": {
+            "machineId": 6,
+            "spinId": "10c8bdad-8a27-4fdd-b1ea-5a222a3b0ad8",
+            "viewReels": [
+              [
+                6,
+                4,
+                7,
+                3
+              ],
+              [
+                2,
+                7,
+                5,
+                2
+              ],
+              [
+                3,
+                8,
+                7,
+                6
+              ],
+              [
+                1,
+                5,
+                2,
+                7
+              ],
+              [
+                4,
+                7,
+                3,
+                7
+              ]
+            ],
+            "lastReels": [],
+            "aboveReels": [],
+            "belowReels": [],
+            "winLines": [
+              {
+                "lineNumber": 11,
+                "symbol": 7,
+                "win": 2,
+                "positions": [
+                  10,
+                  6,
+                  12
+                ],
+                "multiplier": 1,
+                "lineDescription": [
+                  10,
+                  6,
+                  12,
+                  8,
+                  14
+                ]
+              }
+            ],
+            "winPositions": [],
+            "defaultSpecGroups": [
+              {
+                "subType": null,
+                "type": "Multiplier",
+                "symbolId": 0,
+                "previousSymbolId": 0,
+                "collectCount": 1,
+                "totalWin": 0,
+                "totalWinDouble": 0,
+                "positions": [],
+                "positionsWin": []
+              }
+            ],
+            "freeSpinsInfo": null,
+            "reSpinsInfo": null,
+            "collapseInfo": {
+              "groups": [
+                {
+                  "viewReels": [
+                    [
+                      5,
+                      6,
+                      4,
+                      3
+                    ],
+                    [
+                      2,
+                      2,
+                      5,
+                      2
+                    ],
+                    [
+                      1,
+                      3,
+                      8,
+                      6
+                    ],
+                    [
+                      1,
+                      5,
+                      2,
+                      7
+                    ],
+                    [
+                      4,
+                      7,
+                      3,
+                      7
+                    ]
+                  ],
+                  "newReels": [
+                    5,
+                    2,
+                    1
+                  ],
+                  "winLines": [],
+                  "multiplier": 1,
+                  "positions": [
+                    0,
+                    1,
+                    2
+                  ],
+                  "symbolId": 0,
+                  "roundWin": 16,
+                  "type": "collapsingGroup"
+                }
+              ],
+              "initialWin": 0
+            },
+            "bonusInfo": null,
+            "totalWin": 16,
+            "totalWinWithoutBooster": 0,
+            "totalLost": 200,
+            "winningName": null
+          },
+          "balance": 99816,
+          "freebets": null,
+          "state_lock": "<redacted>"
+        }
+      }
     },
     "backend-conformance.json": {
       "encoding": "json",
-      "bytes": 937,
+      "bytes": 1589,
       "value": {
         "schema": "tester-spin/bgaming-backend-conformance/v1",
         "provider": "bgaming",
@@ -347,8 +1069,8 @@
           "name": "Treasure Explorer",
           "identifier": "TreasureExplorer"
         },
-        "generated_at": "2026-09-17T04:28:24+00:00",
-        "source_run": "2026-09-17_01-28-12-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-17T10:09:15+00:00",
+        "source_run": "2026-09-17_07-09-03-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -356,8 +1078,28 @@
           "PROVIDER_METADATA",
           "INFERENCE"
         ],
-        "wire_replay_complete": false,
-        "cases": [],
+        "wire_replay_complete": true,
+        "cases": [
+          {
+            "id": "CASE_0001",
+            "source_state": "READY",
+            "request_contract": "RPC_PLAY",
+            "request_selector_vectors_observed": [
+              {
+                "machineId": 6
+              }
+            ],
+            "accepted_outcome": "RPC_PLAY__TO__READY",
+            "expected_target_state": "READY",
+            "response_schema": "response-schemas/rpc_play__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+              "SPIN/attempt-001/return-to-base/probe-002/step-001-request.json",
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ],
         "rules": [
           "A backend response must match the response schema for the selected outcome.",
           "The response must move the session to the documented target state.",
@@ -369,7 +1111,7 @@
     },
     "backend-response-plan.json": {
       "encoding": "json",
-      "bytes": 721,
+      "bytes": 1356,
       "value": {
         "schema": "tester-spin/bgaming-backend-response-plan/v1",
         "provider": "bgaming",
@@ -378,8 +1120,8 @@
           "name": "Treasure Explorer",
           "identifier": "TreasureExplorer"
         },
-        "generated_at": "2026-09-17T04:28:24+00:00",
-        "source_run": "2026-09-17_01-28-12-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-17T10:09:15+00:00",
+        "source_run": "2026-09-17_07-09-03-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -389,12 +1131,39 @@
         ],
         "purpose": "Backend dispatch table: current state + received request contract -> allowed response/outcome families.",
         "probability_policy": "Do not derive RNG weights from observed_count; probabilities remain unknown.",
-        "states": {}
+        "states": {
+          "READY": {
+            "RPC_PLAY": {
+              "wire_action": "play",
+              "selector_domains_observed": {
+                "machineId": [
+                  6
+                ]
+              },
+              "selector_vectors_observed": [
+                {
+                  "machineId": 6
+                }
+              ],
+              "outcomes": [
+                {
+                  "id": "RPC_PLAY__TO__READY",
+                  "target_state": [
+                    "READY"
+                  ],
+                  "response_schema": "response-schemas/rpc_play__to__ready.json",
+                  "terminal_observed": true,
+                  "math_probability_known": false
+                }
+              ]
+            }
+          }
+        }
       }
     },
     "contract-diagnostic.json": {
       "encoding": "json",
-      "bytes": 694,
+      "bytes": 690,
       "value": {
         "runtime": "hyperhive-jsonrpc",
         "script_urls": [
@@ -408,15 +1177,15 @@
         "rpc_id_profile": "uuid",
         "action_vocabulary": [],
         "base_request": {
-          "bet_type": "bet"
+          "machineId": 6
         },
         "custom_req_profile": "",
-        "base_discovery_state": "BASE_CONTRACT"
+        "base_discovery_state": "HAR_OBSERVED"
       }
     },
     "diagnostic.json": {
       "encoding": "json",
-      "bytes": 6315,
+      "bytes": 14971,
       "value": {
         "schema": "tester-spin/run-diagnostics/v1",
         "provider": "bgaming",
@@ -425,11 +1194,11 @@
           "name": "Treasure Explorer",
           "symbol": "TreasureExplorer"
         },
-        "started_at": "2026-09-17T04:28:12+00:00",
-        "finished_at": "2026-09-17T04:28:24+00:00",
-        "result_status": "ERROR",
+        "started_at": "2026-09-17T10:09:03+00:00",
+        "finished_at": "2026-09-17T10:09:15+00:00",
+        "result_status": "OK",
         "scope": "observed_paths_only",
-        "observed_error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+        "observed_error": "",
         "root_cause": {
           "status": "UNDETERMINED",
           "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
@@ -438,186 +1207,432 @@
           {
             "id": "SPIN",
             "kind": "SPIN",
-            "status": "INCOMPLETE",
-            "validated": false,
+            "status": "VALIDATED",
+            "validated": true,
             "tested": true,
             "attempt_count": 1,
-            "terminal_count": 0,
-            "missing_options": [
-              "SPIN"
-            ],
-            "branches": [
-              {
-                "source": "discovered_modes_fail_closed",
-                "mode_id": "SPIN",
-                "signature": "SPIN:UNEXECUTED",
-                "required": [
-                  "SPIN"
-                ],
-                "covered": [],
-                "missing": [
-                  "SPIN"
-                ],
-                "complete": false,
-                "required_samples": 1,
-                "sample_counts": null,
-                "sample_deficits": {}
-              }
-            ],
+            "terminal_count": 1,
+            "missing_options": [],
+            "branches": [],
             "provider_metadata": {
               "id": "SPIN",
               "kind": "SPIN",
-              "observed": false,
-              "validated": false,
-              "executable": false,
-              "discovery_state": "REJECTED_51100",
+              "observed": true,
+              "validated": true,
+              "executable": true,
+              "discovery_state": "VALIDATED",
               "wire_method": "play",
               "request_options": {
-                "bet_type": "bet"
+                "machineId": 6
               },
-              "source": "game_bundle_source",
-              "evidence_level": "REMOTE_REJECTION",
-              "execution_state": "REJECTED_REMOTE"
+              "source": "selected-har",
+              "evidence_level": "REMOTE_EXECUTION",
+              "execution_state": "PROVEN_TERMINAL"
             }
           }
         ],
         "attempts": [
           {
-            "return_to_base": {},
+            "return_to_base": {
+              "schema": "tester-spin/return-to-base/v1",
+              "status": "CONFIRMED",
+              "connection_reused": true,
+              "required": 2,
+              "max_probes": 10,
+              "consecutive_base": 2,
+              "cause": "UNDETERMINED",
+              "probes": [
+                {
+                  "ok": true,
+                  "base": true,
+                  "known": true,
+                  "captures": [
+                    {
+                      "step": 1,
+                      "request": {
+                        "id": "70f59a65-178d-4294-8c7a-9dd1b6e09122",
+                        "jsonrpc": "2.0",
+                        "method": "play",
+                        "params": {
+                          "token": "[REDACTED]",
+                          "req": {
+                            "bet": 200,
+                            "machineId": 6
+                          },
+                          "state_lock": "[REDACTED]"
+                        }
+                      },
+                      "response": {
+                        "id": "70f59a65-178d-4294-8c7a-9dd1b6e09122",
+                        "jsonrpc": "2.0",
+                        "result": {
+                          "final": true,
+                          "resp": {
+                            "machineId": 6,
+                            "spinId": "95e0662c-d786-4371-93db-5422ce531624",
+                            "viewReels": [
+                              [
+                                6,
+                                3,
+                                6,
+                                9
+                              ],
+                              [
+                                5,
+                                3,
+                                5,
+                                0
+                              ],
+                              [
+                                9,
+                                6,
+                                9,
+                                4
+                              ],
+                              [
+                                5,
+                                1,
+                                6,
+                                7
+                              ],
+                              [
+                                7,
+                                2,
+                                5,
+                                8
+                              ]
+                            ],
+                            "lastReels": [],
+                            "aboveReels": [],
+                            "belowReels": [],
+                            "winLines": [
+                              {
+                                "lineNumber": 15,
+                                "symbol": 9,
+                                "win": 1,
+                                "positions": [
+                                  15,
+                                  16,
+                                  12
+                                ],
+                                "multiplier": 1,
+                                "lineDescription": [
+                                  15,
+                                  16,
+                                  12,
+                                  18,
+                                  19
+                                ]
+                              }
+                            ],
+                            "winPositions": [],
+                            "defaultSpecGroups": [
+                              {
+                                "subType": null,
+                                "type": "Multiplier",
+                                "symbolId": 0,
+                                "previousSymbolId": 0,
+                                "collectCount": 1,
+                                "totalWin": 0,
+                                "totalWinDouble": 0,
+                                "positions": [],
+                                "positionsWin": []
+                              }
+                            ],
+                            "freeSpinsInfo": null,
+                            "reSpinsInfo": null,
+                            "collapseInfo": {
+                              "groups": [
+                                {
+                                  "viewReels": [
+                                    [
+                                      5,
+                                      6,
+                                      3,
+                                      6
+                                    ],
+                                    [
+                                      9,
+                                      5,
+                                      3,
+                                      5
+                                    ],
+                                    [
+                                      1,
+                                      9,
+                                      6,
+                                      4
+                                    ],
+                                    [
+                                      5,
+                                      1,
+                                      6,
+                                      7
+                                    ],
+                                    [
+                                      7,
+                                      2,
+                                      5,
+                                      8
+                                    ]
+                                  ],
+                                  "newReels": [
+                                    5,
+                                    9,
+                                    1
+                                  ],
+                                  "winLines": [],
+                                  "multiplier": 1,
+                                  "positions": [
+                                    0,
+                                    1,
+                                    2
+                                  ],
+                                  "symbolId": 0,
+                                  "roundWin": 8,
+                                  "type": "collapsingGroup"
+                                }
+                              ],
+                              "initialWin": 0
+                            },
+                            "bonusInfo": null,
+                            "totalWin": 8,
+                            "totalWinWithoutBooster": 0,
+                            "totalLost": 200,
+                            "winningName": null
+                          },
+                          "balance": 99624,
+                          "freebets": null,
+                          "state_lock": "[REDACTED]"
+                        }
+                      }
+                    }
+                  ],
+                  "summary": {
+                    "final": true,
+                    "balance": 99624,
+                    "state_lock": "[REDACTED]",
+                    "round_step": null,
+                    "bet": null,
+                    "total_win": 8,
+                    "cost": null,
+                    "freespins": null,
+                    "next_action": null,
+                    "table_sha256": "",
+                    "response_sha256": "45a85f4dbfee0dff"
+                  },
+                  "directory": "return-to-base\\probe-001"
+                },
+                {
+                  "ok": true,
+                  "base": true,
+                  "known": true,
+                  "captures": [
+                    {
+                      "step": 1,
+                      "request": {
+                        "id": "3514fd94-8457-4894-a844-52521fc29689",
+                        "jsonrpc": "2.0",
+                        "method": "play",
+                        "params": {
+                          "token": "[REDACTED]",
+                          "req": {
+                            "bet": 200,
+                            "machineId": 6
+                          },
+                          "state_lock": "[REDACTED]"
+                        }
+                      },
+                      "response": {
+                        "id": "3514fd94-8457-4894-a844-52521fc29689",
+                        "jsonrpc": "2.0",
+                        "result": {
+                          "final": true,
+                          "resp": {
+                            "machineId": 6,
+                            "spinId": "3eca4d78-5ea3-4566-83c4-5c75895a4ba0",
+                            "viewReels": [
+                              [
+                                7,
+                                1,
+                                7,
+                                0
+                              ],
+                              [
+                                1,
+                                5,
+                                6,
+                                4
+                              ],
+                              [
+                                4,
+                                8,
+                                9,
+                                1
+                              ],
+                              [
+                                4,
+                                9,
+                                4,
+                                9
+                              ],
+                              [
+                                7,
+                                0,
+                                6,
+                                3
+                              ]
+                            ],
+                            "lastReels": [],
+                            "aboveReels": [],
+                            "belowReels": [],
+                            "winLines": [],
+                            "winPositions": [],
+                            "defaultSpecGroups": [],
+                            "freeSpinsInfo": null,
+                            "reSpinsInfo": null,
+                            "collapseInfo": null,
+                            "bonusInfo": null,
+                            "totalWin": 0,
+                            "totalWinWithoutBooster": 0,
+                            "totalLost": 200,
+                            "winningName": null
+                          },
+                          "balance": 99424,
+                          "freebets": null,
+                          "state_lock": "[REDACTED]"
+                        }
+                      }
+                    }
+                  ],
+                  "summary": {
+                    "final": true,
+                    "balance": 99424,
+                    "state_lock": "[REDACTED]",
+                    "round_step": null,
+                    "bet": null,
+                    "total_win": 0,
+                    "cost": null,
+                    "freespins": null,
+                    "next_action": null,
+                    "table_sha256": "",
+                    "response_sha256": "3a861def646e4090"
+                  },
+                  "directory": "return-to-base\\probe-002"
+                }
+              ],
+              "updated_at": "2026-09-17T10:09:15.442295+00:00"
+            },
             "number": 1,
             "mode_id": "SPIN",
-            "reported_ok": false,
-            "reported_terminal": false,
-            "http_status": null,
+            "reported_ok": true,
+            "reported_terminal": true,
+            "http_status": 200,
             "last_state": "",
-            "wire_steps": 0,
-            "elapsed_ms": 687.0000000053551,
-            "error": "HyperHiveRPCError: BGaming HyperHive RPC error: {'code': 51100, 'message': 'Something went wrong. Refresh the page.'}",
+            "wire_steps": 1,
+            "elapsed_ms": 2108.9999999967404,
+            "error": "",
             "warning": "",
             "evidence": [
               {
-                "path": "SPIN/attempt-001/rpc-error-request.json",
-                "sha256": "6b59f4ceaf507b02d1d13b4f555672018542f123982ae7211cefe8e3fe48bd86",
-                "bytes": 240,
+                "path": "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl",
+                "sha256": "e366e8421ec66588c3d7b83a1492fb11ae0f82c0122393301267781f7af903d7",
+                "bytes": 1624,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+                "sha256": "145ac6abbb7d7a63f0ab656f9a37885fc3a0e5eff77c9c9b5a1c6bdbfd31e0aa",
+                "bytes": 238,
                 "kind": "request"
               },
               {
-                "path": "SPIN/attempt-001/rpc-error-response.json",
-                "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
-                "bytes": 136,
+                "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-response.json",
+                "sha256": "41d8b1385dbccaa75bb6f760c74b2014fead1eaa9d28dabcc6c2770562e2bdb7",
+                "bytes": 2793,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/return-to-base/probe-002/server-responses.jsonl",
+                "sha256": "72916f27e075b821267d06596efa813391e2211de00f2f39550f853b8fd3f2f6",
+                "bytes": 2602,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/return-to-base/probe-002/step-001-request.json",
+                "sha256": "e971f82c5ed8c77e1b25bb2a838daf296ecf5db9762652149d0678f4591011a8",
+                "bytes": 238,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/return-to-base/probe-002/step-001-response.json",
+                "sha256": "a18bf39a829ba67d63439ecb1d39fb16bb4feb0112b6df503927b0f396dc927a",
+                "bytes": 1095,
                 "kind": "response"
               },
               {
                 "path": "SPIN/attempt-001/server-responses.jsonl",
-                "sha256": "cd54b4d8f47aeb9ba0496586b1bbf6bfd4122613f1778e69d0f4773f1f3a44af",
-                "bytes": 597,
+                "sha256": "fc0c2bc1b9d531bd052edb1bc722ee0a5e8602663447f12aa21cef046b0e3730",
+                "bytes": 1627,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/step-001-request.json",
+                "sha256": "3c4d7e91a54aba65e226551cce3fd8f5dc67ff61707bc4c08a3c6d75dd8edc4d",
+                "bytes": 238,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/step-001-response.json",
+                "sha256": "615ccfac3a897d91d5562b540205cb991ee7ebc45080701fae26dcbcbe9ca1cb",
+                "bytes": 2792,
                 "kind": "response"
               }
             ],
-            "first_request": "SPIN/attempt-001/rpc-error-request.json",
-            "last_request": "SPIN/attempt-001/rpc-error-request.json",
-            "last_response": "SPIN/attempt-001/rpc-error-response.json",
-            "ordering": "SINGLE_EXCHANGE",
+            "first_request": "SPIN/attempt-001/step-001-request.json",
+            "last_request": "SPIN/attempt-001/step-001-request.json",
+            "last_response": "SPIN/attempt-001/step-001-response.json",
+            "ordering": "ARTIFACT_STEP_INDEX",
             "trajectory_id": "bf68911d1d39c86d36b7"
           }
         ],
         "bootstrap_evidence": [
           {
             "path": "init-request.json",
-            "sha256": "9e33c6e3f612ee076cdc16fe8f208d48ef6490d1998607cb804c2660733879e3",
+            "sha256": "e6505a0b79676e9e86338aaa7b2745d7995b395d5e221d7fbde09f7baf533376",
             "bytes": 142,
             "kind": "envelope"
           },
           {
             "path": "init-response.json",
-            "sha256": "87b0e13b99ad9cc15937b3bdb25c8a2d696af41ec99e76775d53f91616be2ea3",
+            "sha256": "97792a19172125138dd6f4afa1cdec4b5810de58fcae99f83e370ab507db2db1",
             "bytes": 1895,
             "kind": "envelope"
           }
         ],
-        "unknown_actions": [
-          {
-            "id": "UNCLASSIFIED_WIRE_VARIANT_5059bf6e72435b43",
-            "signature_scope": "provider-reported unresolved observation; not a semantic classification",
-            "observation": {
-              "id": "SPIN",
-              "kind": "SPIN",
-              "observed": false,
-              "validated": false,
-              "executable": false,
-              "discovery_state": "REJECTED_51100",
-              "wire_method": "play",
-              "request_options": {
-                "bet_type": "bet"
-              },
-              "source": "game_bundle_source",
-              "evidence_level": "REMOTE_REJECTION",
-              "execution_state": "REJECTED_REMOTE"
-            },
-            "evidence": [
-              [
-                {
-                  "path": "SPIN/attempt-001/rpc-error-request.json",
-                  "sha256": "6b59f4ceaf507b02d1d13b4f555672018542f123982ae7211cefe8e3fe48bd86",
-                  "bytes": 240,
-                  "kind": "request"
-                },
-                {
-                  "path": "SPIN/attempt-001/rpc-error-response.json",
-                  "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
-                  "bytes": 136,
-                  "kind": "response"
-                },
-                {
-                  "path": "SPIN/attempt-001/server-responses.jsonl",
-                  "sha256": "cd54b4d8f47aeb9ba0496586b1bbf6bfd4122613f1778e69d0f4773f1f3a44af",
-                  "bytes": 597,
-                  "kind": "response"
-                }
-              ]
-            ]
-          }
-        ],
+        "unknown_actions": [],
         "request_comparisons": [],
         "coverage": {
           "schema": "tester-spin/path-coverage/v1",
           "provider": "bgaming",
           "game": "treasure-explorer",
-          "branch_points": [
-            {
-              "source": "discovered_modes_fail_closed",
-              "mode_id": "SPIN",
-              "signature": "SPIN:UNEXECUTED",
-              "required": [
-                "SPIN"
-              ],
-              "covered": [],
-              "missing": [
-                "SPIN"
-              ],
-              "complete": false,
-              "required_samples": 1,
-              "sample_counts": null,
-              "sample_deficits": {}
-            }
-          ],
-          "complete": false,
-          "missing_count": 1
+          "branch_points": [],
+          "complete": true,
+          "missing_count": 0
         },
         "sample_diagnostics": [],
         "evidence_gaps": [],
         "next_steps": [
-          "Revisar la respuesta que anuncia la acción/opción pendiente y el serializer del cliente de este proveedor. No inventar argumentos ni un handler.",
-          "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa."
+          "Las rutas observadas terminaron; una muestra corta no prueba ausencia de otras compras o estados naturales."
         ],
-        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\diagnostics\\20260917T042800-152c9285bcc3\\events.jsonl",
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\diagnostics\\20260917T100832-7a701fd1f85c\\events.jsonl",
         "tree": "run-tree.html",
         "tree_data": "run-tree.json"
       }
     },
     "emulation-contract.json": {
       "encoding": "json",
-      "bytes": 1682,
+      "bytes": 3861,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -626,8 +1641,8 @@
           "name": "Treasure Explorer",
           "identifier": "TreasureExplorer"
         },
-        "generated_at": "2026-09-17T04:28:24+00:00",
-        "source_run": "2026-09-17_01-28-12-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-17T10:09:15+00:00",
+        "source_run": "2026-09-17_07-09-03-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -635,42 +1650,131 @@
           "PROVIDER_METADATA",
           "INFERENCE"
         ],
-        "status": "ERROR",
-        "wire_replay_complete": false,
+        "status": "OK",
+        "wire_replay_complete": true,
         "math_model_complete": false,
         "rng_probabilities_known": false,
-        "request_contracts": [],
+        "request_contracts": [
+          {
+            "id": "RPC_PLAY",
+            "transport": "HTTP_JSONRPC_2.0",
+            "wire_action": "play",
+            "selector_domains_observed": {
+              "machineId": [
+                6
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "machineId": 6
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 3,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "3514fd94-8457-4894-a844-52521fc29689",
+                    "70f59a65-178d-4294-8c7a-9dd1b6e09122",
+                    "925e48b4-bbf3-425a-8b23-e81a34419dc0"
+                  ]
+                },
+                "jsonrpc": {
+                  "type": "string",
+                  "observed_enum": [
+                    "2.0"
+                  ]
+                },
+                "method": {
+                  "type": "string",
+                  "observed_enum": [
+                    "play"
+                  ]
+                },
+                "params": {
+                  "type": "object",
+                  "properties": {
+                    "req": {
+                      "type": "object",
+                      "properties": {
+                        "bet": {
+                          "type": "integer"
+                        },
+                        "machineId": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "bet",
+                        "machineId"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "state_lock": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>",
+                        "[REDACTED]"
+                      ]
+                    },
+                    "token": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>",
+                        "[REDACTED]"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "req",
+                    "state_lock",
+                    "token"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "id",
+                "jsonrpc",
+                "method",
+                "params"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.id",
+              "$.params.req.machineId",
+              "$.params.state_lock",
+              "$.params.token"
+            ]
+          }
+        ],
         "modes": [
           {
             "id": "SPIN",
             "kind": "SPIN",
             "wire_command": "",
-            "executable": false,
+            "executable": true,
             "coverage_required": false,
             "purchased_feature": null,
             "purchased_feature_level": null,
             "cost_multiplier": null,
             "required_options": [],
             "covered_options": [],
-            "source": "game_bundle_source"
+            "source": "selected-har"
           }
         ],
-        "unresolved_modes": [
-          {
-            "id": "SPIN",
-            "kind": "SPIN",
-            "wire_command": "",
-            "executable": false,
-            "coverage_required": false,
-            "purchased_feature": null,
-            "purchased_feature_level": null,
-            "cost_multiplier": null,
-            "required_options": [],
-            "covered_options": [],
-            "source": "game_bundle_source"
+        "unresolved_modes": [],
+        "dispatch": {
+          "READY": {
+            "RPC_PLAY": [
+              "RPC_PLAY__TO__READY"
+            ]
           }
-        ],
-        "dispatch": {},
+        },
         "artifacts": {
           "state_machine": "state-machine.json",
           "outcome_catalog": "outcome-catalog.json",
@@ -684,7 +1788,7 @@
       "encoding": "json",
       "bytes": 142,
       "value": {
-        "id": "0729558a-33e7-4b6b-9f35-dfcbd0422d7b",
+        "id": "24a01b1e-5348-4dc1-9da6-0e3145bf1652",
         "jsonrpc": "2.0",
         "method": "init",
         "params": {
@@ -696,7 +1800,7 @@
       "encoding": "json",
       "bytes": 1895,
       "value": {
-        "id": "0729558a-33e7-4b6b-9f35-dfcbd0422d7b",
+        "id": "24a01b1e-5348-4dc1-9da6-0e3145bf1652",
         "jsonrpc": "2.0",
         "result": {
           "freebets": null,
@@ -781,7 +1885,7 @@
           "urls": {
             "deposit_url": null,
             "return_url": null,
-            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDkyOTAxOTIsImd0X2lkIjo0MzY1NDA5fSwiZXhwIjoxODA1MjU3NzAyfQ.3PCSEWJYPNi6vw_k3IjxHBHDBgw8nOZ0qG1GlPRXo8k"
+            "history_url": "https://demo.bgaming-network.com/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDk0NjUxNjksImd0X2lkIjo0MzY1NDA5fSwiZXhwIjoxODA1Mjc4MTUyfQ.pxf5Mk8SFZDEACfNncECZ7IT01yeYlKJuiS8FHbx7AI"
           },
           "balance": 100000,
           "state_lock": "<redacted>"
@@ -790,7 +1894,7 @@
     },
     "outcome-catalog.json": {
       "encoding": "json",
-      "bytes": 592,
+      "bytes": 1457,
       "value": {
         "schema": "tester-spin/bgaming-outcome-catalog/v1",
         "provider": "bgaming",
@@ -799,8 +1903,8 @@
           "name": "Treasure Explorer",
           "identifier": "TreasureExplorer"
         },
-        "generated_at": "2026-09-17T04:28:24+00:00",
-        "source_run": "2026-09-17_01-28-12-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-17T10:09:15+00:00",
+        "source_run": "2026-09-17_07-09-03-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -809,12 +1913,41 @@
           "INFERENCE"
         ],
         "note": "Observed counts are protocol evidence only; they are not RNG weights or probabilities.",
-        "outcomes": []
+        "outcomes": [
+          {
+            "id": "RPC_PLAY__TO__READY",
+            "kind": "BASE_OR_FEATURE_ENTRY",
+            "request_contract": "RPC_PLAY",
+            "source_states": [
+              "READY"
+            ],
+            "target_states": [
+              "READY"
+            ],
+            "provider_states": [
+              "final"
+            ],
+            "available_actions": [],
+            "terminal_observed": true,
+            "observed_count": 3,
+            "response_schema": "response-schemas/rpc_play__to__ready.json",
+            "authority": "RUNTIME_OBSERVED",
+            "wire_known": true,
+            "state_transition_known": true,
+            "math_probability_known": false,
+            "probability": null,
+            "evidence": [
+              "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+              "SPIN/attempt-001/return-to-base/probe-002/step-001-request.json",
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
       }
     },
     "path-catalog.json": {
       "encoding": "json",
-      "bytes": 1110,
+      "bytes": 1109,
       "value": {
         "schema": "tester-spin/bgaming-path-catalog/v1",
         "phase": "coverage",
@@ -834,15 +1967,15 @@
             "id": "SPIN",
             "kind": "SPIN",
             "branch_signature": "",
-            "executable": false,
+            "executable": true,
             "coverage_required": false,
             "required_options": [],
             "covered_options": [],
             "attempts_observed": 1,
-            "terminal_successes": 0,
-            "wire_steps": 0,
+            "terminal_successes": 1,
+            "wire_steps": 1,
             "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\tests\\2026-09-17_01-28-12-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Treasure Explorer\\tests\\2026-09-17_07-09-03-bgaming-hyperhive-jsonrpc\\SPIN\\attempt-001"
             ]
           }
         ]
@@ -850,7 +1983,7 @@
     },
     "protocol-contract.json": {
       "encoding": "json",
-      "bytes": 1682,
+      "bytes": 3861,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -859,8 +1992,8 @@
           "name": "Treasure Explorer",
           "identifier": "TreasureExplorer"
         },
-        "generated_at": "2026-09-17T04:28:24+00:00",
-        "source_run": "2026-09-17_01-28-12-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-17T10:09:15+00:00",
+        "source_run": "2026-09-17_07-09-03-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -868,42 +2001,131 @@
           "PROVIDER_METADATA",
           "INFERENCE"
         ],
-        "status": "ERROR",
-        "wire_replay_complete": false,
+        "status": "OK",
+        "wire_replay_complete": true,
         "math_model_complete": false,
         "rng_probabilities_known": false,
-        "request_contracts": [],
+        "request_contracts": [
+          {
+            "id": "RPC_PLAY",
+            "transport": "HTTP_JSONRPC_2.0",
+            "wire_action": "play",
+            "selector_domains_observed": {
+              "machineId": [
+                6
+              ]
+            },
+            "selector_vectors_observed": [
+              {
+                "machineId": 6
+              }
+            ],
+            "authority": "RUNTIME_OBSERVED",
+            "sample_count": 3,
+            "request_schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "observed_enum": [
+                    "3514fd94-8457-4894-a844-52521fc29689",
+                    "70f59a65-178d-4294-8c7a-9dd1b6e09122",
+                    "925e48b4-bbf3-425a-8b23-e81a34419dc0"
+                  ]
+                },
+                "jsonrpc": {
+                  "type": "string",
+                  "observed_enum": [
+                    "2.0"
+                  ]
+                },
+                "method": {
+                  "type": "string",
+                  "observed_enum": [
+                    "play"
+                  ]
+                },
+                "params": {
+                  "type": "object",
+                  "properties": {
+                    "req": {
+                      "type": "object",
+                      "properties": {
+                        "bet": {
+                          "type": "integer"
+                        },
+                        "machineId": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "bet",
+                        "machineId"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "state_lock": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>",
+                        "[REDACTED]"
+                      ]
+                    },
+                    "token": {
+                      "type": "string",
+                      "observed_enum": [
+                        "<redacted>",
+                        "[REDACTED]"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "req",
+                    "state_lock",
+                    "token"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "required": [
+                "id",
+                "jsonrpc",
+                "method",
+                "params"
+              ],
+              "additionalProperties": true
+            },
+            "dynamic_paths": [
+              "$.id",
+              "$.params.req.machineId",
+              "$.params.state_lock",
+              "$.params.token"
+            ]
+          }
+        ],
         "modes": [
           {
             "id": "SPIN",
             "kind": "SPIN",
             "wire_command": "",
-            "executable": false,
+            "executable": true,
             "coverage_required": false,
             "purchased_feature": null,
             "purchased_feature_level": null,
             "cost_multiplier": null,
             "required_options": [],
             "covered_options": [],
-            "source": "game_bundle_source"
+            "source": "selected-har"
           }
         ],
-        "unresolved_modes": [
-          {
-            "id": "SPIN",
-            "kind": "SPIN",
-            "wire_command": "",
-            "executable": false,
-            "coverage_required": false,
-            "purchased_feature": null,
-            "purchased_feature_level": null,
-            "cost_multiplier": null,
-            "required_options": [],
-            "covered_options": [],
-            "source": "game_bundle_source"
+        "unresolved_modes": [],
+        "dispatch": {
+          "READY": {
+            "RPC_PLAY": [
+              "RPC_PLAY__TO__READY"
+            ]
           }
-        ],
-        "dispatch": {},
+        },
         "artifacts": {
           "state_machine": "state-machine.json",
           "outcome_catalog": "outcome-catalog.json",
@@ -913,9 +2135,390 @@
         }
       }
     },
+    "response-schemas/rpc_play__to__ready.json": {
+      "encoding": "json",
+      "bytes": 12395,
+      "value": {
+        "schema": "tester-spin/observed-json-shape/v1",
+        "provider": "bgaming",
+        "outcome_id": "RPC_PLAY__TO__READY",
+        "authority": "RUNTIME_OBSERVED",
+        "sample_count": 3,
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "observed_enum": [
+                "3514fd94-8457-4894-a844-52521fc29689",
+                "70f59a65-178d-4294-8c7a-9dd1b6e09122",
+                "925e48b4-bbf3-425a-8b23-e81a34419dc0"
+              ]
+            },
+            "jsonrpc": {
+              "type": "string",
+              "observed_enum": [
+                "2.0"
+              ]
+            },
+            "result": {
+              "type": "object",
+              "properties": {
+                "balance": {
+                  "type": "integer"
+                },
+                "final": {
+                  "type": "boolean",
+                  "observed_values": [
+                    true
+                  ]
+                },
+                "freebets": {
+                  "type": "null"
+                },
+                "resp": {
+                  "type": "object",
+                  "properties": {
+                    "aboveReels": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "belowReels": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "bonusInfo": {
+                      "type": "null"
+                    },
+                    "collapseInfo": {
+                      "type": [
+                        "null",
+                        "object"
+                      ],
+                      "properties": {
+                        "groups": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "multiplier": {
+                                "type": "integer"
+                              },
+                              "newReels": {
+                                "type": "array",
+                                "items": {
+                                  "type": "integer"
+                                }
+                              },
+                              "positions": {
+                                "type": "array",
+                                "items": {
+                                  "type": "integer"
+                                }
+                              },
+                              "roundWin": {
+                                "type": "integer"
+                              },
+                              "symbolId": {
+                                "type": "integer"
+                              },
+                              "type": {
+                                "type": "string",
+                                "observed_enum": [
+                                  "collapsingGroup"
+                                ]
+                              },
+                              "viewReels": {
+                                "type": "array",
+                                "items": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "integer"
+                                  }
+                                }
+                              },
+                              "winLines": {
+                                "type": "array",
+                                "items": {}
+                              }
+                            },
+                            "required": [
+                              "multiplier",
+                              "newReels",
+                              "positions",
+                              "roundWin",
+                              "symbolId",
+                              "type",
+                              "viewReels",
+                              "winLines"
+                            ],
+                            "additionalProperties": true
+                          }
+                        },
+                        "initialWin": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "groups",
+                        "initialWin"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "defaultSpecGroups": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "collectCount": {
+                            "type": "integer"
+                          },
+                          "positions": {
+                            "type": "array",
+                            "items": {}
+                          },
+                          "positionsWin": {
+                            "type": "array",
+                            "items": {}
+                          },
+                          "previousSymbolId": {
+                            "type": "integer"
+                          },
+                          "subType": {
+                            "type": "null"
+                          },
+                          "symbolId": {
+                            "type": "integer"
+                          },
+                          "totalWin": {
+                            "type": "integer"
+                          },
+                          "totalWinDouble": {
+                            "type": "integer"
+                          },
+                          "type": {
+                            "type": "string",
+                            "observed_enum": [
+                              "Multiplier"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "collectCount",
+                          "positions",
+                          "positionsWin",
+                          "previousSymbolId",
+                          "subType",
+                          "symbolId",
+                          "totalWin",
+                          "totalWinDouble",
+                          "type"
+                        ],
+                        "additionalProperties": true
+                      }
+                    },
+                    "freeSpinsInfo": {
+                      "type": "null"
+                    },
+                    "lastReels": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "machineId": {
+                      "type": "integer"
+                    },
+                    "reSpinsInfo": {
+                      "type": "null"
+                    },
+                    "spinId": {
+                      "type": "string",
+                      "observed_enum": [
+                        "10c8bdad-8a27-4fdd-b1ea-5a222a3b0ad8",
+                        "3eca4d78-5ea3-4566-83c4-5c75895a4ba0",
+                        "95e0662c-d786-4371-93db-5422ce531624"
+                      ]
+                    },
+                    "totalLost": {
+                      "type": "integer"
+                    },
+                    "totalWin": {
+                      "type": "integer"
+                    },
+                    "totalWinWithoutBooster": {
+                      "type": "integer"
+                    },
+                    "viewReels": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "winLines": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "lineDescription": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          },
+                          "lineNumber": {
+                            "type": "integer"
+                          },
+                          "multiplier": {
+                            "type": "integer"
+                          },
+                          "positions": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          },
+                          "symbol": {
+                            "type": "integer"
+                          },
+                          "win": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "lineDescription",
+                          "lineNumber",
+                          "multiplier",
+                          "positions",
+                          "symbol",
+                          "win"
+                        ],
+                        "additionalProperties": true
+                      }
+                    },
+                    "winPositions": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "winningName": {
+                      "type": "null"
+                    }
+                  },
+                  "required": [
+                    "aboveReels",
+                    "belowReels",
+                    "bonusInfo",
+                    "collapseInfo",
+                    "defaultSpecGroups",
+                    "freeSpinsInfo",
+                    "lastReels",
+                    "machineId",
+                    "reSpinsInfo",
+                    "spinId",
+                    "totalLost",
+                    "totalWin",
+                    "totalWinWithoutBooster",
+                    "viewReels",
+                    "winLines",
+                    "winPositions",
+                    "winningName"
+                  ],
+                  "additionalProperties": true
+                },
+                "state_lock": {
+                  "type": "string",
+                  "observed_enum": [
+                    "<redacted>",
+                    "[REDACTED]"
+                  ]
+                }
+              },
+              "required": [
+                "balance",
+                "final",
+                "freebets",
+                "resp",
+                "state_lock"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "id",
+            "jsonrpc",
+            "result"
+          ],
+          "additionalProperties": true
+        },
+        "dynamic_paths": [
+          "$.id",
+          "$.result.balance",
+          "$.result.resp.collapseInfo.groups[0].newReels[1]",
+          "$.result.resp.collapseInfo.groups[0].roundWin",
+          "$.result.resp.collapseInfo.groups[0].symbolId",
+          "$.result.resp.collapseInfo.groups[0].viewReels[0][2]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[0][3]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[1][0]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[1][1]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[1][2]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[1][3]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[2][1]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[2][2]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[2][3]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[3][0]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[3][1]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[3][2]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[4][0]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[4][1]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[4][2]",
+          "$.result.resp.collapseInfo.groups[0].viewReels[4][3]",
+          "$.result.resp.collapseInfo.initialWin",
+          "$.result.resp.defaultSpecGroups[0].previousSymbolId",
+          "$.result.resp.defaultSpecGroups[0].symbolId",
+          "$.result.resp.defaultSpecGroups[0].totalWin",
+          "$.result.resp.defaultSpecGroups[0].totalWinDouble",
+          "$.result.resp.machineId",
+          "$.result.resp.spinId",
+          "$.result.resp.totalWin",
+          "$.result.resp.totalWinWithoutBooster",
+          "$.result.resp.viewReels[0][0]",
+          "$.result.resp.viewReels[0][1]",
+          "$.result.resp.viewReels[0][2]",
+          "$.result.resp.viewReels[0][3]",
+          "$.result.resp.viewReels[1][0]",
+          "$.result.resp.viewReels[1][1]",
+          "$.result.resp.viewReels[1][2]",
+          "$.result.resp.viewReels[1][3]",
+          "$.result.resp.viewReels[2][0]",
+          "$.result.resp.viewReels[2][1]",
+          "$.result.resp.viewReels[2][2]",
+          "$.result.resp.viewReels[2][3]",
+          "$.result.resp.viewReels[3][0]",
+          "$.result.resp.viewReels[3][1]",
+          "$.result.resp.viewReels[3][2]",
+          "$.result.resp.viewReels[3][3]",
+          "$.result.resp.viewReels[4][0]",
+          "$.result.resp.viewReels[4][1]",
+          "$.result.resp.viewReels[4][2]",
+          "$.result.resp.viewReels[4][3]",
+          "$.result.resp.winLines[0].lineDescription[0]",
+          "$.result.resp.winLines[0].lineDescription[1]",
+          "$.result.resp.winLines[0].lineDescription[3]",
+          "$.result.resp.winLines[0].lineDescription[4]",
+          "$.result.resp.winLines[0].lineNumber",
+          "$.result.resp.winLines[0].positions[0]",
+          "$.result.resp.winLines[0].positions[1]",
+          "$.result.resp.winLines[0].symbol",
+          "$.result.resp.winLines[0].win",
+          "$.result.resp.winningName",
+          "$.result.state_lock"
+        ]
+      }
+    },
     "run-tree.json": {
       "encoding": "json",
-      "bytes": 2694,
+      "bytes": 16305,
       "value": {
         "schema": "tester-spin/run-tree/v1",
         "provider": "bgaming",
@@ -926,8 +2529,300 @@
         "trajectories": [
           {
             "capture_directory": "SPIN\\attempt-001",
-            "return_to_base": {},
-            "return_to_base_evidence": null,
+            "return_to_base": {
+              "schema": "tester-spin/return-to-base/v1",
+              "status": "CONFIRMED",
+              "connection_reused": true,
+              "required": 2,
+              "max_probes": 10,
+              "consecutive_base": 2,
+              "cause": "UNDETERMINED",
+              "probes": [
+                {
+                  "ok": true,
+                  "base": true,
+                  "known": true,
+                  "captures": [
+                    {
+                      "step": 1,
+                      "request": {
+                        "id": "70f59a65-178d-4294-8c7a-9dd1b6e09122",
+                        "jsonrpc": "2.0",
+                        "method": "play",
+                        "params": {
+                          "token": "[REDACTED]",
+                          "req": {
+                            "bet": 200,
+                            "machineId": 6
+                          },
+                          "state_lock": "[REDACTED]"
+                        }
+                      },
+                      "response": {
+                        "id": "70f59a65-178d-4294-8c7a-9dd1b6e09122",
+                        "jsonrpc": "2.0",
+                        "result": {
+                          "final": true,
+                          "resp": {
+                            "machineId": 6,
+                            "spinId": "95e0662c-d786-4371-93db-5422ce531624",
+                            "viewReels": [
+                              [
+                                6,
+                                3,
+                                6,
+                                9
+                              ],
+                              [
+                                5,
+                                3,
+                                5,
+                                0
+                              ],
+                              [
+                                9,
+                                6,
+                                9,
+                                4
+                              ],
+                              [
+                                5,
+                                1,
+                                6,
+                                7
+                              ],
+                              [
+                                7,
+                                2,
+                                5,
+                                8
+                              ]
+                            ],
+                            "lastReels": [],
+                            "aboveReels": [],
+                            "belowReels": [],
+                            "winLines": [
+                              {
+                                "lineNumber": 15,
+                                "symbol": 9,
+                                "win": 1,
+                                "positions": [
+                                  15,
+                                  16,
+                                  12
+                                ],
+                                "multiplier": 1,
+                                "lineDescription": [
+                                  15,
+                                  16,
+                                  12,
+                                  18,
+                                  19
+                                ]
+                              }
+                            ],
+                            "winPositions": [],
+                            "defaultSpecGroups": [
+                              {
+                                "subType": null,
+                                "type": "Multiplier",
+                                "symbolId": 0,
+                                "previousSymbolId": 0,
+                                "collectCount": 1,
+                                "totalWin": 0,
+                                "totalWinDouble": 0,
+                                "positions": [],
+                                "positionsWin": []
+                              }
+                            ],
+                            "freeSpinsInfo": null,
+                            "reSpinsInfo": null,
+                            "collapseInfo": {
+                              "groups": [
+                                {
+                                  "viewReels": [
+                                    [
+                                      5,
+                                      6,
+                                      3,
+                                      6
+                                    ],
+                                    [
+                                      9,
+                                      5,
+                                      3,
+                                      5
+                                    ],
+                                    [
+                                      1,
+                                      9,
+                                      6,
+                                      4
+                                    ],
+                                    [
+                                      5,
+                                      1,
+                                      6,
+                                      7
+                                    ],
+                                    [
+                                      7,
+                                      2,
+                                      5,
+                                      8
+                                    ]
+                                  ],
+                                  "newReels": [
+                                    5,
+                                    9,
+                                    1
+                                  ],
+                                  "winLines": [],
+                                  "multiplier": 1,
+                                  "positions": [
+                                    0,
+                                    1,
+                                    2
+                                  ],
+                                  "symbolId": 0,
+                                  "roundWin": 8,
+                                  "type": "collapsingGroup"
+                                }
+                              ],
+                              "initialWin": 0
+                            },
+                            "bonusInfo": null,
+                            "totalWin": 8,
+                            "totalWinWithoutBooster": 0,
+                            "totalLost": 200,
+                            "winningName": null
+                          },
+                          "balance": 99624,
+                          "freebets": null,
+                          "state_lock": "[REDACTED]"
+                        }
+                      }
+                    }
+                  ],
+                  "summary": {
+                    "final": true,
+                    "balance": 99624,
+                    "state_lock": "[REDACTED]",
+                    "round_step": null,
+                    "bet": null,
+                    "total_win": 8,
+                    "cost": null,
+                    "freespins": null,
+                    "next_action": null,
+                    "table_sha256": "",
+                    "response_sha256": "45a85f4dbfee0dff"
+                  },
+                  "directory": "return-to-base\\probe-001"
+                },
+                {
+                  "ok": true,
+                  "base": true,
+                  "known": true,
+                  "captures": [
+                    {
+                      "step": 1,
+                      "request": {
+                        "id": "3514fd94-8457-4894-a844-52521fc29689",
+                        "jsonrpc": "2.0",
+                        "method": "play",
+                        "params": {
+                          "token": "[REDACTED]",
+                          "req": {
+                            "bet": 200,
+                            "machineId": 6
+                          },
+                          "state_lock": "[REDACTED]"
+                        }
+                      },
+                      "response": {
+                        "id": "3514fd94-8457-4894-a844-52521fc29689",
+                        "jsonrpc": "2.0",
+                        "result": {
+                          "final": true,
+                          "resp": {
+                            "machineId": 6,
+                            "spinId": "3eca4d78-5ea3-4566-83c4-5c75895a4ba0",
+                            "viewReels": [
+                              [
+                                7,
+                                1,
+                                7,
+                                0
+                              ],
+                              [
+                                1,
+                                5,
+                                6,
+                                4
+                              ],
+                              [
+                                4,
+                                8,
+                                9,
+                                1
+                              ],
+                              [
+                                4,
+                                9,
+                                4,
+                                9
+                              ],
+                              [
+                                7,
+                                0,
+                                6,
+                                3
+                              ]
+                            ],
+                            "lastReels": [],
+                            "aboveReels": [],
+                            "belowReels": [],
+                            "winLines": [],
+                            "winPositions": [],
+                            "defaultSpecGroups": [],
+                            "freeSpinsInfo": null,
+                            "reSpinsInfo": null,
+                            "collapseInfo": null,
+                            "bonusInfo": null,
+                            "totalWin": 0,
+                            "totalWinWithoutBooster": 0,
+                            "totalLost": 200,
+                            "winningName": null
+                          },
+                          "balance": 99424,
+                          "freebets": null,
+                          "state_lock": "[REDACTED]"
+                        }
+                      }
+                    }
+                  ],
+                  "summary": {
+                    "final": true,
+                    "balance": 99424,
+                    "state_lock": "[REDACTED]",
+                    "round_step": null,
+                    "bet": null,
+                    "total_win": 0,
+                    "cost": null,
+                    "freespins": null,
+                    "next_action": null,
+                    "table_sha256": "",
+                    "response_sha256": "3a861def646e4090"
+                  },
+                  "directory": "return-to-base\\probe-002"
+                }
+              ],
+              "updated_at": "2026-09-17T10:09:15.442295+00:00"
+            },
+            "return_to_base_evidence": {
+              "path": "SPIN/attempt-001/return-to-base.json",
+              "sha256": "93b257dfe6de6683886d9819f5adc8d41a72450b275a4215db9d34c6cc8080a9"
+            },
             "id": "bf68911d1d39c86d36b7",
             "origin": {
               "mode_id": "SPIN",
@@ -935,51 +2830,187 @@
               "provider_metadata": {
                 "id": "SPIN",
                 "kind": "SPIN",
-                "observed": false,
-                "validated": false,
-                "executable": false,
-                "discovery_state": "REJECTED_51100",
+                "observed": true,
+                "validated": true,
+                "executable": true,
+                "discovery_state": "VALIDATED",
                 "wire_method": "play",
                 "request_options": {
-                  "bet_type": "bet"
+                  "machineId": 6
                 },
-                "source": "game_bundle_source",
-                "evidence_level": "REMOTE_REJECTION",
-                "execution_state": "REJECTED_REMOTE"
+                "source": "selected-har",
+                "evidence_level": "REMOTE_EXECUTION",
+                "execution_state": "PROVEN_TERMINAL"
               }
             },
             "attempt": 1,
-            "reported_terminal": false,
-            "reported_ok": false,
-            "sequence_status": "SINGLE_EXCHANGE",
+            "reported_terminal": true,
+            "reported_ok": true,
+            "sequence_status": "ARTIFACT_STEP_INDEX",
             "steps": [
               {
-                "label": "rpc-error",
+                "label": "step-001",
                 "directory": "SPIN/attempt-001",
                 "request": [
                   {
-                    "path": "SPIN/attempt-001/rpc-error-request.json",
-                    "sha256": "6b59f4ceaf507b02d1d13b4f555672018542f123982ae7211cefe8e3fe48bd86",
-                    "bytes": 240,
+                    "path": "SPIN/attempt-001/step-001-request.json",
+                    "sha256": "3c4d7e91a54aba65e226551cce3fd8f5dc67ff61707bc4c08a3c6d75dd8edc4d",
+                    "bytes": 238,
                     "kind": "request"
                   }
                 ],
                 "response": [
                   {
-                    "path": "SPIN/attempt-001/rpc-error-response.json",
-                    "sha256": "d9fd4f862d3e0adb53b38a438bb17a43c9a296dc6f1c319c55c0e4f8dd56cbed",
-                    "bytes": 136,
+                    "path": "SPIN/attempt-001/step-001-response.json",
+                    "sha256": "615ccfac3a897d91d5562b540205cb991ee7ebc45080701fae26dcbcbe9ca1cb",
+                    "bytes": 2792,
                     "kind": "response"
                   }
                 ],
                 "id": "bf68911d1d39c86d36b7:0",
                 "parent_id": "bf68911d1d39c86d36b7",
                 "observed_response": {
-                  "id": "x",
+                  "id": "925e48b4-bbf3-425a-8b23-e81a34419dc0",
                   "jsonrpc": "2.0",
-                  "error": {
-                    "code": 51100,
-                    "message": "Something went wrong. Refresh the page."
+                  "result": {
+                    "final": true,
+                    "resp": {
+                      "machineId": 6,
+                      "spinId": "10c8bdad-8a27-4fdd-b1ea-5a222a3b0ad8",
+                      "viewReels": [
+                        [
+                          6,
+                          4,
+                          7,
+                          3
+                        ],
+                        [
+                          2,
+                          7,
+                          5,
+                          2
+                        ],
+                        [
+                          3,
+                          8,
+                          7,
+                          6
+                        ],
+                        [
+                          1,
+                          5,
+                          2,
+                          7
+                        ],
+                        [
+                          4,
+                          7,
+                          3,
+                          7
+                        ]
+                      ],
+                      "lastReels": [],
+                      "aboveReels": [],
+                      "belowReels": [],
+                      "winLines": [
+                        {
+                          "lineNumber": 11,
+                          "symbol": 7,
+                          "win": 2,
+                          "positions": [
+                            10,
+                            6,
+                            12
+                          ],
+                          "multiplier": 1,
+                          "lineDescription": [
+                            10,
+                            6,
+                            12,
+                            8,
+                            14
+                          ]
+                        }
+                      ],
+                      "winPositions": [],
+                      "defaultSpecGroups": [
+                        {
+                          "subType": null,
+                          "type": "Multiplier",
+                          "symbolId": 0,
+                          "previousSymbolId": 0,
+                          "collectCount": 1,
+                          "totalWin": 0,
+                          "totalWinDouble": 0,
+                          "positions": [],
+                          "positionsWin": []
+                        }
+                      ],
+                      "freeSpinsInfo": null,
+                      "reSpinsInfo": null,
+                      "collapseInfo": {
+                        "groups": [
+                          {
+                            "viewReels": [
+                              [
+                                5,
+                                6,
+                                4,
+                                3
+                              ],
+                              [
+                                2,
+                                2,
+                                5,
+                                2
+                              ],
+                              [
+                                1,
+                                3,
+                                8,
+                                6
+                              ],
+                              [
+                                1,
+                                5,
+                                2,
+                                7
+                              ],
+                              [
+                                4,
+                                7,
+                                3,
+                                7
+                              ]
+                            ],
+                            "newReels": [
+                              5,
+                              2,
+                              1
+                            ],
+                            "winLines": [],
+                            "multiplier": 1,
+                            "positions": [
+                              0,
+                              1,
+                              2
+                            ],
+                            "symbolId": 0,
+                            "roundWin": 16,
+                            "type": "collapsingGroup"
+                          }
+                        ],
+                        "initialWin": 0
+                      },
+                      "bonusInfo": null,
+                      "totalWin": 16,
+                      "totalWinWithoutBooster": 0,
+                      "totalLost": 200,
+                      "winningName": null
+                    },
+                    "balance": 99816,
+                    "freebets": null,
+                    "state_lock": "[REDACTED]"
                   }
                 }
               }
@@ -989,68 +3020,34 @@
             "offline_replay_ready": true
           }
         ],
-        "announced_branches": [
-          {
-            "source": "discovered_modes_fail_closed",
-            "mode_id": "SPIN",
-            "signature": "SPIN:UNEXECUTED",
-            "required": [
-              "SPIN"
-            ],
-            "covered": [],
-            "missing": [
-              "SPIN"
-            ],
-            "complete": false,
-            "required_samples": 1,
-            "sample_counts": null,
-            "sample_deficits": {}
-          }
-        ]
+        "announced_branches": []
       }
     },
     "server-observations.json": {
       "encoding": "json",
-      "bytes": 1741,
+      "bytes": 5274,
       "value": {
         "schema": "tester-spin/server-observations/v1",
         "provider": "bgaming",
         "scope": "this_game_this_run",
         "baseline_is_not_contract": true,
-        "new_responses": 0,
-        "protocol_changes": 0,
+        "new_responses": 1,
+        "protocol_changes": 1,
         "outcome_variations": 0,
         "unparsed": 0,
-        "pending_branches": 1,
-        "pending_options": 1,
-        "coverage_pending": [
-          {
-            "source": "discovered_modes_fail_closed",
-            "mode_id": "SPIN",
-            "signature": "SPIN:UNEXECUTED",
-            "required": [
-              "SPIN"
-            ],
-            "covered": [],
-            "missing": [
-              "SPIN"
-            ],
-            "complete": false,
-            "required_samples": 1,
-            "sample_counts": null,
-            "sample_deficits": {}
-          }
-        ],
+        "pending_branches": 0,
+        "pending_options": 0,
+        "coverage_pending": [],
         "observations": [
           {
             "change_kind": "REFERENCE",
-            "classification": "BASELINE",
-            "signature": "348872fa55683d89868cd23f3b05d7010da818c51f4f78a20536e86b758b97b1",
+            "classification": "SEEN",
+            "signature": "6f24d5ee2c845bcb88a9f6ca342f36fac1635ffcea123bec91100300c5846790",
             "changed_paths": [],
             "review_required": false,
             "action": "play",
             "http_status": 200,
-            "captured_at": "2026-09-17T04:28:24.777756+00:00",
+            "captured_at": "2026-09-17T10:09:15.127824+00:00",
             "trajectory_id": "bf68911d1d39c86d36b7",
             "origin": {
               "mode_id": "SPIN",
@@ -1058,17 +3055,115 @@
               "provider_metadata": {
                 "id": "SPIN",
                 "kind": "SPIN",
-                "observed": false,
-                "validated": false,
-                "executable": false,
-                "discovery_state": "REJECTED_51100",
+                "observed": true,
+                "validated": true,
+                "executable": true,
+                "discovery_state": "VALIDATED",
                 "wire_method": "play",
                 "request_options": {
-                  "bet_type": "bet"
+                  "machineId": 6
                 },
-                "source": "game_bundle_source",
-                "evidence_level": "REMOTE_REJECTION",
-                "execution_state": "REJECTED_REMOTE"
+                "source": "selected-har",
+                "evidence_level": "REMOTE_EXECUTION",
+                "execution_state": "PROVEN_TERMINAL"
+              }
+            },
+            "source": "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl#line=1"
+          },
+          {
+            "change_kind": "PROTOCOL_CHANGE",
+            "classification": "NEW_RESPONSE",
+            "signature": "51b120a6a1241641d5e299e1aedd7e0063137c29ea1bc70234ca2a2fc6a377a0",
+            "changed_paths": [
+              "/result/resp/collapseInfo",
+              "/result/resp/collapseInfo/groups",
+              "/result/resp/collapseInfo/groups/*",
+              "/result/resp/collapseInfo/groups/*/multiplier",
+              "/result/resp/collapseInfo/groups/*/newReels",
+              "/result/resp/collapseInfo/groups/*/newReels/*",
+              "/result/resp/collapseInfo/groups/*/positions",
+              "/result/resp/collapseInfo/groups/*/positions/*",
+              "/result/resp/collapseInfo/groups/*/roundWin",
+              "/result/resp/collapseInfo/groups/*/symbolId",
+              "/result/resp/collapseInfo/groups/*/type",
+              "/result/resp/collapseInfo/groups/*/viewReels",
+              "/result/resp/collapseInfo/groups/*/viewReels/*",
+              "/result/resp/collapseInfo/groups/*/viewReels/*/*",
+              "/result/resp/collapseInfo/groups/*/winLines",
+              "/result/resp/collapseInfo/initialWin",
+              "/result/resp/defaultSpecGroups/*",
+              "/result/resp/defaultSpecGroups/*/collectCount",
+              "/result/resp/defaultSpecGroups/*/positions",
+              "/result/resp/defaultSpecGroups/*/positionsWin",
+              "/result/resp/defaultSpecGroups/*/previousSymbolId",
+              "/result/resp/defaultSpecGroups/*/subType",
+              "/result/resp/defaultSpecGroups/*/symbolId",
+              "/result/resp/defaultSpecGroups/*/totalWin",
+              "/result/resp/defaultSpecGroups/*/totalWinDouble",
+              "/result/resp/defaultSpecGroups/*/type",
+              "/result/resp/winLines/*",
+              "/result/resp/winLines/*/lineDescription",
+              "/result/resp/winLines/*/lineDescription/*",
+              "/result/resp/winLines/*/lineNumber",
+              "/result/resp/winLines/*/multiplier",
+              "/result/resp/winLines/*/positions",
+              "/result/resp/winLines/*/positions/*",
+              "/result/resp/winLines/*/symbol",
+              "/result/resp/winLines/*/win"
+            ],
+            "review_required": true,
+            "action": "play",
+            "http_status": 200,
+            "captured_at": "2026-09-17T10:09:15.436266+00:00",
+            "trajectory_id": "bf68911d1d39c86d36b7",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": true,
+                "validated": true,
+                "executable": true,
+                "discovery_state": "VALIDATED",
+                "wire_method": "play",
+                "request_options": {
+                  "machineId": 6
+                },
+                "source": "selected-har",
+                "evidence_level": "REMOTE_EXECUTION",
+                "execution_state": "PROVEN_TERMINAL"
+              }
+            },
+            "source": "SPIN/attempt-001/return-to-base/probe-002/server-responses.jsonl#line=1"
+          },
+          {
+            "change_kind": "REFERENCE",
+            "classification": "BASELINE",
+            "signature": "6f24d5ee2c845bcb88a9f6ca342f36fac1635ffcea123bec91100300c5846790",
+            "changed_paths": [],
+            "review_required": false,
+            "action": "play",
+            "http_status": 200,
+            "captured_at": "2026-09-17T10:09:14.606369+00:00",
+            "trajectory_id": "bf68911d1d39c86d36b7",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": true,
+                "validated": true,
+                "executable": true,
+                "discovery_state": "VALIDATED",
+                "wire_method": "play",
+                "request_options": {
+                  "machineId": 6
+                },
+                "source": "selected-har",
+                "evidence_level": "REMOTE_EXECUTION",
+                "execution_state": "PROVEN_TERMINAL"
               }
             },
             "source": "SPIN/attempt-001/server-responses.jsonl#line=1"
@@ -1078,7 +3173,7 @@
     },
     "state-machine.json": {
       "encoding": "json",
-      "bytes": 538,
+      "bytes": 1275,
       "value": {
         "schema": "tester-spin/bgaming-state-machine/v1",
         "provider": "bgaming",
@@ -1087,8 +3182,8 @@
           "name": "Treasure Explorer",
           "identifier": "TreasureExplorer"
         },
-        "generated_at": "2026-09-17T04:28:24+00:00",
-        "source_run": "2026-09-17_01-28-12-bgaming-hyperhive-jsonrpc",
+        "generated_at": "2026-09-17T10:09:15+00:00",
+        "source_run": "2026-09-17_07-09-03-bgaming-hyperhive-jsonrpc",
         "runtime_families": [],
         "authority_order": [
           "RUNTIME_OBSERVED",
@@ -1097,8 +3192,37 @@
           "INFERENCE"
         ],
         "initial_state": "READY",
-        "states": {},
-        "transitions": []
+        "states": {
+          "READY": {
+            "provider_states": [
+              "final"
+            ],
+            "allowed_wire_actions_observed": [
+              "play"
+            ],
+            "terminal_observed": true
+          }
+        },
+        "transitions": [
+          {
+            "source": "READY",
+            "request_contract": "RPC_PLAY",
+            "request_selector_vectors_observed": [
+              {
+                "machineId": 6
+              }
+            ],
+            "outcome": "RPC_PLAY__TO__READY",
+            "target": "READY",
+            "observed_count": 3,
+            "authority": "RUNTIME_OBSERVED",
+            "evidence": [
+              "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+              "SPIN/attempt-001/return-to-base/probe-002/step-001-request.json",
+              "SPIN/attempt-001/step-001-request.json"
+            ]
+          }
+        ]
       }
     },
     "wager-catalog.json": {
