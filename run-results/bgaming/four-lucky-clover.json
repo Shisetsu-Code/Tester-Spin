@@ -1,7 +1,7 @@
 {
   "schema": "tester-spin/github-run-result/v1",
-  "published_at": "2026-09-15T08:22:17+00:00",
-  "source_commit": "1ec3838b7cb1d9a3728ee525ebfdec56ffd9aae4",
+  "published_at": "2026-09-17T02:37:55+00:00",
+  "source_commit": "28232d3e4a210eaba35701fa23e187c5e3fa4336",
   "provider": "bgaming",
   "game": {
     "slug": "four-lucky-clover",
@@ -15,9 +15,9 @@
     "game_name": "Four Lucky Clover",
     "game_url": "https://demo.bgaming-network.com/play/FourLuckyClover/FUN?server=demo",
     "requested_spins": 1,
-    "successful_spins": 1,
-    "failed_spins": 0,
-    "status": "OK",
+    "successful_spins": 0,
+    "failed_spins": 1,
+    "status": "PARCIAL",
     "symbol": "FourLuckyClover",
     "discovered_modes": [
       {
@@ -25,34 +25,34 @@
         "kind": "SPIN",
         "observed": true,
         "wire_command": "spin",
-        "evidence_level": "REMOTE_EXECUTION",
-        "execution_state": "PROVEN_TERMINAL",
-        "validated": true
+        "evidence_level": "WIRE_CANDIDATE",
+        "execution_state": "ATTEMPTED_UNVALIDATED",
+        "validated": false
       }
     ],
-    "started_at": "2026-09-15T08:22:02+00:00",
-    "finished_at": "2026-09-15T08:22:17+00:00",
-    "elapsed_ms": 14860.000000000582,
-    "error": "",
-    "run_dir": "2026-09-15_05-22-02-bgaming-http-api-v2",
+    "started_at": "2026-09-17T02:37:40+00:00",
+    "finished_at": "2026-09-17T02:37:55+00:00",
+    "elapsed_ms": 14500.0,
+    "error": "BGaming respondió 1/1 intentos; modos terminales validados=0/1. Diagnóstico: Regreso al juego base pendiente: REVIEW_REQUIRED",
+    "run_dir": "2026-09-16_23-37-40-bgaming-http-api-v2",
     "attempts": [
       {
         "number": 1,
-        "ok": true,
+        "ok": false,
         "mode_id": "SPIN",
         "mode_kind": "SPIN",
         "provider_bl": null,
         "provider_pur": null,
         "status_code": 200,
-        "elapsed_ms": 546.9999999913853,
+        "elapsed_ms": 1265.9999999887077,
         "symbol": "FourLuckyClover",
         "endpoint": "https://demo.bgaming-network.com/api/FourLuckyClover/2366886/<session>",
         "na": "closed",
         "terminal": true,
         "wire_steps": 1,
-        "warning": "",
+        "warning": "Regreso al juego base pendiente: REVIEW_REQUIRED",
         "error": "",
-        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Four Lucky Clover\\tests\\2026-09-15_05-22-02-bgaming-http-api-v2\\SPIN\\attempt-001"
+        "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Four Lucky Clover\\tests\\2026-09-16_23-37-40-bgaming-http-api-v2\\SPIN\\attempt-001"
       }
     ],
     "samples_per_path": 1,
@@ -66,18 +66,18 @@
         "executed": 2,
         "outcome_observed": 0,
         "pending": 2,
-        "unknowns": 69,
+        "unknowns": 75,
         "complete": false,
         "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
       },
       "diagnostics": []
     }
   },
-  "artifact_bytes_embedded": 180966,
+  "artifact_bytes_embedded": 217999,
   "artifacts": {
     "analysis/game-structure.json": {
       "encoding": "json",
-      "bytes": 111604,
+      "bytes": 120497,
       "value": {
         "schema": "tester-spin/game-structure/v1",
         "metadata": {
@@ -86,7 +86,7 @@
           "game_identifier": "four-lucky-clover",
           "slug": "four-lucky-clover",
           "bundle_fingerprint": "",
-          "generated_at": "2026-09-15T08:22:17+00:00",
+          "generated_at": "2026-09-17T02:37:55+00:00",
           "compatibility": "unverified",
           "source_evidence_summary": {
             "capture": "BGaming JSON requests/responses at transport boundary",
@@ -94,7 +94,8 @@
           },
           "merged_runs": [
             "run:1f30bf64b1db2fee4ce5ea57",
-            "run:ba10d5c5bb16f30397cd87d6"
+            "run:ba10d5c5bb16f30397cd87d6",
+            "run:ce342a172efa53b7060017d1"
           ],
           "previous_revisions": []
         },
@@ -199,7 +200,7 @@
               "executed": true,
               "outcome_observed": false,
               "outcome_derived": false,
-              "attempts": 2,
+              "attempts": 3,
               "successful_samples": 0
             },
             "unresolved_reason": "No wire outcome observed"
@@ -241,7 +242,7 @@
               "executed": true,
               "outcome_observed": false,
               "outcome_derived": false,
-              "attempts": 2,
+              "attempts": 5,
               "successful_samples": 0
             },
             "unresolved_reason": "No wire outcome observed"
@@ -252,18 +253,18 @@
           "request_contracts:e128cce771e4b3dc71d9ceb7": {
             "id": "request_contracts:e128cce771e4b3dc71d9ceb7",
             "schema": {
-              "samples": 2,
+              "samples": 3,
               "observed_types": {
-                "object": 2
+                "object": 3
               },
               "nullable": false,
               "confidence": "observed_only",
               "role": "unknown",
               "properties": {
                 "command": {
-                  "samples": 2,
+                  "samples": 3,
                   "observed_types": {
-                    "string": 2
+                    "string": 3
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -274,24 +275,24 @@
                   "values_bounded": true,
                   "variability": "constant_in_observations",
                   "enum_exhaustive": false,
-                  "parent_samples": 2,
+                  "parent_samples": 3,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "extra_data": {
-                  "samples": 2,
+                  "samples": 3,
                   "observed_types": {
-                    "object": 2
+                    "object": 3
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "round_series_id": {
-                      "samples": 2,
+                      "samples": 3,
                       "observed_types": {
-                        "integer": 2
+                        "integer": 3
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -302,14 +303,14 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 2,
+                      "parent_samples": 3,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 2,
+                  "parent_samples": 3,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
@@ -325,7 +326,7 @@
                 }
               }
             ],
-            "observations": 2,
+            "observations": 3,
             "evidence": [
               "evidence:8c9f01bc535f8046aa8ece9b"
             ],
@@ -335,18 +336,18 @@
           "request_contracts:c15a3ce41f82fbf96d52e439": {
             "id": "request_contracts:c15a3ce41f82fbf96d52e439",
             "schema": {
-              "samples": 2,
+              "samples": 5,
               "observed_types": {
-                "object": 2
+                "object": 5
               },
               "nullable": false,
               "confidence": "observed_only",
               "role": "unknown",
               "properties": {
                 "command": {
-                  "samples": 2,
+                  "samples": 5,
                   "observed_types": {
-                    "string": 2
+                    "string": 5
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -357,33 +358,33 @@
                   "values_bounded": true,
                   "variability": "constant_in_observations",
                   "enum_exhaustive": false,
-                  "parent_samples": 2,
+                  "parent_samples": 5,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "options": {
-                  "samples": 2,
+                  "samples": 5,
                   "observed_types": {
-                    "object": 2
+                    "object": 5
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "bets": {
-                      "samples": 2,
+                      "samples": 5,
                       "observed_types": {
-                        "object": 2
+                        "object": 5
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "choice",
                       "properties": {
                         "0": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -394,15 +395,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "1": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -413,15 +414,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "2": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -432,15 +433,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "3": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -451,15 +452,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "4": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -470,15 +471,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "5": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -489,15 +490,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "6": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -508,15 +509,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "7": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -527,15 +528,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "8": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -546,15 +547,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "9": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -565,38 +566,38 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 2,
+                      "parent_samples": 5,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 2,
+                  "parent_samples": 5,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "extra_data": {
-                  "samples": 2,
+                  "samples": 5,
                   "observed_types": {
-                    "object": 2
+                    "object": 5
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "round_series_id": {
-                      "samples": 2,
+                      "samples": 5,
                       "observed_types": {
-                        "integer": 2
+                        "integer": 5
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -607,34 +608,35 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 2,
+                      "parent_samples": 5,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "client_seed": {
-                      "samples": 2,
+                      "samples": 5,
                       "observed_types": {
-                        "integer": 2
+                        "integer": 5
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "observed_values": [
                         92437,
-                        9520
+                        9520,
+                        43794
                       ],
                       "values_bounded": true,
                       "variability": "variable",
                       "enum_exhaustive": false,
-                      "parent_samples": 2,
+                      "parent_samples": 5,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 2,
+                  "parent_samples": 5,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
@@ -684,9 +686,30 @@
                   "round_series_id": "[runtime:round_series_id]",
                   "client_seed": 9520
                 }
+              },
+              {
+                "command": "spin",
+                "options": {
+                  "bets": {
+                    "0": 1,
+                    "1": 1,
+                    "2": 1,
+                    "3": 1,
+                    "4": 1,
+                    "5": 1,
+                    "6": 1,
+                    "7": 1,
+                    "8": 1,
+                    "9": 1
+                  }
+                },
+                "extra_data": {
+                  "round_series_id": "[runtime:round_series_id]",
+                  "client_seed": 43794
+                }
               }
             ],
-            "observations": 2,
+            "observations": 5,
             "evidence": [
               "evidence:8c9f01bc535f8046aa8ece9b"
             ],
@@ -698,27 +721,27 @@
           "response_contracts:96888f982c6458aad9b793e8": {
             "id": "response_contracts:96888f982c6458aad9b793e8",
             "schema": {
-              "samples": 2,
+              "samples": 3,
               "observed_types": {
-                "object": 2
+                "object": 3
               },
               "nullable": false,
               "confidence": "observed_only",
               "role": "unknown",
               "properties": {
                 "options": {
-                  "samples": 2,
+                  "samples": 3,
                   "observed_types": {
-                    "object": 2
+                    "object": 3
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "line_bets": {
-                      "samples": 2,
+                      "samples": 3,
                       "observed_types": {
-                        "array": 2
+                        "array": 3
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -730,9 +753,9 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 14,
+                        "samples": 21,
                         "observed_types": {
-                          "integer": 14
+                          "integer": 21
                         },
                         "nullable": false,
                         "confidence": "observed_only",
@@ -750,15 +773,15 @@
                         "variability": "variable",
                         "enum_exhaustive": false
                       },
-                      "parent_samples": 2,
+                      "parent_samples": 3,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "default_bet": {
-                      "samples": 2,
+                      "samples": 3,
                       "observed_types": {
-                        "integer": 2
+                        "integer": 3
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -769,24 +792,24 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 2,
+                      "parent_samples": 3,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "paytable": {
-                      "samples": 2,
+                      "samples": 3,
                       "observed_types": {
-                        "object": 2
+                        "object": 3
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "[\"claddagh\", \"claddagh\", \"claddagh\", \"claddagh\", \"claddagh\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -797,15 +820,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"claddagh\", \"claddagh\", \"claddagh\", \"claddagh\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -816,15 +839,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"claddagh\", \"claddagh\", \"claddagh\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -835,15 +858,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"seven\", \"seven\", \"seven\", \"seven\", \"seven\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -854,15 +877,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"seven\", \"seven\", \"seven\", \"seven\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -873,15 +896,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"seven\", \"seven\", \"seven\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -892,15 +915,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"horseshoe\", \"horseshoe\", \"horseshoe\", \"horseshoe\", \"horseshoe\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -911,15 +934,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"horseshoe\", \"horseshoe\", \"horseshoe\", \"horseshoe\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -930,15 +953,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"horseshoe\", \"horseshoe\", \"horseshoe\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -949,15 +972,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"watermelon\", \"watermelon\", \"watermelon\", \"watermelon\", \"watermelon\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -968,15 +991,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"watermelon\", \"watermelon\", \"watermelon\", \"watermelon\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -987,15 +1010,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"watermelon\", \"watermelon\", \"watermelon\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1006,15 +1029,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"plum\", \"plum\", \"plum\", \"plum\", \"plum\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1025,15 +1048,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"plum\", \"plum\", \"plum\", \"plum\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1044,15 +1067,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"plum\", \"plum\", \"plum\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1063,15 +1086,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"grape\", \"grape\", \"grape\", \"grape\", \"grape\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1082,15 +1105,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"grape\", \"grape\", \"grape\", \"grape\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1101,15 +1124,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"grape\", \"grape\", \"grape\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1120,15 +1143,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"orange\", \"orange\", \"orange\", \"orange\", \"orange\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1139,15 +1162,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"orange\", \"orange\", \"orange\", \"orange\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1158,15 +1181,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"orange\", \"orange\", \"orange\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1177,15 +1200,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"lemon\", \"lemon\", \"lemon\", \"lemon\", \"lemon\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1196,15 +1219,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"lemon\", \"lemon\", \"lemon\", \"lemon\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1215,15 +1238,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"lemon\", \"lemon\", \"lemon\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1234,15 +1257,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"cherries\", \"cherries\", \"cherries\", \"cherries\", \"cherries\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1253,15 +1276,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"cherries\", \"cherries\", \"cherries\", \"cherries\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1272,15 +1295,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "[\"cherries\", \"cherries\", \"cherries\"]": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1291,22 +1314,22 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 2,
+                      "parent_samples": 3,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "lines": {
-                      "samples": 2,
+                      "samples": 3,
                       "observed_types": {
-                        "array": 2
+                        "array": 3
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1318,9 +1341,9 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 20,
+                        "samples": 30,
                         "observed_types": {
-                          "array": 20
+                          "array": 30
                         },
                         "nullable": false,
                         "confidence": "observed_only",
@@ -1332,9 +1355,9 @@
                         "position_semantics": "unknown",
                         "collection_role": "unknown; does not establish choices",
                         "items": {
-                          "samples": 100,
+                          "samples": 150,
                           "observed_types": {
-                            "integer": 100
+                            "integer": 150
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1349,15 +1372,15 @@
                           "enum_exhaustive": false
                         }
                       },
-                      "parent_samples": 2,
+                      "parent_samples": 3,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "reels": {
-                      "samples": 2,
+                      "samples": 3,
                       "observed_types": {
-                        "array": 2
+                        "array": 3
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1369,9 +1392,9 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 10,
+                        "samples": 15,
                         "observed_types": {
-                          "array": 10
+                          "array": 15
                         },
                         "nullable": false,
                         "confidence": "observed_only",
@@ -1383,9 +1406,9 @@
                         "position_semantics": "unknown",
                         "collection_role": "unknown; does not establish choices",
                         "items": {
-                          "samples": 546,
+                          "samples": 819,
                           "observed_types": {
-                            "string": 546
+                            "string": 819
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1405,15 +1428,15 @@
                           "enum_exhaustive": false
                         }
                       },
-                      "parent_samples": 2,
+                      "parent_samples": 3,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "column_height": {
-                      "samples": 2,
+                      "samples": 3,
                       "observed_types": {
-                        "integer": 2
+                        "integer": 3
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1424,24 +1447,24 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 2,
+                      "parent_samples": 3,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "currency": {
-                      "samples": 2,
+                      "samples": 3,
                       "observed_types": {
-                        "object": 2
+                        "object": 3
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "code": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "string": 2
+                            "string": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1452,15 +1475,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "symbol": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "string": 2
+                            "string": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1471,15 +1494,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "subunits": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1490,15 +1513,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "exponent": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1509,22 +1532,22 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 2,
+                      "parent_samples": 3,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "digit_options": {
-                      "samples": 2,
+                      "samples": 3,
                       "observed_types": {
-                        "object": 2
+                        "object": 3
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1544,15 +1567,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
-                          "optional_observed": false,
-                          "present_in_all_observed": true,
+                          "parent_samples": 3,
+                          "optional_observed": true,
+                          "present_in_all_observed": false,
                           "required": null
                         },
                         "paytable": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1563,15 +1586,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "balance": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1582,31 +1605,31 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 2,
+                      "parent_samples": 3,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "gamble_reels": {
-                      "samples": 2,
+                      "samples": 3,
                       "observed_types": {
-                        "object": 2
+                        "object": 3
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "1": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "array": 2
+                            "array": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1618,9 +1641,9 @@
                           "position_semantics": "unknown",
                           "collection_role": "unknown; does not establish choices",
                           "items": {
-                            "samples": 10,
+                            "samples": 15,
                             "observed_types": {
-                              "array": 10
+                              "array": 15
                             },
                             "nullable": false,
                             "confidence": "observed_only",
@@ -1632,9 +1655,9 @@
                             "position_semantics": "unknown",
                             "collection_role": "unknown; does not establish choices",
                             "items": {
-                              "samples": 456,
+                              "samples": 684,
                               "observed_types": {
-                                "string": 456
+                                "string": 684
                               },
                               "nullable": false,
                               "confidence": "observed_only",
@@ -1654,15 +1677,15 @@
                               "enum_exhaustive": false
                             }
                           },
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "2": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "array": 2
+                            "array": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1674,9 +1697,9 @@
                           "position_semantics": "unknown",
                           "collection_role": "unknown; does not establish choices",
                           "items": {
-                            "samples": 10,
+                            "samples": 15,
                             "observed_types": {
-                              "array": 10
+                              "array": 15
                             },
                             "nullable": false,
                             "confidence": "observed_only",
@@ -1688,9 +1711,9 @@
                             "position_semantics": "unknown",
                             "collection_role": "unknown; does not establish choices",
                             "items": {
-                              "samples": 564,
+                              "samples": 846,
                               "observed_types": {
-                                "string": 564
+                                "string": 846
                               },
                               "nullable": false,
                               "confidence": "observed_only",
@@ -1710,15 +1733,15 @@
                               "enum_exhaustive": false
                             }
                           },
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "3": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "array": 2
+                            "array": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1730,9 +1753,9 @@
                           "position_semantics": "unknown",
                           "collection_role": "unknown; does not establish choices",
                           "items": {
-                            "samples": 10,
+                            "samples": 15,
                             "observed_types": {
-                              "array": 10
+                              "array": 15
                             },
                             "nullable": false,
                             "confidence": "observed_only",
@@ -1744,9 +1767,9 @@
                             "position_semantics": "unknown",
                             "collection_role": "unknown; does not establish choices",
                             "items": {
-                              "samples": 574,
+                              "samples": 861,
                               "observed_types": {
-                                "string": 574
+                                "string": 861
                               },
                               "nullable": false,
                               "confidence": "observed_only",
@@ -1766,15 +1789,15 @@
                               "enum_exhaustive": false
                             }
                           },
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "4": {
-                          "samples": 2,
+                          "samples": 3,
                           "observed_types": {
-                            "array": 2
+                            "array": 3
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1786,9 +1809,9 @@
                           "position_semantics": "unknown",
                           "collection_role": "unknown; does not establish choices",
                           "items": {
-                            "samples": 10,
+                            "samples": 15,
                             "observed_types": {
-                              "array": 10
+                              "array": 15
                             },
                             "nullable": false,
                             "confidence": "observed_only",
@@ -1800,9 +1823,9 @@
                             "position_semantics": "unknown",
                             "collection_role": "unknown; does not establish choices",
                             "items": {
-                              "samples": 468,
+                              "samples": 702,
                               "observed_types": {
-                                "string": 468
+                                "string": 702
                               },
                               "nullable": false,
                               "confidence": "observed_only",
@@ -1822,38 +1845,38 @@
                               "enum_exhaustive": false
                             }
                           },
-                          "parent_samples": 2,
+                          "parent_samples": 3,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 2,
+                      "parent_samples": 3,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 2,
+                  "parent_samples": 3,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "game": {
-                  "samples": 2,
+                  "samples": 3,
                   "observed_types": {
-                    "object": 2
+                    "object": 3
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "state": {
-                      "samples": 2,
+                      "samples": 3,
                       "observed_types": {
-                        "string": 2
+                        "string": 3
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -1864,22 +1887,22 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 2,
+                      "parent_samples": 3,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 2,
+                  "parent_samples": 3,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "balance": {
-                  "samples": 2,
+                  "samples": 3,
                   "observed_types": {
-                    "integer": 2
+                    "integer": 3
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -1890,15 +1913,15 @@
                   "values_bounded": true,
                   "variability": "constant_in_observations",
                   "enum_exhaustive": false,
-                  "parent_samples": 2,
+                  "parent_samples": 3,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "available_commands": {
-                  "samples": 2,
+                  "samples": 3,
                   "observed_types": {
-                    "array": 2
+                    "array": 3
                   },
                   "nullable": false,
                   "confidence": "observed_only",
@@ -1910,9 +1933,9 @@
                   "position_semantics": "unknown",
                   "collection_role": "unknown; does not establish choices",
                   "items": {
-                    "samples": 4,
+                    "samples": 6,
                     "observed_types": {
-                      "string": 4
+                      "string": 6
                     },
                     "nullable": false,
                     "confidence": "observed_only",
@@ -1925,7 +1948,7 @@
                     "variability": "variable",
                     "enum_exhaustive": false
                   },
-                  "parent_samples": 2,
+                  "parent_samples": 3,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
@@ -1934,7 +1957,7 @@
               "mapping_keys": "observed_properties; dynamic-key semantics unresolved"
             },
             "examples": [],
-            "observations": 2,
+            "observations": 3,
             "evidence": [
               "evidence:8c9f01bc535f8046aa8ece9b"
             ],
@@ -1944,36 +1967,36 @@
           "response_contracts:c67fd72e705399c7c9784a9c": {
             "id": "response_contracts:c67fd72e705399c7c9784a9c",
             "schema": {
-              "samples": 2,
+              "samples": 5,
               "observed_types": {
-                "object": 2
+                "object": 5
               },
               "nullable": false,
               "confidence": "observed_only",
               "role": "unknown",
               "properties": {
                 "bets": {
-                  "samples": 2,
+                  "samples": 5,
                   "observed_types": {
-                    "object": 2
+                    "object": 5
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "lines": {
-                      "samples": 2,
+                      "samples": 5,
                       "observed_types": {
-                        "object": 2
+                        "object": 5
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "properties": {
                         "0": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -1984,15 +2007,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "1": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2003,15 +2026,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "2": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2022,15 +2045,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "3": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2041,15 +2064,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "4": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2060,15 +2083,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "5": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2079,15 +2102,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "6": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2098,15 +2121,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "7": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2117,15 +2140,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "8": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2136,15 +2159,15 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         },
                         "9": {
-                          "samples": 2,
+                          "samples": 5,
                           "observed_types": {
-                            "integer": 2
+                            "integer": 5
                           },
                           "nullable": false,
                           "confidence": "observed_only",
@@ -2155,38 +2178,38 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 2,
+                          "parent_samples": 5,
                           "optional_observed": false,
                           "present_in_all_observed": true,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 2,
+                      "parent_samples": 5,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 2,
+                  "parent_samples": 5,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "game": {
-                  "samples": 2,
+                  "samples": 5,
                   "observed_types": {
-                    "object": 2
+                    "object": 5
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "span_indices": {
-                      "samples": 2,
+                      "samples": 5,
                       "observed_types": {
-                        "array": 2
+                        "array": 5
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -2198,9 +2221,9 @@
                       "position_semantics": "unknown",
                       "collection_role": "unknown; does not establish choices",
                       "items": {
-                        "samples": 10,
+                        "samples": 25,
                         "observed_types": {
-                          "integer": 10
+                          "integer": 25
                         },
                         "nullable": false,
                         "confidence": "observed_only",
@@ -2219,15 +2242,15 @@
                         "variability": "variable",
                         "enum_exhaustive": false
                       },
-                      "parent_samples": 2,
+                      "parent_samples": 5,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "win_lines": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -2264,41 +2287,78 @@
                             "variability": "variable",
                             "enum_exhaustive": false
                           },
-                          "parent_samples": 1,
-                          "optional_observed": false,
-                          "present_in_all_observed": true,
+                          "parent_samples": 2,
+                          "optional_observed": true,
+                          "present_in_all_observed": false,
+                          "required": null
+                        },
+                        "9": {
+                          "samples": 1,
+                          "observed_types": {
+                            "array": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "length": {
+                            "min": 3,
+                            "max": 3
+                          },
+                          "position_semantics": "unknown",
+                          "collection_role": "unknown; does not establish choices",
+                          "items": {
+                            "samples": 3,
+                            "observed_types": {
+                              "integer": 3
+                            },
+                            "nullable": false,
+                            "confidence": "observed_only",
+                            "role": "unknown",
+                            "observed_values": [
+                              2,
+                              3,
+                              4
+                            ],
+                            "values_bounded": true,
+                            "variability": "variable",
+                            "enum_exhaustive": false
+                          },
+                          "parent_samples": 2,
+                          "optional_observed": true,
+                          "present_in_all_observed": false,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 2,
+                      "parent_samples": 5,
                       "optional_observed": true,
                       "present_in_all_observed": false,
                       "required": null
                     },
                     "state": {
-                      "samples": 2,
+                      "samples": 5,
                       "observed_types": {
-                        "string": 2
+                        "string": 5
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "observed_values": [
-                        "closed"
+                        "closed",
+                        "bonus_game"
                       ],
                       "values_bounded": true,
-                      "variability": "constant_in_observations",
+                      "variability": "variable",
                       "enum_exhaustive": false,
-                      "parent_samples": 2,
+                      "parent_samples": 5,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "action": {
-                      "samples": 2,
+                      "samples": 5,
                       "observed_types": {
-                        "string": 2
+                        "string": 5
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -2309,31 +2369,123 @@
                       "values_bounded": true,
                       "variability": "constant_in_observations",
                       "enum_exhaustive": false,
-                      "parent_samples": 2,
+                      "parent_samples": 5,
                       "optional_observed": false,
                       "present_in_all_observed": true,
+                      "required": null
+                    },
+                    "bonus_game": {
+                      "samples": 1,
+                      "observed_types": {
+                        "object": 1
+                      },
+                      "nullable": false,
+                      "confidence": "observed_only",
+                      "role": "unknown",
+                      "properties": {
+                        "available_amount": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            50
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "min_bet_amount": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            10
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "played_rounds": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            0
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        },
+                        "max_rounds": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            50
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 1,
+                          "optional_observed": false,
+                          "present_in_all_observed": true,
+                          "required": null
+                        }
+                      },
+                      "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
+                      "parent_samples": 5,
+                      "optional_observed": true,
+                      "present_in_all_observed": false,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 2,
+                  "parent_samples": 5,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "result": {
-                  "samples": 1,
+                  "samples": 2,
                   "observed_types": {
-                    "object": 1
+                    "object": 2
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "properties": {
                     "lines": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "object": 1
+                        "object": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
@@ -2353,95 +2505,118 @@
                           "values_bounded": true,
                           "variability": "constant_in_observations",
                           "enum_exhaustive": false,
-                          "parent_samples": 1,
-                          "optional_observed": false,
-                          "present_in_all_observed": true,
+                          "parent_samples": 2,
+                          "optional_observed": true,
+                          "present_in_all_observed": false,
+                          "required": null
+                        },
+                        "9": {
+                          "samples": 1,
+                          "observed_types": {
+                            "integer": 1
+                          },
+                          "nullable": false,
+                          "confidence": "observed_only",
+                          "role": "unknown",
+                          "observed_values": [
+                            50
+                          ],
+                          "values_bounded": true,
+                          "variability": "constant_in_observations",
+                          "enum_exhaustive": false,
+                          "parent_samples": 2,
+                          "optional_observed": true,
+                          "present_in_all_observed": false,
                           "required": null
                         }
                       },
                       "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     },
                     "total": {
-                      "samples": 1,
+                      "samples": 2,
                       "observed_types": {
-                        "integer": 1
+                        "integer": 2
                       },
                       "nullable": false,
                       "confidence": "observed_only",
                       "role": "unknown",
                       "observed_values": [
-                        10
+                        10,
+                        50
                       ],
                       "values_bounded": true,
-                      "variability": "constant_in_observations",
+                      "variability": "variable",
                       "enum_exhaustive": false,
-                      "parent_samples": 1,
+                      "parent_samples": 2,
                       "optional_observed": false,
                       "present_in_all_observed": true,
                       "required": null
                     }
                   },
                   "mapping_keys": "observed_properties; dynamic-key semantics unresolved",
-                  "parent_samples": 2,
+                  "parent_samples": 5,
                   "optional_observed": true,
                   "present_in_all_observed": false,
                   "required": null
                 },
                 "balance": {
-                  "samples": 2,
+                  "samples": 5,
                   "observed_types": {
-                    "integer": 2
+                    "integer": 5
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "observed_values": [
                     100000,
-                    99990
+                    99990,
+                    99980,
+                    100020
                   ],
                   "values_bounded": true,
                   "variability": "variable",
                   "enum_exhaustive": false,
-                  "parent_samples": 2,
+                  "parent_samples": 5,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
                 },
                 "available_commands": {
-                  "samples": 2,
+                  "samples": 5,
                   "observed_types": {
-                    "array": 2
+                    "array": 5
                   },
                   "nullable": false,
                   "confidence": "observed_only",
                   "role": "unknown",
                   "length": {
                     "min": 2,
-                    "max": 2
+                    "max": 3
                   },
                   "position_semantics": "unknown",
                   "collection_role": "unknown; does not establish choices",
                   "items": {
-                    "samples": 4,
+                    "samples": 11,
                     "observed_types": {
-                      "string": 4
+                      "string": 11
                     },
                     "nullable": false,
                     "confidence": "observed_only",
                     "role": "unknown",
                     "observed_values": [
                       "init",
-                      "spin"
+                      "spin",
+                      "finish"
                     ],
                     "values_bounded": true,
                     "variability": "variable",
                     "enum_exhaustive": false
                   },
-                  "parent_samples": 2,
+                  "parent_samples": 5,
                   "optional_observed": false,
                   "present_in_all_observed": true,
                   "required": null
@@ -2526,9 +2701,41 @@
                   "init",
                   "spin"
                 ]
+              },
+              {
+                "bets": {
+                  "lines": {
+                    "0": 1,
+                    "1": 1,
+                    "2": 1,
+                    "3": 1,
+                    "4": 1,
+                    "5": 1,
+                    "6": 1,
+                    "7": 1,
+                    "8": 1,
+                    "9": 1
+                  }
+                },
+                "game": {
+                  "span_indices": [
+                    30,
+                    54,
+                    17,
+                    29,
+                    48
+                  ],
+                  "state": "closed",
+                  "action": "spin"
+                },
+                "balance": 99990,
+                "available_commands": [
+                  "init",
+                  "spin"
+                ]
               }
             ],
-            "observations": 2,
+            "observations": 5,
             "evidence": [
               "evidence:8c9f01bc535f8046aa8ece9b"
             ],
@@ -3028,6 +3235,48 @@
             "entity": "response_contracts:c67fd72e705399c7c9784a9c/available_commands[]",
             "status": "CONTRACT_UNRESOLVED",
             "reason": "Semantic meaning unknown"
+          },
+          "unknown:3a7d3ff70a7ee4bdc3bb5cf1": {
+            "id": "unknown:3a7d3ff70a7ee4bdc3bb5cf1",
+            "kind": "field",
+            "entity": "response_contracts:c67fd72e705399c7c9784a9c/game.win_lines.9[]",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:45171c24f4e6332ab4b319a6": {
+            "id": "unknown:45171c24f4e6332ab4b319a6",
+            "kind": "field",
+            "entity": "response_contracts:c67fd72e705399c7c9784a9c/game.bonus_game.available_amount",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:c8790e2805faadcdfb438bda": {
+            "id": "unknown:c8790e2805faadcdfb438bda",
+            "kind": "field",
+            "entity": "response_contracts:c67fd72e705399c7c9784a9c/game.bonus_game.min_bet_amount",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:42f6d86b6a7a314364346820": {
+            "id": "unknown:42f6d86b6a7a314364346820",
+            "kind": "field",
+            "entity": "response_contracts:c67fd72e705399c7c9784a9c/game.bonus_game.played_rounds",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:3168570e862fbaa17fdfc609": {
+            "id": "unknown:3168570e862fbaa17fdfc609",
+            "kind": "field",
+            "entity": "response_contracts:c67fd72e705399c7c9784a9c/game.bonus_game.max_rounds",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
+          },
+          "unknown:5c4bbb6b8eaea10189dfc210": {
+            "id": "unknown:5c4bbb6b8eaea10189dfc210",
+            "kind": "field",
+            "entity": "response_contracts:c67fd72e705399c7c9784a9c/result.lines.9",
+            "status": "CONTRACT_UNRESOLVED",
+            "reason": "Semantic meaning unknown"
           }
         },
         "evidence": {
@@ -3051,7 +3300,7 @@
           "executed": 2,
           "outcome_observed": 0,
           "pending": 2,
-          "unknowns": 69,
+          "unknowns": 75,
           "complete": false,
           "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
         }
@@ -3071,7 +3320,7 @@
     },
     "profile.json": {
       "encoding": "json",
-      "bytes": 707,
+      "bytes": 708,
       "value": {
         "schema": "tester-spin/bgaming-profile/v1",
         "capability_version": 2,
@@ -3097,21 +3346,21 @@
         "source": "init",
         "bundle_sha256": "",
         "discovery_diagnostics": [],
-        "validated": true
+        "validated": false
       }
     },
     "result.json": {
       "encoding": "json",
-      "bytes": 2008,
+      "bytes": 2184,
       "value": {
         "provider": "bgaming",
         "slug": "four-lucky-clover",
         "game_name": "Four Lucky Clover",
         "game_url": "https://demo.bgaming-network.com/play/FourLuckyClover/FUN?server=demo",
         "requested_spins": 1,
-        "successful_spins": 1,
-        "failed_spins": 0,
-        "status": "OK",
+        "successful_spins": 0,
+        "failed_spins": 1,
+        "status": "PARCIAL",
         "symbol": "FourLuckyClover",
         "discovered_modes": [
           {
@@ -3119,34 +3368,34 @@
             "kind": "SPIN",
             "observed": true,
             "wire_command": "spin",
-            "evidence_level": "REMOTE_EXECUTION",
-            "execution_state": "PROVEN_TERMINAL",
-            "validated": true
+            "evidence_level": "WIRE_CANDIDATE",
+            "execution_state": "ATTEMPTED_UNVALIDATED",
+            "validated": false
           }
         ],
-        "started_at": "2026-09-15T08:22:02+00:00",
-        "finished_at": "2026-09-15T08:22:17+00:00",
-        "elapsed_ms": 14860.000000000582,
-        "error": "",
-        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Four Lucky Clover\\tests\\2026-09-15_05-22-02-bgaming-http-api-v2",
+        "started_at": "2026-09-17T02:37:40+00:00",
+        "finished_at": "2026-09-17T02:37:55+00:00",
+        "elapsed_ms": 14500.0,
+        "error": "BGaming respondió 1/1 intentos; modos terminales validados=0/1. Diagnóstico: Regreso al juego base pendiente: REVIEW_REQUIRED",
+        "run_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Four Lucky Clover\\tests\\2026-09-16_23-37-40-bgaming-http-api-v2",
         "attempts": [
           {
             "number": 1,
-            "ok": true,
+            "ok": false,
             "mode_id": "SPIN",
             "mode_kind": "SPIN",
             "provider_bl": null,
             "provider_pur": null,
             "status_code": 200,
-            "elapsed_ms": 546.9999999913853,
+            "elapsed_ms": 1265.9999999887077,
             "symbol": "FourLuckyClover",
             "endpoint": "https://demo.bgaming-network.com/api/FourLuckyClover/2366886/<session>",
             "na": "closed",
             "terminal": true,
             "wire_steps": 1,
-            "warning": "",
+            "warning": "Regreso al juego base pendiente: REVIEW_REQUIRED",
             "error": "",
-            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Four Lucky Clover\\tests\\2026-09-15_05-22-02-bgaming-http-api-v2\\SPIN\\attempt-001"
+            "artifact_dir": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Four Lucky Clover\\tests\\2026-09-16_23-37-40-bgaming-http-api-v2\\SPIN\\attempt-001"
           }
         ],
         "samples_per_path": 1,
@@ -3160,7 +3409,7 @@
             "executed": 2,
             "outcome_observed": 0,
             "pending": 2,
-            "unknowns": 69,
+            "unknowns": 75,
             "complete": false,
             "completeness_basis": "Observed evidence only; domains and conditional fields may be incomplete"
           },
@@ -3170,7 +3419,7 @@
     },
     "sample-catalog.json": {
       "encoding": "json",
-      "bytes": 2492,
+      "bytes": 5346,
       "value": {
         "schema": "tester-spin/sample-catalog/v2",
         "provider": "bgaming",
@@ -3183,14 +3432,34 @@
             "mode_id": "SPIN",
             "mode_kind": "SPIN",
             "choices": [],
-            "validated_samples": 1,
+            "validated_samples": 0,
             "samples": [
               {
                 "attempt": 1,
                 "artifact_dir": "SPIN/attempt-001",
-                "validated": true,
+                "validated": false,
                 "terminal": true,
                 "observed_state_sequence": [
+                  [
+                    {
+                      "field": "$.game.state",
+                      "value": "closed"
+                    },
+                    {
+                      "field": "$.game.action",
+                      "value": "spin"
+                    }
+                  ],
+                  [
+                    {
+                      "field": "$.game.state",
+                      "value": "bonus_game"
+                    },
+                    {
+                      "field": "$.game.action",
+                      "value": "spin"
+                    }
+                  ],
                   [
                     {
                       "field": "$.game.state",
@@ -3205,28 +3474,63 @@
                 "evidence": [
                   {
                     "path": "SPIN/attempt-001/request.json",
-                    "sha256": "6ae2d269a0863019d103a7c56f9f5f135516b751a5ec88c667be4b547bd9df44",
-                    "bytes": 307
+                    "sha256": "2368b44611745b224ca557f46fd746bbbbc63f1d7f1c272e368f79953cc4593d",
+                    "bytes": 308
                   },
                   {
                     "path": "SPIN/attempt-001/response.json",
-                    "sha256": "4451eee81d0254cd96751f9c657b9900adfd247c205540bd9817b5c389f5490e",
+                    "sha256": "7d319ca21c68eb847ea8417d22e38b6c60323f1193fa13a589666732d070a250",
+                    "bytes": 423
+                  },
+                  {
+                    "path": "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl",
+                    "sha256": "c2d1942b30d25a07c54ff42d4128d137cd33d19eea4f4c176aec44c4fa672c42",
+                    "bytes": 737
+                  },
+                  {
+                    "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+                    "sha256": "2368b44611745b224ca557f46fd746bbbbc63f1d7f1c272e368f79953cc4593d",
+                    "bytes": 308
+                  },
+                  {
+                    "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-response.json",
+                    "sha256": "f522761caba6ba5256fda22e3b3c5c603e5d63dd9c9470d19a6875a1212a60e4",
                     "bytes": 422
+                  },
+                  {
+                    "path": "SPIN/attempt-001/return-to-base/probe-002/server-responses.jsonl",
+                    "sha256": "bb5614c941788815cceeab4e2a1da412d1271902689eda6eaebc974e89a066d3",
+                    "bytes": 1263
+                  },
+                  {
+                    "path": "SPIN/attempt-001/return-to-base/probe-002/step-001-request.json",
+                    "sha256": "2368b44611745b224ca557f46fd746bbbbc63f1d7f1c272e368f79953cc4593d",
+                    "bytes": 308
+                  },
+                  {
+                    "path": "SPIN/attempt-001/return-to-base/probe-002/step-001-response.json",
+                    "sha256": "b2de27df7b02dc44a91a289d08b1807d6c7fbabc3f015e65bd14b3ae6e809c55",
+                    "bytes": 745
+                  },
+                  {
+                    "path": "SPIN/attempt-001/server-responses.jsonl",
+                    "sha256": "7cd3bf106b0306040e4f0a575e83351b37ff7ab59039afe8f58d96f13fe13871",
+                    "bytes": 742
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-request.json",
-                    "sha256": "6ae2d269a0863019d103a7c56f9f5f135516b751a5ec88c667be4b547bd9df44",
-                    "bytes": 307
+                    "sha256": "2368b44611745b224ca557f46fd746bbbbc63f1d7f1c272e368f79953cc4593d",
+                    "bytes": 308
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-response.json",
-                    "sha256": "4451eee81d0254cd96751f9c657b9900adfd247c205540bd9817b5c389f5490e",
-                    "bytes": 422
+                    "sha256": "7d319ca21c68eb847ea8417d22e38b6c60323f1193fa13a589666732d070a250",
+                    "bytes": 423
                   }
                 ]
               }
             ],
-            "missing_samples": 0
+            "missing_samples": 1
           }
         ],
         "observed_state_types": [
@@ -3251,13 +3555,38 @@
               {
                 "attempt": 1,
                 "mode_id": "SPIN",
+                "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-response.json"
+              },
+              {
+                "attempt": 1,
+                "mode_id": "SPIN",
                 "path": "SPIN/attempt-001/step-001-response.json"
+              }
+            ]
+          },
+          {
+            "id": "7576d7c9fcc9aafe792ca87203b65bf0ab6e81f896389546f54002bb21114363",
+            "observed_tags": [
+              {
+                "field": "$.game.state",
+                "value": "bonus_game"
+              },
+              {
+                "field": "$.game.action",
+                "value": "spin"
+              }
+            ],
+            "evidence": [
+              {
+                "attempt": 1,
+                "mode_id": "SPIN",
+                "path": "SPIN/attempt-001/return-to-base/probe-002/step-001-response.json"
               }
             ]
           }
         ],
         "diagnostics": [],
-        "observed_paths_sampled": true
+        "observed_paths_sampled": false
       }
     },
     "SPIN/attempt-001/remote-proof.json": {
@@ -3274,12 +3603,12 @@
         "balance_total": 99990,
         "game_state": "closed",
         "game_action": "spin",
-        "response_sha256": "2bf83bcebcea6757"
+        "response_sha256": "a34a3f1a5c033d13"
       }
     },
     "SPIN/attempt-001/request.json": {
       "encoding": "json",
-      "bytes": 307,
+      "bytes": 308,
       "value": {
         "command": "spin",
         "options": {
@@ -3297,14 +3626,14 @@
           }
         },
         "extra_data": {
-          "round_series_id": 1789460523334,
-          "client_seed": 9520
+          "round_series_id": 1789612661672,
+          "client_seed": 43794
         }
       }
     },
     "SPIN/attempt-001/response.json": {
       "encoding": "json",
-      "bytes": 422,
+      "bytes": 423,
       "value": {
         "bets": {
           "lines": {
@@ -3323,10 +3652,10 @@
         "game": {
           "span_indices": [
             30,
-            34,
-            4,
-            18,
-            17
+            54,
+            17,
+            29,
+            48
           ],
           "state": "closed",
           "action": "spin"
@@ -3338,9 +3667,184 @@
         ]
       }
     },
-    "SPIN/attempt-001/step-001-request.json": {
+    "SPIN/attempt-001/return-to-base.json": {
       "encoding": "json",
-      "bytes": 307,
+      "bytes": 3908,
+      "value": {
+        "schema": "tester-spin/return-to-base/v1",
+        "status": "REVIEW_REQUIRED",
+        "connection_reused": true,
+        "required": 2,
+        "max_probes": 10,
+        "consecutive_base": 1,
+        "cause": "UNDETERMINED",
+        "probes": [
+          {
+            "ok": true,
+            "base": true,
+            "known": true,
+            "captures": [
+              {
+                "step": 1,
+                "request": {
+                  "command": "spin",
+                  "options": {
+                    "bets": {
+                      "0": 1,
+                      "1": 1,
+                      "2": 1,
+                      "3": 1,
+                      "4": 1,
+                      "5": 1,
+                      "6": 1,
+                      "7": 1,
+                      "8": 1,
+                      "9": 1
+                    }
+                  },
+                  "extra_data": {
+                    "round_series_id": 1789612661672,
+                    "client_seed": 43794
+                  }
+                },
+                "response": {
+                  "bets": {
+                    "lines": {
+                      "0": 1,
+                      "1": 1,
+                      "2": 1,
+                      "3": 1,
+                      "4": 1,
+                      "5": 1,
+                      "6": 1,
+                      "7": 1,
+                      "8": 1,
+                      "9": 1
+                    }
+                  },
+                  "game": {
+                    "span_indices": [
+                      10,
+                      39,
+                      46,
+                      29,
+                      0
+                    ],
+                    "state": "closed",
+                    "action": "spin"
+                  },
+                  "balance": 99980,
+                  "available_commands": [
+                    "init",
+                    "spin"
+                  ]
+                }
+              }
+            ],
+            "directory": "return-to-base\\probe-001"
+          },
+          {
+            "ok": true,
+            "base": false,
+            "known": false,
+            "captures": [
+              {
+                "step": 1,
+                "request": {
+                  "command": "spin",
+                  "options": {
+                    "bets": {
+                      "0": 1,
+                      "1": 1,
+                      "2": 1,
+                      "3": 1,
+                      "4": 1,
+                      "5": 1,
+                      "6": 1,
+                      "7": 1,
+                      "8": 1,
+                      "9": 1
+                    }
+                  },
+                  "extra_data": {
+                    "round_series_id": 1789612661672,
+                    "client_seed": 43794
+                  }
+                },
+                "response": {
+                  "bets": {
+                    "lines": {
+                      "0": 1,
+                      "1": 1,
+                      "2": 1,
+                      "3": 1,
+                      "4": 1,
+                      "5": 1,
+                      "6": 1,
+                      "7": 1,
+                      "8": 1,
+                      "9": 1
+                    }
+                  },
+                  "game": {
+                    "span_indices": [
+                      33,
+                      5,
+                      32,
+                      19,
+                      35
+                    ],
+                    "win_lines": {
+                      "9": [
+                        2,
+                        3,
+                        4
+                      ]
+                    },
+                    "bonus_game": {
+                      "available_amount": 50,
+                      "min_bet_amount": 10,
+                      "played_rounds": 0,
+                      "max_rounds": 50
+                    },
+                    "state": "bonus_game",
+                    "action": "spin"
+                  },
+                  "result": {
+                    "lines": {
+                      "9": 50
+                    },
+                    "total": 50
+                  },
+                  "balance": 100020,
+                  "available_commands": [
+                    "finish",
+                    "init",
+                    "spin"
+                  ]
+                }
+              }
+            ],
+            "pending_state": "bonus_game",
+            "available_actions": [
+              "finish",
+              "init",
+              "spin"
+            ],
+            "directory": "return-to-base\\probe-002"
+          }
+        ],
+        "updated_at": "2026-09-17T02:37:55.172059+00:00"
+      }
+    },
+    "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl": {
+      "encoding": "text",
+      "bytes": 737,
+      "value": "{\"change_kind\": \"REFERENCE\", \"classification\": \"SEEN\", \"signature\": \"af80944b8fa80357b5f8c9ebe5041a842dc9e1b939bb86f0880716bbf3621775\", \"changed_paths\": [], \"review_required\": false, \"action\": \"spin\", \"response\": {\"bets\": {\"lines\": {\"0\": 1, \"1\": 1, \"2\": 1, \"3\": 1, \"4\": 1, \"5\": 1, \"6\": 1, \"7\": 1, \"8\": 1, \"9\": 1}}, \"game\": {\"span_indices\": [10, 39, 46, 29, 0], \"state\": \"closed\", \"action\": \"spin\"}, \"balance\": 99980, \"available_commands\": [\"init\", \"spin\"]}, \"request\": {\"command\": \"spin\", \"options\": {\"bets\": {\"0\": 1, \"1\": 1, \"2\": 1, \"3\": 1, \"4\": 1, \"5\": 1, \"6\": 1, \"7\": 1, \"8\": 1, \"9\": 1}}, \"extra_data\": {\"round_series_id\": 1789612661672, \"client_seed\": 43794}}, \"http_status\": 200, \"captured_at\": \"2026-09-17T02:37:54.785935+00:00\"}\n"
+    },
+    "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 308,
       "value": {
         "command": "spin",
         "options": {
@@ -3358,12 +3862,12 @@
           }
         },
         "extra_data": {
-          "round_series_id": 1789460523334,
-          "client_seed": 9520
+          "round_series_id": 1789612661672,
+          "client_seed": 43794
         }
       }
     },
-    "SPIN/attempt-001/step-001-response.json": {
+    "SPIN/attempt-001/return-to-base/probe-001/step-001-response.json": {
       "encoding": "json",
       "bytes": 422,
       "value": {
@@ -3383,11 +3887,163 @@
         },
         "game": {
           "span_indices": [
+            10,
+            39,
+            46,
+            29,
+            0
+          ],
+          "state": "closed",
+          "action": "spin"
+        },
+        "balance": 99980,
+        "available_commands": [
+          "init",
+          "spin"
+        ]
+      }
+    },
+    "SPIN/attempt-001/return-to-base/probe-002/server-responses.jsonl": {
+      "encoding": "text",
+      "bytes": 1263,
+      "value": "{\"change_kind\": \"PROTOCOL_CHANGE\", \"classification\": \"NEW_RESPONSE\", \"signature\": \"e5171dac438cef92648ddb5b26d19bfb75b31a2d6baae8b1517a7dc75d7f8023\", \"changed_paths\": [\"/available_commands/*\", \"/game/bonus_game\", \"/game/bonus_game/available_amount\", \"/game/bonus_game/max_rounds\", \"/game/bonus_game/min_bet_amount\", \"/game/bonus_game/played_rounds\", \"/game/state\", \"/game/win_lines\", \"/game/win_lines/9\", \"/game/win_lines/9/*\", \"/result\", \"/result/lines\", \"/result/lines/9\", \"/result/total\"], \"review_required\": true, \"action\": \"spin\", \"response\": {\"bets\": {\"lines\": {\"0\": 1, \"1\": 1, \"2\": 1, \"3\": 1, \"4\": 1, \"5\": 1, \"6\": 1, \"7\": 1, \"8\": 1, \"9\": 1}}, \"game\": {\"span_indices\": [33, 5, 32, 19, 35], \"win_lines\": {\"9\": [2, 3, 4]}, \"bonus_game\": {\"available_amount\": 50, \"min_bet_amount\": 10, \"played_rounds\": 0, \"max_rounds\": 50}, \"state\": \"bonus_game\", \"action\": \"spin\"}, \"result\": {\"lines\": {\"9\": 50}, \"total\": 50}, \"balance\": 100020, \"available_commands\": [\"finish\", \"init\", \"spin\"]}, \"request\": {\"command\": \"spin\", \"options\": {\"bets\": {\"0\": 1, \"1\": 1, \"2\": 1, \"3\": 1, \"4\": 1, \"5\": 1, \"6\": 1, \"7\": 1, \"8\": 1, \"9\": 1}}, \"extra_data\": {\"round_series_id\": 1789612661672, \"client_seed\": 43794}}, \"http_status\": 200, \"captured_at\": \"2026-09-17T02:37:55.157457+00:00\"}\n"
+    },
+    "SPIN/attempt-001/return-to-base/probe-002/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 308,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bets": {
+            "0": 1,
+            "1": 1,
+            "2": 1,
+            "3": 1,
+            "4": 1,
+            "5": 1,
+            "6": 1,
+            "7": 1,
+            "8": 1,
+            "9": 1
+          }
+        },
+        "extra_data": {
+          "round_series_id": 1789612661672,
+          "client_seed": 43794
+        }
+      }
+    },
+    "SPIN/attempt-001/return-to-base/probe-002/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 745,
+      "value": {
+        "bets": {
+          "lines": {
+            "0": 1,
+            "1": 1,
+            "2": 1,
+            "3": 1,
+            "4": 1,
+            "5": 1,
+            "6": 1,
+            "7": 1,
+            "8": 1,
+            "9": 1
+          }
+        },
+        "game": {
+          "span_indices": [
+            33,
+            5,
+            32,
+            19,
+            35
+          ],
+          "win_lines": {
+            "9": [
+              2,
+              3,
+              4
+            ]
+          },
+          "bonus_game": {
+            "available_amount": 50,
+            "min_bet_amount": 10,
+            "played_rounds": 0,
+            "max_rounds": 50
+          },
+          "state": "bonus_game",
+          "action": "spin"
+        },
+        "result": {
+          "lines": {
+            "9": 50
+          },
+          "total": 50
+        },
+        "balance": 100020,
+        "available_commands": [
+          "finish",
+          "init",
+          "spin"
+        ]
+      }
+    },
+    "SPIN/attempt-001/server-responses.jsonl": {
+      "encoding": "text",
+      "bytes": 742,
+      "value": "{\"change_kind\": \"REFERENCE\", \"classification\": \"BASELINE\", \"signature\": \"af80944b8fa80357b5f8c9ebe5041a842dc9e1b939bb86f0880716bbf3621775\", \"changed_paths\": [], \"review_required\": false, \"action\": \"spin\", \"response\": {\"bets\": {\"lines\": {\"0\": 1, \"1\": 1, \"2\": 1, \"3\": 1, \"4\": 1, \"5\": 1, \"6\": 1, \"7\": 1, \"8\": 1, \"9\": 1}}, \"game\": {\"span_indices\": [30, 54, 17, 29, 48], \"state\": \"closed\", \"action\": \"spin\"}, \"balance\": 99990, \"available_commands\": [\"init\", \"spin\"]}, \"request\": {\"command\": \"spin\", \"options\": {\"bets\": {\"0\": 1, \"1\": 1, \"2\": 1, \"3\": 1, \"4\": 1, \"5\": 1, \"6\": 1, \"7\": 1, \"8\": 1, \"9\": 1}}, \"extra_data\": {\"round_series_id\": 1789612661672, \"client_seed\": 43794}}, \"http_status\": 200, \"captured_at\": \"2026-09-17T02:37:54.411854+00:00\"}\n"
+    },
+    "SPIN/attempt-001/step-001-request.json": {
+      "encoding": "json",
+      "bytes": 308,
+      "value": {
+        "command": "spin",
+        "options": {
+          "bets": {
+            "0": 1,
+            "1": 1,
+            "2": 1,
+            "3": 1,
+            "4": 1,
+            "5": 1,
+            "6": 1,
+            "7": 1,
+            "8": 1,
+            "9": 1
+          }
+        },
+        "extra_data": {
+          "round_series_id": 1789612661672,
+          "client_seed": 43794
+        }
+      }
+    },
+    "SPIN/attempt-001/step-001-response.json": {
+      "encoding": "json",
+      "bytes": 423,
+      "value": {
+        "bets": {
+          "lines": {
+            "0": 1,
+            "1": 1,
+            "2": 1,
+            "3": 1,
+            "4": 1,
+            "5": 1,
+            "6": 1,
+            "7": 1,
+            "8": 1,
+            "9": 1
+          }
+        },
+        "game": {
+          "span_indices": [
             30,
-            34,
-            4,
-            18,
-            17
+            54,
+            17,
+            29,
+            48
           ],
           "state": "closed",
           "action": "spin"
@@ -3401,7 +4057,7 @@
     },
     "backend-conformance.json": {
       "encoding": "json",
-      "bytes": 1412,
+      "bytes": 1565,
       "value": {
         "schema": "tester-spin/bgaming-backend-conformance/v1",
         "provider": "bgaming",
@@ -3410,8 +4066,8 @@
           "name": "Four Lucky Clover",
           "identifier": "FourLuckyClover"
         },
-        "generated_at": "2026-09-15T08:22:17+00:00",
-        "source_run": "2026-09-15_05-22-02-bgaming-http-api-v2",
+        "generated_at": "2026-09-17T02:37:55+00:00",
+        "source_run": "2026-09-16_23-37-40-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -3421,7 +4077,7 @@
           "PROVIDER_METADATA",
           "INFERENCE"
         ],
-        "wire_replay_complete": true,
+        "wire_replay_complete": false,
         "cases": [
           {
             "id": "CASE_0001",
@@ -3435,6 +4091,8 @@
             "response_schema": "response-schemas/spin__to__unknown.json",
             "authority": "RUNTIME_OBSERVED",
             "evidence": [
+              "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+              "SPIN/attempt-001/return-to-base/probe-002/step-001-request.json",
               "SPIN/attempt-001/step-001-request.json"
             ]
           }
@@ -3459,8 +4117,8 @@
           "name": "Four Lucky Clover",
           "identifier": "FourLuckyClover"
         },
-        "generated_at": "2026-09-15T08:22:17+00:00",
-        "source_run": "2026-09-15_05-22-02-bgaming-http-api-v2",
+        "generated_at": "2026-09-17T02:37:55+00:00",
+        "source_run": "2026-09-16_23-37-40-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -3498,7 +4156,7 @@
     },
     "bootstrap.json": {
       "encoding": "json",
-      "bytes": 6058,
+      "bytes": 4949,
       "value": {
         "identifier": "FourLuckyClover",
         "launch_url": "https://demo.bgaming-network.com/games/FourLuckyClover/FUN",
@@ -3513,17 +4171,17 @@
           "title": "Four Lucky Clover",
           "currency": "FUN",
           "balance_polling_interval": 30000,
-          "cache_id": "dc687658daf96867b08265f8ece06c2a471bf5b96404f5ac9cb8daad917e4a0e",
-          "cache_player_id": "70168d624c221f85e5a69a4defbd1398de0c0aed0a461660559510735dfc62b2",
+          "cache_id": "9dcfa215c17a4698fb1cdda3592b65e4ada2d6f4ce21699cf834791cd0f74b5c",
+          "cache_player_id": "271ef0011fa8c07e17ebfd8a2b4342ed445187edc60f9f3bca0a920ee9795ac7",
           "api": "https://demo.bgaming-network.com/api/FourLuckyClover/2366886/<session>",
           "rules_url": "https://rules.bgaming-network.com/en/FourLuckyClover.json",
           "deposit_url": null,
           "games_page_url": "https://www.bgaming.com/games.html",
           "history_url": null,
-          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a0a428-c28a-7959-98e8-949120f8c336/launch",
-          "game_page_url": "https://demo.bgaming-network.com/games/FourLuckyClover/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNDg0MTA4ODh9LCJleHAiOjE4MDUwOTg5MzB9.DQDv7b6uC4Rj-a7UxdK40pCsxqvgyInNHxV_14VmkKA",
+          "lobby_launch_url": "https://demo.bgaming-network.com/lobby/FUN/01a0ad3a-1d6c-7b2e-b80e-bd3708dae76d/launch",
+          "game_page_url": "https://demo.bgaming-network.com/games/FourLuckyClover/FUN?launch_token=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InB0X2lkIjozNTA1MDQ1Mzd9LCJleHAiOjE4MDUyNTEwNjJ9.qvC2oYc2So438pFwvateucnT0kPiziUJgOeHxrCdLOo",
           "websocket_url": "wss://demo.bgaming-network.com:443/cable",
-          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=FourLuckyClover&play_token=01a0a428-c28a-7959-98e8-949120f8c336&server_id=demo",
+          "drops_websocket_url": "wss://demo.bgaming-network.com:443/cable?currency=FUN&identifier=FourLuckyClover&play_token=01a0ad3a-1d6c-7b2e-b80e-bd3708dae76d&server_id=demo",
           "ui": {
             "home_button": true,
             "full_screen_prompt": true,
@@ -3557,7 +4215,10 @@
           "custom": {},
           "actual_currency_rate": 0.0,
           "sound_enabled": true,
-          "games_loader_source": "https://cdn.bgaming-network.com/html/FourLuckyClover/loader.js?1789460530",
+          "digit_options": {
+            "balance": 2
+          },
+          "games_loader_source": "https://cdn.bgaming-network.com/html/FourLuckyClover/loader.js?1789612662",
           "game_bundle_source": "https://cdn.bgaming-network.com/html/FourLuckyClover/bundle.js",
           "provable_fair": {
             "verify_url": "https://demo.bgaming-network.com/api/games/verify"
@@ -3589,39 +4250,7 @@
               },
               "variation_id": "forced",
               "experiment_key": null
-            },
-            "growth_drop_init_popup_ui": {
-              "value": {
-                "id": 602,
-                "value": "A"
-              },
-              "variation_id": "forced",
-              "experiment_key": null
             }
-          },
-          "lobby_v2_options": {
-            "player_id": 347158825,
-            "lobby_enabled": false,
-            "drops_enabled": false,
-            "drops_token": "<redacted>",
-            "drops_api_url": "https://drops.bgaming-network.com/api/v1/",
-            "profile_enabled": false,
-            "profile_api_url": "https://loyalty-core.shared.bgaming-system.com/api/v1",
-            "profile_token": "<redacted>",
-            "gamelist_enabled": false,
-            "gamelist_api_url": "https://gamelist.bgaming-network.com",
-            "gamelist_token": "<redacted>",
-            "challenges_enabled": false,
-            "challenges_api_url": "https://challenges.bgaming-network.com/",
-            "challenges_token": "<redacted>",
-            "challenges_fe_script_url": "https://brush.bgaming-network.com/",
-            "quests_enabled": false,
-            "quests_api_url": null,
-            "quests_token": "<redacted>",
-            "shop_enabled": false,
-            "shop_api_url": "",
-            "shop_token": "<redacted>",
-            "growth_fe_url": ""
           },
           "server_id": "demo",
           "locale": "en",
@@ -3630,7 +4259,7 @@
             "return": null,
             "history": {
               "text": null,
-              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDcxNTg4MjUsImd0X2lkIjoyMzY2ODg2fSwiZXhwIjoxODA1MDk4OTMwfQ.3bUSAsEDWAycfHSJ7CqCdcnHGKY3Jl8YWTExQyXc0rw",
+              "link": "/api/rounds_history/eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InBsX2lkIjozNDkyNTExODQsImd0X2lkIjoyMzY2ODg2fSwiZXhwIjoxODA1MjUxMDYyfQ.Gu0nLoPCGggVhk_PvlPDu3674ukj1MIU2PeuOR9GGcs",
               "mode": "open"
             }
           },
@@ -3669,12 +4298,12 @@
           "pre_bet_balance_validation": false,
           "available_games_to_switch": []
         },
-        "round_series_id": 1789460523334
+        "round_series_id": 1789612661672
       }
     },
     "diagnostic.json": {
       "encoding": "json",
-      "bytes": 3786,
+      "bytes": 10676,
       "value": {
         "schema": "tester-spin/run-diagnostics/v1",
         "provider": "bgaming",
@@ -3683,11 +4312,11 @@
           "name": "Four Lucky Clover",
           "symbol": "FourLuckyClover"
         },
-        "started_at": "2026-09-15T08:22:02+00:00",
-        "finished_at": "2026-09-15T08:22:17+00:00",
-        "result_status": "OK",
+        "started_at": "2026-09-17T02:37:40+00:00",
+        "finished_at": "2026-09-17T02:37:55+00:00",
+        "result_status": "PARCIAL",
         "scope": "observed_paths_only",
-        "observed_error": "",
+        "observed_error": "BGaming respondió 1/1 intentos; modos terminales validados=0/1. Diagnóstico: Regreso al juego base pendiente: REVIEW_REQUIRED",
         "root_cause": {
           "status": "UNDETERMINED",
           "reason": "La captura documenta hechos; la causa requiere análisis y contraste."
@@ -3696,11 +4325,11 @@
           {
             "id": "SPIN",
             "kind": "SPIN",
-            "status": "VALIDATED",
-            "validated": true,
+            "status": "INCOMPLETE",
+            "validated": false,
             "tested": true,
             "attempt_count": 1,
-            "terminal_count": 1,
+            "terminal_count": 0,
             "missing_options": [],
             "branches": [],
             "provider_metadata": {
@@ -3708,47 +4337,255 @@
               "kind": "SPIN",
               "observed": true,
               "wire_command": "spin",
-              "evidence_level": "REMOTE_EXECUTION",
-              "execution_state": "PROVEN_TERMINAL",
-              "validated": true
+              "evidence_level": "WIRE_CANDIDATE",
+              "execution_state": "ATTEMPTED_UNVALIDATED",
+              "validated": false
             }
           }
         ],
         "attempts": [
           {
+            "return_to_base": {
+              "schema": "tester-spin/return-to-base/v1",
+              "status": "REVIEW_REQUIRED",
+              "connection_reused": true,
+              "required": 2,
+              "max_probes": 10,
+              "consecutive_base": 1,
+              "cause": "UNDETERMINED",
+              "probes": [
+                {
+                  "ok": true,
+                  "base": true,
+                  "known": true,
+                  "captures": [
+                    {
+                      "step": 1,
+                      "request": {
+                        "command": "spin",
+                        "options": {
+                          "bets": {
+                            "0": 1,
+                            "1": 1,
+                            "2": 1,
+                            "3": 1,
+                            "4": 1,
+                            "5": 1,
+                            "6": 1,
+                            "7": 1,
+                            "8": 1,
+                            "9": 1
+                          }
+                        },
+                        "extra_data": {
+                          "round_series_id": 1789612661672,
+                          "client_seed": 43794
+                        }
+                      },
+                      "response": {
+                        "bets": {
+                          "lines": {
+                            "0": 1,
+                            "1": 1,
+                            "2": 1,
+                            "3": 1,
+                            "4": 1,
+                            "5": 1,
+                            "6": 1,
+                            "7": 1,
+                            "8": 1,
+                            "9": 1
+                          }
+                        },
+                        "game": {
+                          "span_indices": [
+                            10,
+                            39,
+                            46,
+                            29,
+                            0
+                          ],
+                          "state": "closed",
+                          "action": "spin"
+                        },
+                        "balance": 99980,
+                        "available_commands": [
+                          "init",
+                          "spin"
+                        ]
+                      }
+                    }
+                  ],
+                  "directory": "return-to-base\\probe-001"
+                },
+                {
+                  "ok": true,
+                  "base": false,
+                  "known": false,
+                  "captures": [
+                    {
+                      "step": 1,
+                      "request": {
+                        "command": "spin",
+                        "options": {
+                          "bets": {
+                            "0": 1,
+                            "1": 1,
+                            "2": 1,
+                            "3": 1,
+                            "4": 1,
+                            "5": 1,
+                            "6": 1,
+                            "7": 1,
+                            "8": 1,
+                            "9": 1
+                          }
+                        },
+                        "extra_data": {
+                          "round_series_id": 1789612661672,
+                          "client_seed": 43794
+                        }
+                      },
+                      "response": {
+                        "bets": {
+                          "lines": {
+                            "0": 1,
+                            "1": 1,
+                            "2": 1,
+                            "3": 1,
+                            "4": 1,
+                            "5": 1,
+                            "6": 1,
+                            "7": 1,
+                            "8": 1,
+                            "9": 1
+                          }
+                        },
+                        "game": {
+                          "span_indices": [
+                            33,
+                            5,
+                            32,
+                            19,
+                            35
+                          ],
+                          "win_lines": {
+                            "9": [
+                              2,
+                              3,
+                              4
+                            ]
+                          },
+                          "bonus_game": {
+                            "available_amount": 50,
+                            "min_bet_amount": 10,
+                            "played_rounds": 0,
+                            "max_rounds": 50
+                          },
+                          "state": "bonus_game",
+                          "action": "spin"
+                        },
+                        "result": {
+                          "lines": {
+                            "9": 50
+                          },
+                          "total": 50
+                        },
+                        "balance": 100020,
+                        "available_commands": [
+                          "finish",
+                          "init",
+                          "spin"
+                        ]
+                      }
+                    }
+                  ],
+                  "pending_state": "bonus_game",
+                  "available_actions": [
+                    "finish",
+                    "init",
+                    "spin"
+                  ],
+                  "directory": "return-to-base\\probe-002"
+                }
+              ],
+              "updated_at": "2026-09-17T02:37:55.172059+00:00"
+            },
             "number": 1,
             "mode_id": "SPIN",
-            "reported_ok": true,
+            "reported_ok": false,
             "reported_terminal": true,
             "http_status": 200,
             "last_state": "closed",
             "wire_steps": 1,
-            "elapsed_ms": 546.9999999913853,
+            "elapsed_ms": 1265.9999999887077,
             "error": "",
-            "warning": "",
+            "warning": "Regreso al juego base pendiente: REVIEW_REQUIRED",
             "evidence": [
               {
                 "path": "SPIN/attempt-001/request.json",
-                "sha256": "6ae2d269a0863019d103a7c56f9f5f135516b751a5ec88c667be4b547bd9df44",
-                "bytes": 307,
+                "sha256": "2368b44611745b224ca557f46fd746bbbbc63f1d7f1c272e368f79953cc4593d",
+                "bytes": 308,
                 "kind": "request"
               },
               {
                 "path": "SPIN/attempt-001/response.json",
-                "sha256": "4451eee81d0254cd96751f9c657b9900adfd247c205540bd9817b5c389f5490e",
+                "sha256": "7d319ca21c68eb847ea8417d22e38b6c60323f1193fa13a589666732d070a250",
+                "bytes": 423,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl",
+                "sha256": "c2d1942b30d25a07c54ff42d4128d137cd33d19eea4f4c176aec44c4fa672c42",
+                "bytes": 737,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+                "sha256": "2368b44611745b224ca557f46fd746bbbbc63f1d7f1c272e368f79953cc4593d",
+                "bytes": 308,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/return-to-base/probe-001/step-001-response.json",
+                "sha256": "f522761caba6ba5256fda22e3b3c5c603e5d63dd9c9470d19a6875a1212a60e4",
                 "bytes": 422,
                 "kind": "response"
               },
               {
+                "path": "SPIN/attempt-001/return-to-base/probe-002/server-responses.jsonl",
+                "sha256": "bb5614c941788815cceeab4e2a1da412d1271902689eda6eaebc974e89a066d3",
+                "bytes": 1263,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/return-to-base/probe-002/step-001-request.json",
+                "sha256": "2368b44611745b224ca557f46fd746bbbbc63f1d7f1c272e368f79953cc4593d",
+                "bytes": 308,
+                "kind": "request"
+              },
+              {
+                "path": "SPIN/attempt-001/return-to-base/probe-002/step-001-response.json",
+                "sha256": "b2de27df7b02dc44a91a289d08b1807d6c7fbabc3f015e65bd14b3ae6e809c55",
+                "bytes": 745,
+                "kind": "response"
+              },
+              {
+                "path": "SPIN/attempt-001/server-responses.jsonl",
+                "sha256": "7cd3bf106b0306040e4f0a575e83351b37ff7ab59039afe8f58d96f13fe13871",
+                "bytes": 742,
+                "kind": "response"
+              },
+              {
                 "path": "SPIN/attempt-001/step-001-request.json",
-                "sha256": "6ae2d269a0863019d103a7c56f9f5f135516b751a5ec88c667be4b547bd9df44",
-                "bytes": 307,
+                "sha256": "2368b44611745b224ca557f46fd746bbbbc63f1d7f1c272e368f79953cc4593d",
+                "bytes": 308,
                 "kind": "request"
               },
               {
                 "path": "SPIN/attempt-001/step-001-response.json",
-                "sha256": "4451eee81d0254cd96751f9c657b9900adfd247c205540bd9817b5c389f5490e",
-                "bytes": 422,
+                "sha256": "7d319ca21c68eb847ea8417d22e38b6c60323f1193fa13a589666732d070a250",
+                "bytes": 423,
                 "kind": "response"
               }
             ],
@@ -3762,20 +4599,20 @@
         "bootstrap_evidence": [
           {
             "path": "bootstrap.json",
-            "sha256": "e50a48a5a1cfb88062ba83b748183cd0dfc19429163f5a0dc9b5e6c4a1a7325a",
-            "bytes": 6058,
+            "sha256": "9c2471b8c614595ba1cc47d9639b6f2e2f824a59e19207f76c2df40b82d9571f",
+            "bytes": 4949,
             "kind": "envelope"
           },
           {
             "path": "init-request.json",
-            "sha256": "04f9fe3de05ddb8990aa5e2506922cd581510223557d077ad0357114c0763634",
+            "sha256": "d345dea43b61e9136588adffef3a2f1e40fe72293b4de13e902561ade6d4715d",
             "bytes": 88,
             "kind": "envelope"
           },
           {
             "path": "init-response.json",
-            "sha256": "4a0c4c218670962a421cb56bb8552dc3843a2254d3b630b866653c20c376c89c",
-            "bytes": 31097,
+            "sha256": "50d369a25cf39a43f6f9703ec81b6fe797e52aa63aaeacc435127f0edebc09db",
+            "bytes": 31080,
             "kind": "envelope"
           }
         ],
@@ -3792,16 +4629,16 @@
         "sample_diagnostics": [],
         "evidence_gaps": [],
         "next_steps": [
-          "Las rutas observadas terminaron; una muestra corta no prueba ausencia de otras compras o estados naturales."
+          "Comparar la última request y response con un intento válido del mismo juego. El error observado no demuestra por sí solo la causa."
         ],
-        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Four Lucky Clover\\diagnostics\\20260915T082150-3f1a54f170c2\\events.jsonl",
+        "journal": "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Four Lucky Clover\\diagnostics\\20260917T023729-bcd22a9e3dd7\\events.jsonl",
         "tree": "run-tree.html",
         "tree_data": "run-tree.json"
       }
     },
     "emulation-contract.json": {
       "encoding": "json",
-      "bytes": 4160,
+      "bytes": 4166,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -3810,8 +4647,8 @@
           "name": "Four Lucky Clover",
           "identifier": "FourLuckyClover"
         },
-        "generated_at": "2026-09-15T08:22:17+00:00",
-        "source_run": "2026-09-15_05-22-02-bgaming-http-api-v2",
+        "generated_at": "2026-09-17T02:37:55+00:00",
+        "source_run": "2026-09-16_23-37-40-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -3821,8 +4658,8 @@
           "PROVIDER_METADATA",
           "INFERENCE"
         ],
-        "status": "OK",
-        "wire_replay_complete": true,
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
         "math_model_complete": false,
         "rng_probabilities_known": false,
         "request_contracts": [
@@ -3835,7 +4672,7 @@
               {}
             ],
             "authority": "RUNTIME_OBSERVED",
-            "sample_count": 1,
+            "sample_count": 3,
             "request_schema": {
               "type": "object",
               "properties": {
@@ -3970,13 +4807,13 @@
       "value": {
         "command": "init",
         "extra_data": {
-          "round_series_id": 1789460523334
+          "round_series_id": 1789612661672
         }
       }
     },
     "init-response.json": {
       "encoding": "json",
-      "bytes": 31097,
+      "bytes": 31080,
       "value": {
         "options": {
           "line_bets": [
@@ -4383,7 +5220,6 @@
             "exponent": 2
           },
           "digit_options": {
-            "bet": 2,
             "paytable": 2,
             "balance": 2
           },
@@ -5481,7 +6317,7 @@
     },
     "outcome-catalog.json": {
       "encoding": "json",
-      "bytes": 1320,
+      "bytes": 1472,
       "value": {
         "schema": "tester-spin/bgaming-outcome-catalog/v1",
         "provider": "bgaming",
@@ -5490,8 +6326,8 @@
           "name": "Four Lucky Clover",
           "identifier": "FourLuckyClover"
         },
-        "generated_at": "2026-09-15T08:22:17+00:00",
-        "source_run": "2026-09-15_05-22-02-bgaming-http-api-v2",
+        "generated_at": "2026-09-17T02:37:55+00:00",
+        "source_run": "2026-09-16_23-37-40-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -5518,7 +6354,7 @@
             ],
             "available_actions": [],
             "terminal_observed": false,
-            "observed_count": 1,
+            "observed_count": 3,
             "response_schema": "response-schemas/spin__to__unknown.json",
             "authority": "RUNTIME_OBSERVED",
             "wire_known": true,
@@ -5526,6 +6362,8 @@
             "math_probability_known": false,
             "probability": null,
             "evidence": [
+              "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+              "SPIN/attempt-001/return-to-base/probe-002/step-001-request.json",
               "SPIN/attempt-001/step-001-request.json"
             ]
           }
@@ -5559,10 +6397,10 @@
             "required_options": [],
             "covered_options": [],
             "attempts_observed": 1,
-            "terminal_successes": 1,
+            "terminal_successes": 0,
             "wire_steps": 1,
             "artifacts": [
-              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Four Lucky Clover\\tests\\2026-09-15_05-22-02-bgaming-http-api-v2\\SPIN\\attempt-001"
+              "C:\\Proyectos\\Tester-Spin\\data\\providers\\bgaming\\Four Lucky Clover\\tests\\2026-09-16_23-37-40-bgaming-http-api-v2\\SPIN\\attempt-001"
             ]
           }
         ]
@@ -5570,7 +6408,7 @@
     },
     "protocol-contract.json": {
       "encoding": "json",
-      "bytes": 4160,
+      "bytes": 4166,
       "value": {
         "schema": "tester-spin/bgaming-emulation-contract/v1",
         "provider": "bgaming",
@@ -5579,8 +6417,8 @@
           "name": "Four Lucky Clover",
           "identifier": "FourLuckyClover"
         },
-        "generated_at": "2026-09-15T08:22:17+00:00",
-        "source_run": "2026-09-15_05-22-02-bgaming-http-api-v2",
+        "generated_at": "2026-09-17T02:37:55+00:00",
+        "source_run": "2026-09-16_23-37-40-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -5590,8 +6428,8 @@
           "PROVIDER_METADATA",
           "INFERENCE"
         ],
-        "status": "OK",
-        "wire_replay_complete": true,
+        "status": "PARCIAL",
+        "wire_replay_complete": false,
         "math_model_complete": false,
         "rng_probabilities_known": false,
         "request_contracts": [
@@ -5604,7 +6442,7 @@
               {}
             ],
             "authority": "RUNTIME_OBSERVED",
-            "sample_count": 1,
+            "sample_count": 3,
             "request_schema": {
               "type": "object",
               "properties": {
@@ -5735,13 +6573,13 @@
     },
     "response-schemas/spin__to__unknown.json": {
       "encoding": "json",
-      "bytes": 2680,
+      "bytes": 4588,
       "value": {
         "schema": "tester-spin/observed-json-shape/v1",
         "provider": "bgaming",
         "outcome_id": "SPIN__TO__UNKNOWN",
         "authority": "RUNTIME_OBSERVED",
-        "sample_count": 1,
+        "sample_count": 3,
         "json_schema": {
           "type": "object",
           "properties": {
@@ -5750,6 +6588,7 @@
               "items": {
                 "type": "string",
                 "observed_enum": [
+                  "finish",
                   "init",
                   "spin"
                 ]
@@ -5824,6 +6663,30 @@
                     "spin"
                   ]
                 },
+                "bonus_game": {
+                  "type": "object",
+                  "properties": {
+                    "available_amount": {
+                      "type": "integer"
+                    },
+                    "max_rounds": {
+                      "type": "integer"
+                    },
+                    "min_bet_amount": {
+                      "type": "integer"
+                    },
+                    "played_rounds": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "available_amount",
+                    "max_rounds",
+                    "min_bet_amount",
+                    "played_rounds"
+                  ],
+                  "additionalProperties": true
+                },
                 "span_indices": {
                   "type": "array",
                   "items": {
@@ -5833,14 +6696,55 @@
                 "state": {
                   "type": "string",
                   "observed_enum": [
+                    "bonus_game",
                     "closed"
                   ]
+                },
+                "win_lines": {
+                  "type": "object",
+                  "properties": {
+                    "9": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "required": [
+                    "9"
+                  ],
+                  "additionalProperties": true
                 }
               },
               "required": [
                 "action",
                 "span_indices",
                 "state"
+              ],
+              "additionalProperties": true
+            },
+            "result": {
+              "type": "object",
+              "properties": {
+                "lines": {
+                  "type": "object",
+                  "properties": {
+                    "9": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "9"
+                  ],
+                  "additionalProperties": true
+                },
+                "total": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "lines",
+                "total"
               ],
               "additionalProperties": true
             }
@@ -5854,13 +6758,21 @@
           "additionalProperties": true
         },
         "dynamic_paths": [
-          "$.balance"
+          "$.available_commands[0]",
+          "$.available_commands[1]",
+          "$.balance",
+          "$.game.span_indices[0]",
+          "$.game.span_indices[1]",
+          "$.game.span_indices[2]",
+          "$.game.span_indices[3]",
+          "$.game.span_indices[4]",
+          "$.game.state"
         ]
       }
     },
     "run-tree.json": {
       "encoding": "json",
-      "bytes": 3024,
+      "bytes": 8194,
       "value": {
         "schema": "tester-spin/run-tree/v1",
         "provider": "bgaming",
@@ -5870,6 +6782,177 @@
         "remote_replay_note": "No se envían requests. La repetición del premio aleatorio no está demostrada.",
         "trajectories": [
           {
+            "capture_directory": "SPIN\\attempt-001",
+            "return_to_base": {
+              "schema": "tester-spin/return-to-base/v1",
+              "status": "REVIEW_REQUIRED",
+              "connection_reused": true,
+              "required": 2,
+              "max_probes": 10,
+              "consecutive_base": 1,
+              "cause": "UNDETERMINED",
+              "probes": [
+                {
+                  "ok": true,
+                  "base": true,
+                  "known": true,
+                  "captures": [
+                    {
+                      "step": 1,
+                      "request": {
+                        "command": "spin",
+                        "options": {
+                          "bets": {
+                            "0": 1,
+                            "1": 1,
+                            "2": 1,
+                            "3": 1,
+                            "4": 1,
+                            "5": 1,
+                            "6": 1,
+                            "7": 1,
+                            "8": 1,
+                            "9": 1
+                          }
+                        },
+                        "extra_data": {
+                          "round_series_id": 1789612661672,
+                          "client_seed": 43794
+                        }
+                      },
+                      "response": {
+                        "bets": {
+                          "lines": {
+                            "0": 1,
+                            "1": 1,
+                            "2": 1,
+                            "3": 1,
+                            "4": 1,
+                            "5": 1,
+                            "6": 1,
+                            "7": 1,
+                            "8": 1,
+                            "9": 1
+                          }
+                        },
+                        "game": {
+                          "span_indices": [
+                            10,
+                            39,
+                            46,
+                            29,
+                            0
+                          ],
+                          "state": "closed",
+                          "action": "spin"
+                        },
+                        "balance": 99980,
+                        "available_commands": [
+                          "init",
+                          "spin"
+                        ]
+                      }
+                    }
+                  ],
+                  "directory": "return-to-base\\probe-001"
+                },
+                {
+                  "ok": true,
+                  "base": false,
+                  "known": false,
+                  "captures": [
+                    {
+                      "step": 1,
+                      "request": {
+                        "command": "spin",
+                        "options": {
+                          "bets": {
+                            "0": 1,
+                            "1": 1,
+                            "2": 1,
+                            "3": 1,
+                            "4": 1,
+                            "5": 1,
+                            "6": 1,
+                            "7": 1,
+                            "8": 1,
+                            "9": 1
+                          }
+                        },
+                        "extra_data": {
+                          "round_series_id": 1789612661672,
+                          "client_seed": 43794
+                        }
+                      },
+                      "response": {
+                        "bets": {
+                          "lines": {
+                            "0": 1,
+                            "1": 1,
+                            "2": 1,
+                            "3": 1,
+                            "4": 1,
+                            "5": 1,
+                            "6": 1,
+                            "7": 1,
+                            "8": 1,
+                            "9": 1
+                          }
+                        },
+                        "game": {
+                          "span_indices": [
+                            33,
+                            5,
+                            32,
+                            19,
+                            35
+                          ],
+                          "win_lines": {
+                            "9": [
+                              2,
+                              3,
+                              4
+                            ]
+                          },
+                          "bonus_game": {
+                            "available_amount": 50,
+                            "min_bet_amount": 10,
+                            "played_rounds": 0,
+                            "max_rounds": 50
+                          },
+                          "state": "bonus_game",
+                          "action": "spin"
+                        },
+                        "result": {
+                          "lines": {
+                            "9": 50
+                          },
+                          "total": 50
+                        },
+                        "balance": 100020,
+                        "available_commands": [
+                          "finish",
+                          "init",
+                          "spin"
+                        ]
+                      }
+                    }
+                  ],
+                  "pending_state": "bonus_game",
+                  "available_actions": [
+                    "finish",
+                    "init",
+                    "spin"
+                  ],
+                  "directory": "return-to-base\\probe-002"
+                }
+              ],
+              "updated_at": "2026-09-17T02:37:55.172059+00:00"
+            },
+            "return_to_base_evidence": {
+              "path": "SPIN/attempt-001/return-to-base.json",
+              "sha256": "f103fe86f07cae26699518ebd4103ce5337b1f9836e8f3b20d6fefc35de50704"
+            },
             "id": "10ac54d8e012093487cd",
             "origin": {
               "mode_id": "SPIN",
@@ -5879,14 +6962,14 @@
                 "kind": "SPIN",
                 "observed": true,
                 "wire_command": "spin",
-                "evidence_level": "REMOTE_EXECUTION",
-                "execution_state": "PROVEN_TERMINAL",
-                "validated": true
+                "evidence_level": "WIRE_CANDIDATE",
+                "execution_state": "ATTEMPTED_UNVALIDATED",
+                "validated": false
               }
             },
             "attempt": 1,
             "reported_terminal": true,
-            "reported_ok": true,
+            "reported_ok": false,
             "sequence_status": "ARTIFACT_STEP_INDEX",
             "steps": [
               {
@@ -5895,28 +6978,28 @@
                 "request": [
                   {
                     "path": "SPIN/attempt-001/request.json",
-                    "sha256": "6ae2d269a0863019d103a7c56f9f5f135516b751a5ec88c667be4b547bd9df44",
-                    "bytes": 307,
+                    "sha256": "2368b44611745b224ca557f46fd746bbbbc63f1d7f1c272e368f79953cc4593d",
+                    "bytes": 308,
                     "kind": "request"
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-request.json",
-                    "sha256": "6ae2d269a0863019d103a7c56f9f5f135516b751a5ec88c667be4b547bd9df44",
-                    "bytes": 307,
+                    "sha256": "2368b44611745b224ca557f46fd746bbbbc63f1d7f1c272e368f79953cc4593d",
+                    "bytes": 308,
                     "kind": "request"
                   }
                 ],
                 "response": [
                   {
                     "path": "SPIN/attempt-001/response.json",
-                    "sha256": "4451eee81d0254cd96751f9c657b9900adfd247c205540bd9817b5c389f5490e",
-                    "bytes": 422,
+                    "sha256": "7d319ca21c68eb847ea8417d22e38b6c60323f1193fa13a589666732d070a250",
+                    "bytes": 423,
                     "kind": "response"
                   },
                   {
                     "path": "SPIN/attempt-001/step-001-response.json",
-                    "sha256": "4451eee81d0254cd96751f9c657b9900adfd247c205540bd9817b5c389f5490e",
-                    "bytes": 422,
+                    "sha256": "7d319ca21c68eb847ea8417d22e38b6c60323f1193fa13a589666732d070a250",
+                    "bytes": 423,
                     "kind": "response"
                   }
                 ],
@@ -5940,10 +7023,10 @@
                   "game": {
                     "span_indices": [
                       30,
-                      34,
-                      4,
-                      18,
-                      17
+                      54,
+                      17,
+                      29,
+                      48
                     ],
                     "state": "closed",
                     "action": "spin"
@@ -5964,9 +7047,118 @@
         "announced_branches": []
       }
     },
+    "server-observations.json": {
+      "encoding": "json",
+      "bytes": 3361,
+      "value": {
+        "schema": "tester-spin/server-observations/v1",
+        "provider": "bgaming",
+        "scope": "this_game_this_run",
+        "baseline_is_not_contract": true,
+        "new_responses": 1,
+        "protocol_changes": 1,
+        "outcome_variations": 0,
+        "unparsed": 0,
+        "pending_branches": 0,
+        "pending_options": 0,
+        "coverage_pending": [],
+        "observations": [
+          {
+            "change_kind": "REFERENCE",
+            "classification": "SEEN",
+            "signature": "af80944b8fa80357b5f8c9ebe5041a842dc9e1b939bb86f0880716bbf3621775",
+            "changed_paths": [],
+            "review_required": false,
+            "action": "spin",
+            "http_status": 200,
+            "captured_at": "2026-09-17T02:37:54.785935+00:00",
+            "trajectory_id": "10ac54d8e012093487cd",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": true,
+                "wire_command": "spin",
+                "evidence_level": "WIRE_CANDIDATE",
+                "execution_state": "ATTEMPTED_UNVALIDATED",
+                "validated": false
+              }
+            },
+            "source": "SPIN/attempt-001/return-to-base/probe-001/server-responses.jsonl#line=1"
+          },
+          {
+            "change_kind": "PROTOCOL_CHANGE",
+            "classification": "NEW_RESPONSE",
+            "signature": "e5171dac438cef92648ddb5b26d19bfb75b31a2d6baae8b1517a7dc75d7f8023",
+            "changed_paths": [
+              "/available_commands/*",
+              "/game/bonus_game",
+              "/game/bonus_game/available_amount",
+              "/game/bonus_game/max_rounds",
+              "/game/bonus_game/min_bet_amount",
+              "/game/bonus_game/played_rounds",
+              "/game/state",
+              "/game/win_lines",
+              "/game/win_lines/9",
+              "/game/win_lines/9/*",
+              "/result",
+              "/result/lines",
+              "/result/lines/9",
+              "/result/total"
+            ],
+            "review_required": true,
+            "action": "spin",
+            "http_status": 200,
+            "captured_at": "2026-09-17T02:37:55.157457+00:00",
+            "trajectory_id": "10ac54d8e012093487cd",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": true,
+                "wire_command": "spin",
+                "evidence_level": "WIRE_CANDIDATE",
+                "execution_state": "ATTEMPTED_UNVALIDATED",
+                "validated": false
+              }
+            },
+            "source": "SPIN/attempt-001/return-to-base/probe-002/server-responses.jsonl#line=1"
+          },
+          {
+            "change_kind": "REFERENCE",
+            "classification": "BASELINE",
+            "signature": "af80944b8fa80357b5f8c9ebe5041a842dc9e1b939bb86f0880716bbf3621775",
+            "changed_paths": [],
+            "review_required": false,
+            "action": "spin",
+            "http_status": 200,
+            "captured_at": "2026-09-17T02:37:54.411854+00:00",
+            "trajectory_id": "10ac54d8e012093487cd",
+            "origin": {
+              "mode_id": "SPIN",
+              "kind": "SPIN",
+              "provider_metadata": {
+                "id": "SPIN",
+                "kind": "SPIN",
+                "observed": true,
+                "wire_command": "spin",
+                "evidence_level": "WIRE_CANDIDATE",
+                "execution_state": "ATTEMPTED_UNVALIDATED",
+                "validated": false
+              }
+            },
+            "source": "SPIN/attempt-001/server-responses.jsonl#line=1"
+          }
+        ]
+      }
+    },
     "state-machine.json": {
       "encoding": "json",
-      "bytes": 1237,
+      "bytes": 1389,
       "value": {
         "schema": "tester-spin/bgaming-state-machine/v1",
         "provider": "bgaming",
@@ -5975,8 +7167,8 @@
           "name": "Four Lucky Clover",
           "identifier": "FourLuckyClover"
         },
-        "generated_at": "2026-09-15T08:22:17+00:00",
-        "source_run": "2026-09-15_05-22-02-bgaming-http-api-v2",
+        "generated_at": "2026-09-17T02:37:55+00:00",
+        "source_run": "2026-09-16_23-37-40-bgaming-http-api-v2",
         "runtime_families": [
           "legacy-lines"
         ],
@@ -6012,9 +7204,11 @@
             ],
             "outcome": "SPIN__TO__UNKNOWN",
             "target": "UNKNOWN",
-            "observed_count": 1,
+            "observed_count": 3,
             "authority": "RUNTIME_OBSERVED",
             "evidence": [
+              "SPIN/attempt-001/return-to-base/probe-001/step-001-request.json",
+              "SPIN/attempt-001/return-to-base/probe-002/step-001-request.json",
               "SPIN/attempt-001/step-001-request.json"
             ]
           }
