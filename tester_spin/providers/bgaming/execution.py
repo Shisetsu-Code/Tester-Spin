@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from tester_spin.server_observations import set_capture_directory
+
+from tester_spin.return_to_base import audit_enabled, audit_blocked, pending_return
+
 import json
 import secrets
 import threading
@@ -12,6 +16,8 @@ import requests
 from tester_spin.models import Game, GameTestResult, SpinAttempt, utc_now_iso
 from tester_spin.providers.base import Progress
 from tester_spin.providers.bgaming.hyperhive import run_hyperhive_test
+from tester_spin.providers.bgaming.api_capture import load_api_capture, expand_api_modes
+from tester_spin.providers.bgaming.har_select import select_best_har
 from tester_spin.providers.bgaming.profile import (
     API_V2,
     HYPERHIVE,
@@ -181,6 +187,7 @@ class BGamingExecutionMixin:
         legacy_line_count = 0
         rows_required = False
         api_profile_checked = False
+        captured_contract: dict[str, Any] = {}
         learned_wire_options: dict[str, Any] = {}
         purchase_modes: list[dict[str, Any]] = []
         mode_specs: list[dict[str, Any]] = [
@@ -406,6 +413,13 @@ class BGamingExecutionMixin:
                 persisted=persisted_profile,
                 wire_profile=preinit_wire_profile,
             )
+            if active_profile.family == API_V2:
+                captured_contract = load_api_capture(select_best_har(self.game_dir(game)), runtime.identifier)
+                if captured_contract.get("mode_multipliers"):
+                    active_profile.effective_bet_selector = "mode"
+                    active_profile.effective_bet_multipliers = dict(captured_contract["mode_multipliers"])
+                    active_profile.spin_option_choices["mode"] = list(captured_contract["mode_multipliers"])
+                    active_profile.evidence.append("paired-api-capture:mode/effective-bet")
             persist_profile_snapshot()
             progress(
                 f"[{game.name}] perfil BGaming: family={active_profile.family}, "
@@ -583,6 +597,15 @@ class BGamingExecutionMixin:
                     }
                 )
 
+            expanded_modes = expand_api_modes(mode_specs, captured_contract)
+            if expanded_modes is not mode_specs:
+                replaced_ids = {spec["id"] for spec in mode_specs}
+                discovered_modes[:] = [item for item in discovered_modes if item["id"] not in replaced_ids]
+                discovered_mode_ids.difference_update(replaced_ids)
+                mode_specs = expanded_modes
+                for spec in mode_specs:
+                    register_mode({**spec, "observed": spec["discovery_state"] == "CAPTURE_OBSERVED", "validated": False, "wire_command": "spin"})
+
             pending_actions.update(pending_flow_actions(init_data))
             progress(
                 f"[{game.name}] INIT OK: identifier={runtime.identifier}, "
@@ -658,6 +681,12 @@ class BGamingExecutionMixin:
                     if merged_options is None:
                         merged_options = {}
                     merged_options.setdefault("rows", expected_rows)
+
+            captured_options = captured_contract.get("command_options", {}).get(command, {})
+            if captured_options:
+                merged_options = dict(merged_options or {})
+                for key, value in captured_options.items():
+                    merged_options[key] = default_bet if value == "$base_bet" else value
 
             try:
                 return post_command(
@@ -908,7 +937,7 @@ class BGamingExecutionMixin:
                 )
 
                 for repetition in range(1, repetitions + 1):
-                    if stop_event.is_set():
+                    if stop_event.is_set() or audit_blocked():
                         break
 
                     attempt_dir = (
@@ -916,6 +945,7 @@ class BGamingExecutionMixin:
                         / mode_id
                         / f"attempt-{repetition:03d}"
                     )
+                    set_capture_directory(attempt_dir)
                     attempt_started = time.monotonic()
                     warnings: list[str] = []
                     wire_steps = 0
@@ -964,6 +994,7 @@ class BGamingExecutionMixin:
                                     active_profile.effective_bet_selector
                                 ] = str(purchase_level)
 
+                            spin_options.update(mode_spec.get("options", {}))
                             request_extra_data = None
                             expected_outcome_bet = effective_bet_for_options(
                                 default_bet,
@@ -983,6 +1014,9 @@ class BGamingExecutionMixin:
                                 expected_outcome_bet,
                                 purchase if isinstance(purchase, dict) else None,
                             )
+                            captured_cost = mode_spec.get("captured_cost_per_base_bet")
+                            if isinstance(captured_cost, (int, float)):
+                                expected_debit = float(default_bet) * captured_cost
 
                         response, request_payload, data = send_api_command(
                             "spin",
@@ -1098,6 +1132,21 @@ class BGamingExecutionMixin:
                                 attempt_dir / "remote-proof.json",
                                 proof,
                             )
+                            if audit_enabled():
+                                from tester_spin.provider_return_checks import bgaming_check
+                                base_options = {'bets': build_line_bets(init_data, default_bet)} if legacy_line_bets else {'bet': default_bet}
+                                if active_profile is not None and not legacy_line_bets:
+                                    base_options.update(active_profile.spin_options)
+                                    base_options.update(mode_spec.get("options", {}))
+                                for purchase_key in ('purchased_feature', 'purchased_feature_level'):
+                                    base_options.pop(purchase_key, None)
+                                proof = bgaming_check(send_api_command, base_options, attempt_dir, stop_event, extra_data=request_extra_data if legacy_line_bets else None, legacy=legacy_line_bets) if terminal and not warnings else pending_return(attempt_dir, 'Ronda anterior sin cierre validado')
+                                if proof['status'] != 'CONFIRMED':
+                                    warnings.append('Regreso al juego base pendiente: '+proof['status'])
+                                if proof.get('probes') and proof['probes'][-1].get('captures'):
+                                    verified_balance = balance_total(proof['probes'][-1]['captures'][-1]['response'])
+                                    if verified_balance is not None:
+                                        previous_total = verified_balance
                             validated = terminal and not warnings
                             if (
                                 mode_id == "SPIN"
@@ -1194,6 +1243,9 @@ class BGamingExecutionMixin:
                                 f"[{game.name}] {mode_id}: costo aprendido desde "
                                 f"balance remoto = x{learned_multiplier:g}."
                             )
+
+                        if learn_purchase_debit and expected_debit is None:
+                            warnings.append("Costo de compra pendiente: balance remoto no demuestra un debito positivo")
 
                         flow = data.get("flow")
                         if not isinstance(flow, dict):
@@ -1485,7 +1537,29 @@ class BGamingExecutionMixin:
                                 f"state={final_flow_state!r}, actions={sorted(final_action_names)!r}"
                             )
 
+                        if audit_enabled():
+                            from tester_spin.provider_return_checks import bgaming_check
+                            base_options = {'bets': build_line_bets(init_data, default_bet)} if legacy_line_bets else {'bet': default_bet}
+                            if active_profile is not None and not legacy_line_bets:
+                                base_options.update(active_profile.spin_options)
+                                base_options.update(mode_spec.get("options", {}))
+                            for purchase_key in ('purchased_feature', 'purchased_feature_level'):
+                                base_options.pop(purchase_key, None)
+                            proof = bgaming_check(send_api_command, base_options, attempt_dir, stop_event, extra_data=request_extra_data if legacy_line_bets else None, legacy=legacy_line_bets) if terminal and not warnings else pending_return(attempt_dir, 'Ronda anterior sin cierre validado')
+                            if proof['status'] != 'CONFIRMED':
+                                warnings.append('Regreso al juego base pendiente: '+proof['status'])
+                            if proof.get('probes') and proof['probes'][-1].get('captures'):
+                                verified_balance = balance_total(proof['probes'][-1]['captures'][-1]['response'])
+                                if verified_balance is not None:
+                                    previous_total = verified_balance
                         validated = terminal and not warnings
+                        for discovered in discovered_modes:
+                            if discovered.get("id") == mode_id:
+                                discovered["validated"] = validated and discovered.get("validated", True) if repetition > 1 else validated
+                                discovered["execution_state"] = "VALIDATED" if discovered["validated"] else "PENDING"
+                                if validated:
+                                    discovered["observed"] = True
+                                break
                         if (
                             mode_id == "SPIN"
                             and active_profile is not None
@@ -1569,7 +1643,7 @@ class BGamingExecutionMixin:
                             f"ERROR {message}"
                         )
 
-                if stop_event.is_set():
+                if stop_event.is_set() or audit_blocked():
                     break
         else:
             for repetition in range(1, repetitions + 1):

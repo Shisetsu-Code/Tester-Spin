@@ -119,6 +119,7 @@ class PragmaticProvider(_EndpointPragmaticProvider):
         run_root: Path,
         timeout_s: float,
         fs_option_index: int | None = None,
+        reel_selection_index: str | None = None,
     ) -> SpinAttempt:
         attempt_root = run_root / mode.id / f"attempt-{repetition:04d}"
         attempt_root.mkdir(parents=True, exist_ok=True)
@@ -127,6 +128,7 @@ class PragmaticProvider(_EndpointPragmaticProvider):
 
         try:
             bootstrap = self._http_bootstrap(game.url, symbol, cver, catalog.base_bet, timeout_s)
+            bootstrap.reel_override = reel_selection_index
             self._write_http_bootstrap(attempt_root, bootstrap)
 
             index = (
@@ -382,7 +384,7 @@ class PragmaticProvider(_EndpointPragmaticProvider):
                         raise RuntimeError(f"continuation doSpin server error={error}")
                     continue
 
-                if na in {"", "s"}:
+                if na == "s":
                     terminal = True
                     break
 
@@ -392,6 +394,13 @@ class PragmaticProvider(_EndpointPragmaticProvider):
             if not terminal and not warning and wire_steps >= MAX_WIRE_STEPS:
                 warning = f"límite de {MAX_WIRE_STEPS} pasos alcanzado; RAW preservado"
 
+            from tester_spin.return_to_base import audit_enabled, pending_return
+            if audit_enabled():
+                from tester_spin.provider_return_checks import pragmatic_check
+                proof = pragmatic_check(self, bootstrap, last, fields, attempt_root, timeout_s) if terminal and not warning else pending_return(attempt_root, 'Estado Pragmatic no resuelto')
+                if proof['status'] != 'CONFIRMED':
+                    warning = (warning + ' Regreso al juego base pendiente: ' + proof['status']).strip()
+                    terminal = False
             elapsed_ms = (time.monotonic() - started) * 1000.0
             attempt = SpinAttempt(
                 number=attempt_number,

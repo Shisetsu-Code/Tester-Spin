@@ -219,7 +219,10 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
             f"delay={config.delay_between_starts_s}s ==="
         )
 
+        batch_results = []
+
         def on_result(result: GameTestResult) -> None:
+            batch_results.append(result)
             # Persistence is intentionally outside Tk's main thread.
             self.storage.record_result(result)
             self._events.put(("test_result", result))
@@ -234,6 +237,12 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
                     progress=lambda message: self._events.put(("log", message)),
                     on_result=on_result,
                 )
+                from tester_spin.manual_review import write_review
+                try:
+                    report = write_review(batch_results, self.data_root / "reports", expected_count=len(games))
+                    self._events.put(("manual_review", report))
+                except OSError as exc:
+                    self._events.put(("log", f"No se pudo guardar la lista de revisión manual: {exc}"))
                 self._events.put(("tests_done", None))
             except Exception as exc:
                 self._events.put(("error", f"Pruebas: {type(exc).__name__}: {exc}"))
@@ -397,6 +406,9 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
                         game.updated_at = result.finished_at
                         LiveTesterSpinApp._upsert_catalog_game(self, game)
                         table_dirty = True
+            elif kind == "manual_review":
+                self._show_manual_review(value)
+                log_lines.append(f"Lista de revisión manual: {value}")
             elif kind == "tests_done":
                 self._set_busy(False)
                 self.status_var.set(f"Pruebas terminadas: {self._test_done}/{self._test_total}")
@@ -422,6 +434,19 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
         # Backlogged remote/local producers get fast incremental draining; when the
         # queue is quiet we reduce idle wakeups.
         self.after(15 if not self._events.empty() else 75, self._drain_events)
+
+    def _show_manual_review(self, path) -> None:
+        import tkinter as tk
+        from tkinter.scrolledtext import ScrolledText
+        from pathlib import Path
+        window = tk.Toplevel(self)
+        window.title("Juegos para revisar manualmente")
+        window.geometry("900x650")
+        text = ScrolledText(window, wrap="word", font=("Segoe UI", 11), padx=16, pady=16)
+        text.pack(fill="both", expand=True)
+        text.insert("1.0", Path(path).read_text(encoding="utf-8"))
+        text.configure(state="disabled")
+        ttk.Label(window, text=f"Guardado en: {path}", wraplength=860).pack(padx=12, pady=8)
 
 
 def main() -> None:

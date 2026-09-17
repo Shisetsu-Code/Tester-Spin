@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tester_spin.return_to_base import audit_enabled, audit_blocked, pending_return
+
 import html
 import json
 import math
@@ -223,6 +225,11 @@ class HttpBootstrap:
     calibration_request_raw: str
     calibration_response_raw: bytes
     calibration_response: dict[str, str]
+    preparation_dir: str = ""
+    bonus_contract: dict[str, Any] | None = None
+    reel_contract: dict[str, Any] | None = None
+    current_response: dict[str, str] | None = None
+    reel_override: str | None = None
 
 
 class PragmaticProvider(ProviderAdapter):
@@ -283,7 +290,7 @@ class PragmaticProvider(ProviderAdapter):
         by_slug: dict[str, Game] = {}
         no_new_pages = 0
         for page_no in range(1, max(1, int(max_pages)) + 1):
-            if stop_event.is_set():
+            if stop_event.is_set() or audit_blocked():
                 break
             page_url = self.catalog_url if page_no == 1 else urljoin(self.catalog_url, f"page/{page_no}/")
             progress(f"Catálogo Pragmatic: página {page_no} — {page_url}")
@@ -675,6 +682,9 @@ class PragmaticProvider(ProviderAdapter):
             repetitions = max(1, int(spins))
             for mode in modes:
                 for repetition in range(1, repetitions + 1):
+                    if audit_blocked():
+                        overall_error = "Regreso al juego base pendiente de revisión; no se enviaron más tiradas."
+                        break
                     if stop_event.is_set():
                         raise InterruptedError("Prueba detenida por el usuario")
                     attempt_number += 1
@@ -975,6 +985,8 @@ class PragmaticProvider(ProviderAdapter):
     ) -> SpinAttempt:
         attempt_root = run_root / mode.id / f"attempt-{repetition:04d}"
         attempt_root.mkdir(parents=True, exist_ok=True)
+        from tester_spin.server_observations import set_capture_directory
+        set_capture_directory(attempt_root)
         started = time.monotonic()
         bootstrap: HttpBootstrap | None = None
         try:
@@ -1086,6 +1098,16 @@ class PragmaticProvider(ProviderAdapter):
                 warning = f"estado de continuación no automatizado: na={na!r}; RAW preservado"
                 break
 
+            if audit_enabled():
+                final_error = last.get("error") or last.get("err") or last.get("errorCode")
+                if final_error not in (None, "", "0"):
+                    terminal = False
+                    warning = (warning + f" Error del servidor: {final_error}").strip()
+                from tester_spin.provider_return_checks import pragmatic_check
+                proof = pragmatic_check(self, bootstrap, last, fields, attempt_root, timeout_s) if terminal and not warning else pending_return(attempt_root, 'Estado Pragmatic no resuelto')
+                if proof['status'] != 'CONFIRMED':
+                    warning = (warning+' Regreso al juego base pendiente: '+proof['status']).strip()
+                    terminal = False
             elapsed_ms = (time.monotonic() - started) * 1000.0
             attempt = SpinAttempt(
                 number=attempt_number,
@@ -1127,6 +1149,34 @@ class PragmaticProvider(ProviderAdapter):
             if bootstrap is not None:
                 bootstrap.session.close()
 
+    def _resolve_reel_contract(self, bootstrap: HttpBootstrap) -> dict[str, Any] | None:
+        from tester_spin.providers.pragmatic_reel_contract import discover_reel_contract
+        cache = self.__dict__.setdefault("_reel_contract_cache", {})
+        key = (bootstrap.symbol, bootstrap.cver)
+        if key not in cache:
+            response = bootstrap.session.get(bootstrap.launch_url, timeout=25)
+            response.raise_for_status()
+            contract = discover_reel_contract(bootstrap.session, response.text,
+                response.url, timeout_s=25)
+            if contract is not None:
+                cache[key] = contract
+        bootstrap.reel_contract = cache.get(key)
+        return bootstrap.reel_contract
+
+    def _resolve_bonus_contract(self, bootstrap: HttpBootstrap) -> dict[str, Any] | None:
+        from tester_spin.providers.pragmatic_bonus_contract import discover_bonus_contract
+        cache = self.__dict__.setdefault("_bonus_contract_cache", {})
+        key = (bootstrap.symbol, bootstrap.cver)
+        if key not in cache:
+            reel = getattr(bootstrap, "reel_contract", None) or self._resolve_reel_contract(bootstrap)
+            if not reel or not reel.get("source_url"):
+                return None
+            contract = discover_bonus_contract(bootstrap.session, reel["source_url"])
+            if contract is not None:
+                cache[key] = contract
+        bootstrap.bonus_contract = cache.get(key)
+        return bootstrap.bonus_contract
+
     def _post_and_store(
         self,
         bootstrap: HttpBootstrap,
@@ -1137,6 +1187,39 @@ class PragmaticProvider(ProviderAdapter):
         label: str,
         timeout_s: float,
     ) -> tuple[int, bytes, dict[str, str], dict[str, str]]:
+        from tester_spin.providers.pragmatic_reel_contract import reel_selection
+        caller_fields = fields
+        fields = dict(fields)
+        previous = getattr(bootstrap, "current_response", None) or bootstrap.calibration_response
+        if fields.get("action") == "doSpin" and previous.get("rs") == "mc" and previous.get("rs_t") in (None, ""):
+            contract = getattr(bootstrap, "reel_contract", None) or self._resolve_reel_contract(bootstrap)
+            selection = reel_selection(previous, contract, override=getattr(bootstrap, "reel_override", None))
+            if selection is None:
+                raise RuntimeError("Selección de carretes pendiente: el cliente no demuestra su contrato")
+            fields.update(selection["fields"])
+            caller_fields.update(selection["fields"])
+            bootstrap.reel_override = None
+            self._write_json(root / f"step-{step:03d}-{label}.reel-selection.json", selection)
+        if fields.get("action") == "doBonus":
+            from tester_spin.providers.pragmatic_bonus_contract import bonus_selection
+            contract = getattr(bootstrap, "bonus_contract", None) or self._resolve_bonus_contract(bootstrap)
+            selection = bonus_selection(previous, contract)
+            if selection is None:
+                raise RuntimeError("Bonus pendiente: el cliente no demuestra su continuación")
+            # Reserve the least tried available choice across concurrent demo sessions.
+            # This schedules exploration; coverage still requires terminal evidence.
+            import threading
+            lock = self.__dict__.setdefault("_bonus_choice_lock", threading.Lock())
+            key = (bootstrap.symbol if hasattr(bootstrap, "symbol") else "", selection["branch_signature"], selection["contract_sha256"])
+            with lock:
+                counts = self.__dict__.setdefault("_bonus_choice_counts", {}).setdefault(key, {})
+                selected = min(selection["domain"], key=lambda value: (counts.get(value, 0), int(value)))
+                counts[selected] = counts.get(selected, 0) + 1
+            selection = bonus_selection(previous, contract, override=selected)
+            selection["selection_policy"] = "least_attempted_available_test_choice"
+            fields.update(selection["fields"])
+            caller_fields.update(selection["fields"])
+            self._write_json(root / f"step-{step:03d}-{label}.bonus-selection.json", selection)
         raw_request = urlencode(fields)
         started = time.time()
         response = bootstrap.session.post(
@@ -1145,9 +1228,12 @@ class PragmaticProvider(ProviderAdapter):
             timeout=timeout_s,
             headers={"Content-Type": "application/x-www-form-urlencoded"},
         )
+        from tester_spin.server_observations import observe_http
+        observe_http(response, action=fields.get("action", "response"), request=fields)
         elapsed_ms = (time.time() - started) * 1000.0
         raw_response = response.content
         parsed = _parse_wire(raw_response)
+        bootstrap.current_response = parsed
         prefix = f"step-{step:03d}-{label}"
         (root / f"{prefix}.request.txt").write_text(raw_request, encoding="utf-8")
         (root / f"{prefix}.response.raw").write_bytes(raw_response)
@@ -1210,6 +1296,8 @@ class PragmaticProvider(ProviderAdapter):
                 "symbol": bootstrap.symbol,
                 "cver": bootstrap.cver,
                 "endpoint": bootstrap.endpoint,
+                "preparation_dir": getattr(bootstrap, "preparation_dir", ""),
+                "reel_contract": getattr(bootstrap, "reel_contract", None),
                 "direct_game_link": bootstrap.launch_url,
             },
         )

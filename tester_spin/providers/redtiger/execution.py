@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from tester_spin.server_observations import set_capture_directory
+
+from tester_spin.return_to_base import audit_enabled, audit_blocked, pending_return
+
 import json
 import time
 from datetime import datetime, timezone
@@ -84,6 +88,8 @@ def _post_spin(
     response = runtime.session.post(runtime.spin_url, json=payload, timeout=request_timeout)
     if stop_event.is_set():
         raise InterruptedError("Detención solicitada durante el spin Red Tiger.")
+    from tester_spin.server_observations import observe_http
+    observe_http(response, action="spin", request=payload)
     status = int(response.status_code)
     response.raise_for_status()
     data = response.json()
@@ -113,6 +119,8 @@ def _post_choice(
     response = runtime.session.post(endpoint, json=payload, timeout=request_timeout)
     if stop_event.is_set():
         raise InterruptedError("Detención solicitada durante el selector Red Tiger.")
+    from tester_spin.server_observations import observe_http
+    observe_http(response, action="choice", request=payload)
     status = int(response.status_code)
     response.raise_for_status()
     data = response.json()
@@ -312,14 +320,19 @@ class RedTigerExecutionMixin:
         if runtime is not None and mode_specs and not cancelled:
             try:
                 for mode_id, mode_kind, feature in mode_specs:
+                    if audit_blocked():
+                        break
                     if cancelled:
                         break
                     for repetition in range(1, repetitions + 1):
+                        if audit_blocked():
+                            break
                         if stop_event.is_set():
                             cancelled = True
                             break
                         attempt_dir = run_dir / mode_id / f"attempt-{repetition:05d}"
                         attempt_dir.mkdir(parents=True, exist_ok=True)
+                        set_capture_directory(attempt_dir)
                         attempt_started = time.monotonic()
                         try:
                             status_code, request_payload, response_payload, warnings = _post_spin(
@@ -402,6 +415,11 @@ class RedTigerExecutionMixin:
 
                             responded += 1
                             terminal = bool(final_summary.get("success")) and pending_choice_from_response(final_payload) is None
+                            if audit_enabled():
+                                from tester_spin.provider_return_checks import redtiger_check
+                                proof = redtiger_check(runtime, attempt_dir, timeout_s, stop_event) if terminal and not warnings else pending_return(attempt_dir, 'Ronda anterior sin cierre validado')
+                                if proof['status'] != 'CONFIRMED':
+                                    warnings.append('Regreso al juego base pendiente: '+proof['status'])
                             validated = terminal and not warnings
                             successes += int(validated)
                             warnings_all.extend(warnings)

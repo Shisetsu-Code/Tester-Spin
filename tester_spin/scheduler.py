@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import threading
 import time
+from pathlib import Path
 from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from collections.abc import Callable, Iterable
 
+from tester_spin.farm_contract import export_farm_contract
 from tester_spin.models import Game, GameTestResult
 from tester_spin.providers.base import ProviderAdapter
 
@@ -39,8 +41,7 @@ def run_game_tests(
     delay_between_starts_s = max(0.0, float(delay_between_starts_s))
     timeout_s = max(1.0, float(timeout_s))
 
-    def worker(game: Game) -> GameTestResult:
-        game_progress = lambda msg: progress(f"[{game.name}] {msg}")
+    def execute(game: Game, game_progress: Progress) -> GameTestResult:
         try:
             provider.prepare_test_artifacts(
                 game,
@@ -76,7 +77,83 @@ def run_game_tests(
             progress=game_progress,
         )
         result.samples_per_path = spins_per_game
-        return provider.finalize_test_result(result, progress=game_progress)
+        try:
+            from tester_spin.coverage_history import retain_pending_branches
+            retain_pending_branches(provider.farm_contract_dir(game), result)
+            result = provider.finalize_test_result(result, progress=game_progress)
+            export_farm_contract(provider, game, result, progress=game_progress)
+        except Exception as exc:
+            # Keep the provider result and its captures when postprocessing fails.
+            result.status = "ERROR"
+            result.error = (result.error + f" Postprocesamiento: {type(exc).__name__}: {exc}").strip()
+            game_progress(result.error)
+        return result
+
+    def worker(game: Game) -> GameTestResult:
+        import traceback
+        from tester_spin.run_diagnostics import write_run_diagnostics
+        from tester_spin.run_journal import RunJournal
+
+        journal = None
+        try:
+            journal = RunJournal(provider.farm_contract_dir(game), game)
+            journal.note("CONFIG", {"spins_per_game": spins_per_game, "timeout_s": timeout_s,
+                                    "concurrency": concurrency, "delay_between_starts_s": delay_between_starts_s,
+                                    "response_observation": "structure-and-state/v1", "return_to_base_required": 2, "return_to_base_max_probes": 10})
+        except OSError as exc:
+            progress(f"[{game.name}] No se pudo iniciar el registro de diagnóstico: {exc}")
+
+        def game_progress(message: str) -> None:
+            if journal is not None:
+                try:
+                    journal.note("PROGRESS", message)
+                except OSError as exc:
+                    progress(f"[{game.name}] Error guardando diagnóstico: {exc}")
+            progress(f"[{game.name}] {message}")
+
+        failed_before_result = False
+        try:
+            from tester_spin.return_to_base import audit_scope
+            with audit_scope(stop_event):
+                result = execute(game, game_progress)
+        except Exception as exc:
+            failed_before_result = True
+            result = GameTestResult(
+                provider=game.provider, slug=game.slug, game_name=game.name,
+                game_url=game.url, requested_spins=spins_per_game,
+                successful_spins=0, failed_spins=spins_per_game,
+                status="ERROR", symbol=game.symbol,
+                error=f"{type(exc).__name__}: {exc}",
+            )
+            if journal is not None:
+                try:
+                    journal.note("EXCEPTION", {"error": result.error, "traceback": traceback.format_exc()})
+                except OSError:
+                    pass
+        if not result.run_dir and journal is not None and journal.path is not None:
+            result.run_dir = str(journal.path.parent)
+            result.samples_per_path = spins_per_game
+            if failed_before_result:
+                try:
+                    result = provider.finalize_test_result(result, progress=game_progress)
+                except Exception as exc:
+                    result.error += f"; finalización: {type(exc).__name__}: {exc}"
+        try:
+            if journal is not None:
+                journal.note("END", {"status": result.status, "run_dir": result.run_dir})
+            write_run_diagnostics(result, journal_path=journal.path if journal else None)
+            if result.run_dir:
+                game_progress(f"Diagnóstico: {Path(result.run_dir) / 'diagnostic.md'}")
+                import json
+                observed = json.loads((Path(result.run_dir)/'server-observations.json').read_text(encoding='utf-8'))
+                game_progress(f"Novedades de protocolo: {observed['protocol_changes']}; variaciones de resultado: {observed['outcome_variations']}; respuestas no legibles: {observed['unparsed']}; ramas pendientes: {observed.get('pending_branches', 0)}. Ver Respuestas nuevas en el árbol.")
+        except (OSError, ValueError) as exc:
+            message = f"Diagnóstico incompleto: {type(exc).__name__}: {exc}"
+            if result.status == "OK":
+                result.status = "PARCIAL"
+            result.error = (result.error + " " + message).strip()
+            game_progress(message)
+        return result
 
     in_flight: dict[Future[GameTestResult], Game] = {}
     next_index = 0

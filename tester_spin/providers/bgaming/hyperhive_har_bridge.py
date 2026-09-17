@@ -13,6 +13,7 @@ from tester_spin.providers.bgaming.hyperhive_har import (
     HARPlayTemplate,
     _request_json,
     _safe_mapping,
+    _successful_response,
     current_thread_har_evidence,
 )
 
@@ -184,6 +185,8 @@ def _observed_play_rows(
     rows: list[dict[str, Any]] = []
     for entry in entries:
         if not isinstance(entry, dict):
+            continue
+        if not _successful_response(entry):
             continue
         payload = _request_json(entry)
         if not isinstance(payload, dict):

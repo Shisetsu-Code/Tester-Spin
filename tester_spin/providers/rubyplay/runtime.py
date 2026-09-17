@@ -55,6 +55,7 @@ class RubyPlayClientProfile:
     source_scripts: list[str] = field(default_factory=list)
     bundle_sha256: str = ""
     evidence: list[str] = field(default_factory=list)
+    index_domain_evidence: list[dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -94,6 +95,7 @@ class RubyPlayClientProfile:
                 source_scripts=[str(x) for x in raw.get("source_scripts", []) if str(x)],
                 bundle_sha256=str(raw.get("bundle_sha256") or ""),
                 evidence=[str(x) for x in raw.get("evidence", []) if str(x)],
+                index_domain_evidence=[dict(x) for x in raw.get("index_domain_evidence", []) if isinstance(x, dict)],
             )
         except (TypeError, ValueError, KeyError):
             return None
@@ -143,6 +145,7 @@ class RubyPlayRuntime:
     action_number: int
     next_action: str
     active_feature_type: str = ""
+    preferred_select_index: int = 0
 
     @property
     def gameserver_url(self) -> str:
@@ -659,6 +662,8 @@ def post_action(
         json=payload,
         timeout=timeout_s,
     )
+    from tester_spin.server_observations import observe_http
+    observe_http(response, action=command, request=payload)
     data = _load_json_response(response, f"gameserver/{command}")
     if str(data.get("status") or "").lower() != "ok":
         raise ValueError(f"RubyPlay {command}: status={data.get('status')!r}.")

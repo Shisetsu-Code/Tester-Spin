@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from tester_spin.server_observations import set_capture_directory
+
+from tester_spin.return_to_base import audit_enabled, audit_blocked, pending_return
+
 import base64
 import json
 import re
@@ -302,7 +306,7 @@ class BelatraProvider(ProviderAdapter):
         )
 
         for page in range(1, limit + 1):
-            if stop_event.is_set():
+            if stop_event.is_set() or audit_blocked():
                 break
 
             url = self._page_url(page)
@@ -890,6 +894,8 @@ class BelatraProvider(ProviderAdapter):
         except Exception as exc:
             decode_error = f"{type(exc).__name__}: {exc}"
 
+        from tester_spin.server_observations import observe_live
+        observe_live(decoded if decoded is not None else raw_text, action=request_payload.get("q", label), request=request_payload, status=response.status_code)
         if decoded is not None:
             (artifact_dir / f"{label}.response.json").write_text(
                 json.dumps(decoded, ensure_ascii=False, indent=2),
@@ -1520,9 +1526,10 @@ class BelatraProvider(ProviderAdapter):
             progress(f"[{game.name}] ENTER ERROR: {message}")
 
         for number in range(1, repetitions + 1):
-            if stop_event.is_set():
+            if stop_event.is_set() or audit_blocked():
                 break
             attempt_dir = run_dir / f"attempt-{number:03d}"
+            set_capture_directory(attempt_dir)
             attempt_started = time.monotonic()
 
             if state is None:
@@ -1548,6 +1555,10 @@ class BelatraProvider(ProviderAdapter):
                     attempt_dir=attempt_dir,
                 )
                 elapsed_ms = (time.monotonic() - attempt_started) * 1000.0
+                if audit_enabled():
+                    from tester_spin.provider_return_checks import belatra_check
+                    proof = belatra_check(self, state, attempt_dir, timeout_s, stop_event) if ok and terminal else pending_return(attempt_dir, 'Estado Belatra no terminal')
+                    terminal = terminal and proof['status'] == 'CONFIRMED'
                 responded += int(ok)
                 successes += int(ok and terminal)
                 warning = (

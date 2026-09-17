@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import base64
 import threading
 import uuid
 from dataclasses import dataclass, field
@@ -177,6 +178,27 @@ def _request_json(entry: dict[str, Any]) -> dict[str, Any] | None:
     return payload if isinstance(payload, dict) else None
 
 
+def _successful_response(entry: dict[str, Any]) -> bool:
+    """Only an accepted JSON-RPC exchange proves an executable play shape."""
+    response = entry.get("response")
+    if not isinstance(response, dict):
+        return False
+    status = response.get("status")
+    if not isinstance(status, int) or not 200 <= status < 300:
+        return False
+    content = response.get("content")
+    if not isinstance(content, dict):
+        return False
+    try:
+        text = content.get("text")
+        if content.get("encoding") == "base64":
+            text = base64.b64decode(text, validate=True).decode("utf-8")
+        payload = json.loads(text)
+    except (ValueError, TypeError, UnicodeError):
+        return False
+    return isinstance(payload, dict) and payload.get("error") is None and isinstance(payload.get("result"), dict)
+
+
 def _group_template(rows: list[dict[str, Any]]) -> HARPlayTemplate | None:
     if not rows:
         return None
@@ -298,6 +320,8 @@ def _analyze_cached(path_text: str, size: int, mtime_ns: int) -> HARHyperHiveEvi
 
     for entry in entries:
         if not isinstance(entry, dict):
+            continue
+        if not _successful_response(entry):
             continue
         request_payload = _request_json(entry)
         if not isinstance(request_payload, dict):

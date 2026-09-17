@@ -201,15 +201,15 @@ class RedTigerRuntimeTests(unittest.TestCase):
         nodes = result_tree.result_nodes(game)
         self.assertTrue(any("anotherUnknownLayer" in node.path for node in nodes))
 
-    def test_public_provider_preserves_table_id_not_runtime_game_id_in_storage_symbol(self) -> None:
+    def test_public_provider_preserves_official_post_id_not_runtime_game_id_in_storage_symbol(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             redtiger = RedTigerProvider(Path(temp))
             game = Game(
                 provider="redtiger",
                 slug="synthetic-public-slug",
                 name="Synthetic Game",
-                url="https://redtiger.example/games/synthetic-public-slug",
-                symbol="opaque-table-7xq",
+                url="https://games.evolution.com/slots/synthetic-public-slug/",
+                symbol="37498",
             )
             inner = GameTestResult(
                 provider="redtiger",
@@ -231,8 +231,8 @@ class RedTigerRuntimeTests(unittest.TestCase):
                     progress=lambda _message: None,
                 )
 
-            self.assertEqual(result.symbol, "opaque-table-7xq")
-            self.assertEqual(game.symbol, "opaque-table-7xq")
+            self.assertEqual(result.symbol, "37498")
+            self.assertEqual(game.symbol, "37498")
 
     def test_production_module_has_no_title_specific_or_foreign_provider_contract(self) -> None:
         modules = (adapter, bootstrap, catalog, cms_auth, execution, provider, result_tree, runtime)

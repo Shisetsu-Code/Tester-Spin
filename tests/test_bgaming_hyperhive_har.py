@@ -13,6 +13,22 @@ from tester_spin.providers.bgaming.hyperhive_wire import _har_result_summary
 
 
 class BGamingHyperHiveHARTests(unittest.TestCase):
+    def test_only_successful_response_pairs_supply_executable_wire(self):
+        from tester_spin.providers.bgaming.hyperhive_har_bridge import apply_authoritative_har_wire
+        invalid = [None, {"status": 500, "content": {"text": '{"result":{}}'}},
+                   {"status": 200, "content": {"text": '{"error":{"code":51100}}'}},
+                   {"status": 200, "content": {"text": '{}'}}]
+        for response in invalid:
+            with self.subTest(response=response), tempfile.TemporaryDirectory() as temp:
+                def entry(bet, reply):
+                    return {"request": {"method": "POST", "postData": {"text": json.dumps({"id": 0, "method": "play", "params": {"req": {"bet": bet}}})}}, "response": reply}
+                path = Path(temp)/"capture.har"
+                path.write_text(json.dumps({"log": {"entries": [entry(999, response), entry(40, {"status": 200, "content": {"text": '{"result":{}}'}})]}}), encoding="utf-8")
+                evidence = analyze_hyperhive_har(path)
+                self.assertEqual(evidence.play_count, 1)
+                adapted = apply_authoritative_har_wire({"token": "fresh", "req": {"bet": 100}}, evidence)
+                self.assertEqual(adapted["req"]["bet"], 40)
+
     def _write_har(self, path: Path) -> None:
         def entry(payload: dict) -> dict:
             return {
@@ -24,7 +40,7 @@ class BGamingHyperHiveHARTests(unittest.TestCase):
                         "text": json.dumps(payload),
                     },
                 },
-                "response": {"status": 200, "content": {"text": "{}"}},
+                "response": {"status": 200, "content": {"text": '{"result":{}}'}},
             }
 
         payload = {

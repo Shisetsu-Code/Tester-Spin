@@ -59,6 +59,7 @@ class RedTigerProvider(RedTigerAdapter):
         stop_event: threading.Event,
         progress: Progress,
     ) -> GameTestResult:
+        game = self.resolve_launch_game(game, timeout_s=timeout_s)
         launch_id = self.launch_id_for_game(game)
         original_bootstrap = redtiger_execution.bootstrap_game
         redtiger_execution.bootstrap_game = evolution_bootstrap_game

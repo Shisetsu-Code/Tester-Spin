@@ -120,7 +120,8 @@ class PragmaticProvider(_HarStatePragmaticProvider):
                     timeout_s,
                 )
             except Exception as exc:
-                failures.append(f"{symbol}:{type(exc).__name__}")
+                from tester_spin.run_diagnostics import sanitize
+                failures.append(f"{symbol}:{type(exc).__name__}: {sanitize(str(exc))[:600]}")
                 continue
             try:
                 return symbol, probe.cver or cver, probe.launch_url or evidence_url

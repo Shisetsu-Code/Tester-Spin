@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from tester_spin.return_to_base import audit_enabled, audit_blocked, pending_return, verify_return_to_base, save_exchange
+
+from tester_spin.server_observations import set_capture_directory
+
 import hashlib
 import json
 import re
@@ -108,6 +112,8 @@ def _rpc(
         headers=headers,
         timeout=timeout_s,
     )
+    from tester_spin.server_observations import observe_http
+    observe_http(response, action=method, request=payload)
     response.raise_for_status()
     try:
         data = response.json()
@@ -541,6 +547,17 @@ def _result_summary(data: dict[str, Any]) -> dict[str, Any]:
                 )
             except (TypeError, ValueError):
                 total_win = None
+    outcome = resp.get("outcome")
+    outcome = outcome if isinstance(outcome, dict) else {}
+    state = resp.get("state")
+    state = state if isinstance(state, dict) else {}
+    if not isinstance(total_win, (int, float)):
+        # Free-spin settlement is cumulative; outcome.winnings can be zero on
+        # the final continuation even when the round credits a nonzero amount.
+        accumulated = state.get("freeSpinsTotalWinnings")
+        total_win = accumulated if isinstance(accumulated, (int, float)) and accumulated > 0 else None
+    if not isinstance(total_win, (int, float)):
+        total_win = outcome.get("winnings")
     return {
         "final": bool(result.get("final")),
         "balance": result.get("balance"),
@@ -548,11 +565,19 @@ def _result_summary(data: dict[str, Any]) -> dict[str, Any]:
         "round_step": resp.get("roundStep"),
         "bet": resp.get("bet"),
         "total_win": total_win,
-        "freespins": resp.get("freespins"),
+        "cost": outcome.get("cost"),
+        "freespins": resp.get("freespins", state.get("freeSpins")),
         "next_action": resp.get("nextAction"),
         "table_sha256": table_hash,
         "response_sha256": response_fingerprint(data),
     }
+
+
+def is_base_return(summary: dict) -> bool:
+    """An explicit SPIN next action is compatible with a final base result."""
+    action = str(summary.get('next_action') or '').strip().casefold()
+    return (summary.get('final') is True and action in {'', 'spin'}
+            and summary.get('freespins') in (None, False, 0, [], {}))
 
 
 def run_hyperhive_test(
@@ -724,10 +749,11 @@ def run_hyperhive_test(
         mode_id = str(mode["id"])
         kind = str(mode["kind"])
         for repetition in range(1, repetitions + 1):
-            if stop_event.is_set():
+            if stop_event.is_set() or audit_blocked():
                 break
             attempt_dir = run_dir / mode_id / f"attempt-{repetition:03d}"
             attempt_dir.mkdir(parents=True, exist_ok=True)
+            set_capture_directory(attempt_dir)
             attempt_started = time.monotonic()
             steps = 0
             warnings: list[str] = []
@@ -762,6 +788,9 @@ def run_hyperhive_test(
                     rpc_id=_hyperhive_rpc_id(rpc_contract),
                 )
                 responded += 1
+                # The wire adapter can restore a captured wager (including a
+                # numeric string). Account for what was actually transmitted.
+                actual_bet = float(request_payload["params"]["req"]["bet"])
                 steps = 1
                 last_status = int(response.status_code)
                 first_summary = _result_summary(data)
@@ -860,7 +889,7 @@ def run_hyperhive_test(
                         and isinstance(expected_multiplier, (int, float))
                     ):
                         expected_debit_for_inference = (
-                            float(default_bet) * float(expected_multiplier)
+                            actual_bet * float(expected_multiplier)
                         )
                         inferred_win = (
                             float(final_balance)
@@ -880,7 +909,9 @@ def run_hyperhive_test(
                         total_win = 0
 
                 if bool(final_summary.get("final")) and isinstance(final_balance, (int, float)):
-                    if steps > 1:
+                    if isinstance(first_summary.get("cost"), (int, float)):
+                        observed_debit = float(first_summary["cost"])
+                    elif steps > 1:
                         observed_debit = before_balance - float(first_balance)
                     else:
                         observed_debit = (
@@ -898,7 +929,7 @@ def run_hyperhive_test(
                         )
 
                     if isinstance(expected_multiplier, (int, float)):
-                        expected_debit = float(default_bet) * float(expected_multiplier)
+                        expected_debit = actual_bet * float(expected_multiplier)
                         if abs(observed_debit - expected_debit) > 1e-9:
                             warnings.append(
                                 f"HyperHive débito {observed_debit:g} != "
@@ -909,6 +940,55 @@ def run_hyperhive_test(
                     observed_debit = None
 
                 terminal = bool(final_summary.get("final"))
+                if audit_enabled():
+                    def base_probe(target):
+                        nonlocal state_lock, current_balance
+                        base_mode = next((item for item in modes if item.get('kind') == 'SPIN'), None)
+                        if base_mode is None:
+                            return dict(ok=True, base=False, known=False, reason='No base contract')
+                        req = {'bet': default_bet, **dict(base_mode['request'])}
+                        if base_mode.get('custom_req_profile') == 'pz-per-line':
+                            req['custom_req'] = _pz_custom_req(bet=default_bet, exponent=exponent, action='spin')
+                        params = {'token': token, 'req': req}
+                        if state_lock:
+                            params['state_lock'] = state_lock
+                        resp, req_payload, payload = _rpc(runtime, 'play', timeout_s=timeout_s, params=params, rpc_id=_hyperhive_rpc_id(rpc_contract))
+                        captured = save_exchange(target, req_payload, payload)
+                        summary = _result_summary(payload)
+                        captures = [captured]
+                        natural_event = not bool(summary.get('final'))
+                        while not bool(summary.get('final')):
+                            if stop_event.is_set() or len(captures) >= 256:
+                                return dict(ok=True, base=False, known=False, captures=captures, summary=summary)
+                            if summary.get('state_lock'):
+                                state_lock = summary['state_lock']
+                            next_action = str(summary.get('next_action') or '').strip().casefold()
+                            if next_action and next_action not in action_vocabulary:
+                                return dict(ok=True, base=False, known=False, captures=captures, summary=summary)
+                            continuation = {'bet': default_bet, **{
+                                key: value for key, value in base_mode['request'].items()
+                                if key not in {'action', 'purchased_feature', 'bonus_multiplier_type'}
+                            }}
+                            if next_action:
+                                continuation['action'] = next_action
+                            if base_mode.get('custom_req_profile') == 'pz-per-line':
+                                continuation.pop('action', None)
+                                continuation['custom_req'] = _pz_custom_req(bet=default_bet, exponent=exponent, action=next_action or 'spin')
+                            params = {'token': token, 'req': continuation}
+                            if state_lock:
+                                params['state_lock'] = state_lock
+                            resp, req_payload, payload = _rpc(runtime, 'play', timeout_s=timeout_s, params=params, rpc_id=_hyperhive_rpc_id(rpc_contract))
+                            captures.append(save_exchange(target, req_payload, payload, step=len(captures)+1))
+                            summary = _result_summary(payload)
+                        if summary.get('state_lock'):
+                            state_lock = summary['state_lock']
+                        if isinstance(summary.get('balance'), (int, float)):
+                            current_balance = summary['balance']
+                        base = is_base_return(summary)
+                        return dict(ok=resp.status_code < 400, base=base and not natural_event, known=base, captures=captures, summary=summary)
+                    return_proof = verify_return_to_base(attempt_dir, base_probe, stop_event=stop_event) if terminal and not warnings else pending_return(attempt_dir, 'HyperHive no terminal')
+                    if return_proof['status'] != 'CONFIRMED':
+                        warnings.append('Regreso al juego base pendiente: '+return_proof['status'])
                 validated = terminal and not warnings
                 if validated:
                     for discovered in discovered_modes:
@@ -1022,7 +1102,7 @@ def run_hyperhive_test(
                     )
                     break
 
-        if stop_event.is_set():
+        if stop_event.is_set() or audit_blocked():
             break
 
     attempted = len(attempts)

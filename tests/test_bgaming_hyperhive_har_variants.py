@@ -35,7 +35,7 @@ class BGamingHyperHiveHARVariantTests(unittest.TestCase):
                     ),
                 },
             },
-            "response": {"status": 200, "content": {"text": "{}"}},
+            "response": {"status": 200, "content": {"text": '{"result":{}}'}},
         }
 
     def _write_full_contract(self, path: Path) -> None:

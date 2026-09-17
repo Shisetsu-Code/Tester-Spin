@@ -142,6 +142,29 @@ class RedTigerProvider(RedTigerExecutionMixin, ProviderAdapter):
             return "URL fuera del namespace /slots/<slug>/"
         return ""
 
+    def resolve_launch_game(self, game: Game, *, timeout_s: float) -> Game:
+        """Recover historical URLs from an exact, provider-filtered official record."""
+        if not self.catalog_record_invalid_reason(game) and str(game.symbol).isdigit():
+            return game
+        provider_id = provider_id_from_catalog_url(self.catalog_url)
+        params = wp_catalog_query_params(provider_id, page=1, page_size=100)
+        params["slug"] = game.slug
+        response = self._wp_catalog_get(params=params, timeout_s=timeout_s)
+        response.raise_for_status()
+        records = parse_wp_games_page(response.json())
+        matches = [r for r in records if r.game.slug == game.slug
+                   and not self.catalog_record_invalid_reason(r.game)
+                   and str(r.game.symbol).isdigit()
+                   and r.provider_name.casefold() == "red tiger"]
+        if len(matches) != 1:
+            raise ValueError("Red Tiger: enlace histórico sin coincidencia única en el catálogo oficial; actualizar catálogo o revisar el juego.")
+        resolved = matches[0]
+        self._persist_record(resolved)
+        game.url = resolved.game.url
+        game.symbol = resolved.game.symbol
+        game.thumbnail_url = resolved.game.thumbnail_url
+        return game
+
     def launch_id_for_game(self, game: Game) -> str:
         launch_id = str(game.symbol or "").strip()
         if launch_id:

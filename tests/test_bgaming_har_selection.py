@@ -20,7 +20,7 @@ class BGamingHARSelectionTests(unittest.TestCase):
                     "text": json.dumps(payload),
                 },
             },
-            "response": {"status": 200, "content": {"text": "{}"}},
+            "response": {"status": 200, "content": {"text": '{"result":{}}'}},
         }
 
     def _write(self, path: Path, entries: list[dict]) -> None:

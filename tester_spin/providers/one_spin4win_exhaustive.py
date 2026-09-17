@@ -11,7 +11,7 @@ from tester_spin.providers.one_spin4win import OneSpin4WinProvider as _OneSpin4W
 
 
 KNOWN_ACTIVE_STATES = {5, 6, 11, 12}
-KNOWN_TERMINAL_STATES = {0}
+KNOWN_TERMINAL_STATES = _OneSpin4WinProvider.D1_TERMINAL_STATES
 
 
 def _decode_frame(provider: _OneSpin4WinProvider, frame: dict[str, Any]) -> dict[str, Any] | None:
@@ -85,23 +85,29 @@ def apply_d1_path_audit(
             }
         )
 
-    if unknown:
+    # Explicit resolution retires only the historically unknown st=3 option.
+    resolved = sorted(states & {3})
+    if resolved or unknown:
         result.discovered_modes.append(
             {
                 "id": "D1_UNKNOWN_RESULT_STATES",
-                "kind": "UNRESOLVED_STATE",
+                "kind": "UNRESOLVED_STATE" if unknown else "RESOLVED_STATE",
                 "observed": True,
-                "executable": False,
+                "executable": not unknown,
                 "coverage_required": True,
                 "branch_signature": "D1:type3-st-unclassified",
-                "required_options": [str(value) for value in unknown],
-                "covered_options": [],
+                "required_options": [str(value) for value in sorted(resolved + unknown)],
+                "covered_options": [str(value) for value in resolved],
+                "contract_source": provider.D1_CONTRACT_SOURCE,
                 "reason": (
-                    "st no pertenece a los estados activos HAR-confirmados {5,6,11,12} "
-                    "ni al terminal 0; no se inventa una transición"
+                    "Estados desconocidos fuera de activos {5,6,11,12} y terminales {0,3}; no se inventa transición"
+                    if unknown else
+                    "Cliente oficial: st=3 no activa bonusSpins; habilita la siguiente apuesta base"
                 ),
             }
         )
+
+    if unknown:
         if result.status == "OK":
             result.status = "PARCIAL"
         message = "D1 estados type=3 sin contrato: " + ", ".join(map(str, unknown)) + "."

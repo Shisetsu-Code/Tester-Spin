@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from tester_spin.return_to_base import audit_enabled, audit_blocked, pending_return
+
 import base64
 import json
 import re
@@ -692,6 +694,17 @@ class OneSpin4WinProvider(ProviderAdapter):
         except (TypeError, ValueError):
             return default
 
+    # Official SlotNetworkController.parseGameData in tenluckyspins_000264.js:
+    # st=3 leaves bonusSpins=false; the result view enables the next paid spin.
+    # Live state-3 captures independently show b_next = b_previous - bet + win.
+    D1_TERMINAL_STATES = frozenset({0, 3})
+    D1_CONTRACT_SOURCE = "https://gs.1spin4win.com:10443/gmh5/tenluckyspins/src/tenluckyspins_000264.js"
+
+    @classmethod
+    def _d1_result_terminal(cls, payload: dict[str, Any]) -> bool:
+        # Missing st follows the legacy client default (no bonusSpins).
+        return cls._int_field(payload.get("st", 0), -1) in cls.D1_TERMINAL_STATES
+
     @classmethod
     def _d1_feature_active(cls, payload: dict[str, Any]) -> bool:
         state = cls._int_field(payload.get("st"), 0)
@@ -724,6 +737,8 @@ class OneSpin4WinProvider(ProviderAdapter):
                 )
                 continue
             decoded = self._decode_ws_json(raw)
+            from tester_spin.server_observations import observe_live
+            observe_live(decoded if decoded is not None else raw, action="ws:"+str(decoded.get("type", "unknown")) if isinstance(decoded, dict) else "ws")
             if isinstance(decoded, dict):
                 return decoded
         raise TimeoutError("D1: timeout esperando frame JSON del servidor.")
@@ -742,6 +757,8 @@ class OneSpin4WinProvider(ProviderAdapter):
             timeout_s=timeout_s,
             attempt_dir=attempt_dir,
         )
+        from tester_spin.server_observations import set_capture_directory
+        set_capture_directory(attempt_dir)
         frames: list[dict[str, Any]] = []
         warning = ""
         ws = self._open_websocket(spec, timeout_s)
@@ -824,8 +841,11 @@ class OneSpin4WinProvider(ProviderAdapter):
                 if result_payload is None:
                     raise TimeoutError("D1: no llegó resultado type=3 de la tirada.")
 
-                if not self._d1_feature_active(result_payload):
+                if self._d1_result_terminal(result_payload):
                     terminal = True
+                    break
+                if not self._d1_feature_active(result_payload):
+                    warning = f"D1: estado type=3 sin contrato: {result_payload.get('st')!r}."
                     break
 
                 # The official client continues bonus/free-spin states through the
@@ -835,9 +855,15 @@ class OneSpin4WinProvider(ProviderAdapter):
                 lines = self._int_field(result_payload.get("l"), lines)
                 result_payload = None
 
-            if not terminal:
+            if not terminal and not warning:
                 warning = f"D1: límite de {wire_guard} continuaciones WS alcanzado."
 
+            if audit_enabled():
+                from tester_spin.provider_return_checks import d1_check
+                proof = d1_check(self, ws, frames, lines, bet_index, result_payload.get('st') if result_payload else None, attempt_dir, timeout_s) if terminal else pending_return(attempt_dir, 'Estado D1 no resuelto')
+                if proof['status'] != 'CONFIRMED':
+                    warning = (warning+' Regreso al juego base pendiente: '+proof['status']).strip()
+                    terminal = False
             elapsed_ms = (time.monotonic() - started) * 1000.0
             artifact = {
                 "spec": spec,
@@ -968,7 +994,7 @@ class OneSpin4WinProvider(ProviderAdapter):
         )
 
         for number in range(1, repetitions + 1):
-            if stop_event.is_set():
+            if stop_event.is_set() or audit_blocked():
                 break
             attempt_dir = run_dir / f"attempt-{number:03d}"
             attempt_dir.mkdir(parents=True, exist_ok=True)

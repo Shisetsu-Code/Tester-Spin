@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from tester_spin.return_to_base import audit_enabled, audit_blocked, pending_return, verify_return_to_base, save_exchange
+
+from tester_spin.server_observations import set_capture_directory
+
 import json
 import re
 import threading
@@ -305,7 +309,7 @@ def run_switchable_container_test(
     current_total = balance_total(initial_data)
 
     for identifier in identifiers:
-        if stop_event.is_set():
+        if stop_event.is_set() or audit_blocked():
             break
 
         mode_id = f"VARIANT_{identifier.upper()}"
@@ -367,9 +371,10 @@ def run_switchable_container_test(
             current_runtime = child_runtime
 
             for repetition in range(1, repetitions + 1):
-                if stop_event.is_set():
+                if stop_event.is_set() or audit_blocked():
                     break
                 attempt_dir = variant_dir / f"attempt-{repetition:03d}"
+                set_capture_directory(attempt_dir)
                 attempt_started = time.monotonic()
                 warnings = list(init_warnings)
                 steps = 0
@@ -485,6 +490,17 @@ def run_switchable_container_test(
                             f"actions={sorted(action_names)!r}"
                         )
 
+                    if audit_enabled():
+                        from tester_spin.provider_return_checks import bgaming_check
+                        def send_base(command, options_payload=None, extra_data_payload=None):
+                            return post_command(child_runtime, command, timeout_s=timeout_s, options=options_payload, extra_data=extra_data_payload)
+                        return_proof = bgaming_check(send_base, {'bet': bet}, attempt_dir, stop_event) if terminal and not warnings else pending_return(attempt_dir, 'Variante no terminal')
+                        if return_proof['status'] != 'CONFIRMED':
+                            warnings.append('Regreso al juego base pendiente: '+return_proof['status'])
+                        if return_proof.get('probes') and return_proof['probes'][-1].get('captures'):
+                            verified_total = balance_total(return_proof['probes'][-1]['captures'][-1]['response'])
+                            if verified_total is not None:
+                                current_total = verified_total
                     validated = terminal and not warnings
                     successes += int(validated)
                     proof = {

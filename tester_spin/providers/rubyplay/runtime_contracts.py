@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import re
 from decimal import Decimal, InvalidOperation
 from typing import Any
@@ -182,11 +183,60 @@ def _alias_wager(bundle: str, alias: str) -> float | None:
     return parsed[0] if len(parsed) == 1 else None
 
 
+def discover_index_domain_evidence(scripts: list[tuple[str, str]]) -> list[dict[str, Any]]:
+    """Retain auditable candidates, never promote lexical matches to proof.
+
+    A constructor array can belong to stale/unreachable client math. Only a
+    decoded live bonus or a resolved active engine can establish its domain.
+    """
+    evidence: list[dict[str, Any]] = []
+    for url, source in scripts:
+        active = _active_slot_engine_alias(source)
+        active_end = source.find(f"{active[0]}.__class=", active[2]) if active else -1
+        aliases = re.findall(
+            rf'({_JS_IDENT})\.__class="com\.gongxigames\.math\.core\.game\.engine\.bonus\.SelectBonus"',
+            source,
+        )
+        for alias in aliases:
+            pattern = re.compile(
+                rf'let\s+({_JS_IDENT})=\[([0-9,\s]+)\]'
+                rf'[^;]{{0,400}};[^;]{{0,100}}?\.putBonus\(new\s+{re.escape(alias)}\('
+                rf'{_JS_IDENT}\.shuffle\$com_gongxigames_math_core_game_random_Random\$int_A'
+                rf'\([^;]{{0,100}}?,\1\),'
+            )
+            for match in pattern.finditer(source):
+                values = [int(item.strip()) for item in match.group(2).split(',') if item.strip()]
+                if not values:
+                    continue
+                evidence.append({
+                    "action": "select",
+                    "candidate_indices": list(range(len(values))),
+                    "domain_proven": False,
+                    "active_engine_constructor": bool(active and active[2] <= match.start() < active_end),
+                    "active_engine": active[0] if active else "",
+                    "source_url": url,
+                    "source_sha256": hashlib.sha256(source.encode("utf-8")).hexdigest(),
+                    "source_offset": match.start(),
+                    "source_excerpt": match.group(0),
+                    "reason": "constructor SelectBonus con array finito; falta demostrar dominio completo del bonus de la respuesta y handler activo",
+                })
+    from tester_spin.providers.rubyplay.index_contracts import certify_select_domain
+    for item in evidence:
+        source = next(text for url, text in scripts if url == item["source_url"])
+        proof = certify_select_domain(source, item, _runtime._action_wrapper_map(source))
+        if proof:
+            item["domain_proven"] = True
+            item["proof_excerpts"] = proof
+            item["reason"] = "dominio finito demostrado por constructor, shuffle y handler del engine activo"
+    return evidence
+
+
 def discover_client_profile(
     scripts: list[tuple[str, str]],
 ) -> _runtime.RubyPlayClientProfile:
     """Discover the client contract without global numeric-value guessing."""
     profile = _ORIGINAL_DISCOVER_CLIENT_PROFILE(scripts)
+    profile.index_domain_evidence = discover_index_domain_evidence(scripts)
     contract_parts = [
         text
         for _url, text in scripts
@@ -269,7 +319,7 @@ def post_action(
 
     ``select`` and ``pick`` use the provider client's INDEX field. The executor
     can therefore keep following ``next_action`` without game-specific branches:
-    select deterministically chooses the first valid option (index 0), while a
+    select uses the planned client candidate (default index 0), while a
     consecutive pick chain uses distinct indices 0,1,2,... because the generated
     PickMessageHandler rejects duplicate picks. ``minispin``, ``freespin`` and
     ``respin`` have no action-specific numeric argument.
@@ -283,7 +333,7 @@ def post_action(
         _AUTO_PICK_INDEX.pop(pick_key, None)
 
     if command == "select" and action_index is None:
-        action_index = 0
+        action_index = runtime.preferred_select_index
     elif command == "pick" and action_index is None:
         action_index = _AUTO_PICK_INDEX.get(pick_key, 0)
         _AUTO_PICK_INDEX[pick_key] = action_index + 1
@@ -332,6 +382,8 @@ def post_action(
         json=payload,
         timeout=timeout_s,
     )
+    from tester_spin.server_observations import observe_http
+    observe_http(response, action=command, request=payload)
     data = _runtime._load_json_response(response, f"gameserver/{command}")
     if str(data.get("status") or "").lower() != "ok":
         raise ValueError(f"RubyPlay {command}: status={data.get('status')!r}.")

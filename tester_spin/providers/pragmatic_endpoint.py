@@ -195,8 +195,8 @@ class PragmaticProvider(_CurrentPragmaticProvider):
 
     @staticmethod
     def _server_error(fields: dict[str, str]) -> str:
-        value = fields.get("error") or fields.get("err") or fields.get("errorCode")
-        return "" if value in (None, "", "0") else str(value)
+        from tester_spin.providers.pragmatic_protocol import server_error
+        return server_error(fields)
 
     @staticmethod
     def _feature_active(response: dict[str, str]) -> bool:
@@ -206,7 +206,12 @@ class PragmaticProvider(_CurrentPragmaticProvider):
         purchase metadata must not force another doSpin. Conversely long hold-and-
         spin rounds expose rs/rs_p/rs_c and remain active even after many steps.
         """
+        # Official client SetRespinData marks TotalRespins (rs_t) as IsDone.
+        # Counters can remain in that final response; they are not continuations.
+        respin_done = response.get("rs_t") not in (None, "")
         for key in _FEATURE_CONTINUATION_FIELDS:
+            if respin_done and (key.startswith("rs") or key in {"respins", "respin"}):
+                continue
             raw = response.get(key)
             if raw is None:
                 continue
@@ -413,7 +418,7 @@ class PragmaticProvider(_CurrentPragmaticProvider):
                         raise RuntimeError(f"continuation doSpin server error={error}")
                     continue
 
-                if na in {"", "s"}:
+                if na == "s":
                     terminal = True
                     break
 
@@ -423,6 +428,13 @@ class PragmaticProvider(_CurrentPragmaticProvider):
             if not terminal and not warning and wire_steps >= MAX_WIRE_STEPS:
                 warning = f"límite de {MAX_WIRE_STEPS} pasos alcanzado; RAW preservado"
 
+            from tester_spin.return_to_base import audit_enabled, pending_return
+            if audit_enabled():
+                from tester_spin.provider_return_checks import pragmatic_check
+                proof = pragmatic_check(self, bootstrap, last, fields, attempt_root, timeout_s) if terminal and not warning else pending_return(attempt_root, 'Estado Pragmatic no resuelto')
+                if proof['status'] != 'CONFIRMED':
+                    warning = (warning + ' Regreso al juego base pendiente: ' + proof['status']).strip()
+                    terminal = False
             elapsed_ms = (time.monotonic() - started) * 1000.0
             attempt = SpinAttempt(
                 number=attempt_number,

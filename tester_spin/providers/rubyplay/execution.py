@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from tester_spin.server_observations import set_capture_directory
+
+from tester_spin.return_to_base import audit_enabled, audit_blocked, pending_return
+
 import json
 import threading
 import time
@@ -75,6 +79,19 @@ def _persist_protocol_metadata(provider, game: Game, runtime: RubyPlayRuntime) -
     path.write_text(json.dumps(current, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def select_probe_plan(profile: RubyPlayClientProfile | None, feature_type: str, repetitions: int) -> list[int]:
+    """Exercise client candidates in demo without claiming a complete domain."""
+    indices = [0]
+    if profile is not None and feature_type == "select":
+        for evidence in profile.index_domain_evidence:
+            if evidence.get("action") != "select" or not evidence.get("active_engine_constructor"):
+                continue
+            for value in evidence.get("candidate_indices", []):
+                if isinstance(value, int) and not isinstance(value, bool) and value >= 0 and value not in indices:
+                    indices.append(value)
+    return [indices[index % len(indices)] for index in range(max(repetitions, len(indices))) ]
+
+
 class RubyPlayExecutionMixin:
     def test_game(
         self,
@@ -112,6 +129,7 @@ class RubyPlayExecutionMixin:
                 artifact_dir=run_dir / "bootstrap",
             )
             profile = runtime.client_profile
+            _write_json(run_dir / "bootstrap" / "index-domain-evidence.json", profile.index_domain_evidence)
             game.symbol = runtime.launcher.gamename
             _persist_protocol_metadata(self, game, runtime)
 
@@ -193,7 +211,9 @@ class RubyPlayExecutionMixin:
             errors.append(message)
             progress(f"[{game.name}] RubyPlay bootstrap/init ERROR: {message}")
 
-        requested_total = repetitions * len(mode_specs)
+        for mode in mode_specs:
+            mode["select_probe_plan"] = select_probe_plan(profile, str(mode.get("feature_type") or ""), repetitions)
+        requested_total = sum(len(mode["select_probe_plan"]) for mode in mode_specs)
 
         def fresh_runtime(mode_id: str) -> RubyPlayRuntime:
             fresh_session = self._new_session()
@@ -213,7 +233,7 @@ class RubyPlayExecutionMixin:
         if runtime is not None and mode_specs:
             current_runtime = runtime
             for mode_index, mode in enumerate(mode_specs):
-                if stop_event.is_set():
+                if stop_event.is_set() or audit_blocked():
                     break
                 mode_id = str(mode["id"])
                 mode_kind = str(mode["kind"])
@@ -222,16 +242,19 @@ class RubyPlayExecutionMixin:
                     current_runtime = fresh_runtime(mode_id)
 
                 runtime_needs_refresh = False
-                for repetition in range(1, repetitions + 1):
-                    if stop_event.is_set():
+                mode_repetitions = len(mode["select_probe_plan"])
+                for repetition in range(1, mode_repetitions + 1):
+                    if stop_event.is_set() or audit_blocked():
                         break
                     if runtime_needs_refresh:
                         current_runtime.session.close()
                         current_runtime = fresh_runtime(mode_id)
                         runtime_needs_refresh = False
 
+                    current_runtime.preferred_select_index = mode["select_probe_plan"][repetition - 1]
                     attempt_dir = run_dir / mode_id / f"attempt-{repetition:05d}"
                     attempt_dir.mkdir(parents=True, exist_ok=True)
+                    set_capture_directory(attempt_dir)
                     attempt_started = time.monotonic()
                     warnings: list[str] = []
                     wire_steps = 0
@@ -349,6 +372,11 @@ class RubyPlayExecutionMixin:
                             warnings.append(
                                 f"ronda no terminal: next_action={current_runtime.next_action!r}"
                             )
+                        if audit_enabled():
+                            from tester_spin.provider_return_checks import rubyplay_check
+                            proof = rubyplay_check(current_runtime, attempt_dir, timeout_s, stop_event) if terminal and not warnings else pending_return(attempt_dir, 'Ronda anterior sin cierre validado')
+                            if proof['status'] != 'CONFIRMED':
+                                warnings.append('Regreso al juego base pendiente: '+proof['status'])
                         validated = terminal and not warnings
                         successes += int(validated)
                         global_warnings.extend(warnings)
@@ -371,7 +399,7 @@ class RubyPlayExecutionMixin:
                             )
                         )
                         progress(
-                            f"[{game.name}] {mode_id} {repetition}/{repetitions}: "
+                            f"[{game.name}] {mode_id} {repetition}/{mode_repetitions}: "
                             f"{'OK' if validated else 'PARCIAL'} {elapsed_ms:.0f} ms, "
                             f"steps={wire_steps}, bet={current_runtime.default_bet}, "
                             f"next={current_runtime.next_action}."
@@ -398,7 +426,7 @@ class RubyPlayExecutionMixin:
                             )
                         )
                         progress(
-                            f"[{game.name}] {mode_id} {repetition}/{repetitions}: ERROR {message}"
+                            f"[{game.name}] {mode_id} {repetition}/{mode_repetitions}: ERROR {message}"
                         )
 
             current_runtime.session.close()

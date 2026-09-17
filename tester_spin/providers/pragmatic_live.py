@@ -362,19 +362,55 @@ class PragmaticProvider(_PragmaticProvider):
         base_bet: float,
         timeout_s: float,
     ) -> HttpBootstrap:
-        # Each target mode must start from an idle session. A calibration spin can
-        # itself enter collect/free-spin state, so discard it and retry when needed.
-        last_state = ""
-        for _ in range(12):
-            bootstrap = super()._http_bootstrap(source_url, symbol, cver, base_bet, timeout_s)
-            last_state = str(bootstrap.calibration_response.get("na") or "")
-            feature_active = self._feature_active(bootstrap.calibration_response)
-            if last_state in {"", "s"} and not feature_active:
-                return bootstrap
+        # Calibration can trigger a deterministic first-round feature. Restarting
+        # twelve fresh demos just repeats it. Finish known actions on this session.
+        from uuid import uuid4
+        from tester_spin.return_to_base import audit_stop_event
+        bootstrap = super()._http_bootstrap(source_url, symbol, cver, base_bet, timeout_s)
+        trace = self.provider_root / "bootstrap-runs" / uuid4().hex
+        try:
+            trace.mkdir(parents=True, exist_ok=True)
+            self._write_http_bootstrap(trace, bootstrap)
+            bootstrap.preparation_dir = str(trace)
+            in_bonus = False
+            previous_action = "doSpin"
+            for step in range(2048):
+                stop = audit_stop_event()
+                if stop is not None and stop.is_set():
+                    raise InterruptedError("Detención solicitada durante calibración")
+                last = bootstrap.calibration_response
+                from tester_spin.providers.pragmatic_protocol import server_error
+                error = server_error(last)
+                if error not in (None, "", "0"):
+                    raise RuntimeError(f"Calibración rechazada: {error}; evidencia={trace}")
+                state = str(last.get("na") or "")
+                if (state == "s" or (not state and previous_action in {"doCollect", "doCollectBonus"})) and not self._feature_active(last):
+                    return bootstrap
+                action = {"s": "doSpin", "b": "doBonus", "c": "doCollect", "cb": "doCollectBonus", "bc": "doCollectBonus"}.get(state)
+                if state == "b":
+                    in_bonus = True
+                elif state == "c" and in_bonus:
+                    action = "doCollectBonus"
+                if action is None:
+                    raise RuntimeError(f"Calibración pendiente: na={state!r}; evidencia={trace}")
+                fields = dict(bootstrap.spin_template)
+                fields.pop("pur", None)
+                fields.update(action=action,
+                              index=str((_int(last.get("index")) or _int(fields.get("index")) or 1) + 1),
+                              counter=str((_int(last.get("counter")) or _int(fields.get("counter")) or 1) + 1))
+                code, raw, parsed, _ = self._post_and_store(bootstrap, fields, trace,
+                    step=step, label="calibration-continuation", timeout_s=timeout_s)
+                if code >= 400:
+                    raise RuntimeError(f"Calibración HTTP {code}; evidencia={trace}")
+                previous_action = action
+                bootstrap.calibration_request_raw = urlencode(fields)
+                bootstrap.calibration_response_raw = raw
+                bootstrap.calibration_response = parsed
+                bootstrap.spin_template.update(index=fields["index"], counter=fields["counter"])
+            raise RuntimeError(f"Calibración sin cierre tras 2048 pasos; evidencia={trace}")
+        except BaseException:
             bootstrap.session.close()
-        raise RuntimeError(
-            f"no se obtuvo una sesión idle tras 12 calibraciones; último na={last_state!r}"
-        )
+            raise
 
     def test_game(
         self,

@@ -298,6 +298,8 @@ def post_command(
             headers=headers,
             timeout=timeout_s,
         )
+        from tester_spin.server_observations import observe_http
+        observe_http(response, action=command, request=payload)
         response.raise_for_status()
     except Exception:
         record_wire(payload, failed=True)

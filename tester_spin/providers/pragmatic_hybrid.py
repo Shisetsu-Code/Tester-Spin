@@ -84,6 +84,11 @@ class PragmaticProvider(_EndpointPragmaticProvider):
             progress=progress,
         )
 
+        from tester_spin.providers.pragmatic_reel_coverage import expand_reel_choices
+        result = expand_reel_choices(self, game, result, spins=spins, timeout_s=timeout_s,
+            stop_event=stop_event, progress=progress)
+        from tester_spin.providers.pragmatic_bonus_coverage import annotate_bonus_coverage
+        annotate_bonus_coverage(result)
         if result.run_dir:
             run_root = Path(result.run_dir)
             summary = summarize_analysis_files(run_root)

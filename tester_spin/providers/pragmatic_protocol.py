@@ -170,6 +170,14 @@ def _group_presence(fields: dict[str, str], groups: dict[str, tuple[str, ...]]) 
     return result
 
 
+def server_error(fields: dict[str, str]) -> str:
+    for key in ("error", "err", "errorCode", "frozen", "ext_code"):
+        value = fields.get(key)
+        if value not in (None, "", "0", 0):
+            return str(value)
+    return ""
+
+
 def analyze_response(fields: dict[str, str]) -> dict[str, Any]:
     """Classify one Pragmatic gameService response without discarding unknowns.
 
@@ -182,14 +190,9 @@ def analyze_response(fields: dict[str, str]) -> dict[str, Any]:
     feature_groups = _group_presence(normalized, FEATURE_GROUPS)
     value_groups = _group_presence(normalized, VALUE_GROUPS)
     explicit_actions = _explicit_actions(normalized)
-    feature_active = any(group in CONTINUATION_GROUPS for group in feature_groups)
+    feature_active = any(group in CONTINUATION_GROUPS and not (group == "respins" and normalized.get("rs_t") not in (None, "")) for group in feature_groups)
 
-    error_value = (
-        normalized.get("error")
-        or normalized.get("err")
-        or normalized.get("errorCode")
-        or ""
-    )
+    error_value = server_error(normalized)
 
     automatic_handler = ""
     terminal_hint = False

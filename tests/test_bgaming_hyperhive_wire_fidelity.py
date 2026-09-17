@@ -49,7 +49,7 @@ class BGamingHyperHiveWireFidelityTests(unittest.TestCase):
                                 "text": json.dumps(request_payload),
                             },
                         },
-                        "response": {"status": 200, "content": {"text": "{}"}},
+                        "response": {"status": 200, "content": {"text": '{"result":{}}'}},
                     }
                 ],
             }
@@ -99,7 +99,7 @@ class BGamingHyperHiveWireFidelityTests(unittest.TestCase):
                             "url": "https://demo.bgaming-network.com/api",
                             "postData": {"text": json.dumps(request_payload)},
                         },
-                        "response": {"status": 200},
+                        "response": {"status": 200, "content": {"text": '{"result":{}}'}},
                     }
                 ]
             }
