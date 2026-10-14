@@ -232,3 +232,28 @@ su contrato de precio y decisión. Casino Win Spin/Coins of Fortune y las identi
 o versiones de cliente no reconocidas también conservan sus diagnósticos propios.
 No se necesita repetir un HAR para diagnosticar estos estados: las respuestas
 de las pruebas Demo quedan guardadas en data/providers/nolimit_city.
+
+
+### Giro extra cotizado y fases automáticas (Bizarre, 14/10/2026)
+
+La inicialización de la Demo declara cuatro compras FREESPIN y dos opciones
+BOOSTED_BET. La cuenta proviene de la tabla y selectores del servidor.
+El HAR aportado contiene 183 intercambios y 19 rondas; no contiene init.
+Su saldo final se concilia con la configuración recuperada en una Demo nueva.
+
+En el perfil con boostedBet, isExtraSpin e isSuperFreespins booleanos,
+FREESPIN_TRIGGER y COIN_SPIN usan zeroBet sin cargo adicional, con contador de
+free spins cero y sin extra spin activo ni precio pendiente. EXTRA_SPIN es una
+decisión: el cliente actual debe declarar zeroBet con playExtraSpin=yes y no.
+Se cubren ambos valores por compra repitiendo la raíz cuando haga falta.
+El precio es game.extraSpinCost de la respuesta anterior, nunca un valor fijo.
+
+Aceptar exige premio acumulado suficiente, un giro adicional y win igual al
+negativo del precio cotizado. Este coste se descuenta del premio acumulado;
+no modifica el número de compras del catálogo. Rechazar debe liquidar con win=0.
+El ledger contrasta la acumulación y el saldo final; otros premios negativos,
+precios contradictorios o peticiones no contrastadas siguen bloqueados.
+Los contratos exportan la plantilla playExtraSpin y su regla monetaria.
+
+Bizarre dio OK en una sesión nueva, con las opciones declaradas y retorno normal.
+La implementación usa firmas y estados de protocolo, sin excepciones por juego.

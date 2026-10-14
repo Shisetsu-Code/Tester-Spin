@@ -100,8 +100,18 @@ class NolimitSession:
             response=self.http.get(target,timeout=self.timeout);response.raise_for_status()
             if len(response.content)>MAX_BODY:raise Unlearned('Nolimit City: cliente excede el límite de descubrimiento')
             self.choice_client=response.text
-        try:domain=choice_domain(self.choice_client,answer)
-        except ValueError as exc:raise Unlearned(str(exc)) from exc
+        game=answer.get('game') or {}
+        if _extra_response(game) and game.get('nextMode')=='EXTRA_SPIN':
+            if not all(re.search(r'zeroBet\(\{playExtraSpin:[\"\']'+value+r'[\"\']\}\)',self.choice_client) for value in ('yes','no')):
+                raise Unlearned('Nolimit City: cliente no declara ambas decisiones del extra spin')
+            price=_money(game.get('extraSpinCost'),positive=True)
+            if _money(game.get('accumulatedRoundWin'))<price:
+                raise Unlearned('Nolimit City: premio insuficiente para cubrir ambas decisiones del extra spin')
+            domain={'state':'EXTRA_SPIN','options':['yes','no'],'available':['yes','no'],
+                'ack_field':'extra_spin_transition','request_field':'playExtraSpin','price_source':'game.extraSpinCost'}
+        else:
+            try:domain=choice_domain(self.choice_client,answer)
+            except ValueError as exc:raise Unlearned(str(exc)) from exc
         key=(root_id,domain['state']);known=self.choice_domains.get(key)
         if known is None:
             known={**domain,'covered':[]};self.choice_domains[key]=known
@@ -110,11 +120,16 @@ class NolimitSession:
         selected=next((option for option in domain['available'] if option not in known['covered']),domain['available'][0])
         self.pending_choice=(domain,selected,key)
         save(directory/'choice-domain.json',{**domain,'selected':selected,'root_mode':root_id})
-        return {'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':str(selected)}}
+        return {'type':'zeroBet','bet':'0.00','playerInteraction':{domain.get('request_field','selectedIndex'):str(selected)}}
     def confirm_pending_choice(self,answer):
         if self.pending_choice is None:return
         from .choices import confirm_choice
-        domain,selected,key=self.pending_choice;confirm_choice(domain,selected,answer)
+        domain,selected,key=self.pending_choice
+        if domain.get('request_field')=='playExtraSpin':
+            game=answer.get('game') or {}
+            if game.get('mode')!='EXTRA_SPIN' or (selected=='yes' and (game.get('nextMode')!='FREESPIN' or game.get('isExtraSpin') is not True)) or (selected=='no' and game.get('nextMode')!='NORMAL'):
+                raise Unlearned('Nolimit City: decisión extra spin no confirmada')
+        else:confirm_choice(domain,selected,answer)
         covered=self.choice_domains[key]['covered']
         if selected not in covered:covered.append(selected)
         self.pending_choice=None
@@ -133,6 +148,10 @@ def _boosted_response(game):
         'accumulatedRoundWin','mode','nextMode','freespinsLeft','freespinsPlayed'))
         and ('win' in game or 'totalSpinWinnings' in game))
 
+
+def _extra_response(game):
+    return (_boosted_response(game) and type(game.get('isExtraSpin')) is bool
+        and type(game.get('isSuperFreespins')) is bool)
 
 def _category_response(game):
     return (all(key in game for key in ('featureBet','numberOfFreespinsPlayed',
@@ -289,8 +308,12 @@ def normalized_response(answer, declared_options=(), declared_categories=(),decl
         if 'win' in game and _money(game['win'])!=_money(step):
             raise ValueError('Nolimit City: indicadores de premio contradictorios')
         game['win']=step
+    if _extra_response(game):
+        if 'wasExtraSpin' in (answer.get('game') or {}) and answer['game']['wasExtraSpin'] is not game['isExtraSpin']:
+            raise ValueError('Nolimit City: indicadores de extra spin contradictorios')
+        game['wasExtraSpin']=game['isExtraSpin']
     features=answer.get('features')
-    if (batch_dialect or category_dialect) and isinstance(features,dict):
+    if (batch_dialect or category_dialect or _extra_response(game)) and isinstance(features,dict):
         active=features.get('active','')
         free_modes={'FREESPIN','SUPER_FREESPIN','FREESPIN_SUPER','FREESPIN_BETTER','FREESPIN_AVALANCHE','SUPER_FREESPIN_AVALANCHE'}
         active_free=(((active in free_modes and (active in declared_options or (declared_purchase_options and active==game.get('nextMode'))))
@@ -330,8 +353,8 @@ class RoundLedger:
         self.before=_money(before);self.mode=mode;self.stake=_money(mode['stake'],positive=True)
         self.cost=(self.stake*_money(mode['price_multiplier'],positive=True)).quantize(Decimal('.01'),rounding=ROUND_HALF_UP)
         if self.cost>self.before:raise Unlearned('Nolimit City: saldo Demo insuficiente para la opción declarada')
-        self.win=Decimal(0);self.steps=0;self.after=self.before;self.closed=False;self.had_feature=False
-    def accept(self,answer):
+        self.win=Decimal(0);self.steps=0;self.after=self.before;self.closed=False;self.had_feature=False;self.previous=None;self.extra_played=False;self.extra_cost=Decimal(0)
+    def accept(self,answer,request=None):
         answer=normalized_response(answer,self.mode.get('declared_feature_options',()),self.mode.get('declared_feature_categories',()),self.mode.get('declared_purchase_options',()))
         game=answer.get('game')
         if not isinstance(game,dict):raise Unlearned('Nolimit City: falta estado de juego')
@@ -343,8 +366,26 @@ class RoundLedger:
                 if game.get('wasFeatureBuy') is not False or game.get('wasBoostedBet') is not True:raise ValueError('Nolimit City: modificador no confirmado')
             elif game.get('wasFeatureBuy') is not False or game.get('wasBoostedBet') is not False:
                 raise ValueError('Nolimit City: giro normal con modificador inexplicado')
-        if game.get('wasExtraSpin') is not False:raise Unlearned('Nolimit City: extra spin sin contrato aprendido')
-        self.steps+=1;self.win+=_money(game.get('win'))
+        delta=None
+        previous=self.previous or {}
+        if _extra_response(previous) and previous.get('nextMode')=='EXTRA_SPIN':
+            interaction=(request or {}).get('playerInteraction') or {}
+            selected=interaction.get('playExtraSpin')
+            if (request or {}).get('type')!='zeroBet' or _money((request or {}).get('bet'))!=0 or set(interaction)!={'playExtraSpin'} or selected not in ('yes','no'):
+                raise Unlearned('Nolimit City: decisión extra spin sin petición contrastada')
+            price=_money(previous.get('extraSpinCost'),positive=True)
+            if not _extra_response(game) or game.get('mode')!='EXTRA_SPIN' or _money(game.get('extraSpinCost'),positive=True)!=price:
+                raise Unlearned('Nolimit City: precio o transición extra spin no confirmado')
+            if selected=='yes':
+                if self.win<price or game.get('isExtraSpin') is not True or game.get('nextMode')!='FREESPIN' or game.get('freespinsLeft')!=1 or Decimal(str(game.get('win')))!=-price:
+                    raise ValueError('Nolimit City: descuento del giro extra no coincide con la cotización')
+                delta=-price;self.extra_cost+=price;self.extra_played=True
+            elif game.get('nextMode')!='NORMAL' or _money(game.get('win'))!=0:
+                raise ValueError('Nolimit City: rechazo extra spin sin liquidación')
+        if game.get('wasExtraSpin') is not False and not (_extra_response(game) and self.extra_played):
+            raise Unlearned('Nolimit City: extra spin sin contrato aprendido')
+        self.steps+=1;self.win+=_money(game.get('win')) if delta is None else delta
+        self.previous=dict(game)
         if self.win!=_money(game.get('accumulatedRoundWin')):raise ValueError('Nolimit City: premio acumulado incoherente')
         self.closed=_closed(answer);self.had_feature|=game.get('nextMode')!='NORMAL'
         expected=self.before-self.cost+(self.win if self.closed else Decimal(0))
@@ -357,7 +398,7 @@ class RoundLedger:
         elif self.steps==1 or self.closed:raise ValueError('Nolimit City: falta saldo al apostar o liquidar')
         return self.closed
     def proof(self):return {'schema':MONETARY,'before':str(self.before),'cost':str(self.cost),'win':str(self.win),
-                           'after':str(self.after),'steps':self.steps,'closed':self.closed,'had_feature':self.had_feature}
+                           'after':str(self.after),'steps':self.steps,'closed':self.closed,'had_feature':self.had_feature,'extra_spin_cost':str(self.extra_cost)}
 
 def continuation(answer,*,declared_options=(),declared_categories=(),declared_purchase_options=()):
     explicit_no_extra=(answer.get('game') or {}).get('wasExtraSpin') is False
@@ -373,6 +414,9 @@ def continuation(answer,*,declared_options=(),declared_categories=(),declared_pu
     if _pending_auto_phase(answer,game,explicit_no_extra=explicit_no_extra):return {'type':'zeroBet','bet':'0.00'}
     if (_batch_response(game) and game.get('nextMode') in declared_purchase_options
             and type(left) is int and left>0):return {'type':'zeroBet','bet':'0.00'}
+    if (_extra_response(game) and game.get('nextMode') in ('FREESPIN_TRIGGER','COIN_SPIN')
+            and game.get('isExtraSpin') is False and type(left) is int and left==0
+            and game.get('extraSpinCost',0)==0):return {'type':'zeroBet','bet':'0.00'}
     if _boosted_response(game):
         if game.get('nextMode')=='RESPIN' and type(game.get('respinsLeft')) is int and game['respinsLeft']>0:
             return {'type':'zeroBet','bet':'0.00'}

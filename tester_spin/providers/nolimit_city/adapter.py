@@ -17,9 +17,13 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
         'websocket_path':'/EjsGameWeb/ws/game','outbound_codec':'RC4_HEX_JSON','inbound_codec':'LZW_JSON',
         'protocol':'@nolimitcity/game-communication@0.4.1','free_spin_continuation':{'type':'zeroBet','bet':'0.00'},
         'selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
+        'extra_spin_selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
+        'extra_spin_monetary_contract':{'price':'previous.game.extraSpinCost','funding':'accumulatedRoundWin',
+            'yes_ack':'mode=EXTRA_SPIN,nextMode=FREESPIN,freespinsLeft=1,isExtraSpin=true,win=-quoted_price',
+            'no_ack':'mode=EXTRA_SPIN,nextMode=NORMAL,win=0','settlement':'initial_balance-root_cost+net_accumulated_win'},
         'choice_domain_source':'current_client_static_ids_or_server_array_with_client_verified_bounds',
-        'response_aliases':{'boostedBet':'wasBoostedBet','boostedBetPlayed':'wasBoostedBet','enhancedBet':'wasBoostedBet_bool_or_nonnegative_enum','step_win':['thisSpinWinning','thisSpinWinnings','totalSpinWinnings'],'scope':'proven_monetary_response_signatures','wasExtraSpin':'optional_false_in_proven_signatures_explicit_true_rejected'},
-        'additional_zero_bet_modes':{'RESPIN':'positive_integer_respinsLeft','FREESPIN_MINIGAME':'positive_integer_freespinsLeft','scope':'proven_boosted_signature','avalanches':'pending_win_and_recorded_state_shape','avalanche_respins':'recorded_state_shape_zero_extra_cost_explicit_no_extra_spin','stacked_free_respin':'stackedSpinTriggered_and_positive_freespinsLeft'},
+        'response_aliases':{'boostedBet':'wasBoostedBet','boostedBetPlayed':'wasBoostedBet','enhancedBet':'wasBoostedBet_bool_or_nonnegative_enum','step_win':['thisSpinWinning','thisSpinWinnings','totalSpinWinnings'],'scope':'proven_monetary_response_signatures','wasExtraSpin':'isExtraSpin_alias_only_in_proven_extra_signature_other_explicit_true_rejected'},
+        'additional_zero_bet_modes':{'RESPIN':'positive_integer_respinsLeft','FREESPIN_MINIGAME':'positive_integer_freespinsLeft','scope':'proven_boosted_signature','FREESPIN_TRIGGER_or_COIN_SPIN':'proven_extra_signature_zero_freespins_no_extra_cost_no_extra_spin','avalanches':'pending_win_and_recorded_state_shape','avalanche_respins':'recorded_state_shape_zero_extra_cost_explicit_no_extra_spin','stacked_free_respin':'stackedSpinTriggered_and_positive_freespinsLeft'},
         'request_identity_scope':'one_exchange_not_round','declaration_source':'init.game.featureBuyTimesBetValue'})
 
 
@@ -113,7 +117,7 @@ class NolimitCityProvider(ProviderAdapter):
                         from .runtime import sanitized
                         save(directory/f'{step:03d}.response.json',sanitized(answer))
                         attempt.wire_steps=step
-                        done=ledger.accept(answer)
+                        done=ledger.accept(answer,request=content)
                         confirm=getattr(session,'confirm_pending_choice',None)
                         if confirm:confirm(answer)
                         save(directory/'ledger.json',ledger.proof())
@@ -199,6 +203,9 @@ class NolimitCityProvider(ProviderAdapter):
         if any((mode.get('options') or {}).get('choice_domains') for mode in contract.get('modes',[])):
             if static.get('selection_primitive')!=SPEC.protocol_static['selection_primitive']:
                 errors.append('NOLIMIT_SELECTION_PRIMITIVE_REQUIRED')
+        if any(domain.get('request_field')=='playExtraSpin' for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])):
+            for key in ('extra_spin_selection_primitive','extra_spin_monetary_contract'):
+                if static.get(key)!=SPEC.protocol_static[key]:errors.append('NOLIMIT_EXTRA_SPIN_CONTRACT_REQUIRED')
         if any(set(domain.get('options',[]))-set(domain.get('covered',[])) for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])):
             errors.append('NOLIMIT_CHOICES_NOT_COVERED')
         return list(dict.fromkeys(errors))
