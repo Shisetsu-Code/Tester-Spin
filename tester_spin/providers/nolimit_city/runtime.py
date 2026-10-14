@@ -25,13 +25,14 @@ def sanitized(data):
 
 class NolimitSession:
     def __init__(self):
-        self.socket=None;self.rows=[];self.capture=None;self.remembered={};self.counter=0;self.uuid=uuid.uuid4().hex
+        self.socket=None;self.rows=[];self.capture=None;self.remembered={};self.counter=0;self.uuid=uuid.uuid4().hex;self.choice_domains={};self.pending_choice=None;self.choice_client=None
     def open(self,game,http,timeout,stop,directory):
         self.timeout=max(.1,float(timeout));self.stop=stop
         response=http.get(CDN+game.symbol+'/info.json',timeout=self.timeout);response.raise_for_status()
         info=response.json();version=info.get('version')
         if info.get('name')!=game.symbol or not isinstance(version,str) or not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+',version):
             raise Unlearned('Nolimit City: identidad o versión de cliente desconocida')
+        self.client_info=info;self.http=http;self.choice_root=directory
         save(directory/'client-info.json',info)
         payload={'action':'open_game','clientString':'FANPAGE_DEMO','language':'en','gameCodeString':game.symbol+'@desktop'}
         save(directory/'bootstrap-request.json',payload)
@@ -91,6 +92,36 @@ class NolimitSession:
             self.remembered={'extPlayerKey':ext}
         return answer
     def exchange(self,content,directory):return self._exchange(content,directory)
+    def choice_command(self,answer,directory,root_id):
+        from .choices import choice_domain
+        if self.choice_client is None:
+            info=self.client_info
+            target=CDN+info['name']+'/'+info['version']+'/game.js'
+            response=self.http.get(target,timeout=self.timeout);response.raise_for_status()
+            if len(response.content)>MAX_BODY:raise Unlearned('Nolimit City: cliente excede el límite de descubrimiento')
+            self.choice_client=response.text
+        try:domain=choice_domain(self.choice_client,answer)
+        except ValueError as exc:raise Unlearned(str(exc)) from exc
+        key=(root_id,domain['state']);known=self.choice_domains.get(key)
+        if known is None:
+            known={**domain,'covered':[]};self.choice_domains[key]=known
+        elif known['options']!=domain['options'] or known['ack_field']!=domain['ack_field']:
+            raise Unlearned('Nolimit City: dominio de elección cambió durante la prueba')
+        selected=next((option for option in domain['available'] if option not in known['covered']),domain['available'][0])
+        self.pending_choice=(domain,selected,key)
+        save(directory/'choice-domain.json',{**domain,'selected':selected,'root_mode':root_id})
+        return {'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':str(selected)}}
+    def confirm_pending_choice(self,answer):
+        if self.pending_choice is None:return
+        from .choices import confirm_choice
+        domain,selected,key=self.pending_choice;confirm_choice(domain,selected,answer)
+        covered=self.choice_domains[key]['covered']
+        if selected not in covered:covered.append(selected)
+        self.pending_choice=None
+    def sync_choices(self,mode):
+        mode['choice_domains']=[{k:v for k,v in domain.items() if k not in ('available','before')}
+            for (root_id,state),domain in self.choice_domains.items() if root_id==mode['id']]
+        return all(set(domain['options'])<=set(domain['covered']) for domain in mode['choice_domains'])
     def close(self):
         if self.capture is not None:save(self.capture_path,self.capture)
         if self.socket is not None:
@@ -111,11 +142,39 @@ def _category_response(game):
             and game['mode']=='NORMAL' and game['numberOfFreespinsPlayed']==0)))
 
 
+def _batch_response(game):
+    core=all(key in game for key in ('wasFeatureBuy','playedBetValue','accumulatedRoundWin',
+        'totalSpinWinnings','mode','nextMode','freespinsLeft'))
+    counter=any(type(game.get(key)) is int and game[key]>=0
+        for key in ('freespinsPlayed','freeSpinsPlayed','numberOfFreespinsPlayed'))
+    marker=any(type(game.get(key)) is bool for key in ('boostedBet','boostedBetPlayed','enhancedBet'))
+    numeric_enhanced=type(game.get('enhancedBet')) is int and game['enhancedBet']>=0
+    return core and counter and (marker or numeric_enhanced)
+
+
+def _pending_auto_phase(answer,game,*,explicit_no_extra=False):
+    next_mode=game.get('nextMode');left=game.get('freespinsLeft')
+    if (_category_response(game) and next_mode=='STACKED_RESPIN_FREESPIN'
+            and answer.get('pendingWin') is True and game.get('stackedSpinTriggered') is True
+            and type(left) is int and left>0):return True
+    if not _batch_response(game):return False
+    state_shape=any(isinstance(game.get(key),list) and game[key]
+        for key in ('reelsAfterCollapse','reelsAfterAvalanche','symbolsAfterTumbleForClient'))
+    respins={'NORMAL_AVALANCHE_RESPIN','FREESPIN_AVALANCHE_RESPIN','SUPER_FREESPIN_AVALANCHE_RESPIN'}
+    if next_mode in respins and state_shape and explicit_no_extra and game.get('wasExtraSpin') is False:
+        return _money(game.get('extraSpinCost'))==0
+    avalanche=next_mode in {'NORMAL_AVALANCHE','FREESPIN_AVALANCHE','SUPER_FREESPIN_AVALANCHE'}
+    return bool(answer.get('pendingWin') is True and avalanche and state_shape and _money(game.get('win'))>0)
+
+
 def require_idle_initial_state(init):
     game=init.get('game') or {};available=(init.get('features') or {}).get('available',[])
     idle=(game.get('nextMode')=='NORMAL' and type(game.get('freespinsLeft')) is int
         and game['freespinsLeft']==0 and init.get('remainingFreeSpins')==0)
-    category_catalog=(available==['FREESPINS'] and game.get('isRestoreState') is False
+    advertised=init.get('allowedFeatureBets') or []
+    exact_catalog=(isinstance(available,list) and available and len(available)==len(set(available))
+        and set(available)==set(advertised))
+    category_catalog=((available==['FREESPINS'] or exact_catalog) and game.get('isRestoreState') is False
         and game.get('mode')=='NORMAL' and type(game.get('numberOfFreespinsPlayed')) is int
         and game['numberOfFreespinsPlayed']==0 and game.get('freespinTriggeredThisSpin') is False
         and game.get('wasFeatureBuy') is False)
@@ -129,6 +188,7 @@ def declaration(init, *, require_idle=True):
     if not isinstance(game,dict) or not isinstance(config,dict) or not isinstance(levels,dict) or not isinstance(types,list):
         raise Unlearned('Nolimit City: declaración incompleta de opciones y apuestas')
     table=game.get('featureBuyTimesBetValue')
+    if table is None and allowed==[]:table=[]
     if not isinstance(table,list) or not isinstance(allowed,list) or any(not isinstance(v,str) or not v for v in allowed) or len(set(allowed))!=len(allowed):
         raise Unlearned('Nolimit City: dominio de opciones ausente o inválido')
     quotes={}
@@ -167,6 +227,9 @@ def declaration(init, *, require_idle=True):
     # BOOSTED_BET proves its server category, not an antebet UI role.
     for mode in modes:
         mode['declared_feature_options']=list(allowed)
+        mode['declared_purchase_options']=[item['selector'] for item in modes if item['kind']=='PURCHASE']
+        mode['declared_feature_categories']=[category for category,kind in [('BONUS_BUY','PURCHASE'),('BOOSTED_BET','FEATURE_SPIN')]
+            if any(item['kind']==kind for item in modes)]
         mode['wire_command']='normalBet' if mode['kind']=='SPIN' else 'featureBet'
         mode.update(executable=mode['kind']!='UNKNOWN_FEATURE',validated=False,coverage_required=True,
                     covered_options=[],sample_counts={},evidence_level='SERVER_ADVERTISED',observed=False,
@@ -174,9 +237,10 @@ def declaration(init, *, require_idle=True):
                         {'type':'featureBet','bet':mode['stake'],'featureName':mode['selector'],'playerInteraction':{'featureName':mode['selector']}})
     return modes,domains
 
-def normalized_response(answer, declared_options=()):
+def normalized_response(answer, declared_options=(), declared_categories=(),declared_purchase_options=()):
     """Normalize proven server fields without treating catalog entries as choices."""
     answer=dict(answer);game=dict(answer.get('game') or {})
+    explicit_no_extra=game.get('wasExtraSpin') is False
     legacy=all(key in game for key in ('thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft'))
     if legacy:
         if type(game['enhancedBet']) is not bool:raise Unlearned('Nolimit City: indicador enhancedBet inválido')
@@ -202,12 +266,49 @@ def normalized_response(answer, declared_options=()):
         # All normal/feature/zeroBet steps of these captured dialects omit this
         # optional acknowledgment. Explicit extra spins remain unsupported.
         if 'wasExtraSpin' not in game:game['wasExtraSpin']=False
-        if 'totalSpinWinnings' in game:
+        if 'totalSpinWinnings' in game and not _batch_response(game):
             if 'win' in game and _money(game['win'])!=_money(game['totalSpinWinnings']):
                 raise ValueError('Nolimit City: indicadores de premio contradictorios')
             game['win']=game['totalSpinWinnings']
         if game.get('nextMode')=='NORMAL' and game.get('respinsLeft',0)!=0:
             raise Unlearned('Nolimit City: respin todavía pendiente')
+    batch_dialect=_batch_response(game)
+    if batch_dialect:
+        flags=[]
+        for key in ('boostedBet','boostedBetPlayed','enhancedBet'):
+            if key not in game:continue
+            value=game[key]
+            if type(value) is bool:flags.append(value)
+            elif key=='enhancedBet' and type(value) is int and value>=0:flags.append(value>0)
+            else:raise Unlearned('Nolimit City: indicador de apuesta mejorada inválido: '+key)
+        if len(set(flags))!=1 or ('wasBoostedBet' in game and game['wasBoostedBet'] is not flags[0]):
+            raise ValueError('Nolimit City: indicadores de apuesta mejorada contradictorios')
+        game['wasBoostedBet']=flags[0]
+        if 'wasExtraSpin' not in game:game['wasExtraSpin']=False
+        step=game.get('thisSpinWinning',game.get('thisSpinWinnings',game['totalSpinWinnings']))
+        if 'win' in game and _money(game['win'])!=_money(step):
+            raise ValueError('Nolimit City: indicadores de premio contradictorios')
+        game['win']=step
+    features=answer.get('features')
+    if (batch_dialect or category_dialect) and isinstance(features,dict):
+        active=features.get('active','')
+        free_modes={'FREESPIN','SUPER_FREESPIN','FREESPIN_SUPER','FREESPIN_BETTER','FREESPIN_AVALANCHE','SUPER_FREESPIN_AVALANCHE'}
+        active_free=(((active in free_modes and (active in declared_options or (declared_purchase_options and active==game.get('nextMode'))))
+                or (category_dialect and active=='FREESPINS'))
+            and (game.get('nextMode') in free_modes or (game.get('mode') in free_modes
+                and game.get('nextMode')=='NORMAL' and game.get('freespinsLeft')==0)))
+        active_auto=active in ('STACKED_RESPIN_FS','RESPIN') and _pending_auto_phase(answer,game,explicit_no_extra=explicit_no_extra)
+        if active not in ('',None) and not (active_free or active_auto):
+            raise Unlearned('Nolimit City: función activa sin primitiva aprendida: '+str(active))
+        if 'available' not in features:
+            answer['features']={**features,'available':[]}
+        else:
+            items=features['available']
+            if (isinstance(items,list) and items and all(isinstance(item,str) for item in items)
+                    and len(items)==len(set(items)) and (set(items)==set(declared_options)
+                    or (declared_categories and set(items)==set(declared_categories))
+                    or (declared_purchase_options and set(items)==set(declared_purchase_options)))):
+                answer['features']={**features,'available':[]}
     available=(answer.get('features') or {}).get('available')
     if (legacy and available and isinstance(available,list) and declared_options
             and all(isinstance(item,str) for item in available)
@@ -231,7 +332,7 @@ class RoundLedger:
         if self.cost>self.before:raise Unlearned('Nolimit City: saldo Demo insuficiente para la opción declarada')
         self.win=Decimal(0);self.steps=0;self.after=self.before;self.closed=False;self.had_feature=False
     def accept(self,answer):
-        answer=normalized_response(answer,self.mode.get('declared_feature_options',()))
+        answer=normalized_response(answer,self.mode.get('declared_feature_options',()),self.mode.get('declared_feature_categories',()),self.mode.get('declared_purchase_options',()))
         game=answer.get('game')
         if not isinstance(game,dict):raise Unlearned('Nolimit City: falta estado de juego')
         if self.steps==0:
@@ -258,8 +359,9 @@ class RoundLedger:
     def proof(self):return {'schema':MONETARY,'before':str(self.before),'cost':str(self.cost),'win':str(self.win),
                            'after':str(self.after),'steps':self.steps,'closed':self.closed,'had_feature':self.had_feature}
 
-def continuation(answer,*,declared_options=()):
-    answer=normalized_response(answer,declared_options)
+def continuation(answer,*,declared_options=(),declared_categories=(),declared_purchase_options=()):
+    explicit_no_extra=(answer.get('game') or {}).get('wasExtraSpin') is False
+    answer=normalized_response(answer,declared_options,declared_categories,declared_purchase_options)
     available=(answer.get('features') or {}).get('available')
     if available!=[]:raise Unlearned('Nolimit City: elección sin primitiva aprendida: '+json.dumps(available,ensure_ascii=True))
     game=answer.get('game') or {}
@@ -268,6 +370,9 @@ def continuation(answer,*,declared_options=()):
     stage_transition=(type(left) is int and left==0 and type(second) is int and second>0
         and game.get('firstStage') is True and game.get('secondStage') is False
         and all(key in game for key in ('thisSpinWinning','totalSpinWinnings','enhancedBet','featureName')))
+    if _pending_auto_phase(answer,game,explicit_no_extra=explicit_no_extra):return {'type':'zeroBet','bet':'0.00'}
+    if (_batch_response(game) and game.get('nextMode') in declared_purchase_options
+            and type(left) is int and left>0):return {'type':'zeroBet','bet':'0.00'}
     if _boosted_response(game):
         if game.get('nextMode')=='RESPIN' and type(game.get('respinsLeft')) is int and game['respinsLeft']>0:
             return {'type':'zeroBet','bet':'0.00'}

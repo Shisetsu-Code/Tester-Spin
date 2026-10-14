@@ -173,3 +173,62 @@ compras y tres apuestas mejoradas de Bangkok Hilton, y las tres compras y cuatro
 apuestas mejoradas de Brute Force, con cargos, premios acumulados, liquidación y
 dos giros normales de retorno. Las muestras reducidas de regresión no contienen
 sesiones ni credenciales. Son primitivas por estructura, sin excepciones por ID.
+
+
+## Registro de la tanda del 14/10/2026
+
+La tanda suministrada fue detenida al iniciar el juego 30 de 135; no era una prueba
+terminada del catálogo. Varios PARCIAL eran errores de interpretación compartidos.
+En perfiles monetarios reconocidos, features={} o features.active="" sin available
+no constituye una elección. available puede ser el catálogo completo de selectores,
+el catálogo completo de compras o las categorías BONUS_BUY/BOOSTED_BET derivadas
+de los tipos de las opciones permitidas en init. La comparación es exacta, sin
+duplicados; subconjuntos arbitrarios y elementos nuevos siguen bloqueados.
+Las categorías y selectores se exportan como parte del contrato de cada modo.
+
+Se reconocen enhancedBet booleano o enum entero no negativo, boostedBetPlayed y
+las variantes del contador freeSpinsPlayed/numberOfFreespinsPlayed. Los acuses
+coexistentes deben concordar. El premio por paso usa thisSpinWinning o
+thisSpinWinnings cuando aparecen; totalSpinWinnings puede ser acumulado por giro,
+por lo que no sustituye esos campos. La conciliación acumulada y de saldo permanece.
+
+features.active describe una fase. FREE/SUPER identificados por el servidor y
+STACKED_RESPIN_FS/RESPIN solo se aceptan en su contexto de continuación aprendido.
+Las avalanchas con premio pendiente y estado de carretes conocido usan zeroBet;
+las fases de respin de avalanche también requieren coste adicional cero y ausencia
+confirmada de extra spin. Una fase o decisión nueva sigue PARCIAL.
+
+### Elecciones declaradas por cliente y confirmadas por servidor
+
+Ante una fase sin continuación automática, el ejecutor consulta una sola vez el
+game.js de la versión que abrió la Demo. Solo extrae configuraciones acotadas:
+ASBonusPickOptions.PICK_MODE con IDs estáticos, o automaticPickGame con selectPick
+que elige posiciones de un array del servidor cuyo valor -1 significa pendiente.
+No ejecuta JavaScript ni deduce IDs por nombre del juego. En el array se contrasta
+el límite literal de randomIntInRange(0,N) con su longitud N+1.
+
+El comando aprendido es zeroBet, bet=0.00 y playerInteraction.selectedIndex como
+cadena. La respuesta debe confirmar playerSelect, o modificar la posición pendiente
+del array manteniendo su longitud y las posiciones anteriormente seleccionadas.
+Además, el ledger debe aceptar el resultado monetario. Se registran dominios y
+opciones cubiertas por compra; se repite la raíz si faltan elecciones, con límite
+de 16 repeticiones adicionales, presupuesto Demo y límite global de tiempo.
+El contrato exporta el comando de selección y no está listo con elecciones pendientes.
+
+Las nuevas pruebas completas dieron OK para Barbarian Fury, Beheaded, DDay,
+Dead Canary y Deadwood R.I.P. La verificación original de Bushido, Bangkok y
+Brute Force permanece cubierta por regresiones de rondas cerradas. Esto no
+certifica automáticamente los otros juegos del catálogo.
+
+### Pendientes reales
+
+BrickSnake 2000 tiene una decisión GAMBLE_FIFTY_FIFTY. El cliente publica una política
+automática constante, que no es un dominio completo de elecciones ni un contrato
+de cobro. No se asume que esa selección sea collect: la muestra observada duplicó
+el premio. Hace falta una primitiva explícita para su menú completo y el ledger
+del gamble antes de certificar esa fase.
+Disorder llega a EXTRA_SPIN_CHECK. No se acepta ni se cancela un extra spin sin
+su contrato de precio y decisión. Casino Win Spin/Coins of Fortune y las identidades
+o versiones de cliente no reconocidas también conservan sus diagnósticos propios.
+No se necesita repetir un HAR para diagnosticar estos estados: las respuestas
+de las pruebas Demo quedan guardadas en data/providers/nolimit_city.

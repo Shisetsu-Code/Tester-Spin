@@ -138,3 +138,15 @@ def test_unknown_initial_state_preserves_server_declared_counts_without_betting(
  assert feature_table_counts(result.to_dict())[0]==4
  assert len(result.feature_domains['purchase']['options'])==4
  assert all(not mode['validated'] for mode in result.discovered_modes)
+
+
+def test_choice_contract_contains_string_selection_primitive(tmp_path,monkeypatch):
+ provider,game,result=run(tmp_path,monkeypatch,Demo())
+ result.discovered_modes[1]['choice_domains']=[{'state':'ENDING_PICK','options':[7,9],'covered':[7,9],
+  'source':'CLIENT_STATIC_IDS','ack_field':'playerSelect'}]
+ contract=provider.build_farm_contract(game,result)
+ assert contract['protocol']['static']['selection_primitive']=={
+  'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}}
+ assert not provider.validate_farm_contract(contract)
+ contract['protocol']['static'].pop('selection_primitive')
+ assert 'NOLIMIT_SELECTION_PRIMITIVE_REQUIRED' in provider.validate_farm_contract(contract)

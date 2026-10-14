@@ -10,14 +10,16 @@ from tester_spin.providers.result_farm_contract import ProviderFarmSpec,build_re
 
 SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-lzw',
     bootstrap_strategy='nolimit-fanpage-new-demo',transport='websocket-rc4-lzw',
-    terminal_contract={'type':'provider','name':'nolimit-settled-round','nextMode':'NORMAL','freespinsLeft':0,'features.available':{'modern':'empty','legacy_freespin_category':{'available':['FREESPINS'],'required_fields':['featureBet','numberOfFreespinsPlayed','totalSpinWinnings','freespinTriggeredThisSpin','wasFeatureBuy','playedBetValue','accumulatedRoundWin','mode','nextMode','freespinsLeft'],'featureBet':'false_or_purchase_root'},'legacy_two_stage_enhanced_bet':'empty_or_exact_declared_catalog','source':'init.allowedFeatureBets','legacy_required_fields':['thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft']}},
-    mode_option_keys=('selector','server_type','stake','price_multiplier','request_shape','monetary_contract','declared_feature_options'),
+    terminal_contract={'type':'provider','name':'nolimit-settled-round','nextMode':'NORMAL','freespinsLeft':0,'features.available':{'modern':'empty','batch_catalog':{'source':['declared_feature_options','declared_purchase_options','declared_feature_categories'],'match':'exact_full_domain_with_proven_batch_or_category_signature'},'legacy_freespin_category':{'available':['FREESPINS'],'required_fields':['featureBet','numberOfFreespinsPlayed','totalSpinWinnings','freespinTriggeredThisSpin','wasFeatureBuy','playedBetValue','accumulatedRoundWin','mode','nextMode','freespinsLeft'],'featureBet':'false_or_purchase_root'},'legacy_two_stage_enhanced_bet':'empty_or_exact_declared_catalog','source':'init.allowedFeatureBets','legacy_required_fields':['thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft']}},
+    mode_option_keys=('selector','server_type','stake','price_multiplier','request_shape','monetary_contract','declared_feature_options','declared_feature_categories','declared_purchase_options','choice_domains'),
     runtime_outputs=('key','extPlayerKey'),protocol_static={'verification_contract':'nolimit-city/verified-runtime/v1',
         'bootstrap_endpoint':'https://demo.nolimitcity.com/EjsFrontWeb/fs','operator':'FANPAGE_DEMO',
         'websocket_path':'/EjsGameWeb/ws/game','outbound_codec':'RC4_HEX_JSON','inbound_codec':'LZW_JSON',
         'protocol':'@nolimitcity/game-communication@0.4.1','free_spin_continuation':{'type':'zeroBet','bet':'0.00'},
-        'response_aliases':{'boostedBet':'wasBoostedBet','totalSpinWinnings':'win','scope':'proven_boosted_or_freespin_category_signature','wasExtraSpin':'optional_false_in_proven_signatures_explicit_true_rejected'},
-        'additional_zero_bet_modes':{'RESPIN':'positive_integer_respinsLeft','FREESPIN_MINIGAME':'positive_integer_freespinsLeft','scope':'proven_boosted_signature'},
+        'selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
+        'choice_domain_source':'current_client_static_ids_or_server_array_with_client_verified_bounds',
+        'response_aliases':{'boostedBet':'wasBoostedBet','boostedBetPlayed':'wasBoostedBet','enhancedBet':'wasBoostedBet_bool_or_nonnegative_enum','step_win':['thisSpinWinning','thisSpinWinnings','totalSpinWinnings'],'scope':'proven_monetary_response_signatures','wasExtraSpin':'optional_false_in_proven_signatures_explicit_true_rejected'},
+        'additional_zero_bet_modes':{'RESPIN':'positive_integer_respinsLeft','FREESPIN_MINIGAME':'positive_integer_freespinsLeft','scope':'proven_boosted_signature','avalanches':'pending_win_and_recorded_state_shape','avalanche_respins':'recorded_state_shape_zero_extra_cost_explicit_no_extra_spin','stacked_free_respin':'stackedSpinTriggered_and_positive_freespinsLeft'},
         'request_identity_scope':'one_exchange_not_round','declaration_source':'init.game.featureBuyTimesBetValue'})
 
 
@@ -112,9 +114,16 @@ class NolimitCityProvider(ProviderAdapter):
                         save(directory/f'{step:03d}.response.json',sanitized(answer))
                         attempt.wire_steps=step
                         done=ledger.accept(answer)
+                        confirm=getattr(session,'confirm_pending_choice',None)
+                        if confirm:confirm(answer)
                         save(directory/'ledger.json',ledger.proof())
                         if done:break
-                        content=continuation(answer,declared_options=mode['declared_feature_options'])
+                        try:
+                            content=continuation(answer,declared_options=mode['declared_feature_options'],declared_categories=mode['declared_feature_categories'],declared_purchase_options=mode['declared_purchase_options'])
+                        except Unlearned:
+                            choose=getattr(session,'choice_command',None)
+                            if not choose:raise
+                            content=choose(answer,directory,mode['id'])
                     else:raise Unlearned('Nolimit City: ronda excede el límite de continuaciones')
                     before=ledger.after
                     attempt.ok=attempt.terminal=True;attempt.status_code=200
@@ -129,6 +138,12 @@ class NolimitCityProvider(ProviderAdapter):
                     raise
             for mode in jobs:
                 run_round(mode)
+                sync=getattr(session,'sync_choices',None)
+                if sync:
+                    for _ in range(16):
+                        if sync(mode):break
+                        run_round(mode)
+                    else:raise Unlearned('Nolimit City: elecciones declaradas sin cobertura completa')
                 progress(f"Nolimit City {game.name}: {mode['id']} OK.")
             if all(m['validated'] for m in result.discovered_modes):
                 consecutive=0
@@ -137,7 +152,10 @@ class NolimitCityProvider(ProviderAdapter):
                     if consecutive>=2:break
                 result.structural_map['nolimit_return']={'schema':'nolimit-city/verified-runtime/v1',
                     'status':'CONFIRMED' if consecutive>=2 else 'PENDING','consecutive_base':consecutive}
-                if consecutive>=2:result.status='OK'
+                if consecutive>=2:
+                    if getattr(session,'sync_choices',None) and not all(session.sync_choices(mode) for mode in result.discovered_modes):
+                        raise Unlearned('Nolimit City: elecciones declaradas sin cobertura completa')
+                    result.status='OK'
                 else:result.error='Nolimit City: retorno al giro normal no demostrado'
             else:result.error='Nolimit City: categorías declaradas todavía sin primitiva aprendida'
         except Unlearned as exc:
@@ -168,6 +186,8 @@ class NolimitCityProvider(ProviderAdapter):
         if (proof.get('schema')!='nolimit-city/verified-runtime/v1' or proof.get('status')!='CONFIRMED'
                 or proof.get('consecutive_base',0)<2 or not roots or any(m.get('monetary_contract')!=MONETARY for m in roots)):
             contract['ready']=False;contract['unresolved'].append('NOLIMIT_CURRENT_MONEY_AND_RETURN_REQUIRED')
+        if any(set(domain.get('options',[]))-set(domain.get('covered',[])) for mode in roots for domain in mode.get('choice_domains',[])):
+            contract['ready']=False;contract['unresolved'].append('NOLIMIT_CHOICES_NOT_COVERED')
         return contract
 
     def validate_farm_contract(self,contract):
@@ -176,4 +196,9 @@ class NolimitCityProvider(ProviderAdapter):
         if static.get('verification_contract')!='nolimit-city/verified-runtime/v1':errors.append('NOLIMIT_CURRENT_VERIFICATION_REQUIRED')
         if any((m.get('options') or {}).get('monetary_contract')!=MONETARY for m in contract.get('modes',[]) if m.get('kind') in {'SPIN','PURCHASE','FEATURE_SPIN'}):
             errors.append('NOLIMIT_CURRENT_MONEY_REQUIRED')
+        if any((mode.get('options') or {}).get('choice_domains') for mode in contract.get('modes',[])):
+            if static.get('selection_primitive')!=SPEC.protocol_static['selection_primitive']:
+                errors.append('NOLIMIT_SELECTION_PRIMITIVE_REQUIRED')
+        if any(set(domain.get('options',[]))-set(domain.get('covered',[])) for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])):
+            errors.append('NOLIMIT_CHOICES_NOT_COVERED')
         return list(dict.fromkeys(errors))
