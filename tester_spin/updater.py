@@ -15,8 +15,8 @@ from pathlib import Path
 from typing import Callable
 
 APP_NAME = "Tester-Spin"
-DEFAULT_REPO_URL = "https://github.com/Shisetsu-Code/Spin-Wire.git"
-DEFAULT_BRANCH = "feat/farm-contract-export-v1"
+DEFAULT_REPO_URL = "https://github.com/Shisetsu-Code/Tester-Spin.git"
+DEFAULT_BRANCH = "main"
 MANIFEST_SCHEMA = "tester-spin-update/v1"
 Status = Callable[[str], None]
 
@@ -55,11 +55,11 @@ class UpdaterConfig:
     def from_dict(cls, value: dict[str, object]) -> "UpdaterConfig":
         value = dict(value)
         if str(value.get("repo_url") or "").rstrip('/') in {
-            "https://github.com/Shisetsu-Code/Tester-Spin.git",
-            "https://github.com/Shisetsu-Code/Tester-Spin",
+            "https://github.com/Shisetsu-Code/Spin-Wire.git",
+            "https://github.com/Shisetsu-Code/Spin-Wire",
         }:
             value["repo_url"] = DEFAULT_REPO_URL
-            if str(value.get("branch") or "main") == "main":
+            if str(value.get("branch") or "main") in {"main", "feat/farm-contract-export-v1"}:
                 value["branch"] = DEFAULT_BRANCH
         return cls(
             mode=str(value.get("mode") or "git").strip().lower(),

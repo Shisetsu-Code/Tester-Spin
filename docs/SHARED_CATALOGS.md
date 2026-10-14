@@ -52,9 +52,8 @@ administrado y se fija en una carpeta de versión por commit. Una corrida ya abi
 continúa con su versión; la siguiente apertura recibe la actualización completa.
 No se reemplazan ejecutables de módulos ni se modifica el checkout de desarrollo.
 
-El canal Git predeterminado es `Shisetsu-Code/Spin-Wire`, rama
-`feat/farm-contract-export-v1`. La configuración histórica que apuntaba al repo
-Tester-Spin/main migra conservando sus datos. Configuraciones personalizadas se
+El canal Git predeterminado es `Shisetsu-Code/Tester-Spin`, rama
+`main`. La configuración que apuntaba por error a Spin-Wire migra a Tester-Spin/main conservando sus datos. Configuraciones personalizadas se
 respetan. Un ejecutable completo construido con build-desktop sigue siendo fijo;
 para actualizaciones automáticas se usa el launcher de los accesos del escritorio.
 

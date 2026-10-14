@@ -1,0 +1,47 @@
+name: Build Provider Windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - feature/standalone-all-providers
+    paths:
+      - 'launcher.py'
+      - 'provider_launcher.py'
+      - 'run_standalone.py'
+      - 'tester_spin/app.py'
+      - 'tester_spin/app_current.py'
+      - 'tester_spin/updater.py'
+      - 'tester_spin/providers/**'
+      - '.github/workflows/build-pragmatic.yml'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        executable:
+          - Pragmatic
+          - Belatra
+          - OneSpin4Win
+          - RubyPlay
+          - RedTiger
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PyInstaller
+        run: python -m pip install --upgrade pip pyinstaller
+      - name: Build provider executable
+        shell: pwsh
+        run: |
+          python -m PyInstaller --noconfirm --clean --onefile --windowed --name "${{ matrix.executable }}" provider_launcher.py
+      - name: Upload provider executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.executable }}-windows-x64
+          path: dist/${{ matrix.executable }}.exe

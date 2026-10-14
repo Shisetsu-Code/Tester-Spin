@@ -14,7 +14,7 @@ El ejecutable generado por `scripts/build-desktop.ps1` contiene una versión com
 
 ## Versión actual
 
-Las descargas del ejecutable completo se publican en [GitHub Releases](https://github.com/Shisetsu-Code/Spin-Wire/releases). Las capturas originales y los datos de sesión permanecen locales.
+Las descargas del ejecutable completo se publican en [GitHub Releases](https://github.com/Shisetsu-Code/Tester-Spin/releases). Las capturas originales y los datos de sesión permanecen locales.
 
 El catálogo oficial cargado de Hacksaw tiene **186 juegos**. La repetición completa dejó **183 OK verificados y 3 parciales**: Beam Boys, Mystery Motel y Tasty Treats, cuya clasificación de opciones sigue pendiente. Cada OK contrasta precios, débitos, premios acumulados, liquidación y dos rondas normales posteriores con IDs distintos. [Evidencia y límites](docs/HACKSAW.md).
 

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - feat/farm-contract-export-v1
+      - main
     paths:
       - ".github/workflows/bgaming-proton-sweep.yml"
       - ".github/bgaming-sweep-config.json"
@@ -27,7 +27,7 @@ jobs:
       TESTER_SPIN_PUBLISH_RESULTS: "0"
 
     steps:
-      - name: Checkout Spin-Wire
+      - name: Checkout Tester-Spin
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -36,7 +36,7 @@ jobs:
           python-version: "3.12"
           cache: pip
 
-      - name: Install Spin-Wire dependencies
+      - name: Install Tester-Spin dependencies
         shell: bash
         run: |
           set -euo pipefail

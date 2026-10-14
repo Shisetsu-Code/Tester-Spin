@@ -220,7 +220,7 @@ def _fallback_game(result: GameTestResult) -> Game:
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Ejecuta un barrido BGaming completo o por cohortes usando el adaptador real de Spin-Wire."
+        description="Ejecuta un barrido BGaming completo o por cohortes usando el adaptador real de Tester-Spin."
     )
     parser.add_argument("--config", required=True, help="Archivo JSON de configuración del barrido.")
     parser.add_argument("--data-root", required=True, help="Directorio temporal de datos crudos; no se publica.")

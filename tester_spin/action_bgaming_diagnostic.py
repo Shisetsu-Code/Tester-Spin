@@ -70,7 +70,7 @@ def write_result_summary(
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Ejecuta el adaptador BGaming real de Spin-Wire sin GUI para diagnóstico de GitHub Actions."
+        description="Ejecuta el adaptador BGaming real de Tester-Spin sin GUI para diagnóstico de GitHub Actions."
     )
     parser.add_argument("--game", required=True, help="Nombre, slug o identificador del juego.")
     parser.add_argument("--spins", type=int, default=1, help="Muestras por ruta; mínimo 1.")
@@ -107,7 +107,7 @@ def main(argv: list[str] | None = None) -> int:
     results: list[GameTestResult] = []
 
     try:
-        progress("BGaming Actions: leyendo catálogo con el adaptador real de Spin-Wire.")
+        progress("BGaming Actions: leyendo catálogo con el adaptador real de Tester-Spin.")
         games = provider.crawl_catalog(
             stop_event=stop_event,
             progress=progress,

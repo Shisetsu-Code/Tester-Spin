@@ -17,13 +17,13 @@ Si el launcher se construye dentro del checkout actual y detecta `data\tester-sp
 
 ## Canal Git compartido (actual)
 
-El valor predeterminado es `Spin-Wire.git` y la rama `feat/farm-contract-export-v1`. La configuración histórica Tester-Spin/main migra automáticamente. Ejemplo:
+El valor predeterminado es `Tester-Spin.git` y la rama `main`. Las instalaciones que apuntaban por error a Spin-Wire vuelven a Tester-Spin/main conservando sus datos. Ejemplo:
 
 ```json
 {
   "mode": "git",
-  "repo_url": "https://github.com/Shisetsu-Code/Spin-Wire.git",
-  "branch": "feat/farm-contract-export-v1",
+  "repo_url": "https://github.com/Shisetsu-Code/Tester-Spin.git",
+  "branch": "main",
   "manifest_url": "",
   "data_dir": "C:\\Proyectos\\Tester-Spin\\data"
 }
@@ -31,7 +31,7 @@ El valor predeterminado es `Spin-Wire.git` y la rama `feat/farm-contract-export-
 
 En cada apertura:
 
-1. consulta `origin/feat/farm-contract-export-v1`;
+1. consulta `origin/main`;
 2. si hay una versión nueva, sincroniza el checkout runtime administrado;
 3. si cambia `requirements.txt`, actualiza el venv;
 4. fija el código por commit y abre `run.py`, o el menú de proveedores con `--providers`, conservando los datos persistentes;
@@ -39,7 +39,7 @@ En cada apertura:
 
 El checkout de desarrollo nunca se resetea: las operaciones destructivas de `git reset/clean` sólo ocurren sobre la copia administrada de `%LOCALAPPDATA%`.
 
-El repositorio Spin-Wire es público. El launcher no guarda ni incrusta un PAT en el EXE.
+El repositorio Tester-Spin es privado; usa las credenciales de Git ya configuradas. El launcher no guarda ni incrusta un PAT en el EXE.
 
 ## Canal de distribución por manifest
 

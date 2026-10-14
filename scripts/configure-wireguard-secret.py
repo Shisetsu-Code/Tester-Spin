@@ -5,7 +5,7 @@ from pathlib import Path
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('folder',type=Path)
-    parser.add_argument('--repo',default='Shisetsu-Code/Spin-Wire')
+    parser.add_argument('--repo',default='Shisetsu-Code/Tester-Spin')
     args=parser.parse_args()
     if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+',args.repo):parser.error('Repositorio inválido')
     values={}

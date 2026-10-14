@@ -5,8 +5,35 @@ import subprocess
 import sys
 import time
 import traceback
+from dataclasses import asdict
+from pathlib import Path
 
 from tester_spin.updater import Updater
+
+
+def _launcher_name() -> str:
+    return str(os.environ.get("TESTER_SPIN_LAUNCHER_NAME") or "Tester-Spin").strip() or "Tester-Spin"
+
+
+def _entrypoint_name() -> str:
+    raw = str(os.environ.get("TESTER_SPIN_LAUNCH_ENTRYPOINT") or "run.py").strip()
+    if not raw or Path(raw).name != raw or not raw.lower().endswith(".py"):
+        return "run.py"
+    return raw
+
+
+def _home_override() -> Path | None:
+    raw = str(os.environ.get("TESTER_SPIN_LAUNCH_HOME") or "").strip()
+    if not raw:
+        return None
+    return Path(raw).expanduser().resolve()
+
+
+def _data_override() -> Path | None:
+    raw = str(os.environ.get("TESTER_SPIN_LAUNCH_DATA_DIR") or "").strip()
+    if not raw:
+        return None
+    return Path(raw).expanduser().resolve()
 
 
 def _message_box(title: str, message: str, *, error: bool = False) -> None:
@@ -27,18 +54,19 @@ class Splash:
     def __init__(self) -> None:
         self.root = None
         self.label = None
+        name = _launcher_name()
         try:
             import tkinter as tk
             from tkinter import ttk
 
             root = tk.Tk()
-            root.title("Tester-Spin")
+            root.title(name)
             root.geometry("470x130")
             root.resizable(False, False)
             root.attributes("-topmost", True)
             frame = ttk.Frame(root, padding=18)
             frame.pack(fill="both", expand=True)
-            ttk.Label(frame, text="Tester-Spin", font=("TkDefaultFont", 14, "bold")).pack(anchor="w")
+            ttk.Label(frame, text=name, font=("TkDefaultFont", 14, "bold")).pack(anchor="w")
             label = ttk.Label(frame, text="Iniciando...", wraplength=430)
             label.pack(anchor="w", pady=(12, 0))
             root.update_idletasks()
@@ -79,12 +107,18 @@ def _tail(path, max_chars: int = 5000) -> str:
 
 
 def main() -> int:
+    name = _launcher_name()
     splash = Splash()
     try:
-        updater = Updater()
+        updater = Updater(home=_home_override())
+        data_override = _data_override()
+        if data_override is not None:
+            updater.config.data_dir = str(data_override)
+            updater._write_json_atomic(updater.config_path, asdict(updater.config))
+
         app_dir = updater.prepare_runtime(splash.set)
         python_exe, env = updater.ensure_environment(app_dir, splash.set)
-        entrypoint = app_dir / "run.py"
+        entrypoint = app_dir / _entrypoint_name()
         if not entrypoint.exists():
             raise RuntimeError(f"no existe {entrypoint}")
 
@@ -98,7 +132,7 @@ def main() -> int:
             splash.close()
             return 0
 
-        splash.set("Abriendo Tester-Spin...")
+        splash.set(f"Abriendo {name}...")
         startup_log = updater.home / "app-startup.log"
         startup_log.parent.mkdir(parents=True, exist_ok=True)
         with startup_log.open("w", encoding="utf-8", errors="replace") as log:
@@ -111,8 +145,6 @@ def main() -> int:
                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
             )
 
-            # A normal Tk process remains alive. If it exits during bootstrap,
-            # keep the launcher visible long enough to surface the real error.
             deadline = time.monotonic() + 2.0
             while time.monotonic() < deadline:
                 code = process.poll()
@@ -123,7 +155,7 @@ def main() -> int:
                     if not detail:
                         detail = f"El proceso terminó inmediatamente con código {code}."
                     raise RuntimeError(
-                        f"Tester-Spin se cerró durante el inicio (código {code}).\n\n"
+                        f"{name} se cerró durante el inicio (código {code}).\n\n"
                         f"{detail}\n\n"
                         f"Diagnóstico: {startup_log}"
                     )
@@ -144,7 +176,7 @@ def main() -> int:
             pass
         if log_path:
             detail += f"\n\nDiagnóstico: {log_path}"
-        _message_box("Tester-Spin - Error de inicio", detail, error=True)
+        _message_box(f"{name} - Error de inicio", detail, error=True)
         return 1
 
 

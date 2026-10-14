@@ -81,7 +81,7 @@ Para habilitar WireGuard, guardar los perfiles en el Secret de Actions
 El helper puede cargarlos desde archivos sin pasarlos como argumentos ni mostrarlos:
 
 ```powershell
-python scripts/configure-wireguard-secret.py "C:\VPN\perfiles" --repo Shisetsu-Code/Spin-Wire
+python scripts/configure-wireguard-secret.py "C:\VPN\perfiles" --repo Shisetsu-Code/Tester-Spin
 ```
 
 Requiere una sesión de `gh` con permisos para actualizar Secrets. No se debe pegar

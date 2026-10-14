@@ -72,9 +72,9 @@ def test_snapshots_cover_all_registered_catalogs():
 
 def test_legacy_updater_config_migrates_without_losing_data():
  from tester_spin.updater import UpdaterConfig
- old=UpdaterConfig.from_dict({'repo_url':'https://github.com/Shisetsu-Code/Tester-Spin.git','branch':'main','data_dir':'shared/data'})
- assert old.repo_url=='https://github.com/Shisetsu-Code/Spin-Wire.git'
- assert old.branch=='feat/farm-contract-export-v1' and old.data_dir=='shared/data'
+ old=UpdaterConfig.from_dict({'repo_url':'https://github.com/Shisetsu-Code/Spin-Wire.git','branch':'feat/farm-contract-export-v1','data_dir':'shared/data'})
+ assert old.repo_url=='https://github.com/Shisetsu-Code/Tester-Spin.git'
+ assert old.branch=='main' and old.data_dir=='shared/data'
  custom=UpdaterConfig.from_dict({'repo_url':'https://example.test/custom.git','branch':'custom'})
  assert custom.repo_url=='https://example.test/custom.git' and custom.branch=='custom'
 

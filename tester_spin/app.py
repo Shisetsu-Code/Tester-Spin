@@ -41,7 +41,14 @@ class TesterSpinApp(tk.Tk):
         self.storage = Storage(self.data_root / "tester-spin.sqlite3")
 
         self.registry = ProviderRegistry()
+        from tester_spin.providers import selected_provider_keys
+        selected = {'1spin4win' if key == 'one_spin4win' else key for key in selected_provider_keys()}
+        unknown = selected - PROVIDERS.keys()
+        if unknown:
+            raise ValueError('Proveedores no registrados: ' + ', '.join(sorted(unknown)))
         for key in PROVIDERS:
+            if selected and key not in selected:
+                continue
             self.registry.register(create_provider(key,self.data_root))
         self._display_to_key = {provider.display_name: provider.key for provider in self.registry.all()}
 
