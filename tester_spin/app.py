@@ -62,6 +62,7 @@ class TesterSpinApp(tk.Tk):
         self._preview_size = None
         self._test_total = 0
         self._test_done = 0
+        self._hardfire_opening = False
 
         providers = list(self._display_to_key)
         self.provider_var = tk.StringVar(value=providers[0] if providers else "")
@@ -206,7 +207,7 @@ class TesterSpinApp(tk.Tk):
         list_frame.rowconfigure(0, weight=1)
         list_frame.columnconfigure(0, weight=1)
         self.tree.bind("<<TreeviewSelect>>", lambda _event: self._show_selected_game())
-        self.tree.bind("<Double-1>", lambda _event: self._open_selected_url())
+        self.tree.bind("<Double-1>", self._on_game_double_click)
 
 
         self.detail_panes = ttk.Panedwindow(detail_frame, orient="vertical")
@@ -235,6 +236,8 @@ class TesterSpinApp(tk.Tk):
         detail_actions = manual_actions
 
         ttk.Button(detail_actions, text="Abrir juego", command=self._open_selected_url).pack(side="left")
+        self.hardfire_btn = ttk.Button(detail_actions, text="Abrir en HardFire", command=self._open_selected_hardfire)
+        self.hardfire_btn.pack(side="left", padx=(8, 0))
         ttk.Button(detail_actions, text="Abrir carpeta", command=self._open_selected_folder).pack(side="left", padx=(8, 0))
         ttk.Button(detail_actions, text="Probar este juego", command=self._test_selected).pack(side="left", padx=(8, 0))
 
@@ -508,6 +511,39 @@ class TesterSpinApp(tk.Tk):
                 pass
         self.preview_label.configure(image="", text="Sin miniatura")
 
+    def _on_game_double_click(self,event):
+        if self.tree.identify_region(event.x,event.y) not in ('tree','cell'):return
+        iid=self.tree.identify_row(event.y)
+        if iid not in self._games:return
+        self.tree.selection_set(iid);self.tree.focus(iid)
+        self._open_selected_hardfire()
+        return 'break'
+
+    def _open_selected_hardfire(self):
+        selection=self.tree.selection()
+        game=self._games.get(selection[0]) if selection else None
+        if game is None or self._hardfire_opening:return
+        self._hardfire_opening=True
+        self.hardfire_btn.configure(state='disabled')
+        url,name=game.url,game.name
+        self._append_log('Abriendo en HardFire: '+name)
+        def launch():
+            try:
+                from tester_spin.hardfire_launcher import HardFireClient
+                HardFireClient().open_game(url)
+                self._events.put(('hardfire_opened',name))
+            except Exception as exc:
+                self._events.put(('hardfire_error',str(exc)))
+        threading.Thread(target=launch,daemon=True,name='open-hardfire').start()
+
+    def _finish_hardfire_open(self,kind,value):
+        self._hardfire_opening=False
+        self.hardfire_btn.configure(state='normal')
+        if kind=='hardfire_error':
+            messagebox.showerror('HardFire',str(value),parent=self)
+            return 'No pude abrir HardFire: '+str(value)
+        return 'Juego abierto en HardFire: '+str(value)
+
     def _open_selected_url(self) -> None:
         selection = self.tree.selection()
         if not selection:
@@ -540,7 +576,9 @@ class TesterSpinApp(tk.Tk):
             except queue.Empty:
                 break
 
-            if kind == "log":
+            if kind in ("hardfire_opened", "hardfire_error"):
+                self._append_log(self._finish_hardfire_open(kind,value))
+            elif kind == "log":
                 self._append_log(str(value))
             elif kind == "catalog_done":
                 self.progress.stop()

@@ -431,7 +431,9 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
                 break
             processed += 1
 
-            if kind == "catalog_game":
+            if kind in ("hardfire_opened", "hardfire_error"):
+                log_lines.append(self._finish_hardfire_open(kind,value))
+            elif kind == "catalog_game":
                 # Stream the discovered Game directly. This avoids a storage round
                 # trip per catalogue item, which is especially important for D1.
                 if isinstance(value, Game):
