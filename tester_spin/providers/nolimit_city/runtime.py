@@ -149,6 +149,15 @@ def _boosted_response(game):
         and ('win' in game or 'totalSpinWinnings' in game))
 
 
+def _level_response(game):
+    fields=('totalSpinWinnings','accumulatedRoundWin','playedBetValue','mode','nextMode',
+        'numberOfFreespinsPlayed','freespinsLeft','freespinTriggeredThisSpin','wasFeatureBuy',
+        'collapsedReel','collectedWinningSymbols','previousLevel','currentLevel','isRandomLevel')
+    return (all(key in game for key in fields) and isinstance(game['collapsedReel'],list)
+        and all(type(game[key]) is bool for key in ('freespinTriggeredThisSpin','wasFeatureBuy','isRandomLevel'))
+        and all(type(game[key]) is int and game[key]>=0 for key in ('numberOfFreespinsPlayed','freespinsLeft','collectedWinningSymbols','previousLevel','currentLevel'))
+        and not any(key in game for key in ('boostedBet','boostedBetPlayed','enhancedBet','extraSpinCost','isExtraSpin')))
+
 def _extra_response(game):
     return (_boosted_response(game) and type(game.get('isExtraSpin')) is bool
         and type(game.get('isSuperFreespins')) is bool)
@@ -176,6 +185,8 @@ def _pending_auto_phase(answer,game,*,explicit_no_extra=False):
     if (_category_response(game) and next_mode=='STACKED_RESPIN_FREESPIN'
             and answer.get('pendingWin') is True and game.get('stackedSpinTriggered') is True
             and type(left) is int and left>0):return True
+    if (_level_response(game) and next_mode in ('AVALANCHE_NORMAL','AVALANCHE_FREESPIN','AVALANCHE_FREESPIN_SUPER')
+            and answer.get('pendingWin') is True and game['collapsedReel'] and _money(game.get('win'))>0):return True
     if not _batch_response(game):return False
     state_shape=any(isinstance(game.get(key),list) and game[key]
         for key in ('reelsAfterCollapse','reelsAfterAvalanche','symbolsAfterTumbleForClient'))
@@ -312,8 +323,19 @@ def normalized_response(answer, declared_options=(), declared_categories=(),decl
         if 'wasExtraSpin' in (answer.get('game') or {}) and answer['game']['wasExtraSpin'] is not game['isExtraSpin']:
             raise ValueError('Nolimit City: indicadores de extra spin contradictorios')
         game['wasExtraSpin']=game['isExtraSpin']
+    if _level_response(game):
+        if game.get('nextMode')=='NORMAL':
+            for key in ('respinsLeft','secondStageFsLeft'):
+                if key in game and (type(game[key]) is not int or game[key]!=0):
+                    raise Unlearned('Nolimit City: contador pendiente o desconocido: '+key)
+        if game.get('wasBoostedBet',False) is not False or game.get('wasExtraSpin',False) is not False:
+            raise Unlearned('Nolimit City: modificador incompatible con perfil avalanche')
+        game['wasBoostedBet']=False;game['wasExtraSpin']=False
+        if 'win' in game and _money(game['win'])!=_money(game['totalSpinWinnings']):
+            raise ValueError('Nolimit City: premios contradictorios')
+        game['win']=game['totalSpinWinnings']
     features=answer.get('features')
-    if (batch_dialect or category_dialect or _extra_response(game)) and isinstance(features,dict):
+    if (batch_dialect or category_dialect or _extra_response(game) or _level_response(game)) and isinstance(features,dict):
         active=features.get('active','')
         free_modes={'FREESPIN','SUPER_FREESPIN','FREESPIN_SUPER','FREESPIN_BETTER','FREESPIN_AVALANCHE','SUPER_FREESPIN_AVALANCHE'}
         active_free=(((active in free_modes and (active in declared_options or (declared_purchase_options and active==game.get('nextMode'))))
@@ -321,7 +343,14 @@ def normalized_response(answer, declared_options=(), declared_categories=(),decl
             and (game.get('nextMode') in free_modes or (game.get('mode') in free_modes
                 and game.get('nextMode')=='NORMAL' and game.get('freespinsLeft')==0)))
         active_auto=active in ('STACKED_RESPIN_FS','RESPIN') and _pending_auto_phase(answer,game,explicit_no_extra=explicit_no_extra)
-        if active not in ('',None) and not (active_free or active_auto):
+        level_free=(_level_response(game) and active in ('FREESPIN','FREESPIN_SUPER')
+            and (game.get('nextMode')==active or (game.get('mode')==active and game.get('nextMode')=='NORMAL')))
+        level_root=(_level_response(game) and active in declared_purchase_options and game['wasFeatureBuy'] is True
+            and game['mode']=='NORMAL' and game['freespinTriggeredThisSpin'] is True
+            and game['numberOfFreespinsPlayed']==0 and game['freespinsLeft']>0
+            and game['nextMode'] in ('FREESPIN','FREESPIN_SUPER'))
+        level_auto=(_level_response(game) and active==game.get('nextMode') and _pending_auto_phase(answer,game))
+        if active not in ('',None) and not (active_free or active_auto or level_free or level_root or level_auto):
             raise Unlearned('Nolimit City: función activa sin primitiva aprendida: '+str(active))
         if 'available' not in features:
             answer['features']={**features,'available':[]}

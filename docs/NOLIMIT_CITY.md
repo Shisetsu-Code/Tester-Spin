@@ -257,3 +257,24 @@ Los contratos exportan la plantilla playExtraSpin y su regla monetaria.
 
 Bizarre dio OK en una sesión nueva, con las opciones declaradas y retorno normal.
 La implementación usa firmas y estados de protocolo, sin excepciones por juego.
+
+
+### Avalanchas y progresión por niveles (Blood & Shadow)
+
+La captura aportada del 14/10 contiene 71 intercambios y 11 rondas completas.
+La configuración de una Demo nueva declara cuatro compras. Las fases por nivel
+no agregan compras: se conservan los selectores declarados en init.
+
+El perfil monetario usa totalSpinWinnings como premio del paso, con contadores
+numberOfFreespinsPlayed y datos collapsedReel, collectedWinningSymbols,
+previousLevel, currentLevel e isRandomLevel. No tiene indicadores de boosted bet.
+La firma exige tipos y campos concretos; no se aplica a respuestas arbitrarias.
+features vacío sin available no anuncia una elección. Los active de la compra
+deben pertenecer al dominio de compras actual y corresponder a un disparo inicial.
+Los active de avalancha deben coincidir exactamente con nextMode.
+
+AVALANCHE_NORMAL, AVALANCHE_FREESPIN y AVALANCHE_FREESPIN_SUPER usan zeroBet
+solo con pendingWin=true, premio positivo y estado de carretes colapsados.
+La conciliación de acumulados y saldo terminal sigue siendo obligatoria.
+Los contadores de símbolos y niveles son estado de progresión, no selectores
+de compra ni decisiones que deban ejecutarse.

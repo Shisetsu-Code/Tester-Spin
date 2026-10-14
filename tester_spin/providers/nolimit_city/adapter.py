@@ -24,6 +24,11 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
         'choice_domain_source':'current_client_static_ids_or_server_array_with_client_verified_bounds',
         'response_aliases':{'boostedBet':'wasBoostedBet','boostedBetPlayed':'wasBoostedBet','enhancedBet':'wasBoostedBet_bool_or_nonnegative_enum','step_win':['thisSpinWinning','thisSpinWinnings','totalSpinWinnings'],'scope':'proven_monetary_response_signatures','wasExtraSpin':'isExtraSpin_alias_only_in_proven_extra_signature_other_explicit_true_rejected'},
         'additional_zero_bet_modes':{'RESPIN':'positive_integer_respinsLeft','FREESPIN_MINIGAME':'positive_integer_freespinsLeft','scope':'proven_boosted_signature','FREESPIN_TRIGGER_or_COIN_SPIN':'proven_extra_signature_zero_freespins_no_extra_cost_no_extra_spin','avalanches':'pending_win_and_recorded_state_shape','avalanche_respins':'recorded_state_shape_zero_extra_cost_explicit_no_extra_spin','stacked_free_respin':'stackedSpinTriggered_and_positive_freespinsLeft'},
+        'level_avalanche_profile':{'required_fields':['totalSpinWinnings','accumulatedRoundWin','playedBetValue','mode','nextMode','numberOfFreespinsPlayed','freespinsLeft','freespinTriggeredThisSpin','wasFeatureBuy','collapsedReel','collectedWinningSymbols','previousLevel','currentLevel','isRandomLevel'],
+            'step_win':'totalSpinWinnings','modifier_ack':'no_boost_or_extra_fields_in_profile',
+            'features':'empty_missing_available_or_active_phase_validated_against_current_purchase_domain',
+            'automatic_modes':['AVALANCHE_NORMAL','AVALANCHE_FREESPIN','AVALANCHE_FREESPIN_SUPER'],
+            'continuation':'zeroBet_only_with_pendingWin_true_positive_step_win_and_collapsed_reel'},
         'request_identity_scope':'one_exchange_not_round','declaration_source':'init.game.featureBuyTimesBetValue'})
 
 
