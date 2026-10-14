@@ -278,3 +278,39 @@ solo con pendingWin=true, premio positivo y estado de carretes colapsados.
 La conciliación de acumulados y saldo terminal sigue siendo obligatoria.
 Los contadores de símbolos y niveles son estado de progresión, no selectores
 de compra ni decisiones que deban ejecutarse.
+
+
+### Filas, elecciones y cobro (Book of Shadows, 14/10/2026)
+
+La configuración del servidor declara tres compras FREESPIN (60x, 90x, 120x)
+y dos apuestas mejoradas BOOSTED_BET_X_ROWS (1.5x, 2x). Los tipos por filas
+requieren boostedBetExtraRows y su tipo permitido; no se identifican por el título.
+El contador freespinPlayed y los campos playedRowsInFS/playedRowsInBase,
+featureBuyRows y fsSpecialSymbol delimitan el perfil. totalSpinWinnings es
+premio por paso y la acumulación y el saldo se concilian hasta el cierre.
+
+El catálogo features.available=[FREESPIN] no es un menú de decisiones.
+Las compras fijan la fila y devuelven playerSelection asignado; su FREESPIN_PICK
+avanza con zeroBet si featureBuyRows coincide con playedRowsInFS.
+Una elección sin asignar utiliza IDs del array literal del cliente actual y
+requiere acuse playerSelection. No se inventan IDs ni se eligen por nombre.
+
+GAMBLE no equivale a cierre. Se verifica la función collectWin del cliente y
+la construcción de gambleBet: el parámetro afirmativo debe asignarse a
+gambleCollected dentro del mismo método y enviarse con apuesta cero.
+Se envía gambleBet, bet=0.00, playerInteraction.gambleCollected=true.
+Se exige acuse gambleCollect=true, modo anterior GAMBLE, siguiente NORMAL,
+premio de paso cero, acumulado intacto y saldo liquidado. El alcance es cobro;
+no se certifican las alternativas opcionales del gamble. El contrato exporta
+esa petición, sus acuses y el perfil de filas.
+
+Los selectores antes desconocidos se archivan como reclasificados solamente
+cuando una ejecución actual demuestra el mismo selector, tipo, apuesta y precio,
+con cobertura y muestras suficientes. La migración queda en coverage-history.json.
+Book of Shadows completó las opciones declaradas y dos giros normales de retorno.
+
+Los HAR de 19:21 y 19:23 aportados junto al archivo Mozilla no corresponden
+a estas tres compras por filas: el segundo identifica Blood Diamond y el primero
+presenta otro perfil de avalanchas y elección al terminar SUPER_FREESPIN.
+El archivo Mozilla sí contiene el cliente BookOfShadows/1.3.12, sin tramas WS.
+No se mezclaron esos dominios para certificar Book of Shadows.

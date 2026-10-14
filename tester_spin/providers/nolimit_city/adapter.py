@@ -11,7 +11,7 @@ from tester_spin.providers.result_farm_contract import ProviderFarmSpec,build_re
 SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-lzw',
     bootstrap_strategy='nolimit-fanpage-new-demo',transport='websocket-rc4-lzw',
     terminal_contract={'type':'provider','name':'nolimit-settled-round','nextMode':'NORMAL','freespinsLeft':0,'features.available':{'modern':'empty','batch_catalog':{'source':['declared_feature_options','declared_purchase_options','declared_feature_categories'],'match':'exact_full_domain_with_proven_batch_or_category_signature'},'legacy_freespin_category':{'available':['FREESPINS'],'required_fields':['featureBet','numberOfFreespinsPlayed','totalSpinWinnings','freespinTriggeredThisSpin','wasFeatureBuy','playedBetValue','accumulatedRoundWin','mode','nextMode','freespinsLeft'],'featureBet':'false_or_purchase_root'},'legacy_two_stage_enhanced_bet':'empty_or_exact_declared_catalog','source':'init.allowedFeatureBets','legacy_required_fields':['thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft']}},
-    mode_option_keys=('selector','server_type','stake','price_multiplier','request_shape','monetary_contract','declared_feature_options','declared_feature_categories','declared_purchase_options','choice_domains'),
+    mode_option_keys=('selector','server_type','stake','price_multiplier','request_shape','monetary_contract','declared_feature_options','declared_feature_categories','declared_purchase_options','choice_domains','response_profile'),
     runtime_outputs=('key','extPlayerKey'),protocol_static={'verification_contract':'nolimit-city/verified-runtime/v1',
         'bootstrap_endpoint':'https://demo.nolimitcity.com/EjsFrontWeb/fs','operator':'FANPAGE_DEMO',
         'websocket_path':'/EjsGameWeb/ws/game','outbound_codec':'RC4_HEX_JSON','inbound_codec':'LZW_JSON',
@@ -21,6 +21,14 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
         'extra_spin_monetary_contract':{'price':'previous.game.extraSpinCost','funding':'accumulatedRoundWin',
             'yes_ack':'mode=EXTRA_SPIN,nextMode=FREESPIN,freespinsLeft=1,isExtraSpin=true,win=-quoted_price',
             'no_ack':'mode=EXTRA_SPIN,nextMode=NORMAL,win=0','settlement':'initial_balance-root_cost+net_accumulated_win'},
+        'rows_response_contract':{'profile':'rows_freespin_and_collect/v1','purchase_type':'FREESPIN',
+            'boost_type':'BOOSTED_BET_X_ROWS','boost_enable':'boostedBetExtraRows_and_allowedFeatureTypes',
+            'boost_ack':'playedRowsInBase_above_three_or_featureBet_true_without_wasFeatureBuy',
+            'step_win':'totalSpinWinnings','freespin_counter':'freespinPlayed','choice_ack':'playerSelection',
+            'features_catalog':['FREESPIN'],'preset_pick':'purchase_with_positive_selection_and_featureBuyRows_equals_playedRowsInFS',
+            'collect_request':{'type':'gambleBet','bet':'0.00','playerInteraction':{'gambleCollected':True}},
+            'collect_ack':'previous_nextMode_GAMBLE_then_mode_GAMBLE_nextMode_NORMAL_gambleCollect_true_zero_step_win_unchanged_accumulated_win',
+            'gamble_scope':'settlement_only_not_gamble_alternatives'},
         'choice_domain_source':'current_client_static_ids_or_server_array_with_client_verified_bounds',
         'response_aliases':{'boostedBet':'wasBoostedBet','boostedBetPlayed':'wasBoostedBet','enhancedBet':'wasBoostedBet_bool_or_nonnegative_enum','step_win':['thisSpinWinning','thisSpinWinnings','totalSpinWinnings'],'scope':'proven_monetary_response_signatures','wasExtraSpin':'isExtraSpin_alias_only_in_proven_extra_signature_other_explicit_true_rejected'},
         'additional_zero_bet_modes':{'RESPIN':'positive_integer_respinsLeft','FREESPIN_MINIGAME':'positive_integer_freespinsLeft','scope':'proven_boosted_signature','FREESPIN_TRIGGER_or_COIN_SPIN':'proven_extra_signature_zero_freespins_no_extra_cost_no_extra_spin','avalanches':'pending_win_and_recorded_state_shape','avalanche_respins':'recorded_state_shape_zero_extra_cost_explicit_no_extra_spin','stacked_free_respin':'stackedSpinTriggered_and_positive_freespinsLeft'},
@@ -213,4 +221,7 @@ class NolimitCityProvider(ProviderAdapter):
                 if static.get(key)!=SPEC.protocol_static[key]:errors.append('NOLIMIT_EXTRA_SPIN_CONTRACT_REQUIRED')
         if any(set(domain.get('options',[]))-set(domain.get('covered',[])) for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])):
             errors.append('NOLIMIT_CHOICES_NOT_COVERED')
+        if any((mode.get('options') or {}).get('response_profile')=='rows_freespin_and_collect/v1' for mode in contract.get('modes',[])):
+            if static.get('rows_response_contract')!=SPEC.protocol_static['rows_response_contract']:
+                errors.append('NOLIMIT_ROWS_AND_COLLECT_CONTRACT_REQUIRED')
         return list(dict.fromkeys(errors))

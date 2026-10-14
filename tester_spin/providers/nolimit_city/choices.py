@@ -11,12 +11,12 @@ def _contains_mode(text,mode):
 def choice_domain(source,answer):
     if not isinstance(source,str) or len(source)>MAX_BODY:raise ValueError('Nolimit City: cliente de elecciones inválido')
     game=answer.get('game') or {};mode=game.get('nextMode');candidates=[]
-    static=r'options:\(\)=>\[(.{0,2000}?)\],type:\w+\.ASBonusPickOptions\.PICK_MODE,pickNeededForModes:\[([^\]]+)\]'
+    static=r'options:(?:\(\)=>)?\[(.{0,2000}?)\],type:\w+\.ASBonusPickOptions\.PICK_MODE,pickNeededForModes:\[([^\]]+)\]'
     for match in re.finditer(static,source):
         if not _contains_mode(match[2],mode):continue
         ids=[int(value) for value in re.findall(r'\bid:(\d+)\b',match[1])]
-        if not ids or len(ids)>32 or len(ids)!=len(set(ids)) or type(game.get('playerSelect')) is not int:continue
-        candidates.append({'state':mode,'options':ids,'available':ids,'ack_field':'playerSelect','source':'CLIENT_STATIC_IDS'})
+        if not ids or len(ids)>32 or len(ids)!=len(set(ids)) or not any(type(game.get(field)) is int for field in ('playerSelect','playerSelection')):continue
+        candidates.append({'state':mode,'options':ids,'available':ids,'ack_field':'playerSelect' if type(game.get('playerSelect')) is int else 'playerSelection','source':'CLIENT_STATIC_IDS'})
     automatic=r'automaticPickGame:\{[^{}]{0,1000}?optionSelection:(\w+)=>this\.(\w+)\(\1\)[^{}]{0,1000}?pickNeededForModes:\[([^\]]+)\]'
     for match in re.finditer(automatic,source):
         if not _contains_mode(match[3],mode):continue
@@ -43,3 +43,13 @@ def confirm_choice(domain,selected,answer):
                 or any(type(item) is not int or item<-1 for item in value) or value[selected]<0
                 or any(old>=0 and value[index]!=old for index,old in enumerate(domain['before']))):
             raise ValueError('Nolimit City: elección no aplicada o dominio del servidor modificado')
+
+
+def has_collect_contract(source):
+    """Bind the collect call to its actual zero-stake request construction."""
+    if not isinstance(source,str) or len(source)>MAX_BODY:return False
+    call=r'collectWin\(\)\{return"GAMBLE"!==this\._nextMode\?Promise\.resolve\(!1\):\(this\.gambleBet\(!0\),'
+    method=(r'gambleBet\((\w+),[^)]{0,80}\)\{const (\w+)=\{\};[^{}]{0,250}?'
+        r'\2\.gambleCollected=\1;const (\w+)=\{type:\w+\.APIBetType\.GAMBLE_BET,'
+        r'bet:"0\.00",playerInteraction:\2\};[^{}]{0,160}?this\.sendRequest\(\3\)')
+    return bool(re.search(call,source) and re.search(method,source))

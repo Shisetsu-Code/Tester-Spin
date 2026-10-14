@@ -92,6 +92,26 @@ def _archive_recurring_choice_replacements(pending, modes, migrations, source):
             del pending[key]
 
 
+def _archive_classified_selector_replacements(pending, result, migrations, source):
+    """Resolve previously unknown selectors only with current same-quote execution."""
+    if result.provider != 'nolimit_city':return
+    for mode in result.discovered_modes:
+        if (mode.get('kind') not in ('PURCHASE','FEATURE_SPIN') or mode.get('validated') is not True
+                or mode.get('observed') is not True or mode.get('evidence_level')!='REMOTE_EXECUTION'
+                or mode.get('monetary_contract')!='nolimit-city/round-ledger/v1'):continue
+        if any(set(d.get('options',[]))-set(d.get('covered',[])) for d in mode.get('choice_domains',[])):continue
+        for key,prior in list(pending.items()):
+            if (prior.get('kind')!='UNKNOWN_FEATURE' or any(prior.get(field)!=mode.get(field)
+                    for field in ('selector','server_type','stake','price_multiplier'))
+                    or not mode.get('selector') or set(prior.get('required_options',[]))!={mode['selector']}):continue
+            target=max(1,int(prior.get('required_samples') or 1),int(mode.get('required_samples') or 1))
+            if int(mode.get('sample_counts',{}).get(mode['selector'],0))<target:continue
+            migrations.append({'policy':'nolimit-unknown-selector-to-verified-kind/v1','previous_id':key,
+                'previous':copy.deepcopy(prior),'replacement_id':mode['id'],'replacement_source':source,
+                'required_samples':target})
+            del pending[key]
+
+
 def retain_pending_branches(directory, result):
     if directory is None:
         return
@@ -157,6 +177,7 @@ def retain_pending_branches(directory, result):
                     continue
                 if record.get('provider') == result.provider and record.get('slug') == result.slug:
                     absorb(pending, record.get('discovered_modes', []), str(previous))
+        _archive_classified_selector_replacements(pending, result, migrations, result.run_dir)
         _archive_structural_replacements(pending, result.discovered_modes, migrations, result.run_dir)
         if result.provider == 'pragmatic':
             from tester_spin.providers.pragmatic_history_migration import archive_normalized_menus
