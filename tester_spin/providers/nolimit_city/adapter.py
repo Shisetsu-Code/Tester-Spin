@@ -10,12 +10,14 @@ from tester_spin.providers.result_farm_contract import ProviderFarmSpec,build_re
 
 SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-lzw',
     bootstrap_strategy='nolimit-fanpage-new-demo',transport='websocket-rc4-lzw',
-    terminal_contract={'type':'provider','name':'nolimit-settled-round','nextMode':'NORMAL','freespinsLeft':0,'features.available':{'modern':'empty','legacy_two_stage_enhanced_bet':'empty_or_exact_declared_catalog','source':'init.allowedFeatureBets','legacy_required_fields':['thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft']}},
+    terminal_contract={'type':'provider','name':'nolimit-settled-round','nextMode':'NORMAL','freespinsLeft':0,'features.available':{'modern':'empty','legacy_freespin_category':{'available':['FREESPINS'],'required_fields':['featureBet','numberOfFreespinsPlayed','totalSpinWinnings','freespinTriggeredThisSpin','wasFeatureBuy','playedBetValue','accumulatedRoundWin','mode','nextMode','freespinsLeft'],'featureBet':'false_or_purchase_root'},'legacy_two_stage_enhanced_bet':'empty_or_exact_declared_catalog','source':'init.allowedFeatureBets','legacy_required_fields':['thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft']}},
     mode_option_keys=('selector','server_type','stake','price_multiplier','request_shape','monetary_contract','declared_feature_options'),
     runtime_outputs=('key','extPlayerKey'),protocol_static={'verification_contract':'nolimit-city/verified-runtime/v1',
         'bootstrap_endpoint':'https://demo.nolimitcity.com/EjsFrontWeb/fs','operator':'FANPAGE_DEMO',
         'websocket_path':'/EjsGameWeb/ws/game','outbound_codec':'RC4_HEX_JSON','inbound_codec':'LZW_JSON',
         'protocol':'@nolimitcity/game-communication@0.4.1','free_spin_continuation':{'type':'zeroBet','bet':'0.00'},
+        'response_aliases':{'boostedBet':'wasBoostedBet','totalSpinWinnings':'win','scope':'proven_boosted_or_freespin_category_signature','wasExtraSpin':'optional_false_in_proven_signatures_explicit_true_rejected'},
+        'additional_zero_bet_modes':{'RESPIN':'positive_integer_respinsLeft','FREESPIN_MINIGAME':'positive_integer_freespinsLeft','scope':'proven_boosted_signature'},
         'request_identity_scope':'one_exchange_not_round','declaration_source':'init.game.featureBuyTimesBetValue'})
 
 

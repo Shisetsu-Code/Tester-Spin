@@ -30,6 +30,7 @@ def test_pending_respin_not_certified_closed():
 def test_boosted_free_round_does_not_invent_extra_flag_or_step_win():
  answer=copy.deepcopy(ROWS[-1]['answer'])
  answer['game'].update(mode='FREESPIN',nextMode='FREESPIN',freespinsLeft=2,freespinsPlayed=1)
+ answer['game'].pop('freespinsPlayed')
  normalized=normalized_response(answer)
  assert 'win' not in normalized['game'] and 'wasExtraSpin' not in normalized['game']
  with pytest.raises(ValueError):RoundLedger(ROWS[-1]['before'],{'kind':'SPIN','stake':'1','price_multiplier':'1'}).accept(answer)

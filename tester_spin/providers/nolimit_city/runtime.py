@@ -97,9 +97,29 @@ class NolimitSession:
             try:self.socket.close()
             except Exception:pass
 
+def _boosted_response(game):
+    return (all(key in game for key in ('boostedBet','wasFeatureBuy','playedBetValue',
+        'accumulatedRoundWin','mode','nextMode','freespinsLeft','freespinsPlayed'))
+        and ('win' in game or 'totalSpinWinnings' in game))
+
+
+def _category_response(game):
+    return (all(key in game for key in ('featureBet','numberOfFreespinsPlayed',
+        'totalSpinWinnings','freespinTriggeredThisSpin','wasFeatureBuy','playedBetValue',
+        'accumulatedRoundWin','mode','nextMode','freespinsLeft'))
+        and (game['featureBet'] is False or (game['featureBet'] is True and game['wasFeatureBuy'] is True
+            and game['mode']=='NORMAL' and game['numberOfFreespinsPlayed']==0)))
+
+
 def require_idle_initial_state(init):
-    game=init.get('game') or {}
-    if game.get('nextMode')!='NORMAL' or game.get('freespinsLeft')!=0 or init.get('remainingFreeSpins')!=0 or (init.get('features') or {}).get('available',[])!=[]:
+    game=init.get('game') or {};available=(init.get('features') or {}).get('available',[])
+    idle=(game.get('nextMode')=='NORMAL' and type(game.get('freespinsLeft')) is int
+        and game['freespinsLeft']==0 and init.get('remainingFreeSpins')==0)
+    category_catalog=(available==['FREESPINS'] and game.get('isRestoreState') is False
+        and game.get('mode')=='NORMAL' and type(game.get('numberOfFreespinsPlayed')) is int
+        and game['numberOfFreespinsPlayed']==0 and game.get('freespinTriggeredThisSpin') is False
+        and game.get('wasFeatureBuy') is False)
+    if not idle or (available!=[] and not category_catalog):
         raise Unlearned('Nolimit City: estado inicial sin primitiva aprendida; opciones declaradas conservadas')
 
 
@@ -167,25 +187,25 @@ def normalized_response(answer, declared_options=()):
         if 'win' in game and _money(game['win'])!=_money(game['thisSpinWinning']):
             raise ValueError('Nolimit City: indicadores de premio contradictorios')
         game['win']=game['thisSpinWinning']
-    boosted_dialect=(all(key in game for key in ('boostedBet','wasFeatureBuy','playedBetValue',
-        'accumulatedRoundWin','mode','nextMode','freespinsLeft','freespinsPlayed'))
-        and ('win' in game or 'totalSpinWinnings' in game))
+    boosted_dialect=_boosted_response(game)
+    category_dialect=_category_response(game)
     if boosted_dialect:
         if type(game['boostedBet']) is not bool:raise Unlearned('Nolimit City: indicador boostedBet inválido')
         if 'wasBoostedBet' in game and game['wasBoostedBet'] is not game['boostedBet']:
             raise ValueError('Nolimit City: indicadores de apuesta mejorada contradictorios')
         game['wasBoostedBet']=game['boostedBet']
-        # Captures prove the absent extra-spin flag only on ordinary closed spins.
-        plain_closed=(game['mode']=='NORMAL' and game['nextMode']=='NORMAL'
-            and type(game['freespinsLeft']) is int and game['freespinsLeft']==0
-            and game['freespinsPlayed']==0 and game.get('respinsLeft',0)==0
-            and game['wasFeatureBuy'] is False and game['boostedBet'] is False)
-        if plain_closed:
-            if 'wasExtraSpin' not in game:game['wasExtraSpin']=False
-            if 'totalSpinWinnings' in game:
-                if 'win' in game and _money(game['win'])!=_money(game['totalSpinWinnings']):
-                    raise ValueError('Nolimit City: indicadores de premio contradictorios')
-                game['win']=game['totalSpinWinnings']
+    elif category_dialect:
+        if 'wasBoostedBet' in game and game['wasBoostedBet'] is not False:
+            raise ValueError('Nolimit City: indicadores de apuesta mejorada contradictorios')
+        game['wasBoostedBet']=False
+    if boosted_dialect or category_dialect:
+        # All normal/feature/zeroBet steps of these captured dialects omit this
+        # optional acknowledgment. Explicit extra spins remain unsupported.
+        if 'wasExtraSpin' not in game:game['wasExtraSpin']=False
+        if 'totalSpinWinnings' in game:
+            if 'win' in game and _money(game['win'])!=_money(game['totalSpinWinnings']):
+                raise ValueError('Nolimit City: indicadores de premio contradictorios')
+            game['win']=game['totalSpinWinnings']
         if game.get('nextMode')=='NORMAL' and game.get('respinsLeft',0)!=0:
             raise Unlearned('Nolimit City: respin todavía pendiente')
     available=(answer.get('features') or {}).get('available')
@@ -194,6 +214,8 @@ def normalized_response(answer, declared_options=()):
             and len(available)==len(set(available))
             and set(available)==set(declared_options)):
         # Exact init-advertised purchase/boost catalog, not a stage choice domain.
+        answer['features']={**answer.get('features',{}),'available':[]}
+    if category_dialect and available==['FREESPINS']:
         answer['features']={**answer.get('features',{}),'available':[]}
     if (answer.get('features') or {}).get('available')!=[]:
         raise Unlearned('Nolimit City: elección sin primitiva aprendida: '+json.dumps(available,ensure_ascii=True))
@@ -246,6 +268,11 @@ def continuation(answer,*,declared_options=()):
     stage_transition=(type(left) is int and left==0 and type(second) is int and second>0
         and game.get('firstStage') is True and game.get('secondStage') is False
         and all(key in game for key in ('thisSpinWinning','totalSpinWinnings','enhancedBet','featureName')))
+    if _boosted_response(game):
+        if game.get('nextMode')=='RESPIN' and type(game.get('respinsLeft')) is int and game['respinsLeft']>0:
+            return {'type':'zeroBet','bet':'0.00'}
+        if game.get('nextMode')=='FREESPIN_MINIGAME' and type(left) is int and left>0:
+            return {'type':'zeroBet','bet':'0.00'}
     if (game.get('nextMode') not in {'FREESPIN','FREESPIN_BETTER','FREESPIN_SUPER','SUPER_FREESPIN'}
             or (not stage_transition and (type(left) is not int or left<=0))):
         raise Unlearned('Nolimit City: continuación desconocida: '+str(game.get('nextMode')))

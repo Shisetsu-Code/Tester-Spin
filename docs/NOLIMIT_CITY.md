@@ -135,23 +135,41 @@ mejoradas y los dos giros normales de retorno, y recibió OK del pipeline comple
 No se transforma un HAR por sí solo en una certificación OK.
 
 
-## Detección independiente del estado ejecutable
+## Detección y ejecución de las variantes de respuesta
 
 Las opciones de init se conservan después de contrastar sus tipos, precios,
 selectores y dominios de apuesta, antes de validar el estado inicial. Un estado
 sin primitiva aprendida conserva el conteo y permanece PARCIAL sin apostar.
 Esto evita mostrar cero compras cuando el catálogo del servidor sí las declara.
-Bushido Ways anuncia FREESPIN (75x) y FREESPIN_SUPER (700x), pero su estado inicial
-incluye features.available=["FREESPINS"]. Ese valor aún no se interpreta como
-catálogo ni se descarta automáticamente; no equivale a un menú ejecutable probado.
-El HAR Archive recibido no contiene las tramas WebSocket, aunque incluye su handshake.
 
-En respuestas con boostedBet, wasFeatureBuy, playedBetValue, accumulatedRoundWin,
-mode/nextMode y contadores de free spins, boostedBet debe ser booleano y se
-contrasta con wasBoostedBet si también aparece. Los HAR de Bangkok Hilton y
-Brute Force prueban rondas normales cerradas de esta estructura. Solo para giros
-normales sin compra, boost, free spins jugados ni respins pendientes se admite
-la ausencia de wasExtraSpin; en ese mismo caso totalSpinWinnings puede sustituir
-win, con rechazo si ambos discrepan. No se generaliza esa equivalencia a bonos:
-su interpretación requiere evidencia adicional de acumulación y liquidación.
-Un respinsLeft pendiente nunca permite certificar una ronda cerrada.
+El perfil de categorías de free spins se reconoce por featureBet,
+numberOfFreespinsPlayed, totalSpinWinnings, freespinTriggeredThisSpin,
+wasFeatureBuy, playedBetValue, accumulatedRoundWin, mode, nextMode y freespinsLeft.
+features.available=["FREESPINS"] describe una categoría que persiste en giros
+normales y durante todo el bono; no es un menú de elecciones. Se admite solo
+esta lista exacta y esta estructura. featureBet=false es normal o continuación;
+featureBet=true se admite solo junto a wasFeatureBuy=true al entrar desde NORMAL
+con cero free spins jugados. Cualquier opción adicional queda sin interpretar.
+
+En la inicialización de este perfil, la lista de categorías no bloquea el giro
+si el servidor declara isRestoreState=false, mode/nextMode=NORMAL, ningún free spin
+pendiente o jugado, freespinTriggeredThisSpin=false y wasFeatureBuy=false.
+Una restauración o contador pendiente sigue bloqueando el ejecutor.
+
+En el perfil boostedBet se contrastan sus valores booleanos con wasBoostedBet si
+ambos están presentes. En estos dos perfiles probados, totalSpinWinnings es premio
+por paso y sustituye win; si ambos están presentes deben coincidir. La suma debe
+coincidir siempre con accumulatedRoundWin. wasExtraSpin es un acuse opcional en
+estas estructuras; su ausencia no inventa un extra spin. Un valor explícito distinto
+de false se rechaza. Fuera de los perfiles aprendidos no se completan estos campos.
+
+Además de las continuaciones free spin conocidas, el perfil boostedBet usa zeroBet
+para RESPIN con respinsLeft entero positivo, y para FREESPIN_MINIGAME con
+freespinsLeft entero positivo. No se avanza con contadores inexistentes o cero.
+Un contador respinsLeft pendiente impide certificar cierre en NORMAL.
+
+La comprobación del 14/10/2026 recorrió las dos compras de Bushido Ways, las tres
+compras y tres apuestas mejoradas de Bangkok Hilton, y las tres compras y cuatro
+apuestas mejoradas de Brute Force, con cargos, premios acumulados, liquidación y
+dos giros normales de retorno. Las muestras reducidas de regresión no contienen
+sesiones ni credenciales. Son primitivas por estructura, sin excepciones por ID.
