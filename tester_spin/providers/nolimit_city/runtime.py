@@ -97,7 +97,13 @@ class NolimitSession:
             try:self.socket.close()
             except Exception:pass
 
-def declaration(init):
+def require_idle_initial_state(init):
+    game=init.get('game') or {}
+    if game.get('nextMode')!='NORMAL' or game.get('freespinsLeft')!=0 or init.get('remainingFreeSpins')!=0 or (init.get('features') or {}).get('available',[])!=[]:
+        raise Unlearned('Nolimit City: estado inicial sin primitiva aprendida; opciones declaradas conservadas')
+
+
+def declaration(init, *, require_idle=True):
     game=init.get('game');config=init.get('gameClientConfiguration');allowed=init.get('allowedFeatureBets')
     levels=init.get('featureBetLevels');types=init.get('allowedFeatureTypes')
     if not isinstance(game,dict) or not isinstance(config,dict) or not isinstance(levels,dict) or not isinstance(types,list):
@@ -133,8 +139,7 @@ def declaration(init):
             'kind':kind,'selector':name,'server_type':quote.get('type'),'price_multiplier':str(price),
             'stake':format(value,'.2f'),'required_options':[name],'server_declared':True})
     if (init.get('currency') or {}).get('code')!='EUR':raise Unlearned('Nolimit City: escala monetaria no demostrada para esta moneda')
-    if game.get('nextMode')!='NORMAL' or game.get('freespinsLeft')!=0 or init.get('remainingFreeSpins')!=0 or (init.get('features') or {}).get('available',[])!=[]:
-        raise Unlearned('Nolimit City: sesión nueva contiene una ronda pendiente')
+    if require_idle:require_idle_initial_state(init)
     complete=all(m['kind']!='UNKNOWN_FEATURE' for m in modes)
     source='init.game.featureBuyTimesBetValue/allowedFeatureBets/featureBetLevels'
     domains={category:{'complete':complete,'source':source,'options':[m.get('selector') for m in modes if m['kind']==kind]}
@@ -162,6 +167,27 @@ def normalized_response(answer, declared_options=()):
         if 'win' in game and _money(game['win'])!=_money(game['thisSpinWinning']):
             raise ValueError('Nolimit City: indicadores de premio contradictorios')
         game['win']=game['thisSpinWinning']
+    boosted_dialect=(all(key in game for key in ('boostedBet','wasFeatureBuy','playedBetValue',
+        'accumulatedRoundWin','mode','nextMode','freespinsLeft','freespinsPlayed'))
+        and ('win' in game or 'totalSpinWinnings' in game))
+    if boosted_dialect:
+        if type(game['boostedBet']) is not bool:raise Unlearned('Nolimit City: indicador boostedBet inválido')
+        if 'wasBoostedBet' in game and game['wasBoostedBet'] is not game['boostedBet']:
+            raise ValueError('Nolimit City: indicadores de apuesta mejorada contradictorios')
+        game['wasBoostedBet']=game['boostedBet']
+        # Captures prove the absent extra-spin flag only on ordinary closed spins.
+        plain_closed=(game['mode']=='NORMAL' and game['nextMode']=='NORMAL'
+            and type(game['freespinsLeft']) is int and game['freespinsLeft']==0
+            and game['freespinsPlayed']==0 and game.get('respinsLeft',0)==0
+            and game['wasFeatureBuy'] is False and game['boostedBet'] is False)
+        if plain_closed:
+            if 'wasExtraSpin' not in game:game['wasExtraSpin']=False
+            if 'totalSpinWinnings' in game:
+                if 'win' in game and _money(game['win'])!=_money(game['totalSpinWinnings']):
+                    raise ValueError('Nolimit City: indicadores de premio contradictorios')
+                game['win']=game['totalSpinWinnings']
+        if game.get('nextMode')=='NORMAL' and game.get('respinsLeft',0)!=0:
+            raise Unlearned('Nolimit City: respin todavía pendiente')
     available=(answer.get('features') or {}).get('available')
     if (legacy and available and isinstance(available,list) and declared_options
             and all(isinstance(item,str) for item in available)

@@ -128,3 +128,13 @@ def test_bootstrap_rate_limit_keeps_http_code_without_session_data(tmp_path,monk
  game=games_from_rows([{'code':'Example','name':'Example','studio':'Nolimit City','url':'https://playin.com/embed/v1/demo/Example'}])[0]
  result=provider.test_game(game,spins=1,timeout_s=1,stop_event=threading.Event(),progress=lambda _:None)
  assert 'HTTP 429' in result.error and 'secret-session-url' not in result.error
+
+
+def test_unknown_initial_state_preserves_server_declared_counts_without_betting(tmp_path,monkeypatch):
+ from tester_spin.feature_summary import feature_table_counts
+ demo=Demo();demo.init['features']={'available':['FREESPINS']}
+ _,_,result=run(tmp_path,monkeypatch,demo)
+ assert result.status=='PARCIAL' and not demo.calls
+ assert feature_table_counts(result.to_dict())[0]==4
+ assert len(result.feature_domains['purchase']['options'])==4
+ assert all(not mode['validated'] for mode in result.discovered_modes)

@@ -133,3 +133,25 @@ Los mensajes de regresión están recortados y sus identificadores anonimizados.
 La nueva prueba Demo independiente completó las cuatro compras, las dos apuestas
 mejoradas y los dos giros normales de retorno, y recibió OK del pipeline completo.
 No se transforma un HAR por sí solo en una certificación OK.
+
+
+## Detección independiente del estado ejecutable
+
+Las opciones de init se conservan después de contrastar sus tipos, precios,
+selectores y dominios de apuesta, antes de validar el estado inicial. Un estado
+sin primitiva aprendida conserva el conteo y permanece PARCIAL sin apostar.
+Esto evita mostrar cero compras cuando el catálogo del servidor sí las declara.
+Bushido Ways anuncia FREESPIN (75x) y FREESPIN_SUPER (700x), pero su estado inicial
+incluye features.available=["FREESPINS"]. Ese valor aún no se interpreta como
+catálogo ni se descarta automáticamente; no equivale a un menú ejecutable probado.
+El HAR Archive recibido no contiene las tramas WebSocket, aunque incluye su handshake.
+
+En respuestas con boostedBet, wasFeatureBuy, playedBetValue, accumulatedRoundWin,
+mode/nextMode y contadores de free spins, boostedBet debe ser booleano y se
+contrasta con wasBoostedBet si también aparece. Los HAR de Bangkok Hilton y
+Brute Force prueban rondas normales cerradas de esta estructura. Solo para giros
+normales sin compra, boost, free spins jugados ni respins pendientes se admite
+la ausencia de wasExtraSpin; en ese mismo caso totalSpinWinnings puede sustituir
+win, con rechazo si ambos discrepan. No se generaliza esa equivalencia a bonos:
+su interpretación requiere evidencia adicional de acumulación y liquidación.
+Un respinsLeft pendiente nunca permite certificar una ronda cerrada.

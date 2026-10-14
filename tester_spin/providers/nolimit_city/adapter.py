@@ -5,7 +5,7 @@ from curl_cffi import requests
 from tester_spin.models import GameTestResult,SpinAttempt,utc_now_iso
 from tester_spin.providers.base import ProviderAdapter
 from .catalog import CODE,CATALOG_URL,FEED_URL,games_from_rows
-from .runtime import NolimitSession,Unlearned,declaration,RoundLedger,continuation,save,MONETARY
+from .runtime import NolimitSession,Unlearned,declaration,RoundLedger,continuation,save,MONETARY,require_idle_initial_state
 from tester_spin.providers.result_farm_contract import ProviderFarmSpec,build_result_farm_contract,validate_result_farm_contract
 
 SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-lzw',
@@ -87,7 +87,8 @@ class NolimitCityProvider(ProviderAdapter):
         session=NolimitSession()
         try:
             init=session.open(game,self.http,timeout_s,stop_event,bootstrap)
-            result.discovered_modes,result.feature_domains=declaration(init)
+            result.discovered_modes,result.feature_domains=declaration(init,require_idle=False)
+            require_idle_initial_state(init)
             before=init.get('balance')
             base=result.discovered_modes[0]
             jobs=[base]*requested+[m for m in result.discovered_modes[1:] if m['executable'] for _ in range(requested)]
