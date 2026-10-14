@@ -116,7 +116,7 @@ def analyze_messages(rows):
             except ValueError as exc:incomplete.append({'connection':connection,'reason':str(exc)})
         return {'schema':'nolimit-city/multi-session-har-analysis/v1','sessions':reports,
                 'incomplete_sessions':incomplete,'ok_certified':False}
-    from .runtime import normalized_response
+    from .runtime import RoundLedger
     pending={};exchanges=[]
     for row in rows:
         message=row['message'];identifier=message.get('id')
@@ -138,55 +138,44 @@ def analyze_messages(rows):
         if name not in allowed:continue
         option={'id':name,'price_multiplier':str(price),'server_type':item.get('type')}
         if item.get('type')=='FREESPIN':purchase.append(option)
-        elif item.get('type')=='BOOSTED_BET':boosted.append(option)
+        elif item.get('type') in ('BOOSTED_BET','BOOSTED_BET_X_ROWS'):boosted.append(option)
         else:unknown.append(option)
     if any(name not in quotes for name in allowed):raise ValueError('Nolimit City: selector permitido sin precio declarado')
     before=_money(init.get('balance'));initial=before;total_paid=Decimal(0);total_win=Decimal(0)
     active=None;roots=closed=zero=consecutive=0;observed=set();round_summaries=[]
     for request,response in exchanges[1:]:
-        response=normalized_response(response,allowed)
-        content=request.get('content') or {};kind=content.get('type');game=response.get('game') or {}
+        content=request.get('content') or {};kind=content.get('type')
         if request.get('type')!='normal':raise ValueError('Nolimit City: comando exterior sin contrato aprendido')
-        win=_money(game.get('win'));accumulated=_money(game.get('accumulatedRoundWin'))
         if kind in {'normalBet','featureBet'}:
             if active is not None:raise ValueError('Nolimit City: apuesta nueva con ronda pendiente')
             stake=_money(content.get('bet'),positive=True);selector=content.get('featureName')
-            if kind=='normalBet':
-                if selector is not None or game.get('wasFeatureBuy') is not False or game.get('wasBoostedBet') is not False:
-                    raise ValueError('Nolimit City: giro normal con modificador no explicado')
-                category='normal';cost=stake
+            if kind=='normalBet':category='normal';price=Decimal(1);mode_kind='SPIN'
             else:
                 if selector not in allowed or (content.get('playerInteraction') or {}).get('featureName')!=selector:
                     raise ValueError('Nolimit City: selector no coincide con el dominio anunciado')
-                quote=quotes[selector];cost=stake*quote['price'];observed.add(selector)
-                if quote['type']=='FREESPIN':
-                    category='purchase'
-                    if game.get('wasFeatureBuy') is not True:raise ValueError('Nolimit City: compra sin acuse de adquisición')
-                elif quote['type']=='BOOSTED_BET':
-                    category='boosted_bet'
-                    if game.get('wasFeatureBuy') is not False or game.get('wasBoostedBet') is not True:raise ValueError('Nolimit City: apuesta mejorada sin acuse')
-                else:category='unknown'
-            if _money(game.get('playedBetValue'))!=stake:raise ValueError('Nolimit City: apuesta base no coincide')
-            active={'category':category,'selector':selector,'before':before,'cost':cost,'win':Decimal(0),
-                    'steps':0,'had_feature':False,'first_request':request['id']}
-            roots+=1;total_paid+=cost
-        elif kind=='zeroBet':
+                quote=quotes[selector];price=quote['price'];observed.add(selector)
+                if quote['type']=='FREESPIN':category='purchase';mode_kind='PURCHASE'
+                elif quote['type'] in ('BOOSTED_BET','BOOSTED_BET_X_ROWS'):category='boosted_bet';mode_kind='FEATURE_SPIN'
+                else:raise ValueError('Nolimit City: tipo de opción no aprendido')
+            mode={'kind':mode_kind,'stake':str(stake),'price_multiplier':str(price),'selector':selector,
+                'declared_feature_options':allowed,'declared_purchase_options':[item['id'] for item in purchase],
+                'declared_feature_categories':(['BONUS_BUY'] if purchase else [])+(['BOOSTED_BET'] if boosted else []),
+                'declared_feature_catalog':(init.get('features') or {}).get('available',[]),
+                'declared_game_modes':init.get('allowedGameModes',[])}
+            ledger=RoundLedger(before,mode)
+            active={'category':category,'selector':selector,'cost':ledger.cost,'ledger':ledger,'first_request':request['id']}
+            roots+=1;total_paid+=ledger.cost
+        elif kind in ('zeroBet','gambleBet'):
             if active is None or _money(content.get('bet'))!=0:raise ValueError('Nolimit City: continuación fuera de ronda o con cargo')
-            zero+=1
+            if kind=='zeroBet':zero+=1
         else:raise ValueError('Nolimit City: tipo de apuesta desconocido')
-        active['win']+=win;active['steps']+=1;active['had_feature']|=game.get('nextMode')!='NORMAL'
-        if active['win']!=accumulated:raise ValueError('Nolimit City: acumulación de premios incoherente')
-        done=_closed(response);expected=active['before']-active['cost']+(active['win'] if done else Decimal(0))
-        if response.get('balance') is not None:
-            if _money(response['balance'])!=expected:raise ValueError('Nolimit City: saldo no explica el coste declarado y el pago')
-            before=_money(response['balance'])
-        elif active['steps']==1 or done:raise ValueError('Nolimit City: falta saldo al apostar o liquidar')
+        ledger=active['ledger'];done=ledger.accept(response,request=content);before=ledger.after
         if done:
-            closed+=1;total_win+=active['win']
-            normal=active['category']=='normal' and not active['had_feature']
+            closed+=1;total_win+=ledger.win
+            normal=active['category']=='normal' and not ledger.had_feature
             consecutive=consecutive+1 if normal else 0
             round_summaries.append({'category':active['category'],'selector':active['selector'],'cost':str(active['cost']),
-                'win':str(active['win']),'steps':active['steps'],'first_request':active['first_request'],'last_request':request['id']})
+                'win':str(ledger.win),'steps':ledger.steps,'first_request':active['first_request'],'last_request':request['id']})
             active=None
     return {'schema':'nolimit-city/har-protocol-analysis/v1','source':'captured_init_and_matched_websocket_messages',
         'request_count':len(exchanges)+len(pending),'paid_rounds':roots,'closed_rounds':closed,'zero_bet_continuations':zero,

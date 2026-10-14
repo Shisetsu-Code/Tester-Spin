@@ -38,12 +38,13 @@ def test_unrecognised_missing_flags_are_not_assumed_false():
  answer=copy.deepcopy(ROWS[3]['message']);answer['game'].pop('enhancedBet')
  with pytest.raises(ValueError):RoundLedger(init['balance'],modes[0]).accept(answer)
 
-def test_modern_matching_feature_domain_is_not_assumed_to_be_catalog():
+def test_declared_catalog_recognition_is_independent_of_monetary_dialect():
  init=ROWS[1]['message'];modes,_=declaration(init);modes[0]['stake']='1.00'
  answer=copy.deepcopy(ROWS[3]['message']);game=answer['game']
  for key in ('thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft'):game.pop(key,None)
  game.update(win=0,wasBoostedBet=False,wasExtraSpin=False)
- with pytest.raises(ValueError):RoundLedger(init['balance'],modes[0]).accept(answer)
+ ledger=RoundLedger(init['balance'],modes[0]);ledger.accept(answer)
+ assert ledger.closed
 
 def test_unknown_second_stage_counter_never_becomes_terminal():
  init=ROWS[1]['message'];modes,_=declaration(init);modes[0]['stake']='1.00'

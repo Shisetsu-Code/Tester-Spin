@@ -1,5 +1,9 @@
 # Nolimit City: catálogo y ejecutor Demo
 
+La arquitectura vigente y las reglas compartidas están en
+[Primitivas compartidas](NOLIMIT_PRIMITIVES.md). Las secciones fechadas de este
+documento conservan la evidencia y los límites de las incorporaciones anteriores.
+
 Proveedor integrado: `nolimit_city` / **Nolimit City**.
 
 El catálogo oficial de afiliados contiene 140 demos del estudio en el corte del

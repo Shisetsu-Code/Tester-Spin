@@ -10,8 +10,8 @@ from tester_spin.providers.result_farm_contract import ProviderFarmSpec,build_re
 
 SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-lzw',
     bootstrap_strategy='nolimit-fanpage-new-demo',transport='websocket-rc4-lzw',
-    terminal_contract={'type':'provider','name':'nolimit-settled-round','nextMode':'NORMAL','freespinsLeft':0,'features.available':{'modern':'empty','batch_catalog':{'source':['declared_feature_options','declared_purchase_options','declared_feature_categories'],'match':'exact_full_domain_with_proven_batch_or_category_signature'},'legacy_freespin_category':{'available':['FREESPINS'],'required_fields':['featureBet','numberOfFreespinsPlayed','totalSpinWinnings','freespinTriggeredThisSpin','wasFeatureBuy','playedBetValue','accumulatedRoundWin','mode','nextMode','freespinsLeft'],'featureBet':'false_or_purchase_root'},'legacy_two_stage_enhanced_bet':'empty_or_exact_declared_catalog','source':'init.allowedFeatureBets','legacy_required_fields':['thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft']}},
-    mode_option_keys=('selector','server_type','stake','price_multiplier','request_shape','monetary_contract','declared_feature_options','declared_feature_categories','declared_purchase_options','choice_domains','response_profile'),
+    terminal_contract={'type':'provider','name':'nolimit-settled-round','nextMode':'NORMAL','remaining_counter_contract':'one_explicit_zero_counter_all_other_present_counters_zero_no_pendingWin','features.available':{'modern':'empty_or_exact_initial_catalog_after_observation','batch_catalog':{'source':['declared_feature_catalog','declared_feature_options','declared_purchase_options','declared_feature_categories'],'match':'exact_full_domain_from_current_init_independent_of_money_dialect'},'legacy_freespin_category':{'available':['FREESPINS'],'required_fields':['featureBet','numberOfFreespinsPlayed','totalSpinWinnings','freespinTriggeredThisSpin','wasFeatureBuy','playedBetValue','accumulatedRoundWin','mode','nextMode','freespinsLeft'],'featureBet':'false_or_purchase_root'},'legacy_two_stage_enhanced_bet':'empty_or_exact_declared_catalog','source':'current_init_catalog_or_full_selectors_purchase_selectors_categories','legacy_required_fields':['thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft']}},
+    mode_option_keys=('selector','server_type','stake','price_multiplier','request_shape','monetary_contract','declared_feature_options','declared_feature_categories','declared_purchase_options','choice_domains','response_profile','declared_feature_catalog','declared_game_modes','observation_contract','execution_blocker','declared_additional_types'),
     runtime_outputs=('key','extPlayerKey'),protocol_static={'verification_contract':'nolimit-city/verified-runtime/v1',
         'bootstrap_endpoint':'https://demo.nolimitcity.com/EjsFrontWeb/fs','operator':'FANPAGE_DEMO',
         'websocket_path':'/EjsGameWeb/ws/game','outbound_codec':'RC4_HEX_JSON','inbound_codec':'LZW_JSON',
@@ -29,14 +29,33 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
             'collect_request':{'type':'gambleBet','bet':'0.00','playerInteraction':{'gambleCollected':True}},
             'collect_ack':'previous_nextMode_GAMBLE_then_mode_GAMBLE_nextMode_NORMAL_gambleCollect_true_zero_step_win_unchanged_accumulated_win',
             'gamble_scope':'settlement_only_not_gamble_alternatives'},
+        'selection_primitive_scope':'selectedIndex_only',
+        'selection_primitives':{
+            'selectedIndex':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
+            'playExtraSpin':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
+            'gambleCollected':{'type':'gambleBet','bet':'0.00','playerInteraction':{'gambleCollected':True}}},
         'choice_domain_source':'current_client_static_ids_or_server_array_with_client_verified_bounds',
-        'response_aliases':{'boostedBet':'wasBoostedBet','boostedBetPlayed':'wasBoostedBet','enhancedBet':'wasBoostedBet_bool_or_nonnegative_enum','step_win':['thisSpinWinning','thisSpinWinnings','totalSpinWinnings'],'scope':'proven_monetary_response_signatures','wasExtraSpin':'isExtraSpin_alias_only_in_proven_extra_signature_other_explicit_true_rejected'},
-        'additional_zero_bet_modes':{'RESPIN':'positive_integer_respinsLeft','FREESPIN_MINIGAME':'positive_integer_freespinsLeft','scope':'proven_boosted_signature','FREESPIN_TRIGGER_or_COIN_SPIN':'proven_extra_signature_zero_freespins_no_extra_cost_no_extra_spin','avalanches':'pending_win_and_recorded_state_shape','avalanche_respins':'recorded_state_shape_zero_extra_cost_explicit_no_extra_spin','stacked_free_respin':'stackedSpinTriggered_and_positive_freespinsLeft'},
+        'response_aliases':{'boostedBet':'wasBoostedBet','boostedBetPlayed':'wasBoostedBet','enhancedBet':'wasBoostedBet_bool_or_nonnegative_enum','step_win':['thisSpinWinning','thisSpinWinnings','totalSpinWinnings'],'scope':'proven_monetary_response_signatures','wasExtraSpin':'boolean_extra_aliases_must_agree_true_requires_current_extra_contract'},
+        'additional_zero_bet_modes':{'RESPIN':'positive_integer_respinsLeft','FREESPIN_MINIGAME':'positive_integer_freespinsLeft','scope':'operation_state_and_pending_counters_independent_of_money_dialect','FREESPIN_TRIGGER_or_COIN_SPIN':'proven_extra_signature_zero_freespins_no_extra_cost_no_extra_spin','avalanches':'pending_win_and_recorded_state_shape','avalanche_respins':'recorded_state_shape_zero_extra_cost_explicit_no_extra_spin','stacked_free_respin':'stackedSpinTriggered_and_positive_freespinsLeft'},
         'level_avalanche_profile':{'required_fields':['totalSpinWinnings','accumulatedRoundWin','playedBetValue','mode','nextMode','numberOfFreespinsPlayed','freespinsLeft','freespinTriggeredThisSpin','wasFeatureBuy','collapsedReel','collectedWinningSymbols','previousLevel','currentLevel','isRandomLevel'],
             'step_win':'totalSpinWinnings','modifier_ack':'no_boost_or_extra_fields_in_profile',
             'features':'empty_missing_available_or_active_phase_validated_against_current_purchase_domain',
             'automatic_modes':['AVALANCHE_NORMAL','AVALANCHE_FREESPIN','AVALANCHE_FREESPIN_SUPER'],
             'continuation':'zeroBet_only_with_pendingWin_true_positive_step_win_and_collapsed_reel'},
+        'shared_observation_contract':{'schema':'independent-server-observations/v1',
+            'declarations':'init.feature_table_allowed_selectors_prices_and_stakes_before_execution_known_role_preserved_when_execution_blocked',
+            'fresh_idle':'init_ok_isRestoreState_false_both_modes_NORMAL_remainingFreeSpins_zero_no_pending_counters_or_flags',
+            'catalog':'exact_init_features_available_is_catalog_not_permission_for_unknown_phase',
+            'phase':'active_matches_proven_phase_family_or_init_game_modes_or_current_declared_purchase_root_observation_does_not_grant_action_permission',
+            'explicit_step_aliases':['win','thisSpinWinning','thisSpinWinnings'],
+            'total_only':'requires_current_request_total_matches_step_delta_or_accumulated_round_win_no_implicit_discount',
+            'normal_root':'current_normalBet_exact_stake_and_no_extra_parameters_explicit_modifiers_not_true_cost_and_settlement_verified',
+            'purchase_root':'wasFeatureBuy_true_and_exact_declared_selector',
+            'terminal':'NORMAL_one_explicit_zero_remaining_counter_all_present_counters_zero_no_pendingWin_no_unknown_menu',
+            'remaining_counters':['remainingFreeSpins','game.freespinsLeft','game.respinsLeft','game.secondStageFsLeft'],
+            'collect_primitive':{'type':'gambleBet','bet':'0.00','playerInteraction':{'gambleCollected':True}},
+            'collect_scope':'client_proven_request_previous_GAMBLE_with_gambleOptions_and_false_gambleCollect_then_ack_true_zero_win_normal_settled_no_gamble_alternative_coverage',
+            'unknown_action':'PARCIAL_with_local_evidence'},
         'request_identity_scope':'one_exchange_not_round','declaration_source':'init.game.featureBuyTimesBetValue'})
 
 
@@ -136,7 +155,7 @@ class NolimitCityProvider(ProviderAdapter):
                         save(directory/'ledger.json',ledger.proof())
                         if done:break
                         try:
-                            content=continuation(answer,declared_options=mode['declared_feature_options'],declared_categories=mode['declared_feature_categories'],declared_purchase_options=mode['declared_purchase_options'])
+                            content=continuation(ledger.last_answer,raw_answer=answer,declared_options=mode['declared_feature_options'],declared_categories=mode['declared_feature_categories'],declared_purchase_options=mode['declared_purchase_options'],declared_catalog=mode.get('declared_feature_catalog'),declared_game_modes=mode.get('declared_game_modes',()))
                         except Unlearned:
                             choose=getattr(session,'choice_command',None)
                             if not choose:raise
@@ -224,4 +243,13 @@ class NolimitCityProvider(ProviderAdapter):
         if any((mode.get('options') or {}).get('response_profile')=='rows_freespin_and_collect/v1' for mode in contract.get('modes',[])):
             if static.get('rows_response_contract')!=SPEC.protocol_static['rows_response_contract']:
                 errors.append('NOLIMIT_ROWS_AND_COLLECT_CONTRACT_REQUIRED')
+        for mode in contract.get('modes',[]):
+            for domain in (mode.get('options') or {}).get('choice_domains',[]):
+                field=domain.get('request_field','selectedIndex')
+                expected=SPEC.protocol_static['selection_primitives'].get(field)
+                if expected is None or (static.get('selection_primitives') or {}).get(field)!=expected:
+                    errors.append('NOLIMIT_CHOICE_FIELD_PRIMITIVE_REQUIRED')
+        if any((mode.get('options') or {}).get('observation_contract')=='independent-server-observations/v1' for mode in contract.get('modes',[])):
+            if static.get('shared_observation_contract')!=SPEC.protocol_static['shared_observation_contract']:
+                errors.append('NOLIMIT_SHARED_OBSERVATION_CONTRACT_REQUIRED')
         return list(dict.fromkeys(errors))

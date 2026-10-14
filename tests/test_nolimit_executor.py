@@ -132,7 +132,7 @@ def test_bootstrap_rate_limit_keeps_http_code_without_session_data(tmp_path,monk
 
 def test_unknown_initial_state_preserves_server_declared_counts_without_betting(tmp_path,monkeypatch):
  from tester_spin.feature_summary import feature_table_counts
- demo=Demo();demo.init['features']={'available':['FREESPINS']}
+ demo=Demo();demo.init['features']={'available':['FREESPINS']};demo.init['game']['isRestoreState']=True
  _,_,result=run(tmp_path,monkeypatch,demo)
  assert result.status=='PARCIAL' and not demo.calls
  assert feature_table_counts(result.to_dict())[0]==4
