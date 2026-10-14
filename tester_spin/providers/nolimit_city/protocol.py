@@ -1,3 +1,4 @@
+from urllib.parse import parse_qs
 """Offline Nolimit City protocol primitives grounded in captured client code.
 
 This decodes supplied captures; it does not replay sessions or certify live OK.
@@ -51,7 +52,15 @@ def websocket_url(http_url,key):
 
 def decode_capture(document):
     log=document.get('log') or {};frames=log.get('_warpWebSockets')
-    if not isinstance(frames,list) or not frames:raise ValueError('Nolimit City: faltan mensajes WebSocket')
+    entry_format=False
+    if not isinstance(frames,list) or not frames:
+        entry_format=True
+        frames=[{'url':entry.get('request',{}).get('url',''),'direction':frame.get('direction'),
+                 'timestamp':frame.get('timestamp'),'payload':frame.get('payloadData'),
+                 'late_attach':entry.get('_webSocketLateAttach',False)}
+                for entry in log.get('entries',[]) for frame in entry.get('_webSocketFrames',[])
+                if frame.get('opcode')==1]
+    if not frames:raise ValueError('Nolimit City: faltan mensajes WebSocket')
     bootstraps={}
     for entry in log.get('entries',[]):
         request=entry.get('request') or {};url=urlsplit(request.get('url',''))
@@ -65,10 +74,13 @@ def decode_capture(document):
             if target in bootstraps and bootstraps[target]!=config['key']:
                 raise ValueError('Nolimit City: varias claves para la misma conexión; captura ambigua')
             bootstraps[target]=config['key']
-    decoded=[]
+    decoded=[];connections={}
     for index,frame in enumerate(frames):
         url=frame.get('url','');parsed=urlsplit(url)
         if parsed.scheme!='wss' or parsed.hostname!='demo.nolimitcity.com' or parsed.path!='/EjsGameWeb/ws/game':continue
+        if url not in bootstraps and entry_format and frame.get('late_attach'):
+            values=parse_qs(parsed.query).get('data',[])
+            if len(values)==1 and values[0]:bootstraps[url]=values[0]
         if url not in bootstraps:raise ValueError('Nolimit City: falta la clave de la conexión capturada')
         payload=frame.get('payload');direction=frame.get('direction')
         if frame.get('encoding')=='base64':payload=base64.b64decode(payload).decode('utf-8')
@@ -78,7 +90,8 @@ def decode_capture(document):
         try:message=json.loads(text)
         except (ValueError,TypeError):raise ValueError('Nolimit City: trama descodificada no es JSON')
         if not isinstance(message,dict):raise ValueError('Nolimit City: sobre de mensaje inválido')
-        decoded.append({'index':index,'direction':direction,'timestamp':frame.get('timestamp'),'message':message})
+        connection=connections.setdefault(url,len(connections))
+        decoded.append({'connection':connection,'index':index,'direction':direction,'timestamp':frame.get('timestamp'),'message':message})
     if not decoded:raise ValueError('Nolimit City: no hay mensajes de juego reconocidos')
     return decoded
 
@@ -94,6 +107,16 @@ def _closed(message):
     return game.get('nextMode')=='NORMAL' and type(game.get('freespinsLeft')) is int and game['freespinsLeft']==0 and available==[]
 
 def analyze_messages(rows):
+    connections={}
+    for row in rows:connections.setdefault(row.get('connection',0),[]).append(row)
+    if len(connections)>1:
+        reports=[];incomplete=[]
+        for connection,items in connections.items():
+            try:reports.append({'connection':connection,**analyze_messages(items)})
+            except ValueError as exc:incomplete.append({'connection':connection,'reason':str(exc)})
+        return {'schema':'nolimit-city/multi-session-har-analysis/v1','sessions':reports,
+                'incomplete_sessions':incomplete,'ok_certified':False}
+    from .runtime import normalized_response
     pending={};exchanges=[]
     for row in rows:
         message=row['message'];identifier=message.get('id')
@@ -121,6 +144,7 @@ def analyze_messages(rows):
     before=_money(init.get('balance'));initial=before;total_paid=Decimal(0);total_win=Decimal(0)
     active=None;roots=closed=zero=consecutive=0;observed=set();round_summaries=[]
     for request,response in exchanges[1:]:
+        response=normalized_response(response,allowed)
         content=request.get('content') or {};kind=content.get('type');game=response.get('game') or {}
         if request.get('type')!='normal':raise ValueError('Nolimit City: comando exterior sin contrato aprendido')
         win=_money(game.get('win'));accumulated=_money(game.get('accumulatedRoundWin'))

@@ -10,8 +10,8 @@ from tester_spin.providers.result_farm_contract import ProviderFarmSpec,build_re
 
 SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-lzw',
     bootstrap_strategy='nolimit-fanpage-new-demo',transport='websocket-rc4-lzw',
-    terminal_contract={'type':'provider','name':'nolimit-settled-round','nextMode':'NORMAL','freespinsLeft':0,'features.available':[]},
-    mode_option_keys=('selector','server_type','stake','price_multiplier','request_shape','monetary_contract'),
+    terminal_contract={'type':'provider','name':'nolimit-settled-round','nextMode':'NORMAL','freespinsLeft':0,'features.available':{'modern':'empty','legacy_two_stage_enhanced_bet':'empty_or_exact_declared_catalog','source':'init.allowedFeatureBets','legacy_required_fields':['thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft']}},
+    mode_option_keys=('selector','server_type','stake','price_multiplier','request_shape','monetary_contract','declared_feature_options'),
     runtime_outputs=('key','extPlayerKey'),protocol_static={'verification_contract':'nolimit-city/verified-runtime/v1',
         'bootstrap_endpoint':'https://demo.nolimitcity.com/EjsFrontWeb/fs','operator':'FANPAGE_DEMO',
         'websocket_path':'/EjsGameWeb/ws/game','outbound_codec':'RC4_HEX_JSON','inbound_codec':'LZW_JSON',
@@ -111,7 +111,7 @@ class NolimitCityProvider(ProviderAdapter):
                         done=ledger.accept(answer)
                         save(directory/'ledger.json',ledger.proof())
                         if done:break
-                        content=continuation(answer)
+                        content=continuation(answer,declared_options=mode['declared_feature_options'])
                     else:raise Unlearned('Nolimit City: ronda excede el límite de continuaciones')
                     before=ledger.after
                     attempt.ok=attempt.terminal=True;attempt.status_code=200

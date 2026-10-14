@@ -104,3 +104,32 @@ El informe conserva precios, cargos, pagos, selecciones y cierres; no exporta
 claves de sesión ni reproduce tráfico. El HAR original y las claves permanecen
 locales bajo data/. Las pruebas incluyen mensajes reducidos sin credenciales y
 casos negativos de precio, identidad y compresión. No hay ramas por título o ID.
+
+
+## Respuesta enhancedBet y bonos de dos etapas
+
+El HAR de Apocalypse Super xNudge (14/10/2026) prueba otra estructura de respuesta.
+Se reconoce por el conjunto de campos thisSpinWinning, totalSpinWinnings,
+enhancedBet, featureName, firstStage, secondStage y secondStageFsLeft; no por el
+nombre del juego. El premio por paso proviene de thisSpinWinning, contrastado con
+accumulatedRoundWin y el saldo de liquidación. enhancedBet confirma la categoría
+de apuesta mejorada; si también existe wasBoostedBet ambos deben coincidir.
+
+En esta estructura, features.available puede conservar exactamente el conjunto
+init.allowedFeatureBets durante todas las rondas. Ese catálogo no constituye una
+elección pendiente. La excepción requiere la estructura completa y coincidencia
+exacta; no aplica a respuestas modernas ni a opciones nuevas/subconjuntos.
+
+Cuando firstStage=true, secondStage=false, freespinsLeft=0 y secondStageFsLeft>0,
+un zeroBet sin cargo avanza a la segunda etapa del modo free spin reconocido.
+Un contador de segunda etapa pendiente impide declarar cierre en NORMAL.
+SUPER_FREESPIN es una variante observada de continuación gratuita.
+
+La captura contiene 37 rondas pagadas cerradas y 103 continuaciones. Su conexión
+incompleta queda separada del análisis de la sesión con init. El lector también
+acepta entry._webSocketFrames; en capturas late-attach puede leer la clave del URL
+WebSocket capturado, sólo para descifrar offline, sin reutilizar esa sesión.
+Los mensajes de regresión están recortados y sus identificadores anonimizados.
+La nueva prueba Demo independiente completó las cuatro compras, las dos apuestas
+mejoradas y los dos giros normales de retorno, y recibió OK del pipeline completo.
+No se transforma un HAR por sí solo en una certificación OK.
