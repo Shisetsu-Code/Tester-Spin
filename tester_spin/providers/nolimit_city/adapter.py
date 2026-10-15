@@ -42,6 +42,7 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
             'selectedIndex':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
             'playExtraSpin':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
             'gambleCollected':{'type':'gambleBet','bet':'0.00','playerInteraction':{'gambleCollected':True}}},
+        'bound_settlement_selection':{'source':'CLIENT_BOUND_SETTLEMENT_BUTTONS','binding':'current_phase_idle_panel_buttons_callbacks_literal_ids_zero_stake_sdk','availability':'current_root_selector_client_model_predicate','ack':'requested_phase_NORMAL_no_pending_counters_wallet_required','money':'ROUND_LEDGER','category':'nested_choice_not_commercial_purchase'},
         'choice_domain_source':'current_client_static_ids_or_server_array_with_client_verified_bounds',
         'response_aliases':{'boostedBet':'wasBoostedBet','boostedBetPlayed':'wasBoostedBet','enhancedBet':'wasBoostedBet_bool_or_nonnegative_enum','step_win':['thisSpinWinning','thisSpinWinnings','totalSpinWinnings'],'scope':'proven_monetary_response_signatures','wasExtraSpin':'boolean_extra_aliases_must_agree_true_requires_current_extra_contract'},
         'additional_zero_bet_modes':{'RESPIN':'positive_integer_respinsLeft','FREESPIN_MINIGAME':'positive_integer_freespinsLeft','scope':'operation_state_and_pending_counters_independent_of_money_dialect','FREESPIN_TRIGGER_or_COIN_SPIN':'proven_extra_signature_zero_freespins_no_extra_cost_no_extra_spin','avalanches':'pending_win_and_recorded_state_shape','avalanche_respins':'recorded_state_shape_zero_extra_cost_explicit_no_extra_spin','stacked_free_respin':'stackedSpinTriggered_and_positive_freespinsLeft'},
@@ -284,6 +285,9 @@ class NolimitCityProvider(ProviderAdapter):
             if static.get('shared_observation_contract')!=SPEC.protocol_static['shared_observation_contract']:
                 errors.append('NOLIMIT_SHARED_OBSERVATION_CONTRACT_REQUIRED')
         domains=[domain for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])]
+        if any(domain.get('source')=='CLIENT_BOUND_SETTLEMENT_BUTTONS' for domain in domains):
+            if static.get('bound_settlement_selection')!=SPEC.protocol_static['bound_settlement_selection']:
+                errors.append('NOLIMIT_BOUND_SETTLEMENT_SELECTION_REQUIRED')
         if any(not repeat_complete(domain) or domain.get('request_field') in ('playExtraSpin','playerSelectedExtraSpin') and domain.get('repeat_purchase_policy')!=POLICY for domain in domains):errors.append('NOLIMIT_REPEAT_PURCHASE_NOT_COMPLETE')
         if any(domain.get('repeat_purchase_policy')==POLICY for domain in domains):
             if static.get('repeat_extra_purchase_policy')!=SPEC.protocol_static['repeat_extra_purchase_policy']:

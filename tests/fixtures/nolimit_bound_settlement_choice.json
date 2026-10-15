@@ -1,0 +1,2210 @@
+{
+  "source": "class Panel{constructor(e){super(),this.name=e||\"ExampleSlotTransitionScreenView\";const t=e=>{const t=new PIXI.Sprite(PIXI.Texture.WHITE);return t.tint=PIXI.utils.string2hex(e),t.position.set(360,360),t.anchor.set(.5,.5),t.alpha=.8,t.visible=!1,t};this.fsIntroBackground=t(\"#0066ff\"),this.sfsIntroBackground=t(\"#ff6600\"),this.maxWinBackground=t(\"#0000cc\"),this.maxWinDoubleBackground=t(\"#ff002f\"),this.maxWinNothingBackground=t(\"#000000\");const i=new PIXI.TextStyle({dropShadow:!0,dropShadowAlpha:.5,dropShadowAngle:1.5,dropShadowDistance:6,fill:\"#ffff00\",fontFamily:\"Helvetica\",fontSize:40,fontWeight:\"bolder\",lineJoin:\"round\",stroke:\"#232323\",strokeThickness:8,align:\"center\",wordWrapWidth:600,wordWrap:!0,breakWords:!0});this.gambleWarningText=new PIXI.Text(o.ExampleSlot.apiPlugin.translations.translate(\"50/50 chance to double your Max Win, or lose it all.\"),i),this.gambleWarningText.anchor.set(.5,.5),this.gambleWarningText.position.set(360,320),this.gambleWarningText.visible=!1;const n=new PIXI.TextStyle({dropShadow:!0,dropShadowAlpha:.5,dropShadowAngle:1.5,dropShadowDistance:6,fill:\"#ee2553\",fontFamily:\"Helvetica\",fontSize:80,fontWeight:\"bolder\",lineJoin:\"round\",stroke:\"#232323\",strokeThickness:8,align:\"center\",wordWrapWidth:600,wordWrap:!0,breakWords:!0});this.gambleConfirmationText=new PIXI.Text(o.ExampleSlot.apiPlugin.translations.translate(\"Really!?\"),n),this.gambleConfirmationText.anchor.set(.5,.5),this.gambleConfirmationText.position.set(360,320),this.gambleConfirmationText.visible=!1,this.slayerSpine=new PIXI.spine.Spine(o.ExampleSlot.assetLoader.getSpineAsset(a.ExampleSlotGameAssets.FS_SLAYER)),this.slayerSpine.position.set(360,386),this.slayerSpine.visible=!1,this.introSpine=new PIXI.spine.Spine(o.ExampleSlot.assetLoader.getSpineAsset(a.ExampleSlotGameAssets.FS_INTRO)),this.introSpine.position.set(360,360),this.noWinSpine=new PIXI.spine.Spine(o.ExampleSlot.assetLoader.getSpineAsset(a.ExampleSlotGameAssets.NO_WIN_SPINE)),this.noWinSpine.position.set(360,386),this.noWinSpine.visible=!1,this.maxWinSpine=new PIXI.spine.Spine(o.ExampleSlot.assetLoader.getSpineAsset(a.ExampleSlotGameAssets.MAX_WIN_SPINE)),this.maxWinSpine.position.set(360,386),this.maxWinSpine.visible=!1,this.outroInformation=new r.FreespinsOutroInformation,this.button=new l.ContinueButton,this.button.addClickCallback(()=>this.onButtonClick()),this.button.position.set(360,610),this.button.pivot.set(.5*this.button.width,.5*this.button.height),this.button.enable(!1),this.button.alpha=0,this.gambleYesButton=new l.ContinueButton(o.ExampleSlot.apiPlugin.translations.translate(\"YES\")),this.gambleYesButton.setSize(240,120),this.yesButtonCallback=this.doubleOrNothingYes,this.gambleYesButton.addClickCallback(()=>this.yesButtonCallback()),this.gambleYesButton.position.set(210,560),this.gambleYesButton.pivot.set(.5*this.gambleYesButton.width,.5*this.gambleYesButton.height),this.gambleYesButton.enable(!1),this.gambleYesButton.alpha=0,this.gambleNoButton=new l.ContinueButton(o.ExampleSlot.apiPlugin.translations.translate(\"NO\")),this.gambleNoButton.setSize(240,120),this.noButtonCallback=this.doubleOrNothingNo,this.gambleNoButton.addClickCallback(()=>this.noButtonCallback()),this.gambleNoButton.position.set(510,560),this.gambleNoButton.pivot.set(.5*this.gambleNoButton.width,.5*this.gambleNoButton.height),this.gambleNoButton.enable(!1),this.gambleNoButton.alpha=0,this.replayClick=new u.TimelineSprite(o.ExampleSlot.assetLoader.getTextures(a.ExampleSlotGameAssets.REPLAY_CLICK)),this.replayClick.blendMode=PIXI.BLEND_MODES.ADD,this.replayClick.scale.set(2,2),this.replayClick.anchor.set(.5,.5),this.replayClick.position.set(360,560),this.replayClick.hide(),this.addChild(this.fsIntroBackground),this.addChild(this.sfsIntroBackground),this.addChild(this.maxWinBackground),this.addChild(this.maxWinDoubleBackground),this.addChild(this.maxWinNothingBackground),this.addChild(this.slayerSpine),this.addChild(this.introSpine),this.addChild(this.outroInformation),this.addChild(this.noWinSpine),this.addChild(this.maxWinSpine),this.addChild(this.button),this.addChild(this.gambleWarningText),this.addChild(this.gambleConfirmationText),this.addChild(this.gambleYesButton),this.addChild(this.gambleNoButton),this.addChild(this.replayClick),this.alpha=0,this.onResize()}onResize(){h.NolimitApplication.isLandscape?this.button.position.set(360,610):this.button.position.set(360,h.NolimitApplication.screenBounds.bottom-250),this.fsIntroBackground.width=h.NolimitApplication.screenBounds.width,this.fsIntroBackground.height=h.NolimitApplication.screenBounds.height,this.sfsIntroBackground.width=h.NolimitApplication.screenBounds.width,this.sfsIntroBackground.height=h.NolimitApplication.screenBounds.height,this.maxWinBackground.width=h.NolimitApplication.screenBounds.width,this.maxWinBackground.height=h.NolimitApplication.screenBounds.height,this.maxWinDoubleBackground.width=h.NolimitApplication.screenBounds.width,this.maxWinDoubleBackground.height=h.NolimitApplication.screenBounds.height,this.maxWinNothingBackground.width=h.NolimitApplication.screenBounds.width,this.maxWinNothingBackground.height=h.NolimitApplication.screenBounds.height}onButtonClick(){if(this.button.enable(!1),null==this.clickCallback)throw new Error(\"No button click callback\");this.clickCallback(),o.ExampleSlot.soundPlayer.playSound(s.ExampleSlotSound.CONTINUE_BUTTON),n.gsap.to(this.button,{duration:.2,alpha:0}),delete this.clickCallback}doubleOrNothingYes(){this.gambleYesButton.enable(!1),this.gambleNoButton.enable(!1),this.gambleWarningText.visible=!1,this.gambleConfirmationText.visible=!1,o.ExampleSlot.apiPlugin.betHandler.pickAndClickBet(1,!1),o.ExampleSlot.soundPlayer.playSound(s.ExampleSlotSound.DOUBLE_OR_NOTHING_YES),n.gsap.timeline().add(n.gsap.to(this.gambleYesButton,{duration:.2,alpha:0})).add(n.gsap.to(this.gambleNoButton,{duration:.2,alpha:0}),\"<\")}doubleOrNothingNo(){this.gambleYesButton.enable(!1),this.gambleNoButton.enable(!1),this.gambleWarningText.visible=!1,this.gambleWarningText.visible=!1,o.ExampleSlot.apiPlugin.betHandler.pickAndClickBet(0,!1),o.ExampleSlot.soundPlayer.playSound(s.ExampleSlotSound.DOUBLE_OR_NOTHING_YES),n.gsap.timeline().add(n.gsap.to(this.gambleYesButton,{duration:.2,alpha:0})).add(n.gsap.to(this.gambleNoButton,{duration:.2,alpha:0}),\"<\")}noWin(e){return n.gsap.timeline().add(()=>{this.introSpine.visible=!1,this.noWinSpine.visible=!0,this.noWinSpine.state.setAnimation(0,`No_Win_${e}`,!0)}).add(n.gsap.to(this,{alpha:1,duration:.1})).add(()=>{},\">1.5\").add(n.gsap.to(this,{alpha:0,duration:.1})).add(()=>{this.noWinSpine.state.setEmptyAnimation(0,0),this.noWinSpine.visible=!1,this.introSpine.visible=!0})}enableButton(e){const t=n.gsap.timeline();return t.add(()=>{this.clickCallback=e,this.button.enable(!0)}),t.add(n.gsap.to(this.button,{duration:.2,alpha:1})),t}enableDoubleOrNothing(e=!1){const t=o.ExampleSlot.model.isGodModeDeluxe?0:1;return n.gsap.timeline().add(()=>{this.yesButtonCallback=0==t?this.doubleOrNothingYes:this.enableDoubleOrNothingWarning,this.noButtonCallback=this.doubleOrNothingNo,this.gambleWarningText.visible=!0,this.gambleConfirmationText.visible=!1,this.maxWinSpine.state.setAnimation(0,\"Max_Win_Window\",!0),this.gambleYesButton.enable(!0),1==t&&this.gambleNoButton.enable(!0)}).add(n.gsap.to(this.gambleYesButton,{duration:e?0:.2,alpha:1})).add(n.gsap.to(this.gambleNoButton,{duration:e?0:.2,alpha:t}),\"<\")}enableDoubleOrNothingWarning(){this.yesButtonCallback=this.doubleOrNothingYes,this.noButtonCallback=()=>{o.ExampleSlot.soundPlayer.playSound(s.ExampleSlotSound.DOUBLE_OR_NOTHING_YES),this.enableDoubleOrNothing(!0)},this.gambleWarningText.visible=!1,this.gambleConfirmationText.visible=!0,o.ExampleSlot.soundPlayer.playSound(s.ExampleSlotSound.DOUBLE_OR_NOTHING_YES)}replayDoubleOrNothing(e){const t=o.ExampleSlot.model.isGodModeDeluxe?0:1;return n.gsap.timeline().add(()=>{this.gambleWarningText.visible=!0,this.maxWinSpine.state.setAnimation(0,\"Max_Win_Window\",!0),this.gambleYesButton.enable(!1),1==t&&this.gambleNoButton.enable(!1)}).add(n.gsap.to(this.gambleYesButton,{duration:.2,alpha:1})).add(n.gsap.to(this.gambleNoButton,{duration:.2,alpha:t}),\"<\").add(()=>{},\">1\").add(()=>{this.replayClick.position.x=0==e?510:210,this.replayClick.show(),this.replayClick.playLoop()}).add(()=>{this.replayClick.hide(),this.replayClick.stopLoop(),this.replayClick.setFrame(0),o.ExampleSlot.apiPlugin.betHandler.pickAndClickBet(e,!1),this.gambleWarningText.visible=!1},`>${this.replayClick.totalDuration}`).add(n.gsap.to(this.gambleYesButton,{duration:.2,alpha:0}),\"<\").add(n.gsap.to(this.gambleNoButton,{duration:.2,alpha:0}),\"<\")}showIntroOutroThing(e,t){return n.gsap.timeline().add(()=>{e.visible=!0,this.introSpine.state.setAnimation(0,t,!0)}).add(n.gsap.to(this,{alpha:1,duration:.5}))}hideIntroOutroThing(e){return n.gsap.timeline().add(n.gsap.to(this,{alpha:0,duration:.5})).add(()=>{e.visible=!1,this.introSpine.state.setEmptyAnimation(0,0)})}showIntro(){return n.gsap.timeline().add(()=>{this.introSpine.state.setAnimation(0,\"FS_Intro\",!0)}).add(()=>{this.alpha=1})}hideIntro(){return n.gsap.timeline().add(()=>{this.alpha=0}).add(()=>{this.introSpine.state.setEmptyAnimation(0,0)})}showIntroSuper(){return n.gsap.timeline().add(()=>{this.introSpine.state.setAnimation(0,\"SFS_Intro\",!0)}).add(()=>{this.alpha=1})}hideIntroSuper(){return n.gsap.timeline().add(()=>{this.alpha=0}).add(()=>{this.introSpine.state.setEmptyAnimation(0,0)})}showUpgrade(){return this.showIntroOutroThing(this.sfsIntroBackground,\"FS_Upgrade\")}hideUpgrade(){return this.hideIntroOutroThing(this.sfsIntroBackground)}showMaxWin(){return n.gsap.timeline().add(()=>{this.maxWinBackground.visible=!0,this.introSpine.visible=!1,this.maxWinSpine.visible=!0,this.maxWinSpine.state.setAnimation(0,\"Max_Win\",!0)}).add(n.gsap.to(this,{alpha:1,duration:.5}))}showMaxWinDouble(){return n.gsap.timeline().add(()=>{this.maxWinBackground.visible=!1,this.maxWinDoubleBackground.visible=!0,this.introSpine.visible=!1,this.maxWinSpine.visible=!0,this.maxWinSpine.state.setAnimation(0,\"Max_Win_Double\",!0)}).add(n.gsap.to(this,{alpha:1,duration:.5}))}showMaxWinZero(){return n.gsap.timeline().add(()=>{this.maxWinBackground.visible=!1,this.maxWinNothingBackground.visible=!0,this.introSpine.visible=!1,this.maxWinSpine.visible=!0,this.maxWinSpine.state.setAnimation(0,\"Max_Win_Nothing\",!0)}).add(n.gsap.to(this,{alpha:1,duration:.5}))}hideMaxWin(){return n.gsap.timeline().add(n.gsap.to(this,{alpha:0,duration:.5})).add(()=>{this.maxWinBackground.visible=!1,this.maxWinDoubleBackground.visible=!1,this.maxWinNothingBackground.visible=!1,this.introSpine.visible=!0,this.maxWinSpine.visible=!1,this.maxWinSpine.state.setEmptyAnimation(0,0)})}showOutro(){return n.gsap.timeline().add(this.showIntroOutroThing(this.fsIntroBackground,\"FS_Outro\")).add(this.outroInformation.showOutroInformation())}hideOutro(){return n.gsap.timeline().add(this.hideIntroOutroThing(this.fsIntroBackground)).add(this.outroInformation.hideOutroInformation())}showOutroSuper(){return n.gsap.timeline().add(this.showIntroOutroThing(this.sfsIntroBackground,\"SFS_Outro\")).add(this.outroInformation.showOutroInformation())}hideOutroSuper(){return n.gsap.timeline().add(this.hideIntroOutroThing(this.sfsIntroBackground)).add(this.outroInformation.hideOutroInformation())}showSlayer(){return n.gsap.timeline().add(()=>{this.introSpine.visible=!1,this.slayerSpine.visible=!0,this.slayerSpine.state.setAnimation(0,\"Slayer\",!0)}).add(()=>{this.alpha=1}).add(()=>{},\">2\").add(()=>{this.alpha=0}).add(()=>{this.slayerSpine.state.setEmptyAnimation(0,0),this.introSpine.visible=!0,this.slayerSpine.visible=!1})}}t.Screen=Panel;U.transitionScreen=new w.Screen;t.Idle=class{constructor(){}start(e){const t=o.gsap.timeline();if(s.ExampleSlotDoubleOrNothingWinPresentation.wasTotalWin=n.ExampleSlot.model.data.mode!=a.GameMode.NORMAL,n.ExampleSlot.apiPlugin.isReplay){const e=parseInt(n.ExampleSlot.model.data.nextPlayerInteraction.selectedIndex,10);t.add(n.ExampleSlot.transitionScreen.replayDoubleOrNothing(e))}else t.add(n.ExampleSlot.transitionScreen.enableDoubleOrNothing());t.add(()=>e.finish())}};class Wire{pickAndClickBet(e,t=!0){const i={selectedIndex:e.toString()},n={type:o.APIBetType.ZERO_BET,bet:\"0.00\",playerInteraction:i};this.sendRequest(n,!t)}};class Model{update(){this.isGodModeDeluxe=\"GOD_MODE_DELUXE\"==this.buyFeatureName&&this.data.wasFeatureBuy}};const l=new R.Idle;U.gameFlowController.addGameModeFlowStatePresentationMap(\"GAMBLE_FIFTY_FIFTY\",new Map([[g.FlowState.IDLE,l],[g.FlowState.RESULT,{start:e=>e.finish()}]]));",
+  "rounds": [
+    [
+      {
+        "request": {
+          "type": "featureBet",
+          "bet": "1.00",
+          "featureName": "GOD_MODE",
+          "playerInteraction": {
+            "featureName": "GOD_MODE"
+          }
+        },
+        "response": {
+          "game": {
+            "reels": [
+              [
+                "M2",
+                "M2",
+                "L1",
+                "M3",
+                "M4",
+                "MW",
+                "M2"
+              ],
+              [
+                "L3",
+                "M4",
+                "M2",
+                "M2",
+                "M2",
+                "L4",
+                "L1"
+              ],
+              [
+                "M1",
+                "L2",
+                "L4",
+                "L4",
+                "L4",
+                "M3",
+                "L3"
+              ],
+              [
+                "M4",
+                "M3",
+                "L1",
+                "L3",
+                "L3",
+                "L3",
+                "L2"
+              ],
+              [
+                "L2",
+                "L2",
+                "L2",
+                "M1",
+                "M4",
+                "MW",
+                "L4"
+              ]
+            ],
+            "evaluatedArea": [
+              [
+                "M2",
+                "L1",
+                "M3",
+                "M4",
+                "MW"
+              ],
+              [
+                "M4",
+                "M2",
+                "M2",
+                "M2",
+                "L4"
+              ],
+              [
+                "L2",
+                "L4",
+                "L4",
+                "L4",
+                "M3"
+              ],
+              [
+                "M3",
+                "L1",
+                "L3",
+                "L3",
+                "L3"
+              ],
+              [
+                "L2",
+                "L2",
+                "M1",
+                "M4",
+                "MW"
+              ]
+            ],
+            "betWayWins": [],
+            "totalSpinWinnings": 8110.0,
+            "accumulatedRoundWin": 8110.0,
+            "playedBetValue": 1.0,
+            "mode": "NORMAL",
+            "nextMode": "GAMBLE_FIFTY_FIFTY",
+            "wasFeatureBuy": true,
+            "brokeTheBank": true,
+            "freespinsTriggeredThisSpin": false,
+            "freespinsPlayed": 0,
+            "freespinsLeft": 0,
+            "freespinsWinnings": 0,
+            "boostedBet": false,
+            "serverTestInfo": {},
+            "symbolSizes": [
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            ],
+            "snakes": [],
+            "keptSymbols": [
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ]
+            ],
+            "multiplierValues": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "fsMultiplier": 1,
+            "targetValue": 0,
+            "beforeFreespinsArea": [],
+            "multiplierValuesAtStart": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ]
+          },
+          "features": {
+            "available": []
+          },
+          "remainingFreeSpins": 0,
+          "balance": "6621.00"
+        }
+      },
+      {
+        "request": {
+          "type": "zeroBet",
+          "bet": "0.00",
+          "playerInteraction": {
+            "selectedIndex": "1"
+          }
+        },
+        "response": {
+          "game": {
+            "reels": [
+              [
+                "M2",
+                "M2",
+                "L1",
+                "M3",
+                "M4",
+                "MW",
+                "M2"
+              ],
+              [
+                "L3",
+                "M4",
+                "M2",
+                "M2",
+                "M2",
+                "L4",
+                "L1"
+              ],
+              [
+                "M1",
+                "L2",
+                "L4",
+                "L4",
+                "L4",
+                "M3",
+                "L3"
+              ],
+              [
+                "M4",
+                "M3",
+                "L1",
+                "L3",
+                "L3",
+                "L3",
+                "L2"
+              ],
+              [
+                "L2",
+                "L2",
+                "L2",
+                "M1",
+                "M4",
+                "MW",
+                "L4"
+              ]
+            ],
+            "evaluatedArea": [
+              [
+                "M2",
+                "L1",
+                "M3",
+                "M4",
+                "MW"
+              ],
+              [
+                "M4",
+                "M2",
+                "M2",
+                "M2",
+                "L4"
+              ],
+              [
+                "L2",
+                "L4",
+                "L4",
+                "L4",
+                "M3"
+              ],
+              [
+                "M3",
+                "L1",
+                "L3",
+                "L3",
+                "L3"
+              ],
+              [
+                "L2",
+                "L2",
+                "M1",
+                "M4",
+                "MW"
+              ]
+            ],
+            "betWayWins": [],
+            "totalSpinWinnings": 8110.0,
+            "accumulatedRoundWin": 16220.0,
+            "playedBetValue": 1.0,
+            "mode": "GAMBLE_FIFTY_FIFTY",
+            "nextMode": "NORMAL",
+            "wasFeatureBuy": true,
+            "brokeTheBank": true,
+            "freespinsTriggeredThisSpin": false,
+            "freespinsPlayed": 0,
+            "freespinsLeft": 0,
+            "freespinsWinnings": 0,
+            "boostedBet": false,
+            "serverTestInfo": {},
+            "symbolSizes": [
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            ],
+            "snakes": [],
+            "keptSymbols": [
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ]
+            ],
+            "multiplierValues": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "fsMultiplier": 1,
+            "targetValue": 0,
+            "beforeFreespinsArea": [],
+            "multiplierValuesAtStart": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ]
+          },
+          "features": {
+            "available": []
+          },
+          "remainingFreeSpins": 0,
+          "balance": "22841.00"
+        }
+      }
+    ],
+    [
+      {
+        "request": {
+          "type": "featureBet",
+          "bet": "1.00",
+          "featureName": "GOD_MODE",
+          "playerInteraction": {
+            "featureName": "GOD_MODE"
+          }
+        },
+        "response": {
+          "game": {
+            "reels": [
+              [
+                "M4",
+                "MW",
+                "L4",
+                "L1",
+                "M1",
+                "M1",
+                "M1"
+              ],
+              [
+                "L3",
+                "M3",
+                "M3",
+                "M3",
+                "L2",
+                "M1",
+                "L4"
+              ],
+              [
+                "L2",
+                "M4",
+                "M4",
+                "M4",
+                "M2",
+                "L1",
+                "M3"
+              ],
+              [
+                "M3",
+                "L4",
+                "L1",
+                "L3",
+                "M2",
+                "M2",
+                "M2"
+              ],
+              [
+                "M3",
+                "MW",
+                "M1",
+                "L1",
+                "L1",
+                "L1",
+                "M4"
+              ]
+            ],
+            "evaluatedArea": [
+              [
+                "MW",
+                "L4",
+                "L1",
+                "M1",
+                "M1"
+              ],
+              [
+                "M3",
+                "M3",
+                "M3",
+                "L2",
+                "M1"
+              ],
+              [
+                "M4",
+                "M4",
+                "M4",
+                "M2",
+                "L1"
+              ],
+              [
+                "L4",
+                "L1",
+                "L3",
+                "M2",
+                "M2"
+              ],
+              [
+                "MW",
+                "M1",
+                "L1",
+                "L1",
+                "L1"
+              ]
+            ],
+            "betWayWins": [],
+            "totalSpinWinnings": 8110.0,
+            "accumulatedRoundWin": 8110.0,
+            "playedBetValue": 1.0,
+            "mode": "NORMAL",
+            "nextMode": "GAMBLE_FIFTY_FIFTY",
+            "wasFeatureBuy": true,
+            "brokeTheBank": true,
+            "freespinsTriggeredThisSpin": false,
+            "freespinsPlayed": 0,
+            "freespinsLeft": 0,
+            "freespinsWinnings": 0,
+            "boostedBet": false,
+            "serverTestInfo": {},
+            "symbolSizes": [
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            ],
+            "snakes": [],
+            "keptSymbols": [
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ]
+            ],
+            "multiplierValues": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "fsMultiplier": 1,
+            "targetValue": 0,
+            "beforeFreespinsArea": [],
+            "multiplierValuesAtStart": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ]
+          },
+          "features": {
+            "available": []
+          },
+          "remainingFreeSpins": 0,
+          "balance": "17774.00"
+        }
+      },
+      {
+        "request": {
+          "type": "zeroBet",
+          "bet": "0.00",
+          "playerInteraction": {
+            "selectedIndex": "0"
+          }
+        },
+        "response": {
+          "game": {
+            "reels": [
+              [
+                "M4",
+                "MW",
+                "L4",
+                "L1",
+                "M1",
+                "M1",
+                "M1"
+              ],
+              [
+                "L3",
+                "M3",
+                "M3",
+                "M3",
+                "L2",
+                "M1",
+                "L4"
+              ],
+              [
+                "L2",
+                "M4",
+                "M4",
+                "M4",
+                "M2",
+                "L1",
+                "M3"
+              ],
+              [
+                "M3",
+                "L4",
+                "L1",
+                "L3",
+                "M2",
+                "M2",
+                "M2"
+              ],
+              [
+                "M3",
+                "MW",
+                "M1",
+                "L1",
+                "L1",
+                "L1",
+                "M4"
+              ]
+            ],
+            "evaluatedArea": [
+              [
+                "MW",
+                "L4",
+                "L1",
+                "M1",
+                "M1"
+              ],
+              [
+                "M3",
+                "M3",
+                "M3",
+                "L2",
+                "M1"
+              ],
+              [
+                "M4",
+                "M4",
+                "M4",
+                "M2",
+                "L1"
+              ],
+              [
+                "L4",
+                "L1",
+                "L3",
+                "M2",
+                "M2"
+              ],
+              [
+                "MW",
+                "M1",
+                "L1",
+                "L1",
+                "L1"
+              ]
+            ],
+            "betWayWins": [],
+            "totalSpinWinnings": 0,
+            "accumulatedRoundWin": 8110.0,
+            "playedBetValue": 1.0,
+            "mode": "GAMBLE_FIFTY_FIFTY",
+            "nextMode": "NORMAL",
+            "wasFeatureBuy": true,
+            "brokeTheBank": false,
+            "freespinsTriggeredThisSpin": false,
+            "freespinsPlayed": 0,
+            "freespinsLeft": 0,
+            "freespinsWinnings": 0,
+            "boostedBet": false,
+            "serverTestInfo": {},
+            "symbolSizes": [
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            ],
+            "snakes": [],
+            "keptSymbols": [
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ]
+            ],
+            "multiplierValues": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "fsMultiplier": 1,
+            "targetValue": 0,
+            "beforeFreespinsArea": [],
+            "multiplierValuesAtStart": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ]
+          },
+          "features": {
+            "available": []
+          },
+          "remainingFreeSpins": 0,
+          "balance": "25884.00"
+        }
+      }
+    ],
+    [
+      {
+        "request": {
+          "type": "featureBet",
+          "bet": "1.00",
+          "featureName": "GOD_MODE_DELUXE",
+          "playerInteraction": {
+            "featureName": "GOD_MODE_DELUXE"
+          }
+        },
+        "response": {
+          "game": {
+            "reels": [
+              [
+                "M4",
+                "L4",
+                "MW",
+                "L1",
+                "L1",
+                "L1",
+                "M1"
+              ],
+              [
+                "M3",
+                "L2",
+                "L4",
+                "L3",
+                "L3",
+                "L3",
+                "M1"
+              ],
+              [
+                "M4",
+                "L1",
+                "M2",
+                "M3",
+                "L2",
+                "M4",
+                "M4"
+              ],
+              [
+                "L3",
+                "M4",
+                "M1",
+                "M3",
+                "M2",
+                "L3",
+                "L3"
+              ],
+              [
+                "L3",
+                "M3",
+                "MW",
+                "M2",
+                "M2",
+                "M2",
+                "L4"
+              ]
+            ],
+            "evaluatedArea": [
+              [
+                "L4",
+                "MW",
+                "L1",
+                "L1",
+                "L1"
+              ],
+              [
+                "L2",
+                "L4",
+                "L3",
+                "L3",
+                "L3"
+              ],
+              [
+                "L1",
+                "M2",
+                "M3",
+                "L2",
+                "M4"
+              ],
+              [
+                "M4",
+                "M1",
+                "M3",
+                "M2",
+                "L3"
+              ],
+              [
+                "M3",
+                "MW",
+                "M2",
+                "M2",
+                "M2"
+              ]
+            ],
+            "betWayWins": [],
+            "totalSpinWinnings": 8110.0,
+            "accumulatedRoundWin": 8110.0,
+            "playedBetValue": 1.0,
+            "mode": "NORMAL",
+            "nextMode": "GAMBLE_FIFTY_FIFTY",
+            "wasFeatureBuy": true,
+            "brokeTheBank": true,
+            "freespinsTriggeredThisSpin": false,
+            "freespinsPlayed": 0,
+            "freespinsLeft": 0,
+            "freespinsWinnings": 0,
+            "boostedBet": false,
+            "serverTestInfo": {},
+            "symbolSizes": [
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            ],
+            "snakes": [],
+            "keptSymbols": [
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ]
+            ],
+            "multiplierValues": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "fsMultiplier": 1,
+            "targetValue": 0,
+            "beforeFreespinsArea": [],
+            "multiplierValuesAtStart": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ]
+          },
+          "features": {
+            "available": []
+          },
+          "remainingFreeSpins": 0,
+          "balance": "17524.00"
+        }
+      },
+      {
+        "request": {
+          "type": "zeroBet",
+          "bet": "0.00",
+          "playerInteraction": {
+            "selectedIndex": "1"
+          }
+        },
+        "response": {
+          "game": {
+            "reels": [
+              [
+                "M4",
+                "L4",
+                "MW",
+                "L1",
+                "L1",
+                "L1",
+                "M1"
+              ],
+              [
+                "M3",
+                "L2",
+                "L4",
+                "L3",
+                "L3",
+                "L3",
+                "M1"
+              ],
+              [
+                "M4",
+                "L1",
+                "M2",
+                "M3",
+                "L2",
+                "M4",
+                "M4"
+              ],
+              [
+                "L3",
+                "M4",
+                "M1",
+                "M3",
+                "M2",
+                "L3",
+                "L3"
+              ],
+              [
+                "L3",
+                "M3",
+                "MW",
+                "M2",
+                "M2",
+                "M2",
+                "L4"
+              ]
+            ],
+            "evaluatedArea": [
+              [
+                "L4",
+                "MW",
+                "L1",
+                "L1",
+                "L1"
+              ],
+              [
+                "L2",
+                "L4",
+                "L3",
+                "L3",
+                "L3"
+              ],
+              [
+                "L1",
+                "M2",
+                "M3",
+                "L2",
+                "M4"
+              ],
+              [
+                "M4",
+                "M1",
+                "M3",
+                "M2",
+                "L3"
+              ],
+              [
+                "M3",
+                "MW",
+                "M2",
+                "M2",
+                "M2"
+              ]
+            ],
+            "betWayWins": [],
+            "totalSpinWinnings": 8110.0,
+            "accumulatedRoundWin": 16220.0,
+            "playedBetValue": 1.0,
+            "mode": "GAMBLE_FIFTY_FIFTY",
+            "nextMode": "NORMAL",
+            "wasFeatureBuy": true,
+            "brokeTheBank": true,
+            "freespinsTriggeredThisSpin": false,
+            "freespinsPlayed": 0,
+            "freespinsLeft": 0,
+            "freespinsWinnings": 0,
+            "boostedBet": false,
+            "serverTestInfo": {},
+            "symbolSizes": [
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            ],
+            "snakes": [],
+            "keptSymbols": [
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ],
+              [
+                "X",
+                "X",
+                "X",
+                "X",
+                "X"
+              ]
+            ],
+            "multiplierValues": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "fsMultiplier": 1,
+            "targetValue": 0,
+            "beforeFreespinsArea": [],
+            "multiplierValuesAtStart": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ]
+          },
+          "features": {
+            "available": []
+          },
+          "remainingFreeSpins": 0,
+          "balance": "33744.00"
+        }
+      }
+    ]
+  ],
+  "init": {
+    "gameClientConfiguration": {
+      "gambleGameRoundCloseIntervalHours": 24,
+      "showNetPosition": false,
+      "operator": "FANPAGE_DEMO",
+      "nolimitWinnersEnabled": true,
+      "fastSpinEnabled": true,
+      "gameRoundCloseInterval": 7,
+      "autoPlaySettings": {
+        "autoplayAllowed": true,
+        "autoplayRounds": [
+          10,
+          25,
+          50,
+          100,
+          250,
+          1000
+        ],
+        "autoplayRequiresStopLossLimit": false,
+        "turnOffAutoplayOnBonus": false
+      },
+      "showSimulatedMaximumPayout": true,
+      "gameRoundCloseIntervalType": "DAYS",
+      "hideRtp": false,
+      "jackpotEnabled": false,
+      "gambleIntoBonusAllowed": true,
+      "showRtpWatermark": false,
+      "cryptoCurrencyRules": true,
+      "boostedBetLockedReels": false,
+      "showGameVersionInGuiGuide": true,
+      "boostedBetAllowed": true,
+      "showMaxWinProbabilityWatermark": false,
+      "sideBetAllowed": true,
+      "belowStakeWinRestriction": false,
+      "jurisdictionName": "DEFAULT",
+      "extraSpinAllowed": true,
+      "operatorGroup": "NOLIMITCITY",
+      "gambleFiftyFiftyAllowed": true,
+      "minimumSpinTime": 0,
+      "featureBuyEnabled": true,
+      "boostedBetExtraRows": true,
+      "clockSettings": {
+        "show": true,
+        "allowSetting": false,
+        "useSessionTime": false,
+        "showSessionTimeUnder": false
+      },
+      "actionSpin": true
+    },
+    "betLevels": {
+      "bet": "1.00",
+      "betLevels": [
+        "0.20",
+        "0.40",
+        "0.60",
+        "0.80",
+        "1.00",
+        "1.60",
+        "2.00",
+        "2.40",
+        "3.00",
+        "5.00",
+        "8.00",
+        "10.00",
+        "16.00",
+        "20.00",
+        "24.00",
+        "32.00",
+        "40.00",
+        "50.00",
+        "60.00",
+        "80.00",
+        "100.00",
+        "140.00",
+        "200.00",
+        "240.00",
+        "280.00"
+      ],
+      "availableBetLevels": [
+        "0.20",
+        "0.40",
+        "0.60",
+        "0.80",
+        "1.00",
+        "1.60",
+        "2.00",
+        "2.40",
+        "3.00",
+        "5.00",
+        "8.00",
+        "10.00",
+        "16.00",
+        "20.00",
+        "24.00",
+        "32.00",
+        "40.00",
+        "50.00",
+        "60.00",
+        "80.00",
+        "100.00",
+        "140.00",
+        "200.00",
+        "240.00",
+        "280.00"
+      ],
+      "unavailableBetLevels": []
+    },
+    "featureBetLevels": {
+      "FREESPIN_3_SCATTERS": [
+        "0.20",
+        "0.40",
+        "0.60",
+        "0.80",
+        "1.00",
+        "1.60",
+        "2.00",
+        "2.40",
+        "3.00",
+        "5.00",
+        "8.00",
+        "10.00",
+        "16.00",
+        "20.00",
+        "24.00",
+        "32.00",
+        "40.00",
+        "50.00",
+        "60.00",
+        "80.00",
+        "100.00",
+        "140.00",
+        "200.00",
+        "240.00",
+        "280.00"
+      ],
+      "FREESPIN_4_SCATTERS": [
+        "0.20",
+        "0.40",
+        "0.60",
+        "0.80",
+        "1.00",
+        "1.60",
+        "2.00",
+        "2.40",
+        "3.00",
+        "5.00",
+        "8.00",
+        "10.00",
+        "16.00",
+        "20.00",
+        "24.00",
+        "32.00",
+        "40.00",
+        "50.00",
+        "60.00",
+        "80.00",
+        "100.00",
+        "140.00",
+        "200.00",
+        "240.00",
+        "280.00"
+      ],
+      "FREESPIN_5_SCATTERS": [
+        "0.20",
+        "0.40",
+        "0.60",
+        "0.80",
+        "1.00",
+        "1.60",
+        "2.00",
+        "2.40",
+        "3.00",
+        "5.00",
+        "8.00",
+        "10.00",
+        "16.00",
+        "20.00",
+        "24.00",
+        "32.00",
+        "40.00",
+        "50.00",
+        "60.00",
+        "80.00",
+        "100.00",
+        "140.00",
+        "200.00",
+        "240.00",
+        "280.00"
+      ],
+      "GOD_MODE": [
+        "0.20",
+        "0.40",
+        "0.60",
+        "0.80",
+        "1.00",
+        "1.60",
+        "2.00",
+        "2.40",
+        "3.00",
+        "5.00",
+        "8.00",
+        "10.00",
+        "16.00",
+        "20.00",
+        "24.00",
+        "32.00",
+        "40.00",
+        "50.00",
+        "60.00",
+        "80.00",
+        "100.00",
+        "140.00",
+        "200.00",
+        "240.00",
+        "280.00"
+      ],
+      "GOD_MODE_DELUXE": [
+        "0.20",
+        "0.40",
+        "0.60",
+        "0.80",
+        "1.00",
+        "1.60",
+        "2.00",
+        "2.40",
+        "3.00",
+        "5.00",
+        "8.00",
+        "10.00",
+        "16.00",
+        "20.00",
+        "24.00",
+        "32.00",
+        "40.00",
+        "50.00",
+        "60.00",
+        "80.00",
+        "100.00",
+        "140.00",
+        "200.00",
+        "240.00",
+        "280.00"
+      ],
+      "LUCKY_DRAW": [
+        "0.20",
+        "0.40",
+        "0.60",
+        "0.80",
+        "1.00",
+        "1.60",
+        "2.00",
+        "2.40",
+        "3.00",
+        "5.00",
+        "8.00",
+        "10.00",
+        "16.00",
+        "20.00",
+        "24.00",
+        "32.00",
+        "40.00",
+        "50.00",
+        "60.00",
+        "80.00",
+        "100.00",
+        "140.00",
+        "200.00",
+        "240.00",
+        "280.00"
+      ],
+      "BOOSTED_BET": [
+        "0.20",
+        "0.40",
+        "0.60",
+        "0.80",
+        "1.00",
+        "1.60",
+        "2.00",
+        "2.40",
+        "3.00",
+        "5.00",
+        "8.00",
+        "10.00",
+        "16.00",
+        "20.00",
+        "24.00",
+        "32.00",
+        "40.00",
+        "50.00",
+        "60.00",
+        "80.00",
+        "100.00",
+        "140.00",
+        "200.00",
+        "240.00",
+        "280.00"
+      ]
+    },
+    "allowedFeatureTypes": [
+      "BONUS_BUY",
+      "BOOSTED_BET",
+      "EXTRA_SPIN",
+      "GAMBLE_FIFTY_FIFTY",
+      "GAMBLE_INTO_BONUS",
+      "NOLIMIT_WINNERS",
+      "SIDE_BET"
+    ],
+    "allowedFeatureBets": [
+      "BOOSTED_BET",
+      "FREESPIN_3_SCATTERS",
+      "FREESPIN_4_SCATTERS",
+      "FREESPIN_5_SCATTERS",
+      "GOD_MODE",
+      "GOD_MODE_DELUXE",
+      "LUCKY_DRAW"
+    ],
+    "game": {
+      "symbolValues": {
+        "M1": {
+          "3": 12,
+          "4": 20,
+          "5": 40
+        },
+        "M2": {
+          "3": 10,
+          "4": 12,
+          "5": 20
+        },
+        "L1": {
+          "3": 5,
+          "4": 6,
+          "5": 8
+        },
+        "M3": {
+          "3": 9,
+          "4": 11,
+          "5": 16
+        },
+        "L2": {
+          "3": 4,
+          "4": 5,
+          "5": 7
+        },
+        "M4": {
+          "3": 8,
+          "4": 10,
+          "5": 14
+        },
+        "L3": {
+          "3": 3,
+          "4": 4,
+          "5": 6
+        },
+        "L4": {
+          "3": 2,
+          "4": 3,
+          "5": 5
+        }
+      },
+      "featureBuyTimesBetValue": [
+        {
+          "name": "FREESPIN_3_SCATTERS",
+          "type": "FREESPIN",
+          "additionalTypes": [],
+          "price": 50
+        },
+        {
+          "name": "FREESPIN_4_SCATTERS",
+          "type": "FREESPIN",
+          "additionalTypes": [],
+          "price": 100
+        },
+        {
+          "name": "FREESPIN_5_SCATTERS",
+          "type": "FREESPIN",
+          "additionalTypes": [],
+          "price": 360
+        },
+        {
+          "name": "GOD_MODE",
+          "type": "FREESPIN",
+          "additionalTypes": [],
+          "price": 1689
+        },
+        {
+          "name": "GOD_MODE_DELUXE",
+          "type": "FREESPIN",
+          "additionalTypes": [],
+          "price": 8360
+        },
+        {
+          "name": "LUCKY_DRAW",
+          "type": "FREESPIN",
+          "additionalTypes": [],
+          "price": 96
+        },
+        {
+          "name": "BOOSTED_BET",
+          "type": "BOOSTED_BET",
+          "additionalTypes": [],
+          "price": 1.05
+        }
+      ],
+      "isRestoreState": false,
+      "reels": [
+        [
+          "M4",
+          "M4",
+          "M4",
+          "MW",
+          "L3",
+          "M2",
+          "L2"
+        ],
+        [
+          "L1",
+          "M3",
+          "S",
+          "L4",
+          "L4",
+          "L4",
+          "M2"
+        ],
+        [
+          "L3",
+          "M4",
+          "L1",
+          "M1",
+          "L2",
+          "L2",
+          "L2"
+        ],
+        [
+          "L1",
+          "M2",
+          "M4",
+          "M4",
+          "M4",
+          "L1",
+          "M3"
+        ],
+        [
+          "M2",
+          "M3",
+          "M3",
+          "M3",
+          "MW",
+          "L3",
+          "L2"
+        ]
+      ],
+      "mode": "NORMAL",
+      "nextMode": "NORMAL",
+      "wasFeatureBuy": false,
+      "boostedBet": false,
+      "freespinsLeft": 0,
+      "freespinsWinnings": 0,
+      "symbolSizes": [
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          8110,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      ],
+      "snakes": [],
+      "keptSymbols": [],
+      "multiplierValues": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "multiplierValuesAtStart": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "fsMultiplier": 1,
+      "targetValue": 0,
+      "beforeFreespinsArea": [],
+      "bet": 0,
+      "symbolSizesEnteringFS": [],
+      "snakesEnteringFreespins": []
+    },
+    "features": {},
+    "remainingFreeSpins": 0,
+    "balance": "10000.00",
+    "init": "ok",
+    "currency": {
+      "code": "EUR",
+      "symbol": "\u20ac ",
+      "before": true
+    }
+  },
+  "provenance": "Two independent connections; first lacks init. Round balances are contextual only; never certify whole capture."
+}

@@ -249,3 +249,13 @@ Las dos opciones cubiertas no bastan para dar la cadena por completa.
 Ver política, evidencia y límites en [NOLIMIT_PRIMITIVES.md](NOLIMIT_PRIMITIVES.md#giros-extra-pagados-y-agotamiento-de-fondos-2026-10-15).
 La regresión de transporte simulado recorre 501 descuentos con libro monetario
 real; no se presenta como una ejecución remota del catálogo.
+
+
+### Captura BRICK SNAKE 2000 de 2026-10-15 16:37 UTC
+
+Primitiva nueva: `CLIENT_BOUND_SETTLEMENT_BUTTONS`; dominio derivado de enlaces
+cliente, botones y predicado de accesibilidad de la raíz. El formato usa `zeroBet`
+con apuesta cero y `selectedIndex` string. Tres decisiones de la conexión sin init
+quedan como evidencia contextual; la otra conexión valida 17 pasos y cinco cierres.
+Dos demos nuevas finalizaron OK con exportación lista; el detalle y los límites
+figuran en [NOLIMIT_PRIMITIVES.md](NOLIMIT_PRIMITIVES.md#selecciones-vinculadas-a-botones-y-liquidación-2026-10-15).

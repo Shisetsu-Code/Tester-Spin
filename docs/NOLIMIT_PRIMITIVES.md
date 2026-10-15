@@ -195,3 +195,39 @@ fondos insuficientes, cierre del servidor, interrupción, nueva cadena tras otra
 completa, cobertura/exportación y ejecutor con libro monetario real sobre transporte
 simulado de 501 compras (más de 1000 intercambios). No certifica por sí sola un
 catálogo ni proveedores todavía no integrados con esta política.
+
+
+## Selecciones vinculadas a botones y liquidación (2026-10-15)
+
+`CLIENT_BOUND_SETTLEMENT_BUTTONS` reconstruye el dominio sin tablas por juego:
+modo actual → presentación IDLE registrada → panel activo → botones → callbacks
+→ literal enviado por `pickAndClickBet` → plantilla SDK `zeroBet`, apuesta cero y
+`selectedIndex` convertido a string. Un predicado del modelo y el selector de la
+compra actual determinan qué botones son accesibles. Los nombres del juego, fase,
+selector, clase y métodos no son constantes del reconocedor.
+
+El patrón comprobado incluye una confirmación intermedia y visibilidad condicional.
+Se reconocen expresiones completas: envíos directos, habilitación efectiva, callbacks
+sin reasignaciones, cronología sin cancelación y retorno de la confirmación al panel.
+Una mera coincidencia textual, una llamada bajo condición falsa o un botón después
+deshabilitado no declaran opciones. Otras formas de interfaz quedan sin resolver.
+El alcance actual requiere una raíz PURCHASE, premio pendiente positivo y el
+indicador de compra confirmado. No convierte cualquier pantalla binaria en apuesta.
+
+La respuesta de esta familia no repite `selectedIndex`: el acuse exige entrada en
+la fase solicitada y liquidación NORMAL sin contadores pendientes, con saldo
+explícito; el libro monetario comprueba premio y saldo. Las pérdidas de una selección
+siguen requiriendo el contrato firmado por el cliente, petición exacta y ajuste
+limitado al premio pendiente. Esta elección se guarda como rama interna, sin
+aumentar la cantidad de compras o antebets. La exportación requiere su descriptor
+`bound_settlement_selection`.
+
+El HAR de BRICK SNAKE 2000 (cliente 1.1.9) muestra opciones 0/1 en la compra normal:
+0 conserva el premio y las aceptaciones 1 capturadas lo duplican. En la compra
+Deluxe el cliente oculta 0 y sólo se exige 1. Esto se deriva del predicado del cliente,
+no del nombre del selector. La captura tiene dos conexiones: la primera carece de
+inicialización; sus tres decisiones se validan en rondas contextualizadas, sin
+certificar toda esa sesión. La segunda contiene init y reconcilia 17 pasos, cinco
+rondas y 12 continuaciones sin fallos. Dos ejecuciones remotas con sesión nueva
+terminaron OK; en ambas apareció y se cubrió la elección Deluxe [1]. La cobertura
+normal [0,1] procede del HAR y las pruebas, no de esas dos ejecuciones remotas.

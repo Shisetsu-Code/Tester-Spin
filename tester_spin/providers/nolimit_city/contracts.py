@@ -78,7 +78,7 @@ def resolve_operation(answer,mode=None,*,raw_answer=None,client_source=None):
         domain=literal_domain(client_source,game)
         if domain is not None:
             return _contract(raw,'QUOTED_LITERAL_EXTRA',domain['source'],domain=domain,client_source=client_source)
-        try:domain=choice_domain(client_source,raw)
+        try:domain=choice_domain(client_source,raw,mode)
         except ValueError as exc:raise Unlearned(str(exc)) from exc
         family='FINITE_SELECTION'
     return _contract(raw,family,domain['source'] if 'source' in domain else 'CURRENT_CLIENT_QUOTED_EXTRA',domain=domain,client_source=client_source)
