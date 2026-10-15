@@ -1,6 +1,6 @@
 """Fresh demo transport and money-checked primitives from the captured NLC SDK."""
 from __future__ import annotations
-import json,re,time,uuid
+import hashlib,json,re,time,uuid
 from decimal import Decimal,ROUND_HALF_UP
 from select import select
 from curl_cffi import CurlError
@@ -24,7 +24,7 @@ def sanitized(data):
 
 class NolimitSession:
     def __init__(self):
-        self.socket=None;self.rows=[];self.capture=None;self.remembered={};self.counter=0;self.uuid=uuid.uuid4().hex;self.choice_domains={};self.pending_choice=None;self.choice_client=None
+        self.socket=None;self.rows=[];self.capture=None;self.remembered={};self.counter=0;self.uuid=uuid.uuid4().hex;self.choice_domains={};self.pending_choice=None;self.choice_client=None;self.pending_automatic=None
     def open(self,game,http,timeout,stop,directory):
         self.timeout=max(.1,float(timeout));self.stop=stop
         response=http.get(CDN+game.symbol+'/info.json',timeout=self.timeout);response.raise_for_status()
@@ -99,6 +99,15 @@ class NolimitSession:
             response=self.http.get(target,timeout=self.timeout);response.raise_for_status()
             if len(response.content)>MAX_BODY:raise Unlearned('Nolimit City: cliente excede el límite de descubrimiento')
             self.choice_client=response.text
+        from .client_actions import automatic_command
+        automatic=automatic_command(self.choice_client,answer)
+        if automatic is not None:
+            self.pending_automatic=(answer.get('game') or {}).get('nextMode')
+            save(directory/'automatic-action.json',{'schema':'nolimit-client-bound-zero-bet/v1',
+                'state':self.pending_automatic,'request':automatic,
+                'client_sha256':hashlib.sha256(self.choice_client.encode('utf-8')).hexdigest(),
+                'client_version':getattr(self,'client_info',{}).get('version')})
+            return automatic
         game=answer.get('game') or {}
         from .operation_fields import collect_available
         if collect_available(game):
@@ -127,6 +136,10 @@ class NolimitSession:
         save(directory/'choice-domain.json',{**domain,'selected':selected,'root_mode':root_id})
         return {'type':domain.get('request_type','zeroBet'),'bet':'0.00','playerInteraction':{domain.get('request_field','selectedIndex'):selected if domain.get('request_field')=='gambleCollected' else str(selected)}}
     def confirm_pending_choice(self,answer):
+        if self.pending_automatic is not None:
+            if (answer.get('game') or {}).get('mode')!=self.pending_automatic:
+                raise Unlearned('Nolimit City: continuación automática sin acuse de la fase solicitada')
+            self.pending_automatic=None
         if self.pending_choice is None:return
         from .choices import confirm_choice
         domain,selected,key=self.pending_choice
@@ -317,7 +330,7 @@ def normalized_response(answer, declared_options=(), declared_categories=(),decl
         if observation['kind'] in ('NONE','CATALOG','PHASE'):
             answer['features']={**answer['features'],'available':[],'active':''}
     from .operation_fields import step_win,modifier_ack
-    if (any(key in game for key in ('win','thisSpinWinning','thisSpinWinnings'))
+    if (any(key in game for key in ('win','thisSpinWinning','thisSpinWinnings','thisAvalancheWinnings'))
             or legacy or boosted_dialect or category_dialect or batch_dialect or _row_response(game) or _level_response(game)):
         game['win']=step_win(game)
     for key in ('isExtraSpin','wasExtraSpin'):

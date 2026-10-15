@@ -2,7 +2,7 @@
 from decimal import Decimal,InvalidOperation
 
 def step_win(game):
-    names=[key for key in ('win','thisSpinWinning','thisSpinWinnings') if key in game]
+    names=[key for key in ('win','thisSpinWinning','thisSpinWinnings','thisAvalancheWinnings') if key in game]
     if not names:names=['totalSpinWinnings'] if 'totalSpinWinnings' in game else []
     if not names:raise ValueError('Nolimit City: premio de paso ausente')
     values=[]

@@ -15,8 +15,8 @@ def choice_domain(source,answer):
     for match in re.finditer(static,source):
         if not _contains_mode(match[2],mode):continue
         ids=[int(value) for value in re.findall(r'\bid:(\d+)\b',match[1])]
-        if not ids or len(ids)>32 or len(ids)!=len(set(ids)) or not any(type(game.get(field)) is int for field in ('playerSelect','playerSelection')):continue
-        candidates.append({'state':mode,'options':ids,'available':ids,'ack_field':'playerSelect' if type(game.get('playerSelect')) is int else 'playerSelection','source':'CLIENT_STATIC_IDS'})
+        if not ids or len(ids)>32 or len(ids)!=len(set(ids)) or not any(type(game.get(field)) is int for field in ('playerSelect','playerSelection','playerFSSelection')):continue
+        candidates.append({'state':mode,'options':ids,'available':ids,'ack_field':next(field for field in ('playerSelect','playerSelection','playerFSSelection') if type(game.get(field)) is int),'source':'CLIENT_STATIC_IDS'})
     automatic=r'automaticPickGame:\{[^{}]{0,1000}?optionSelection:(\w+)=>this\.(\w+)\(\1\)[^{}]{0,1000}?pickNeededForModes:\[([^\]]+)\]'
     for match in re.finditer(automatic,source):
         if not _contains_mode(match[3],mode):continue

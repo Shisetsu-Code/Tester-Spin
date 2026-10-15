@@ -38,6 +38,8 @@ def feature_observation(answer,catalog=(),game_modes=(),purchase_options=(),alte
         try:values=_labels(available)
         except ValueError:return {'kind':'UNRESOLVED_MENU','reason':'invalid_available'}
         catalogs=[catalog,*alternate_catalogs]
+        purchase_categories={item for items in alternate_catalogs for item in items if item=='FREESPIN'}
+        if purchase_options and purchase_categories:catalogs.append(list(purchase_categories))
         matches=any(len(values)==len(items) and set(values)==set(items) for items in catalogs)
         if values and not matches:
             return {'kind':'UNRESOLVED_MENU','available':values,'source':'unmatched_runtime_domain'}
@@ -69,6 +71,7 @@ def settled_state(answer):
     if game.get('nextMode')!='NORMAL' or features.get('available')!=[] or features.get('active') not in (None,''):
         return False
     if 'pendingWin' in answer and answer['pendingWin'] is not False:return False
+    if 'respinActive' in game and game['respinActive'] is not False:return False
     counters=[]
     if 'remainingFreeSpins' in answer:counters.append(answer['remainingFreeSpins'])
     for key in ('freespinsLeft','respinsLeft','secondStageFsLeft'):

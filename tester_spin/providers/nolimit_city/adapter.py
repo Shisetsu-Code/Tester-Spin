@@ -47,7 +47,7 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
             'fresh_idle':'init_ok_isRestoreState_false_both_modes_NORMAL_remainingFreeSpins_zero_no_pending_counters_or_flags',
             'catalog':'exact_init_features_available_is_catalog_not_permission_for_unknown_phase',
             'phase':'active_matches_proven_phase_family_or_init_game_modes_or_current_declared_purchase_root_observation_does_not_grant_action_permission',
-            'explicit_step_aliases':['win','thisSpinWinning','thisSpinWinnings'],
+            'explicit_step_aliases':['win','thisSpinWinning','thisSpinWinnings','thisAvalancheWinnings'],
             'total_only':'requires_current_request_total_matches_step_delta_or_accumulated_round_win_no_implicit_discount',
             'normal_root':'current_normalBet_exact_stake_and_no_extra_parameters_explicit_modifiers_not_true_cost_and_settlement_verified',
             'purchase_root':'wasFeatureBuy_true_and_exact_declared_selector',
@@ -55,6 +55,7 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
             'remaining_counters':['remainingFreeSpins','game.freespinsLeft','game.respinsLeft','game.secondStageFsLeft'],
             'collect_primitive':{'type':'gambleBet','bet':'0.00','playerInteraction':{'gambleCollected':True}},
             'collect_scope':'client_proven_request_previous_GAMBLE_with_gambleOptions_and_false_gambleCollect_then_ack_true_zero_win_normal_settled_no_gamble_alternative_coverage',
+            'client_bound_automatic_action':{'source':'current_version_client_flow_map_or_registered_controller_or_bound_idle_animation','request':{'type':'zeroBet','bet':'0.00'},'ack':'response.game.mode_equals_requested_phase','evidence':'automatic-action.json_with_client_sha256','positive_win_required':False,'paid_extra_spin':'requires_separate_choice_and_money_contract'},
             'unknown_action':'PARCIAL_with_local_evidence'},
         'request_identity_scope':'one_exchange_not_round','declaration_source':'init.game.featureBuyTimesBetValue'})
 

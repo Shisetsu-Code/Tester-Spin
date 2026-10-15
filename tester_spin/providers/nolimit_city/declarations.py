@@ -58,8 +58,10 @@ def declared_options(init):
         if isinstance(game_modes,list) and all(isinstance(v,str) for v in game_modes):mode['declared_game_modes']=list(game_modes)
         mode['declared_feature_options']=list(allowed)
         mode['declared_purchase_options']=[item['selector'] for item in modes if item['kind']=='PURCHASE']
-        mode['declared_feature_categories']=[category for category,kind in [('BONUS_BUY','PURCHASE'),('BOOSTED_BET','FEATURE_SPIN')]
-            if any(item['kind']==kind for item in modes)]
+        mode['declared_feature_categories']=list(dict.fromkeys(
+            [category for category,kind in [('BONUS_BUY','PURCHASE'),('BOOSTED_BET','FEATURE_SPIN')]
+                if any(item['kind']==kind for item in modes)]
+            +[quotes[name]['type'] for name in allowed if isinstance(quotes[name].get('type'),str)]))
         if _row_response(game):mode['response_profile']='rows_freespin_and_collect/v1'
         mode['observation_contract']='independent-server-observations/v1'
         mode['wire_command']='normalBet' if mode['kind']=='SPIN' else 'featureBet'
