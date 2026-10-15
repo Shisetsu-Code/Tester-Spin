@@ -234,3 +234,18 @@ class PathCoverageTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_nested_declared_choices_are_counted_even_when_root_modes_are_complete(tmp_path):
+    result=PathCoverageTests._result(tmp_path)
+    result.discovered_modes=[{'id':'BUY','kind':'PURCHASE','coverage_required':True,
+        'required_options':['BONUS'],'covered_options':['BONUS'],
+        'choice_domains':[{'state':'ENDING','options':[1,2],'covered':[1],'ack_field':'playerSelect'}]}]
+    messages=[];enforce_complete_path_coverage(result,progress=messages.append)
+    assert result.status=='PARCIAL'
+    report=build_path_coverage_report(result)
+    assert report['missing_count']==1
+    assert any(p['missing']==['2'] for p in report['branch_points'])
+    assert not any('completa:' in m for m in messages)
+    result.discovered_modes[0]['choice_domains'][0]['covered']=[1,2]
+    assert build_path_coverage_report(result)['complete']

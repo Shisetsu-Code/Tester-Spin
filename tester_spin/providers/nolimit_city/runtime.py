@@ -378,7 +378,7 @@ class RoundLedger:
         self.cost=(self.stake*_money(mode['price_multiplier'],positive=True)).quantize(Decimal('.01'),rounding=ROUND_HALF_UP)
         if self.cost>self.before:raise Unlearned('Nolimit City: saldo Demo insuficiente para la opción declarada')
         self.win=Decimal(0);self.steps=0;self.after=self.before;self.closed=False;self.had_feature=False;self.previous=None;self.extra_played=False;self.extra_cost=Decimal(0)
-    def accept(self,answer,request=None):
+    def accept(self,answer,request=None,*,operation=None):
         answer=normalized_response(answer,self.mode.get('declared_feature_options',()),self.mode.get('declared_feature_categories',()),self.mode.get('declared_purchase_options',()),declared_catalog=self.mode.get('declared_feature_catalog'),declared_game_modes=self.mode.get('declared_game_modes',()),allow_unresolved_state=isinstance(request,dict))
         game=answer.get('game')
         if not isinstance(game,dict):raise Unlearned('Nolimit City: falta estado de juego')
@@ -417,6 +417,9 @@ class RoundLedger:
                 delta=-price;self.extra_cost+=price;self.extra_played=True
             elif game.get('nextMode')!='NORMAL' or _money(game.get('win'))!=0:
                 raise ValueError('Nolimit City: rechazo extra spin sin liquidación')
+        if delta is None and Decimal(str(game.get('win')))<0:
+            from .contracts import selection_adjustment
+            delta=selection_adjustment(operation,request,answer,previous,self.win)
         if game.get('wasExtraSpin',False) is not False and not (_extra_response(game) and self.extra_played):
             raise Unlearned('Nolimit City: extra spin sin contrato aprendido')
         self.steps+=1;self.win+=_money(game.get('win')) if delta is None else delta

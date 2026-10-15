@@ -184,6 +184,23 @@ def _explicit_branch_points(result: GameTestResult) -> list[dict[str, Any]]:
             if implicit is not None:
                 points.append(implicit)
 
+        for index, domain in enumerate(mode.get("choice_domains") or []):
+            if not isinstance(domain, dict) or not domain.get("options"):
+                continue
+            # Choices remain separate from the commercial option that opened
+            # them; a completed purchase is not proof of every nested branch.
+            scalar = lambda values: _option_list([
+                str(value).lower() if isinstance(value, bool) else value
+                for value in values
+            ])
+            points.append({
+                "source": "declared_choice_domain",
+                "mode_id": mode_id,
+                "signature": f"{mode_id}:choice:{index}:{domain.get('state', '')}:{domain.get('request_field', 'selectedIndex')}",
+                "required": scalar(domain["options"]),
+                "covered": scalar(domain.get("covered") or []),
+            })
+
         fs_required = _option_list(mode.get("fs_option_indices"))
         if fs_required:
             points.append(

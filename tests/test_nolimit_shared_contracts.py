@@ -88,3 +88,39 @@ def test_cancelled_or_reassigned_timeline_does_not_authorize_its_callback(mutati
 def test_legacy_timeline_shape_cannot_bypass_shared_cancellation_rules():
     source=bound('{constructor(){}start(t){const e=o.gsap.timeline({onComplete:()=>{t.finish()}});e.add(()=>{n.SlotGame.apiPlugin.betHandler.zeroBet()}),e.pause()}}')
     assert client_actions.automatic_command(source,{'game':{'nextMode':'UNSEEN_PHASE'}}) is None
+
+
+def test_directly_instantiated_idle_binding_uses_the_same_lifecycle_contract():
+    source=bound('{start(t){n.Game.apiPlugin.betHandler.zeroBet(),t.finish()}}')
+    source=source.replace('IDLE,P','IDLE,new C.Auto')
+    assert client_actions.automatic_command(source,{'game':{'nextMode':'UNSEEN_PHASE'}})=={'type':'zeroBet','bet':'0.00'}
+
+@pytest.mark.parametrize('config',[
+    'onComplete:()=>this.complete()',
+    'onComplete:()=>{this.complete()}',
+])
+def test_playing_timeline_completion_invokes_its_unconditional_action(config):
+    source=bound('{start(t){this.controller=t;n.gsap.timeline({'+config+'})}complete(){n.Game.apiPlugin.betHandler.zeroBet(),this.controller.finish()}}')
+    assert client_actions.automatic_command(source,{'game':{'nextMode':'UNSEEN_PHASE'}})=={'type':'zeroBet','bet':'0.00'}
+    assert client_actions.automatic_command(source.replace('{'+config+'}', '{paused:true,'+config+'}'),{'game':{'nextMode':'UNSEEN_PHASE'}}) is None
+
+
+def test_static_mode_value_alias_binds_wire_phase_to_client_symbol():
+    source=bound('{start(t){n.Game.apiPlugin.betHandler.zeroBet(),t.finish()}}',phase='RESPIN')
+    source='class x extends n.GameMode{}e.Mode=x,x.RESPIN="WIRE_PHASE";'+source
+    assert client_actions.automatic_command(source,{'game':{'nextMode':'WIRE_PHASE'}})=={'type':'zeroBet','bet':'0.00'}
+    assert client_actions.automatic_command(source.replace('extends n.GameMode','extends n.Other'),{'game':{'nextMode':'WIRE_PHASE'}}) is None
+
+
+def test_comma_constructor_binding_uses_the_last_value_class():
+    source=bound('{start(t){n.Game.apiPlugin.betHandler.zeroBet(),t.finish()}}')
+    source=source.replace('P=new C.Auto','P=(new C.Unused,new C.Auto)')
+    assert client_actions.automatic_command(source,{'game':{'nextMode':'UNSEEN_PHASE'}})=={'type':'zeroBet','bet':'0.00'}
+    assert client_actions.automatic_command(source.replace('(new C.Unused,new C.Auto)','(new C.Auto,new C.Unused)'),{'game':{'nextMode':'UNSEEN_PHASE'}}) is None
+
+
+@pytest.mark.parametrize('callback',['()=>this.complete()','()=>{this.complete()}'])
+@pytest.mark.parametrize('property',['paused:true','onStart:()=>this.disable()'])
+def test_trailing_timeline_properties_cannot_hide_from_completion_validation(callback,property):
+    source=bound('{start(t){this.controller=t;n.gsap.timeline({onComplete:'+callback+','+property+'})}complete(){n.Game.apiPlugin.betHandler.zeroBet(),this.controller.finish()}}')
+    assert client_actions.automatic_command(source,{'game':{'nextMode':'UNSEEN_PHASE'}}) is None

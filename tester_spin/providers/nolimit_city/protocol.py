@@ -111,13 +111,13 @@ def _closed(message):
     game=message.get('game') or {};available=(message.get('features') or {}).get('available')
     return game.get('nextMode')=='NORMAL' and type(game.get('freespinsLeft')) is int and game['freespinsLeft']==0 and available==[]
 
-def analyze_messages(rows):
+def analyze_messages(rows,*,client_source=None):
     connections={}
     for row in rows:connections.setdefault(row.get('connection',0),[]).append(row)
     if len(connections)>1:
         reports=[];incomplete=[]
         for connection,items in connections.items():
-            try:reports.append({'connection':connection,**analyze_messages(items)})
+            try:reports.append({'connection':connection,**analyze_messages(items,client_source=client_source)})
             except ValueError as exc:incomplete.append({'connection':connection,'reason':str(exc)})
         return {'schema':'nolimit-city/multi-session-har-analysis/v1','sessions':reports,
                 'incomplete_sessions':incomplete,'ok_certified':False}
@@ -147,9 +147,9 @@ def analyze_messages(rows):
         else:unknown.append(option)
     if any(name not in quotes for name in allowed):raise ValueError('Nolimit City: selector permitido sin precio declarado')
     before=_money(init.get('balance'));initial=before;total_paid=Decimal(0);total_win=Decimal(0)
-    active=None;roots=closed=zero=consecutive=0;observed=set();round_summaries=[]
+    active=None;roots=closed=zero=consecutive=0;observed=set();round_summaries=[];previous_response=None
     for request,response in exchanges[1:]:
-        content=request.get('content') or {};kind=content.get('type')
+        content=request.get('content') or {};kind=content.get('type');operation=None
         if request.get('type')!='normal':raise ValueError('Nolimit City: comando exterior sin contrato aprendido')
         if kind in {'normalBet','featureBet'}:
             if active is not None:raise ValueError('Nolimit City: apuesta nueva con ronda pendiente')
@@ -173,9 +173,17 @@ def analyze_messages(rows):
             roots+=1;total_paid+=ledger.cost
         elif kind in ('zeroBet','gambleBet'):
             if active is None or _money(content.get('bet'))!=0:raise ValueError('Nolimit City: continuación fuera de ronda o con cargo')
+            if client_source is not None:
+                from .contracts import resolve_operation,observed_request_matches,confirm_operation
+                operation=resolve_operation(active['ledger'].last_answer,active['ledger'].mode,
+                    raw_answer=previous_response,client_source=client_source)
+                matches,selected=observed_request_matches(operation,content)
+                if not matches:raise ValueError('Nolimit City: petición capturada fuera del contrato de cliente')
+                confirm_operation(operation,response,selected)
             if kind=='zeroBet':zero+=1
         else:raise ValueError('Nolimit City: tipo de apuesta desconocido')
-        ledger=active['ledger'];done=ledger.accept(response,request=content);before=ledger.after
+        ledger=active['ledger'];done=ledger.accept(response,request=content,operation=operation);before=ledger.after
+        previous_response=response
         if done:
             closed+=1;total_win+=ledger.win
             normal=active['category']=='normal' and not ledger.had_feature

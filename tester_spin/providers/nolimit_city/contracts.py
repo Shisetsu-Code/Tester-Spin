@@ -81,3 +81,28 @@ def observed_request_matches(contract,request):
     selected=next((v for v in domain['available'] if type(interaction[field]) is type(v) and interaction[field]==v
         or field=='selectedIndex' and interaction[field]==str(v)),None)
     return selected is not None,selected
+
+
+def selection_adjustment(contract,request,answer,previous,accumulated):
+    """A declared, acknowledged choice may lose part or all of an unsettled prize.
+
+    This is a result delta, never a negative stake or an additional wallet charge.
+    Require final settlement so the ledger can independently reconcile the wallet.
+    """
+    from decimal import Decimal
+    from .state import settled_state
+    if (not isinstance(contract,dict) or contract.get('family')!='FINITE_SELECTION'
+            or not (contract.get('evidence') or {}).get('client_sha256')
+            or contract.get('state')!=previous.get('nextMode')
+            or not isinstance(request,dict) or request.get('type')!='zeroBet'
+            or not settled_state(answer) or answer.get('balance') is None):
+        raise Unlearned('Nolimit City: descuento de premio sin elección y liquidación contrastadas')
+    matches,selected=observed_request_matches(contract,request)
+    if not matches:raise Unlearned('Nolimit City: descuento fuera de la elección declarada')
+    confirm_operation(contract,answer,selected)
+    delta=Decimal(str(answer['game']['win']))
+    if (not delta.is_finite() or delta>=0 or delta < -accumulated
+            or delta!=delta.quantize(Decimal('.01'))
+            or _money(previous.get('accumulatedRoundWin'))!=accumulated):
+        raise ValueError('Nolimit City: descuento excede el premio pendiente o tiene precisión inválida')
+    return delta

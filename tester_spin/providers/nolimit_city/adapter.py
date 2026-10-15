@@ -154,7 +154,7 @@ class NolimitCityProvider(ProviderAdapter):
                         from .runtime import sanitized
                         save(directory/f'{step:03d}.response.json',sanitized(answer))
                         attempt.wire_steps=step
-                        done=ledger.accept(answer,request=content)
+                        done=ledger.accept(answer,request=content,operation=getattr(session,'pending_contract',None))
                         confirm=getattr(session,'confirm_pending_choice',None)
                         if confirm:confirm(answer)
                         save(directory/'ledger.json',ledger.proof())
@@ -210,6 +210,9 @@ class NolimitCityProvider(ProviderAdapter):
             http_status=getattr(getattr(exc,'response',None),'status_code',None)
             if isinstance(http_status,int):result.error=f'Nolimit City: HTTP {http_status} en la conexión Demo'
         finally:
+            sync=getattr(session,'sync_choices',None)
+            if sync:
+                for mode in result.discovered_modes:sync(mode)
             session.close()
             result.failed_spins=max(0,requested-result.successful_spins)
             result.finished_at=utc_now_iso();result.elapsed_ms=(time.monotonic()-start)*1000

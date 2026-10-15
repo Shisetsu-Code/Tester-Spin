@@ -64,6 +64,12 @@ def proves_zero_bet(body,block,*,entry="start"):
             if re.match(r'^(if|else|for|while|switch|try|do)\b',part):return False
             direct=part.removeprefix('return ').strip()
             if re.fullmatch(zero,direct):return True
+            # An unassigned, playing timeline completes through its declared
+            # callback. A paused/cancelled timeline cannot authorize an action.
+            completion=re.fullmatch(r'\w+\.gsap\.timeline\(\{(.*)\}\)',direct,re.S)
+            config=expressions(completion[1]) if completion else []
+            if (len(config)==1 and config[0].startswith('onComplete:')
+                    and callback(config[0][len('onComplete:'):],depth)):return True
             # Known methods invoked unconditionally by the active lifecycle.
             invoked=re.fullmatch(r'this\.(\w+)\([^()]*\)',direct)
             if invoked and invoked[1] in available and invoked[1] not in ('start','getAnimation'):

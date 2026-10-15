@@ -21,7 +21,7 @@ def audit_exchanges(exchanges,*,client_source=None):
     except ValueError as exc:report['initialization_error']=str(exc);return report
     before=init.get('balance');ledger=None;previous=None;mode=None;round_failed=False;families=collections.Counter()
     for step,pair in enumerate(exchanges[1:],1):
-        request=pair['request'];answer=pair['response'];report['steps_checked']+=1
+        request=pair['request'];answer=pair['response'];report['steps_checked']+=1;operation=None
         if request.get('type') in ('normalBet','featureBet'):
             mode=next((m for m in modes if m['kind']=='SPIN' and request['type']=='normalBet'
                 or request['type']=='featureBet' and m.get('selector')==request.get('featureName')),None)
@@ -41,13 +41,13 @@ def audit_exchanges(exchanges,*,client_source=None):
                 matches,selected=observed_request_matches(contract,request)
                 if not matches:raise ValueError('OBSERVED_REQUEST_OUTSIDE_CONTRACT')
                 confirm_operation(contract,answer,selected)
-                report['contract_actions']+=1;families[contract['family']]+=1
+                operation=contract;report['contract_actions']+=1;families[contract['family']]+=1
             except ValueError as exc:
                 report['unresolved_actions'].append({'step':step,'phase':phase,
                     'request_type':request.get('type'),'interaction_fields':sorted((request.get('playerInteraction') or {}).keys()),'reason':str(exc)})
         if ledger is not None and not round_failed:
             try:
-                done=ledger.accept(answer,request=request);report['money_accepted_steps']+=1
+                done=ledger.accept(answer,request=request,operation=operation);report['money_accepted_steps']+=1
                 if done:report['closed_rounds']+=1;before=ledger.after
             except ValueError as exc:round_failed=True;report['money_failures'].append({'step':step,'reason':str(exc)})
         previous=answer

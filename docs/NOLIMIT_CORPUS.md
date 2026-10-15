@@ -94,3 +94,47 @@ de un timeline pausado se interprete como continuación ejecutable.
 
 El resumen para herramientas está en `nolimit-corpus-comparison-20261015.json`.
 No contiene credenciales ni HAR completos.
+
+
+## Descuentos de premio y cobertura de elecciones (15 de octubre de 2026)
+
+Una elección declarada puede devolver un premio de paso negativo: representa la
+reducción del premio pendiente, no una apuesta negativa. El ledger solo acepta
+este resultado si recibe el contrato de elección del cliente actual, la petición
+pertenece a su dominio, el servidor confirma la fase y la opción y la ronda
+termina con saldo explícito. El descuento no puede superar el premio acumulado;
+se mantienen las comprobaciones de acumulado, coste y saldo. Sin ese contrato,
+los negativos siguen rechazados. El ejecutor, la auditoría de corpus y el
+analizador HAR (con `client_source` explícito) comparten la comprobación.
+
+La captura reducida `tests/fixtures/nolimit_selection_loss.json` conserva una
+ronda cuyo premio pasa de 43,26 a 0 tras la elección 2. Se eliminan identificadores
+de sesión y matrices gráficas; la inicialización del segmento usa su saldo de
+entrada. Las pruebas alteran opción, acuse, fase, saldo, acumulado, cargo y estado
+pendiente para comprobar que no se certifiquen resultados inconsistentes.
+
+La cobertura neutral ahora incluye `choice_domains` dentro de cada modo. Por eso
+una compra ejecutada no produce el mensaje de cobertura completa si falta alguna
+opción interna. Los dominios se sincronizan al finalizar una ejecución, también
+cuando se interrumpe por error.
+
+El lector de cliente reconoce enlaces IDLE con una instancia directa, el último
+valor de una expresión formada por constructores, alias estáticos de GameMode y
+callbacks `onComplete` de timelines activos sin asignación. No ejecuta código ni
+agrega excepciones por nombre de juego.
+
+En sesiones demo nuevas, Beheaded, Dead Canary y Bounty Hunters obtuvieron OK.
+Dead Men Walking superó el respin anterior y conserva pendiente EXTRA_SPIN;
+Dead, Dead Or Deader conserva RESPIN. Esto es una muestra dirigida de cinco
+juegos, no una nueva tanda completa del proveedor.
+
+Sobre las mismas 1141 capturas congeladas, el ledger acepta 9505 pasos y cierra
+1875 rondas (antes 9499 y 1869). Los fallos monetarios bajan de 66 a 60 y las
+acciones sin contrato de 55 a 54. Ninguna captura pierde pasos monetarios
+aceptados ni rondas cerradas respecto de cdeabc4. Los resultados históricos no conceden OK de
+ejecución. El resumen está en `nolimit-selection-adjustment-validation-20261015.json`.
+
+Verificación final: 2434 pruebas y 264 subpruebas correctas, con tres advertencias.
+La revisión independiente añadió negativos para propiedades de timeline colocadas
+después de onComplete; las configuraciones pausadas o con otros callbacks no
+autorizan una continuación.

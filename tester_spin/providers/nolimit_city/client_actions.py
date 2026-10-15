@@ -52,6 +52,16 @@ def _event_bridge(source):
     return bool(re.search(subscription,source) and re.search(handler,source))
 
 
+def _mode_reference(source,mode):
+    """Map an exact static GameMode value to its exported client symbol."""
+    references=[r'\w+\.\w+\.'+re.escape(mode)]
+    enum=r'class (\w+) extends \w+\.GameMode\{\}\w+\.(\w+)=\1,([^;}]{1,4000})'
+    for match in re.finditer(enum,source):
+        for value in re.finditer(r'\b'+re.escape(match[1])+r'\.(\w+)="'+re.escape(mode)+r'"(?=[,;]|$)',match[3]):
+            references.append(r'\w+\.'+re.escape(match[2])+r'\.'+re.escape(value[1]))
+    return '(?:'+'|'.join(references)+')'
+
+
 def automatic_command(source,answer):
     if not isinstance(source,str) or len(source)>MAX_BODY:return None
     game=answer.get('game') or {};mode=game.get('nextMode')
@@ -62,18 +72,28 @@ def automatic_command(source,answer):
     except ValueError:return None
     if any(field in game and game[field] is not False for field in ('wasExtraSpin','isExtraSpin')):return None
     result={'type':'zeroBet','bet':'0.00'}
-    binding=(r'addGameModeFlowStatePresentationMap\(\w+\.\w+\.'+re.escape(mode)
+    reference=_mode_reference(source,mode)
+    binding=(r'addGameModeFlowStatePresentationMap\('+reference
              +r',new Map\(\[\[\w+\.FlowState\.IDLE,(\w+)\]')
-    inline=(r'addGameModeFlowStatePresentationMap\(\w+\.\w+\.'+re.escape(mode)
+    inline=(r'addGameModeFlowStatePresentationMap\('+reference
         +r',new Map\(\[\[\w+\.FlowState\.IDLE,\{start:(\w+)=>\{\w+\.apiPlugin\.betHandler\.zeroBet\(\),\1\.finish\(\)\}\}\]')
     if re.search(inline,source):return result
+    direct=(r'addGameModeFlowStatePresentationMap\('+reference
+        +r',new Map\(\[\[\w+\.FlowState\.IDLE,new \w+\.(\w+)(?:\(\))?\]')
+    for match in re.finditer(direct,source):
+        body=_exported_class(source,match[1])
+        if body:
+            from .lifecycle import proves_zero_bet
+            if proves_zero_bet(body,_block):return result
     for match in re.finditer(binding,source):
         prefix=source[max(0,match.start()-12000):match.start()]
-        assignments=list(re.finditer(r'\b'+re.escape(match[1])+r'=new \w+\.(\w+)(?=[,;)])',prefix))
+        constructor=r'new \w+\.(\w+)(?:\(\))?'
+        comma=r'\((?:new \w+\.\w+(?:\(\))?,)*new \w+\.(\w+)(?:\(\))?\)'
+        assignments=list(re.finditer(r'\b'+re.escape(match[1])+r'=(?:'+constructor+'|'+comma+r')(?=[,;)])',prefix))
         if not assignments:continue
         assignment=assignments[-1]
         if re.search(r'\b'+re.escape(match[1])+r'\s*=',prefix[assignment.end():]):continue
-        body=_exported_class(source,assignment[1])
+        body=_exported_class(source,assignment[1] or assignment[2])
         if not body:continue
         from .lifecycle import proves_zero_bet
         if proves_zero_bet(body,_block):return result
