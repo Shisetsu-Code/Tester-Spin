@@ -1,0 +1,29 @@
+{
+  "client_version": "1.0.94",
+  "client_sha256": "692f03e07a38d36586318033bcc5ec2ec1eb945efdfdd6f642d7914a3a9f075a",
+  "source": "e.ZeroPresentation=class{start(t){const e=[new r.FreeSpinsRestoreIntro,new r.FreeSpinsIntroActionSpins,new a.LocalPresentation(t=>this.playFreespinIdle(t),()=>!0,\"playFreespinIdle\")];s.SimplePresentationRunner.run(e,()=>t.finish(),e=>t.setSkipCallback(e),\"Fs intro runner\")}playFreespinIdle(t){const e=o.gsap.timeline(),i=\"EXTRA_SPIN\"==n.Outsourced2.model.data.mode&&n.Outsourced2.model.data.nextMode.includes(\"RESPIN\");!n.Outsourced2.model.data.nextMode.includes(\"RESPIN\")||i?(e.add(n.Outsourced2.soundPlayer.playLoop(u.Sounds.REELS_SPINNING)),e.add(n.Outsourced2.reelView.startReels(),0),e.add(()=>{t.finish()},n.Outsourced2.model.isRestore?1:void 0),n.Outsourced2.model.data.nextMode.includes(\"NORMAL\")||n.Outsourced2.keypadPlugin.setZeroBetSpinCounter(Math.max(0,n.Outsourced2.model.data.freespinsRemaining-1)),n.Outsourced2.apiPlugin.betHandler.zeroBet()):(this.markMiniReels(),n.Outsourced2.apiPlugin.betHandler.zeroBet(),t.finish()),\"EXTRA_SPIN\"!=n.Outsourced2.model.data.mode||n.Outsourced2.model.data.nextMode.includes(\"RESPIN\")||n.Outsourced2.keypadPlugin.setZeroBetSpinCounter(-1)}markMiniReels(){n.Outsourced2.model.getWinningPositions().sort(this.conveyorSorter).forEach(t=>{const e=n.Outsourced2.reelView.reels[t.reelID][t.reelPosition];e&&(e.shouldRespin=!0)})}conveyorSorter(t,e){const i=l.GameConfig.GAME_AREA_AMOUNT.rows;return t.reelID*i+t.reelPosition-(e.reelID*i+e.reelPosition)}};const c=new U.ZeroPresentation;q.gameFlowController.addGameModeFlowStatePresentationMap(\"NORMAL_RESPIN\",new Map([[u.FlowState.IDLE,c],[u.FlowState.RESULT,d],[u.FlowState.WIN,n]]));q.gameFlowController.addGameModeFlowStatePresentationMap(\"FREESPIN_RESPIN\",new Map([[u.FlowState.IDLE,c],[u.FlowState.RESULT,d],[u.FlowState.WIN,p]]));",
+  "cases": [
+    {
+      "phase": "NORMAL_RESPIN",
+      "response_reference": "tests\\2026-10-15T160325_0000-38fde104\\attempt-007\\001.response.json",
+      "answer": {
+        "game": {
+          "mode": "NORMAL",
+          "nextMode": "NORMAL_RESPIN",
+          "isExtraSpin": false
+        }
+      }
+    },
+    {
+      "phase": "FREESPIN_RESPIN",
+      "response_reference": "tests\\2026-10-14T204008_0000-486deebf\\attempt-002\\003.response.json",
+      "answer": {
+        "game": {
+          "mode": "FREESPIN",
+          "nextMode": "FREESPIN_RESPIN",
+          "isExtraSpin": false
+        }
+      }
+    }
+  ]
+}

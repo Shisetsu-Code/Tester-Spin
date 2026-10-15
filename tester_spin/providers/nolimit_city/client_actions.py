@@ -53,8 +53,9 @@ def _event_bridge(source):
 
 
 def _mode_reference(source,mode):
-    """Map an exact static GameMode value to its exported client symbol."""
-    references=[r'\w+\.\w+\.'+re.escape(mode)]
+    """Match an exact wire phase as a static enum reference or JS literal."""
+    references=[r'\w+\.\w+\.'+re.escape(mode),
+                re.escape('"'+mode+'"'), re.escape("'"+mode+"'")]
     enum=r'class (\w+) extends \w+\.GameMode\{\}\w+\.(\w+)=\1,([^;}]{1,4000})'
     for match in re.finditer(enum,source):
         for value in re.finditer(r'\b'+re.escape(match[1])+r'\.(\w+)="'+re.escape(mode)+r'"(?=[,;]|$)',match[3]):

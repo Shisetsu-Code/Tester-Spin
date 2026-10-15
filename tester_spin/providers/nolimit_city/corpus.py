@@ -47,7 +47,7 @@ def audit_exchanges(exchanges,*,client_source=None):
                     'request_type':request.get('type'),'interaction_fields':sorted((request.get('playerInteraction') or {}).keys()),'reason':str(exc)})
         if ledger is not None and not round_failed:
             try:
-                done=ledger.accept(answer,request=request,operation=operation);report['money_accepted_steps']+=1
+                done=ledger.accept(answer,request=request,operation=operation,client_source=client_source);report['money_accepted_steps']+=1
                 if done:report['closed_rounds']+=1;before=ledger.after
             except ValueError as exc:round_failed=True;report['money_failures'].append({'step':step,'reason':str(exc)})
         previous=answer
@@ -106,9 +106,14 @@ def main(argv=None):
         info_path=Path(row.get('path','')).parent/'bootstrap/client-info.json'
         if args.client_dir is not None and info_path.is_file():
             info=json.loads(info_path.read_text(encoding='utf-8-sig'))
-            name=info.get('name','');version=info.get('version','')
-            import re
-            if re.fullmatch(r'[A-Za-z0-9_-]+',name) and re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+',version):
+            name=info.get('name','') if isinstance(info,dict) else None
+            version=info.get('version','') if isinstance(info,dict) else None
+            from .client_identity import validate_client_info
+            from .errors import Unlearned
+            try:validate_client_info(info,name)
+            except Unlearned:valid=False
+            else:valid=True
+            if valid:
                 candidates=[args.client_dir/name/(version+'.js'),args.client_dir/(name+'-'+version+'.js')]
                 candidate=next((path for path in candidates if path.is_file()),None)
                 if candidate is not None:

@@ -13,6 +13,7 @@ PROTOCOL='@nolimitcity/game-communication@0.4.1'
 MONETARY='nolimit-city/round-ledger/v1'
 
 from .errors import Unlearned
+from .client_identity import validate_client_info
 
 def save(path,data):
     path.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8')
@@ -28,9 +29,7 @@ class NolimitSession:
     def open(self,game,http,timeout,stop,directory):
         self.timeout=max(.1,float(timeout));self.stop=stop
         response=http.get(CDN+game.symbol+'/info.json',timeout=self.timeout);response.raise_for_status()
-        info=response.json();version=info.get('version')
-        if info.get('name')!=game.symbol or not isinstance(version,str) or not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+',version):
-            raise Unlearned('Nolimit City: identidad o versión de cliente desconocida')
+        info=validate_client_info(response.json(),game.symbol);version=info['version']
         self.client_info=info;self.http=http;self.choice_root=directory
         self.client_cache=directory.parents[3]/'_clients'/info['name']/(version+'.js')
         save(directory/'client-info.json',info)
@@ -260,9 +259,12 @@ def declaration(init, *, require_idle=True):
     return modes,domains
 
 
-def normalized_response(answer, declared_options=(), declared_categories=(),declared_purchase_options=(),*,declared_catalog=None,declared_game_modes=(),allow_unresolved_state=False):
+def normalized_response(answer, declared_options=(), declared_categories=(),declared_purchase_options=(),*,declared_catalog=None,declared_game_modes=(),allow_unresolved_state=False,client_source=None):
     """Normalize proven server fields without treating catalog entries as choices."""
     answer=dict(answer);game=dict(answer.get('game') or {})
+    if 'freespinsLeft' not in game and 'freespinsRemaining' in game:
+        from .operation_fields import remaining_alias
+        game['freespinsLeft']=remaining_alias(answer)
     explicit_no_extra=game.get('wasExtraSpin') is False
     legacy=all(key in game for key in ('thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft'))
     if legacy:
@@ -353,8 +355,17 @@ def normalized_response(answer, declared_options=(), declared_categories=(),decl
             raise Unlearned('Nolimit City: estado de función no resuelto: '+json.dumps(observation,ensure_ascii=True))
         if observation['kind'] in ('NONE','CATALOG','PHASE'):
             answer['features']={**answer['features'],'available':[],'active':''}
-    from .operation_fields import step_win,modifier_ack
-    if (any(key in game for key in ('win','thisSpinWinning','thisSpinWinnings','thisAvalancheWinnings'))
+    from .operation_fields import step_win,modifier_ack,round_win
+    from .client_money import monetary_fields
+    client_money=(client_source is not None and 'win' not in game and monetary_fields(client_source) is not None)
+    if client_money:
+        game['win']=step_win(answer.get('game') or {},client_source=client_source)
+        game['accumulatedRoundWin']=round_win(answer.get('game') or {},client_source=client_source)
+        # These raw base components are not aliases of the client-selected total.
+        # Preserve them in the raw response; the derived view has one canonical win.
+        for field in ('thisSpinWinning','thisSpinWinnings','thisAvalancheWinnings'):
+            game.pop(field,None)
+    elif (any(key in game for key in ('win','thisSpinWinning','thisSpinWinnings','thisAvalancheWinnings'))
             or legacy or boosted_dialect or category_dialect or batch_dialect or _row_response(game) or _level_response(game)):
         game['win']=step_win(game)
     for key in ('isExtraSpin','wasExtraSpin'):
@@ -414,12 +425,37 @@ class RoundLedger:
         self.cost=(self.stake*_money(mode['price_multiplier'],positive=True)).quantize(Decimal('.01'),rounding=ROUND_HALF_UP)
         if self.cost>self.before:raise Unlearned('Nolimit City: saldo Demo insuficiente para la opción declarada')
         self.win=Decimal(0);self.steps=0;self.after=self.before;self.closed=False;self.had_feature=False;self.previous=None;self.extra_played=False;self.extra_cost=Decimal(0);self.root_ack_basis=None;self.numeric_extra_played=False
-    def accept(self,answer,request=None,*,operation=None):
-        answer=normalized_response(answer,self.mode.get('declared_feature_options',()),self.mode.get('declared_feature_categories',()),self.mode.get('declared_purchase_options',()),declared_catalog=self.mode.get('declared_feature_catalog'),declared_game_modes=self.mode.get('declared_game_modes',()),allow_unresolved_state=isinstance(request,dict))
+    def accept(self,answer,request=None,*,operation=None,client_source=None):
+        raw_answer=answer;raw_game=answer.get('game') or {}
+        from .client_money import monetary_fields
+        source_candidate=(client_source is not None and 'win' not in raw_game and monetary_fields(client_source) is not None)
+        normalize_options=dict(declared_catalog=self.mode.get('declared_feature_catalog'),declared_game_modes=self.mode.get('declared_game_modes',()),allow_unresolved_state=isinstance(request,dict))
+        declaration_args=(self.mode.get('declared_feature_options',()),self.mode.get('declared_feature_categories',()),self.mode.get('declared_purchase_options',()))
+        answer=normalized_response(raw_answer,*declaration_args,**normalize_options)
+        client_money=False
+        if source_candidate:
+            # A panel getter can summarize a subround. Never replace a step
+            # whose explicit amount already reconciles with the round total.
+            standard=answer.get('game') or {}
+            try:
+                if 'win' in standard:standard_delta=Decimal(str(standard['win']))
+                else:
+                    from .operation_fields import reconciled_step_win
+                    standard_delta=Decimal(reconciled_step_win(standard,self.win))
+                standard_valid=(standard_delta.is_finite() and self.win+standard_delta==_money(standard.get('accumulatedRoundWin')))
+            except (ValueError,ArithmeticError):standard_valid=False
+            if not standard_valid:
+                answer=normalized_response(raw_answer,*declaration_args,**normalize_options,client_source=client_source)
+                client_money=True
         answer.pop('_funded_extra_spin',None);answer.pop('_verified_numeric_extra_context',None)
         game=answer.get('game')
         if not isinstance(game,dict):raise Unlearned('Nolimit City: falta estado de juego')
-        if 'win' not in game and 'totalSpinWinnings' in game:
+        if client_money:
+            from .operation_fields import reconciled_step_win
+            if not isinstance(request,dict) or request.get('type') not in ('normalBet','featureBet','zeroBet','gambleBet'):
+                raise Unlearned('Nolimit City: total monetario sin peticion contrastada')
+            game['win']=reconciled_step_win(raw_game,self.win,client_source=client_source)
+        elif 'win' not in game and 'totalSpinWinnings' in game:
             if not isinstance(request,dict) or request.get('type') not in ('normalBet','featureBet','zeroBet','gambleBet'):
                 raise Unlearned('Nolimit City: total monetario sin petición contrastada')
             from .operation_fields import reconciled_step_win

@@ -259,3 +259,12 @@ con apuesta cero y `selectedIndex` string. Tres decisiones de la conexión sin i
 quedan como evidencia contextual; la otra conexión valida 17 pasos y cinco cierres.
 Dos demos nuevas finalizaron OK con exportación lista; el detalle y los límites
 figuran en [NOLIMIT_PRIMITIVES.md](NOLIMIT_PRIMITIVES.md#selecciones-vinculadas-a-botones-y-liquidación-2026-10-15).
+
+
+## Aprendizaje con Aislador (2026-10-15)
+
+La extracción, las nuevas primitivas, la comparación de 1141 capturas y la
+muestra de once sesiones nuevas están documentadas en
+[NOLIMIT_PRIMITIVES.md](NOLIMIT_PRIMITIVES.md#familias-extraídas-con-aislador-2026-10-15).
+El libro monetario conserva prioridad para los premios de paso ya contrastados;
+un total del panel no sustituye automáticamente esa interpretación.

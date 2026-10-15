@@ -24,7 +24,7 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
         'free_spin_continuation':{'type':'zeroBet','bet':'0.00'},
         'selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
         'extra_spin_selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
-        'literal_extra_spin_monetary_contract':{'field':'playExtraSpin','domain':'client_declared_yes_no','price':'current_offer.extraSpinCost','funding':'pending_round_prize','accept':'exact_negative_quote_and_isExtraSpin_true_and_one_remaining_spin_in_offering_phase','reject':'zero_delta_NORMAL_wallet_settlement_history_flag_may_persist_only_after_prior_extra','funded_continuation':'one_zeroBet_after_verified_debit','repeat':'redeclare_quote_each_offer'},
+        'literal_extra_spin_monetary_contract':{'field':'playExtraSpin','domain':'client_declared_yes_no','price':'current_offer.extraSpinCost','funding':'pending_round_prize','accept':'exact_negative_quote_and_isExtraSpin_true_and_current_client_bound_return_state_and_counter','reject':'zero_delta_NORMAL_wallet_settlement_history_flag_may_persist_only_after_prior_extra','funded_continuation':'one_zeroBet_after_verified_debit','repeat':'redeclare_quote_each_offer'},
         'numeric_extra_spin_monetary_contract':{'field':'playerSelectedExtraSpin','wire_type':'current_client_literal','funding':'pending_round_prize','price':'previous.game.extraSpinCost','accept':'exact_negative_quote_and_wasExtraSpin_true_and_quoted_target','reject':'zero_delta_and_wasExtraSpin_false_and_NORMAL','funded_continuation':'one_zeroBet_after_verified_debit','settlement':'round_ledger_required'},
         'extra_spin_monetary_contract':{'price':'previous.game.extraSpinCost','funding':'accumulatedRoundWin',
             'yes_ack':'mode=EXTRA_SPIN,nextMode=FREESPIN,freespinsLeft=1,isExtraSpin=true,win=-quoted_price',
@@ -164,7 +164,10 @@ class NolimitCityProvider(ProviderAdapter):
                         save(directory/f'{step:03d}.response.json',sanitized(answer))
                         attempt.wire_steps=step
                         previous_extra_cost=ledger.extra_cost
-                        done=ledger.accept(answer,request=content,operation=getattr(session,'pending_contract',None))
+                        if 'win' not in (answer.get('game') or {}):
+                            load_client=getattr(session,'_load_choice_client',None)
+                            if load_client:load_client()
+                        done=ledger.accept(answer,request=content,operation=getattr(session,'pending_contract',None),client_source=getattr(session,'choice_client',None))
                         if ledger.extra_cost>previous_extra_cost:step_limit=step+500
                         confirm=getattr(session,'confirm_pending_choice',None)
                         if confirm:confirm(answer)

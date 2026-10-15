@@ -1,7 +1,15 @@
 """Monetary observations and root acknowledgments, independent of state catalogs."""
 from decimal import Decimal,InvalidOperation
 
-def step_win(game):
+def step_win(game,*,client_source=None):
+    if client_source is not None:
+        from .client_money import monetary_fields
+        fields=monetary_fields(client_source)
+        if fields is None:raise ValueError('Nolimit City: dialecto monetario sin declaración cliente')
+        if fields['spin'] not in game:raise ValueError('Nolimit City: premio cliente ausente')
+        observed={'win':game[fields['spin']]}
+        if 'win' in game:observed['thisSpinWinning']=game['win']
+        return step_win(observed)
     names=[key for key in ('win','thisSpinWinning','thisSpinWinnings','thisAvalancheWinnings') if key in game]
     if not names:names=['totalSpinWinnings'] if 'totalSpinWinnings' in game else []
     if not names:raise ValueError('Nolimit City: premio de paso ausente')
@@ -56,10 +64,10 @@ def root_ack(game,mode,request,*,debit_confirmed=False):
                 raise ValueError('Nolimit City: giro normal sin petición y acuses contrastados')
 
 
-def reconciled_step_win(game,previous):
+def reconciled_step_win(game,previous,*,client_source=None):
     """Resolve a total-only dialect using both reported total and round accumulation."""
-    total=step_win({'totalSpinWinnings':game.get('totalSpinWinnings')})
-    accumulated=game.get('accumulatedRoundWin')
+    total=step_win(game,client_source=client_source) if client_source is not None else step_win({'totalSpinWinnings':game.get('totalSpinWinnings')})
+    accumulated=round_win(game,client_source=client_source)
     if accumulated is None or isinstance(accumulated,bool):raise ValueError('Nolimit City: acumulado ausente o inválido')
     try:current=Decimal(str(accumulated));reported=Decimal(str(total));delta=current-previous
     except InvalidOperation:raise ValueError('Nolimit City: importes inválidos') from None
@@ -82,3 +90,30 @@ def row_response(game):
 def collect_available(game):
     return (game.get('nextMode')=='GAMBLE' and type(game.get('gambleCollect')) is bool
         and game['gambleCollect'] is False and isinstance(game.get('gambleOptions'),dict))
+
+
+def round_win(game,*,client_source=None):
+    """Read the independent round total selected by the same client parser."""
+    field='accumulatedRoundWin'
+    if client_source is not None:
+        from .client_money import monetary_fields
+        fields=monetary_fields(client_source)
+        if fields is None:raise ValueError('Nolimit City: dialecto monetario sin declaración cliente')
+        field=fields['round']
+    if field not in game:raise ValueError('Nolimit City: acumulado cliente ausente')
+    observed={'win':game[field]}
+    if field!='accumulatedRoundWin' and 'accumulatedRoundWin' in game:
+        observed['thisSpinWinning']=game['accumulatedRoundWin']
+    return step_win(observed)
+
+
+def remaining_alias(answer):
+    """A remaining counter alias requires agreement with the outer server total."""
+    game=answer.get('game') or {}
+    left=game.get('freespinsLeft')
+    if 'freespinsLeft' in game:return left
+    if 'freespinsRemaining' not in game:return None
+    left=game['freespinsRemaining'];outer=answer.get('remainingFreeSpins')
+    if type(left) is not int or left<0 or type(outer) is not int or left!=outer:
+        raise ValueError('Nolimit City: contadores restantes contradictorios')
+    return left

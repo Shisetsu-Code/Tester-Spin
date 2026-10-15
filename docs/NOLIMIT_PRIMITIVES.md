@@ -231,3 +231,73 @@ certificar toda esa sesión. La segunda contiene init y reconcilia 17 pasos, cin
 rondas y 12 continuaciones sin fallos. Dos ejecuciones remotas con sesión nueva
 terminaron OK; en ambas apareció y se cubrió la elección Deluxe [1]. La cobertura
 normal [0,1] procede del HAR y las pruebas, no de esas dos ejecuciones remotas.
+
+
+## Familias extraídas con Aislador (2026-10-15)
+
+Se usó [Aislador](https://github.com/Shisetsu-Code/Aislador) sobre capturas
+pendientes guardadas. Una incompatibilidad de transporte dejaba opacos los
+mensajes cuyo escritor declaraba `encoding: utf8`: se corrigió en Aislador y se
+repitió la extracción. No se importó Aislador como dependencia del ejecutor.
+Las capturas no se reenviaron: la verificación remota usó sesiones demo nuevas.
+
+Las primitivas incorporadas son compartidas por el proveedor:
+
+- Identidad de cliente: se conserva literalmente la versión oficial con sufijos
+  publicados, tanto en transporte como auditoría. Nombre solicitado y nombre
+  publicado deben coincidir; rutas, consultas e identidades ambiguas se rechazan.
+- Mapa de flujo: una fase puede estar escrita como literal o enumeración.
+  La clase activa y su ciclo deben seguir demostrando el envío incondicional.
+- Dinero: `client_money.py` lee campos de premio y total del objeto retornado
+  directamente por el parser de la misma versión del cliente. Rechaza callbacks
+  anidados, claves duplicadas y mutaciones desconocidas. El campo elegido se
+  contrasta con el acumulado independiente; nunca se deduce del saldo.
+  Los campos de paso ya conocidos tienen prioridad si explican el acumulado:
+  el total de un panel puede resumir otra subronda. El cliente sólo aporta la
+  alternativa cuando esa interpretación conocida falta o no concilia.
+  La vista normalizada distingue el total de sus componentes base, conservados
+  en la respuesta original. El ejecutor y ambos lectores offline usan el mismo
+  libro monetario con el cliente exacto explícito.
+- Extra yes/no: la fase que ofrece el extra no determina necesariamente su
+  retorno. Si el servidor cotiza un destino, el acuse debe coincidir. Si no lo
+  cotiza, la respuesta de aceptación debe declarar un destino cuyo siguiente
+  zeroBet esté demostrado en los enlaces del cliente actual. Se contrastan
+  precio, descuento, acumulado, indicador y contador; el recibo guarda el destino
+  realmente confirmado. No se eliminan sufijos de fases para adivinarlo.
+  La variante anterior conserva su contrato cuando no hay enlaces alternativos.
+- Contador: `game.freespinsRemaining` puede normalizarse sólo con el total
+  exterior `remainingFreeSpins` explícito, entero y coincidente. Ausencia o
+  contradicción no significan cero.
+
+### Comprobaciones
+
+Se compararon las mismas 1141 capturas congeladas con b1ba3f0 y estos cambios,
+con cliente exacto para 1136. Se revisaron 9565 pasos en ambas versiones:
+9534 pasos aceptados frente a 9526; 1901 cierres frente a 1894; 31 fallos
+monetarios frente a 39. Ninguna captura perdió pasos aceptados ni cierres.
+Persisten dos acciones sin contrato y las limitaciones previas de importación.
+Son pasos históricos, no juegos certificados OK.
+
+En sesiones nuevas de una muestra de once juegos, siete obtuvieron OK:
+
+| Juego | Modos comprobados |
+|---|---:|
+| Fire in the Hole 2 | 7/7 |
+| Mental 2 | 10/10 |
+| Gator Hunters | 9/9 |
+| Highway to Hell | 9/9 |
+| Kitchen Drama: Sushi Mania | 1/1 |
+| Monkey's Gold | 2/2 |
+| Outsourced 2 | 11/11 |
+
+Crazy Ex Girlfriend y Flight Mode siguen con acciones sin dominio demostrado.
+The Border conserva una discrepancia entre premio de paso y acumulado en otra
+modalidad; Gator Hunters 2 conserva una discrepancia monetaria de liquidación.
+No se certifican por haber resuelto su bloqueo anterior. Las herencias complejas
+de Mental, Dead Dead Or Deader y Duck Hunters 2 tampoco se autorizan por nombre.
+No se ejecutó otra vez el catálogo completo.
+
+Verificación: 2622 pruebas y 264 subpruebas correctas, tres advertencias previas;
+71 pruebas correctas de Aislador. La revisión independiente contrastó negativos
+de campos anidados, mutaciones y destino cotizado contradictorio. El resumen
+sin sesiones está en `nolimit-aislador-validation-20261015.json`.

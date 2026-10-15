@@ -182,7 +182,7 @@ def analyze_messages(rows,*,client_source=None):
                 confirm_operation(operation,response,selected)
             if kind=='zeroBet':zero+=1
         else:raise ValueError('Nolimit City: tipo de apuesta desconocido')
-        ledger=active['ledger'];done=ledger.accept(response,request=content,operation=operation);before=ledger.after
+        ledger=active['ledger'];done=ledger.accept(response,request=content,operation=operation,client_source=client_source);before=ledger.after
         previous_response=response
         if done:
             closed+=1;total_win+=ledger.win

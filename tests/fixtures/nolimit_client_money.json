@@ -1,0 +1,57 @@
+[
+  {
+    "reference": "kitchendramasushimania",
+    "version": "2.3.5",
+    "sha256": "965ad6b5116b1b004c4ea7ee06b7b0c069e8dca0e82ab0b129cb612a0b0255d1",
+    "source": "e.KitchenDramaSushiManiaPromoPanelConfig=class{getActionSpinOptions(){return{gameName:\"Kitchen Drama: Sushi Mania\",hasActionSpin:!0,getParsedData:(t,e,i)=>({totalWin:t.totalRoundWin,totalSpinWinnings:this.getWin(t,e,i),wasFeatureBuy:t.wasFeatureBuy,freeSpinTriggeredThisSpin:this.isFreeSpinTriggered(t),isBigWin:this.isBigWin(t),winType:s.WINTYPE.NORMAL,featureName:this.getFeatureName(t),isRoundComplete:this.isRoundComplete(t),isBonusEnd:this.isBonusEnd(t),isWinCapHit:!1})}}getWin(t,e,i){return t.totalSpinWin}};",
+    "events": [
+      {
+        "ref": "ws:log:3",
+        "game": {
+          "totalRoundWin": 0.08,
+          "accumulatedWinBeforeSpin": 0,
+          "totalSpinWin": 0.08
+        }
+      }
+    ]
+  },
+  {
+    "reference": "monkeysgold",
+    "version": "1.3.9",
+    "sha256": "2fa26b071a8a05371c326498049d58606e3e5ac06dd3b1ee6d9ad20db0dcbc14",
+    "source": "e.MonkeysGoldPromoPanelConfig=class{getActionSpinOptions(){return{gameName:\"MonkeysGold\",hasActionSpin:!0,graphics:{backgroundTextureName:h.MonkeysGoldGameAssets.MAIN_GAME_BACKGROUND},getParsedData:(e,t,i)=>({totalWin:e.accumulatedRoundWin,wasFeatureBuy:e.wasFeatureBuy,freeSpinTriggeredThisSpin:this.isFreeSpinTriggered(e),totalSpinWinnings:this.getSpinWin(e,t,i),isBigWin:this.isBigWin(e),winType:s.WINTYPE.NORMAL,featureName:this.getFeatureName(e),isRoundComplete:this.isRoundComplete(e),isBonusEnd:this.isBonusEnd(e),isWinCapHit:e.brokeTheBank})}}getSpinWin(e,t,i){return e.totalBetWayWinnings}};",
+    "events": [
+      {
+        "ref": "ws:log:3",
+        "game": {
+          "totalBetWayWinnings": 0,
+          "accumulatedRoundWin": 0
+        }
+      }
+    ]
+  },
+  {
+    "reference": "theborder",
+    "version": "1.2.8",
+    "sha256": "3467cb17122c955d437cc3968be7d575ae3280f0627b67e260c0d2e7233f58b0",
+    "source": "e.TheBorderPromoPanelConfig=class{getActionSpinOptions(){return{gameName:\"The Border\",hasActionSpin:!0,mainGame:{header:()=>a.TheBorder.apiPlugin.translations.translate(\"xBET\"),options:[{name:\"NORMAL\",id:0,image:\"NORMAL.png\"},{name:\"BOOSTED_BET\",id:1,image:\"BOOSTED_BET.png\"}],type:o.ASMainGamePickOptions.BOOSTED_BET},graphics:{backgroundTextureName:\"introBg\"},getParsedData:(e,t,i)=>(e.mode===r.TheBorderGameMode.NORMAL&&(this.wasFeatureBuy=e.wasFeatureBuy),{totalWin:e.accumulatedRoundWin,totalSpinWinnings:this.getWin(e,t,i),wasFeatureBuy:e.wasFeatureBuy,freeSpinTriggeredThisSpin:this.isFreeSpinTriggered(e),isBigWin:this.isBigWin(e),winType:o.WINTYPE.NORMAL,featureName:this.getFeatureName(e),isRoundComplete:this.isRoundComplete(e),isBonusEnd:this.isBonusEnd(e),isWinCapHit:e.brokeTheBank})}}getWin(e,t,i){return e.totalSpinRoundWinnings}};",
+    "events": [
+      {
+        "ref": "ws:log:3",
+        "game": {
+          "thisSpinWinnings": 0,
+          "accumulatedRoundWin": 0,
+          "totalSpinRoundWinnings": 0
+        }
+      },
+      {
+        "ref": "ws:log:5",
+        "game": {
+          "thisSpinWinnings": 0,
+          "accumulatedRoundWin": 0.08,
+          "totalSpinRoundWinnings": 0.08
+        }
+      }
+    ]
+  }
+]
