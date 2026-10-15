@@ -64,9 +64,10 @@ def resolve_operation(answer,mode=None,*,raw_answer=None,client_source=None):
         if not all(re.search(r'zeroBet\(\{playExtraSpin:[\"\']'+value+r'[\"\']\}\)',client_source) for value in ('yes','no')):
             raise Unlearned('Nolimit City: cliente no declara ambas decisiones del extra spin')
         price=_money(game.get('extraSpinCost'),positive=True)
-        if _money(game.get('accumulatedRoundWin'))<price:raise Unlearned('Nolimit City: premio insuficiente para cubrir ambas decisiones del extra spin')
         domain={'state':'EXTRA_SPIN','options':['yes','no'],'available':['yes','no'],
             'ack_field':'extra_spin_transition','request_field':'playExtraSpin','price_source':'game.extraSpinCost'}
+        from tester_spin.providers.repeat_purchase import funded_domain
+        domain=funded_domain(domain,price,_money(game.get('accumulatedRoundWin')),accept='yes',decline='no',funding_source='ACCUMULATED_ROUND_WIN')
         family='QUOTED_EXTRA_SPIN'
     else:
         from .extra_choices import numeric_domain

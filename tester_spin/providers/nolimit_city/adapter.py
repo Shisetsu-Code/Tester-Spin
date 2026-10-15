@@ -4,6 +4,7 @@ from pathlib import Path
 from curl_cffi import requests
 from tester_spin.models import GameTestResult,SpinAttempt,utc_now_iso
 from tester_spin.providers.base import ProviderAdapter
+from tester_spin.providers.repeat_purchase import POLICY,repeat_complete
 from .catalog import CODE,CATALOG_URL,FEED_URL,games_from_rows
 from .runtime import NolimitSession,Unlearned,declaration,RoundLedger,continuation,save,MONETARY,require_idle_initial_state
 from tester_spin.providers.result_farm_contract import ProviderFarmSpec,build_result_farm_contract,validate_result_farm_contract
@@ -19,6 +20,7 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
         'operation_contract':{'schema':'nolimit-city/operation-contract/v1','planner':'shared_live_and_corpus',
             'ack':'response_mode_equals_requested_phase_plus_choice_ack','money':'round_ledger_required',
             'client_source':'current_session_name_and_version_with_sha256','offline_ok_certified':False},
+        'repeat_extra_purchase_policy':{'policy':POLICY,'funding':'current_server_quote_pending_round_prize','selection':'decline_once_then_accept_every_affordable_offer','completion':'ledger_verified_normal_settlement','interruption':'PENDING'},
         'free_spin_continuation':{'type':'zeroBet','bet':'0.00'},
         'selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
         'extra_spin_selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
@@ -146,17 +148,23 @@ class NolimitCityProvider(ProviderAdapter):
                 attempt=SpinAttempt(number=len(result.attempts)+1,ok=False,mode_id='RETURN_SPIN' if return_probe else mode['id'],
                     mode_kind=mode['kind'],symbol=game.symbol,endpoint='wss://demo.nolimitcity.com/EjsGameWeb/ws/game',artifact_dir=str(directory))
                 result.attempts.append(attempt)
+                begin=getattr(session,'begin_round',None)
+                if begin:begin(mode['id'])
                 ledger=RoundLedger(before,mode)
                 content=mode['request_shape'].copy()
                 try:
-                    for step in range(1,501):
+                    step=0;step_limit=500
+                    while step<step_limit:
+                        step+=1
                         if stop_event.is_set():raise Unlearned('Nolimit City: ejecución detenida')
                         save(directory/f'{step:03d}.request.json',{'content':content})
                         answer=session.exchange(content,directory)
                         from .runtime import sanitized
                         save(directory/f'{step:03d}.response.json',sanitized(answer))
                         attempt.wire_steps=step
+                        previous_extra_cost=ledger.extra_cost
                         done=ledger.accept(answer,request=content,operation=getattr(session,'pending_contract',None))
+                        if ledger.extra_cost>previous_extra_cost:step_limit=step+500
                         confirm=getattr(session,'confirm_pending_choice',None)
                         if confirm:confirm(answer)
                         save(directory/'ledger.json',ledger.proof())
@@ -171,6 +179,8 @@ class NolimitCityProvider(ProviderAdapter):
                             if not choose:raise
                             content=choose(answer,directory,mode['id'])
                     else:raise Unlearned('Nolimit City: ronda excede el límite de continuaciones')
+                    finish=getattr(session,'finish_round',None)
+                    if finish:finish(mode['id'])
                     before=ledger.after
                     attempt.ok=attempt.terminal=True;attempt.status_code=200
                     if not return_probe:
@@ -237,6 +247,8 @@ class NolimitCityProvider(ProviderAdapter):
             contract['ready']=False;contract['unresolved'].append('NOLIMIT_CURRENT_MONEY_AND_RETURN_REQUIRED')
         if any(set(domain.get('options',[]))-set(domain.get('covered',[])) for mode in roots for domain in mode.get('choice_domains',[])):
             contract['ready']=False;contract['unresolved'].append('NOLIMIT_CHOICES_NOT_COVERED')
+        if any((not repeat_complete(domain) or domain.get('request_field') in ('playExtraSpin','playerSelectedExtraSpin') and domain.get('repeat_purchase_policy')!=POLICY) for mode in roots for domain in mode.get('choice_domains',[])):
+            contract['ready']=False;contract['unresolved'].append('NOLIMIT_REPEAT_PURCHASE_NOT_COMPLETE')
         return contract
 
     def validate_farm_contract(self,contract):
@@ -271,4 +283,9 @@ class NolimitCityProvider(ProviderAdapter):
         if any((mode.get('options') or {}).get('observation_contract')=='independent-server-observations/v1' for mode in contract.get('modes',[])):
             if static.get('shared_observation_contract')!=SPEC.protocol_static['shared_observation_contract']:
                 errors.append('NOLIMIT_SHARED_OBSERVATION_CONTRACT_REQUIRED')
+        domains=[domain for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])]
+        if any(not repeat_complete(domain) or domain.get('request_field') in ('playExtraSpin','playerSelectedExtraSpin') and domain.get('repeat_purchase_policy')!=POLICY for domain in domains):errors.append('NOLIMIT_REPEAT_PURCHASE_NOT_COMPLETE')
+        if any(domain.get('repeat_purchase_policy')==POLICY for domain in domains):
+            if static.get('repeat_extra_purchase_policy')!=SPEC.protocol_static['repeat_extra_purchase_policy']:
+                errors.append('NOLIMIT_REPEAT_PURCHASE_POLICY_REQUIRED')
         return list(dict.fromkeys(errors))

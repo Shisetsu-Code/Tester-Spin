@@ -157,3 +157,41 @@ reales de respin normal y gratuito; Harlequin volvio a obtener OK.
 
 El contrato compartido, la correccion de espacios de nombres y los resultados
 comparados estan en [NOLIMIT_CORPUS.md](NOLIMIT_CORPUS.md).
+
+
+## Giros extra pagados y agotamiento de fondos (2026-10-15)
+
+Las ofertas cotizadas `playExtraSpin` (yes/no) y `playerSelectedExtraSpin`
+(0/1, conservando el tipo declarado por el cliente) usan una política compartida:
+se prueba rechazar una vez y en otra ronda se acepta cada oferta que pueda pagarse.
+Se vuelve a leer precio y fondos en cada oferta; haber cubierto ambas decisiones
+no interrumpe la cadena. En estas variantes el servidor descuenta del premio
+pendiente (`accumulatedRoundWin`), no del saldo general. Una oferta que ya no se
+puede pagar conserva la aceptación como opción declarada y sólo permite rechazar;
+no inventa evidencia de una aceptación ejecutada.
+
+`repeat_purchase_probe` registra compras aceptadas, gasto, estado y motivo terminal.
+Sólo la liquidación NORMAL reconciliada por el libro monetario completa la prueba:
+`INSUFFICIENT_PENDING_PRIZE` o `SERVER_CLOSED_ROUND`. Cada cadena nueva restablece
+PENDING y elimina el motivo anterior, conservando los contadores acumulados.
+Cancelación, error o límite sin cierre no prueban agotamiento. La cobertura común
+y la exportación verifican esta prueba además de ambas decisiones.
+
+El límite de 500 continuaciones sin progreso pagado se renueva por cada descuento
+extra comprobado. Así permite cadenas largas sin quitar el freno a ciclos sin
+progreso; siguen vigentes cancelación y los tiempos de espera de transporte.
+La cantidad comercial de compras del juego no aumenta por comprar giros extra.
+
+El bootstrap FANPAGE_DEMO conocido no declara un control para reducir el saldo.
+No se envían parámetros supuestos, no se falsifica el saldo local y no se gastan
+fondos artificialmente sólo para agotarlo. Si se descubre un control real, su
+aplicación deberá comprobarse contra el saldo devuelto por el servidor. Bajar el
+saldo general no reduce el premio pendiente que financia estas ofertas. Cada
+prueba de juego abre una sesión demo nueva y cierra su conexión al terminar;
+reiniciar una sesión no conserva una ronda incompleta ni la convierte en OK.
+
+Validación automatizada: política de ambas decisiones, cotizaciones sucesivas,
+fondos insuficientes, cierre del servidor, interrupción, nueva cadena tras otra
+completa, cobertura/exportación y ejecutor con libro monetario real sobre transporte
+simulado de 501 compras (más de 1000 intercambios). No certifica por sí sola un
+catálogo ni proveedores todavía no integrados con esta política.

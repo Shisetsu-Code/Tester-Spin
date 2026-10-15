@@ -239,3 +239,13 @@ Verificación final: 2494 pruebas y 264 subpruebas correctas, con tres
 advertencias. La revisión independiente añadió negativos para ternarios
 dentro de funciones no invocadas y cancelaciones encadenadas u opcionales
 de timelines; todos quedaron rechazados antes de publicar.
+
+
+## Giros extra repetidos (2026-10-15)
+
+El ejecutor prueba rechazar y después acepta cada oferta asequible hasta cierre
+normal monetario, usando la cotización actual y los fondos del premio pendiente.
+Las dos opciones cubiertas no bastan para dar la cadena por completa.
+Ver política, evidencia y límites en [NOLIMIT_PRIMITIVES.md](NOLIMIT_PRIMITIVES.md#giros-extra-pagados-y-agotamiento-de-fondos-2026-10-15).
+La regresión de transporte simulado recorre 501 descuentos con libro monetario
+real; no se presenta como una ejecución remota del catálogo.

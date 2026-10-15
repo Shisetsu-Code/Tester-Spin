@@ -24,7 +24,7 @@ def sanitized(data):
 
 class NolimitSession:
     def __init__(self):
-        self.socket=None;self.rows=[];self.capture=None;self.remembered={};self.counter=0;self.uuid=uuid.uuid4().hex;self.choice_domains={};self.pending_choice=None;self.choice_client=None;self.pending_automatic=None;self.pending_contract=None
+        self.socket=None;self.rows=[];self.capture=None;self.remembered={};self.counter=0;self.uuid=uuid.uuid4().hex;self.choice_domains={};self.pending_choice=None;self.choice_client=None;self.pending_automatic=None;self.pending_contract=None;self.extra_round=None;self.pending_repeat_reason=None
     def open(self,game,http,timeout,stop,directory):
         self.timeout=max(.1,float(timeout));self.stop=stop
         response=http.get(CDN+game.symbol+'/info.json',timeout=self.timeout);response.raise_for_status()
@@ -123,9 +123,21 @@ class NolimitSession:
             known={**domain,'covered':[]};self.choice_domains[key]=known
         elif known['options']!=domain['options'] or known['ack_field']!=domain['ack_field']:
             raise Unlearned('Nolimit City: dominio de eleccion cambio durante la prueba')
-        selected=next((option for option in domain['available'] if option not in known['covered']),domain['available'][0])
+        from tester_spin.providers.repeat_purchase import POLICY,choose_repeat,new_probe
+        self.pending_repeat_reason=None
+        if domain.get('repeat_purchase_policy')==POLICY:
+            if self.extra_round is None or self.extra_round['root']!=root_id:self.begin_round(root_id)
+            first_offer=key not in self.extra_round['keys']
+            self.extra_round['keys'].add(key)
+            if 'repeat_purchase_probe' not in known:known['repeat_purchase_probe']=new_probe()
+            if first_offer:known['repeat_purchase_probe'].update(status='PENDING',terminal_reason=None)
+            for field in ('repeat_purchase_policy','funding_source','funding_balance','quoted_price','accept_option','decline_option'):
+                known[field]=domain[field]
+            selected,self.pending_repeat_reason=choose_repeat(domain,known['covered'])
+        else:
+            selected=next((option for option in domain['available'] if option not in known['covered']),domain['available'][0])
         self.pending_choice=(domain,selected,key)
-        save(directory/'choice-domain.json',{**domain,'selected':selected,'root_mode':root_id})
+        save(directory/'choice-domain.json',{**domain,'selected':selected,'root_mode':root_id,'selection_reason':self.pending_repeat_reason})
         return {'type':domain.get('request_type','zeroBet'),'bet':'0.00','playerInteraction':{
             domain.get('request_field','selectedIndex'):selected if domain.get('request_field')=='gambleCollected' or domain.get('wire_encoding')=='PRESERVE_LITERAL' else str(selected)}}
 
@@ -142,11 +154,35 @@ class NolimitSession:
             domain,selected,key=self.pending_choice
             covered=self.choice_domains[key]['covered']
             if selected not in covered:covered.append(selected)
+            known=self.choice_domains[key]
+            probe=known.get('repeat_purchase_probe')
+            if probe is not None:
+                if selected==domain['accept_option']:
+                    probe['accepted_purchases']+=1
+                    probe['spent']=str(Decimal(probe['spent'])+_money(domain['quoted_price'],positive=True))
+                    self.extra_round['accepted'][key]=self.extra_round['accepted'].get(key,0)+1
+                elif self.pending_repeat_reason=='INSUFFICIENT_PENDING_PRIZE':
+                    self.extra_round['insufficient'].add(key)
+
         self.pending_choice=None;self.pending_automatic=None;self.pending_contract=None
+    def begin_round(self,root_id):
+        self.extra_round={'root':root_id,'keys':set(),'accepted':{},'insufficient':set()}
+    def finish_round(self,root_id):
+        # The adapter calls this only after monetary reconciliation and a normal
+        # settled state. An acknowledged choice alone cannot complete this probe.
+        current=self.extra_round
+        if current is None or current['root']!=root_id:return
+        for key in current['keys']:
+            probe=self.choice_domains[key]['repeat_purchase_probe']
+            reason=('INSUFFICIENT_PENDING_PRIZE' if key in current['insufficient'] else
+                'SERVER_CLOSED_ROUND' if current['accepted'].get(key,0)>0 else None)
+            if reason is not None:probe.update(status='COMPLETE',terminal_reason=reason)
+        self.extra_round=None
     def sync_choices(self,mode):
         mode['choice_domains']=[{k:v for k,v in domain.items() if k not in ('available','before')}
             for (root_id,state),domain in self.choice_domains.items() if root_id==mode['id']]
-        return all(set(domain['options'])<=set(domain['covered']) for domain in mode['choice_domains'])
+        from tester_spin.providers.repeat_purchase import repeat_complete
+        return all(set(domain['options'])<=set(domain['covered']) and repeat_complete(domain) for domain in mode['choice_domains'])
     def close(self):
         if self.capture is not None:save(self.capture_path,self.capture)
         if self.socket is not None:

@@ -55,14 +55,19 @@ def test_extra_choice_uses_client_declared_yes_no_and_tracks_coverage(tmp_path):
  from tester_spin.providers.nolimit_city.runtime import NolimitSession
  session=NolimitSession();session.choice_client='a.zeroBet({playExtraSpin:"yes"});a.zeroBet({playExtraSpin:"no"})'
  prompt=next(r['answer'] for r in ROWS if r['answer']['game']['nextMode']=='EXTRA_SPIN')
+ session.begin_round('root')
+ no=session.choice_command(prompt,tmp_path,'root')
+ assert no['playerInteraction']=={'playExtraSpin':'no'}
+ answer=next(r['answer'] for r in ROWS if (r['request'].get('playerInteraction')or{}).get('playExtraSpin')=='no')
+ session.confirm_pending_choice(answer);session.finish_round('root')
+ assert not session.sync_choices({'id':'root'})
+ session.begin_round('root')
  yes=session.choice_command(prompt,tmp_path,'root')
  assert yes['playerInteraction']=={'playExtraSpin':'yes'}
  answer=next(r['answer'] for r in ROWS if (r['request'].get('playerInteraction')or{}).get('playExtraSpin')=='yes')
  session.confirm_pending_choice(answer)
- no=session.choice_command(prompt,tmp_path,'root')
- assert no['playerInteraction']=={'playExtraSpin':'no'}
- answer=next(r['answer'] for r in ROWS if (r['request'].get('playerInteraction')or{}).get('playExtraSpin')=='no')
- session.confirm_pending_choice(answer)
+ assert not session.sync_choices({'id':'root'})
+ session.finish_round('root')
  assert session.sync_choices({'id':'root'})
  session.choice_client='a.zeroBet({playExtraSpin:"yes"})'
  with pytest.raises(ValueError):session.choice_command(prompt,tmp_path,'other')

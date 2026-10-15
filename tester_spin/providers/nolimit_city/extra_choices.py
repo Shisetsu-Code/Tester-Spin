@@ -4,6 +4,7 @@ from decimal import Decimal
 from .protocol import _money
 from .errors import Unlearned
 from .operation_fields import step_win
+from tester_spin.providers.repeat_purchase import funded_domain
 
 
 def numeric_domain(source,game):
@@ -17,15 +18,15 @@ def numeric_domain(source,game):
     else:return None
     price=_money(game.get('extraSpinCost'),positive=True)
     accumulated=_money(game.get('accumulatedRoundWin'))
-    if accumulated<price:raise Unlearned('Nolimit City: premio insuficiente para cubrir ambas decisiones del giro extra')
     target=game.get('nextModeForExtraSpin')
     if target is not None and target not in ('FREESPIN','SUPER_FREESPIN','FREESPIN_SUPER','FREESPIN_BETTER'):
         raise Unlearned('Nolimit City: destino del giro extra no declarado')
-    return {'state':'EXTRA_SPIN','options':options,'available':options,
+    domain={'state':'EXTRA_SPIN','options':options,'available':options,
         'request_field':'playerSelectedExtraSpin','wire_encoding':'PRESERVE_LITERAL',
         'ack_field':'numeric_extra_transition','source':'CLIENT_QUOTED_NUMERIC_EXTRA',
         'price_source':'game.extraSpinCost','quoted_price':str(price),
         'quoted_accumulated':str(accumulated),'target_phase':target}
+    return funded_domain(domain,price,accumulated,accept=options[1],decline=options[0],funding_source='ACCUMULATED_ROUND_WIN')
 
 
 def confirm_numeric(domain,selected,answer):
@@ -51,16 +52,16 @@ def literal_domain(source,game):
     if game.get('nextMode')!='EXTRA_SPIN':return None
     if not all(re.search(r'zeroBet\(\{playExtraSpin:["\']'+value+r'["\']\}\)',source) for value in ('yes','no')):return None
     price=_money(game.get('extraSpinCost'),positive=True);accumulated=_money(game.get('accumulatedRoundWin'))
-    if accumulated<price:raise Unlearned('Nolimit City: premio insuficiente para ambas decisiones del giro extra')
     target=game.get('nextModeForExtraSpin',game.get('mode'))
     if not isinstance(target,str) or not re.fullmatch(r'[A-Z][A-Z0-9_]+',target) or target in ('NORMAL','EXTRA_SPIN','EXTRA_SPIN_CHECK'):
         raise Unlearned('Nolimit City: fase de retorno del giro extra no demostrada')
     if type(game.get('isExtraSpin')) is not bool:raise Unlearned('Nolimit City: indicador de giro extra no demostrado')
-    return {'state':'EXTRA_SPIN','options':['no','yes'],'available':['no','yes'],
+    domain={'state':'EXTRA_SPIN','options':['no','yes'],'available':['no','yes'],
         'request_field':'playExtraSpin','wire_encoding':'PRESERVE_LITERAL',
         'ack_field':'quoted_literal_transition','source':'CLIENT_QUOTED_LITERAL_EXTRA',
         'price_source':'game.extraSpinCost','quoted_price':str(price),'quoted_accumulated':str(accumulated),
         'target_phase':target,'history_extra':game['isExtraSpin']}
+    return funded_domain(domain,price,accumulated,accept='yes',decline='no',funding_source='ACCUMULATED_ROUND_WIN')
 
 
 def confirm_literal(domain,selected,answer):

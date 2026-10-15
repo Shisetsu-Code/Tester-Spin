@@ -201,6 +201,16 @@ def _explicit_branch_points(result: GameTestResult) -> list[dict[str, Any]]:
                 "covered": scalar(domain.get("covered") or []),
             })
 
+            from .repeat_purchase import POLICY, repeat_complete
+            if domain.get("repeat_purchase_policy") == POLICY:
+                points.append({
+                    "source": "repeat_purchase_probe",
+                    "mode_id": mode_id,
+                    "signature": f"{mode_id}:repeat-purchase:{index}:{domain.get('state', '')}",
+                    "required": ["closed_purchase_chain"],
+                    "covered": ["closed_purchase_chain"] if repeat_complete(domain) else [],
+                })
+
         fs_required = _option_list(mode.get("fs_option_indices"))
         if fs_required:
             points.append(
