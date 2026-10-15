@@ -30,8 +30,8 @@ def resolve_operation(answer,mode=None,*,raw_answer=None,client_source=None):
     if raw_answer is not None and '_funded_extra_spin' not in raw_answer and funded:
         game=raw.get('game') or {}
         if (game.get('mode')=='EXTRA_SPIN' and game.get('nextMode')==funded.get('target_phase')
-                and game.get('wasExtraSpin') is True and type(game.get('freespinsLeft')) is int
-                and game['freespinsLeft']==0):
+                and (game.get('wasExtraSpin') is True or game.get('isExtraSpin') is True) and type(game.get('freespinsLeft')) is int
+                and game['freespinsLeft']==funded.get('regular_left',0)):
             return _contract(raw,'FUNDED_EXTRA_CONTINUATION','VERIFIED_QUOTED_PRIZE_DEBIT',
                 request={'type':'zeroBet','bet':'0.00'})
     try:
@@ -45,7 +45,7 @@ def resolve_operation(answer,mode=None,*,raw_answer=None,client_source=None):
     automatic=automatic_command(client_source,raw)
     if (automatic is None and answer.get('_verified_numeric_extra_context') is True
             and raw_answer is not None and '_verified_numeric_extra_context' not in raw_answer
-            and (raw.get('game') or {}).get('wasExtraSpin') is True
+            and ((raw.get('game') or {}).get('wasExtraSpin') is True or (raw.get('game') or {}).get('isExtraSpin') is True)
             and (raw.get('game') or {}).get('nextMode')!='EXTRA_SPIN'):
         # The extra has already been paid. Stale quote/extra flags must not hide
         # a current client-bound, argument-free follow-up animation. A fresh
@@ -73,6 +73,10 @@ def resolve_operation(answer,mode=None,*,raw_answer=None,client_source=None):
         domain=numeric_domain(client_source,game)
         if domain is not None:
             return _contract(raw,'QUOTED_NUMERIC_EXTRA',domain['source'],domain=domain,client_source=client_source)
+        from .extra_choices import literal_domain
+        domain=literal_domain(client_source,game)
+        if domain is not None:
+            return _contract(raw,'QUOTED_LITERAL_EXTRA',domain['source'],domain=domain,client_source=client_source)
         try:domain=choice_domain(client_source,raw)
         except ValueError as exc:raise Unlearned(str(exc)) from exc
         family='FINITE_SELECTION'
@@ -85,6 +89,9 @@ def confirm_operation(contract,answer,selected=None):
     if game.get('mode')!=phase:raise Unlearned('Nolimit City: continuación sin acuse de la fase solicitada')
     domain=contract.get('domain')
     if domain is None:return
+    if contract.get('family')=='QUOTED_LITERAL_EXTRA':
+        from .extra_choices import confirm_literal
+        confirm_literal(domain,selected,answer);return
     if contract.get('family')=='QUOTED_NUMERIC_EXTRA':
         from .extra_choices import confirm_numeric
         confirm_numeric(domain,selected,answer);return

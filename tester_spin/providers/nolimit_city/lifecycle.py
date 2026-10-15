@@ -34,6 +34,29 @@ def expressions(text):
     return [part for part in out if part]
 
 
+def conditional_arms(text):
+    """Find both arms of one root ternary without evaluating its condition."""
+    stack=[];quote=None;escaped=False;question=None;nested=0
+    for i,char in enumerate(text):
+        if quote:
+            if escaped:escaped=False
+            elif char=='\\':escaped=True
+            elif char==quote:quote=None
+        elif char in ('"',"'",'`'):quote=char
+        elif char in '([{':stack.append(char)
+        elif char in ')]}':
+            if not stack or '([{'.index(stack.pop())!=')]}'.index(char):return None
+        elif not stack:
+            if text[i:i+2]=='=>':return None
+            if char=='?' and text[i:i+2] not in ('?.','??') and text[max(0,i-1):i+1]!='??':
+                if question is None:question=i
+                else:nested+=1
+            elif char==':' and question is not None:
+                if nested:nested-=1
+                else:return text[question+1:i].strip(),text[i+1:].strip()
+    return None
+
+
 def methods(body,block):
     result={};i=1
     while i<len(body)-1:
@@ -59,11 +82,14 @@ def proves_zero_bet(body,block,*,entry="start"):
 
     def effects(text,depth=0):
         if depth>3:return False
+        while text.startswith('(') and text.endswith(')') and expressions(text[1:-1]):text=text[1:-1].strip()
         timelines=set();arrays={};parts=expressions(text)
         for part in parts:
             if re.match(r'^(if|else|for|while|switch|try|do)\b',part):return False
             direct=part.removeprefix('return ').strip()
             if re.fullmatch(zero,direct):return True
+            arms=conditional_arms(direct)
+            if arms and all(effects(arm,depth+1) for arm in arms):return True
             # An unassigned, playing timeline completes through its declared
             # callback. A paused/cancelled timeline cannot authorize an action.
             completion=re.fullmatch(r'\w+\.gsap\.timeline\(\{(.*)\}\)',direct,re.S)
@@ -92,8 +118,21 @@ def proves_zero_bet(body,block,*,entry="start"):
             if timeline:
                 config=timeline[2] if timeline[2] is not None else timeline[3] or ''
                 name=re.escape(timeline[1])
-                mutated=any(other!=part and re.search(r'\b'+name+r'(?:\s*=(?!=)|\.(?:pause|kill|stop|clear|reverse|reversed|timeScale)\()',other) for other in parts)
-                if not mutated and 'paused' not in config and not re.search(r'\bon(?:Start|Update|Repeat)\b',config):timelines.add(timeline[1])
+                mutated=any(other!=part and re.search(r'\b'+name+r'(?:\s*=(?!=)|\.(?:pause|kill|stop|clear|reverse|reversed)\()',other) for other in parts)
+                for other in parts:
+                    if other!=part and re.search(r'\b'+name+r'\b',other):
+                        known=re.sub(r'\b'+name+r'\.(?:add|addLabel|to|from|fromTo|set|totalProgress|timeScale|duration)\b','__known_timeline',other)
+                        if (re.search(r'\b'+name+r'\b',known)
+                                or re.search(r'\)\s*(?:\?\.|\.|\[)',other)):mutated=True
+                    for speed in re.finditer(r'\b'+name+r'\.timeScale\(',other):
+                        value=re.match(r'([0-9]+(?:\.[0-9]+)?)\)',other[speed.end():])
+                        if value is None or float(value[1])<=0:mutated=True
+
+                if not mutated and 'paused' not in config and not re.search(r'\bon(?:Start|Update|Repeat)\b',config):
+                    timelines.add(timeline[1])
+                    properties=expressions(config[1:-1]) if config.startswith('{') and config.endswith('}') else []
+                    if (not re.search(r'\b'+name+r'\b',config) and len(properties)==1 and properties[0].startswith('onComplete:')
+                            and callback(properties[0][len('onComplete:'):],depth)):return True
                 continue
             added=re.fullmatch(r'(\w+)\.add\((.*)\)',direct,re.S)
             if added and added[1] in timelines:

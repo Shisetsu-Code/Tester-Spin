@@ -22,6 +22,7 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
         'free_spin_continuation':{'type':'zeroBet','bet':'0.00'},
         'selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
         'extra_spin_selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
+        'literal_extra_spin_monetary_contract':{'field':'playExtraSpin','domain':'client_declared_yes_no','price':'current_offer.extraSpinCost','funding':'pending_round_prize','accept':'exact_negative_quote_and_isExtraSpin_true_and_one_remaining_spin_in_offering_phase','reject':'zero_delta_NORMAL_wallet_settlement_history_flag_may_persist_only_after_prior_extra','funded_continuation':'one_zeroBet_after_verified_debit','repeat':'redeclare_quote_each_offer'},
         'numeric_extra_spin_monetary_contract':{'field':'playerSelectedExtraSpin','wire_type':'current_client_literal','funding':'pending_round_prize','price':'previous.game.extraSpinCost','accept':'exact_negative_quote_and_wasExtraSpin_true_and_quoted_target','reject':'zero_delta_and_wasExtraSpin_false_and_NORMAL','funded_continuation':'one_zeroBet_after_verified_debit','settlement':'round_ledger_required'},
         'extra_spin_monetary_contract':{'price':'previous.game.extraSpinCost','funding':'accumulatedRoundWin',
             'yes_ack':'mode=EXTRA_SPIN,nextMode=FREESPIN,freespinsLeft=1,isExtraSpin=true,win=-quoted_price',
@@ -252,6 +253,9 @@ class NolimitCityProvider(ProviderAdapter):
                 if static.get(key)!=SPEC.protocol_static[key]:errors.append('NOLIMIT_EXTRA_SPIN_CONTRACT_REQUIRED')
         if any(set(domain.get('options',[]))-set(domain.get('covered',[])) for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])):
             errors.append('NOLIMIT_CHOICES_NOT_COVERED')
+        if any(domain.get('source')=='CLIENT_QUOTED_LITERAL_EXTRA' for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])):
+            if static.get('literal_extra_spin_monetary_contract')!=SPEC.protocol_static['literal_extra_spin_monetary_contract']:
+                errors.append('NOLIMIT_LITERAL_EXTRA_SPIN_CONTRACT_REQUIRED')
         if any(domain.get('request_field')=='playerSelectedExtraSpin' for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])):
             if static.get('numeric_extra_spin_monetary_contract')!=SPEC.protocol_static['numeric_extra_spin_monetary_contract']:
                 errors.append('NOLIMIT_NUMERIC_EXTRA_SPIN_CONTRACT_REQUIRED')

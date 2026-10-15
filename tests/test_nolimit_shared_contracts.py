@@ -161,3 +161,39 @@ def test_runner_skip_callback_parameter_can_shadow_the_presentation_list():
 def test_earlier_local_callback_cannot_remove_or_block_the_later_action(first):
     body='{start(t){const list=['+first+',new r.LocalPresentation(t=>n.Game.apiPlugin.betHandler.zeroBet(),()=>true,"next")];n.SimplePresentationRunner.run(list,()=>t.finish())}}'
     assert client_actions.automatic_command(bound(body),{'game':{'nextMode':'UNSEEN_PHASE'}}) is None
+
+
+def convergent_body(else_effect='n.Game.apiPlugin.betHandler.zeroBet()',speed='2'):
+    return ('{start(t){this.flag=0;this.data.mode.includes("RESPIN")?this.intro(t):('+else_effect+',t.finish())}'
+        +'intro(t){const tl=n.gsap.timeline({onComplete:()=>{n.Game.apiPlugin.betHandler.zeroBet(),t.finish()}});'
+        +'tl.to(this,{duration:.1}),this.fast&&tl.timeScale('+speed+'),this.enable(()=>tl.totalProgress(1))}}')
+
+def test_both_arms_of_a_conditional_reach_the_same_argument_free_action():
+    assert client_actions.automatic_command(bound(convergent_body()),{'game':{'nextMode':'UNSEEN_PHASE'}})=={'type':'zeroBet','bet':'0.00'}
+
+@pytest.mark.parametrize('body',[
+    convergent_body(else_effect='this.waitForChoice()'),
+    convergent_body(speed='0'),
+    convergent_body(speed='-1'),
+    convergent_body(speed='this.speed'),
+])
+def test_conditional_or_stopped_timeline_cannot_grant_convergent_action(body):
+    assert client_actions.automatic_command(bound(body),{'game':{'nextMode':'UNSEEN_PHASE'}}) is None
+
+
+@pytest.mark.parametrize('prefix',['const cb=()=>','const cb=async()=>','return ()=>'])
+def test_uninvoked_arrow_ternary_is_not_an_active_lifecycle_action(prefix):
+    source=bound('{start(t){'+prefix+'this.allowed?n.Game.apiPlugin.betHandler.zeroBet():n.Game.apiPlugin.betHandler.zeroBet();t.finish()}}')
+    assert client_actions.automatic_command(source,{'game':{'nextMode':'UNSEEN_PHASE'}}) is None
+
+
+@pytest.mark.parametrize('mutation',[
+    'tl.timeScale(1).pause();','tl.timeScale(1).kill();',
+    'tl.timeScale(1)?.pause();','tl.timeScale(1).pause?.();',
+    "tl.timeScale(1)?.['pause']();",
+    'tl.timeScale(1).timeScale(0);',"tl['pause']();",
+    'stopTimeline(tl);',
+])
+def test_completion_cannot_bypass_chained_or_unknown_timeline_mutations(mutation):
+    source=bound('{start(t){const tl=n.gsap.timeline({onComplete:()=>n.Game.apiPlugin.betHandler.zeroBet()});'+mutation+'}}')
+    assert client_actions.automatic_command(source,{'game':{'nextMode':'UNSEEN_PHASE'}}) is None

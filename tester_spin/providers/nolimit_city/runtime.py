@@ -416,7 +416,7 @@ class RoundLedger:
                 delta=-price;self.extra_cost+=price;self.extra_played=True
             elif game.get('nextMode')!='NORMAL' or _money(game.get('win'))!=0:
                 raise ValueError('Nolimit City: rechazo extra spin sin liquidación')
-        if isinstance(operation,dict) and operation.get('family')=='QUOTED_NUMERIC_EXTRA':
+        if isinstance(operation,dict) and operation.get('family') in ('QUOTED_NUMERIC_EXTRA','QUOTED_LITERAL_EXTRA'):
             from .contracts import observed_request_matches,confirm_operation
             domain=operation['domain'];matches,selected=observed_request_matches(operation,request or {})
             if (not matches or not (operation.get('evidence') or {}).get('client_sha256') or previous.get('nextMode')!='EXTRA_SPIN'
@@ -424,11 +424,11 @@ class RoundLedger:
                     or _money(domain['quoted_accumulated'])!=self.win):
                 raise Unlearned('Nolimit City: giro extra fuera de su cotización actual')
             confirm_operation(operation,answer,selected)
-            from .extra_choices import confirm_numeric
-            delta=confirm_numeric(domain,selected,answer)
+            from .extra_choices import confirm_numeric,confirm_literal
+            delta=(confirm_literal if operation['family']=='QUOTED_LITERAL_EXTRA' else confirm_numeric)(domain,selected,answer)
             if delta<0:
                 self.extra_cost-=delta;self.numeric_extra_played=True
-                answer['_funded_extra_spin']={'target_phase':game['nextMode'],'price':domain['quoted_price']}
+                answer['_funded_extra_spin']={'target_phase':game['nextMode'],'price':domain['quoted_price'],'regular_left':game['freespinsLeft']}
         if delta is None and Decimal(str(game.get('win')))<0:
             from .contracts import selection_adjustment
             delta=selection_adjustment(operation,request,answer,previous,self.win)

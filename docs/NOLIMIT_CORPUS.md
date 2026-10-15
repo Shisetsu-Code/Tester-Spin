@@ -197,3 +197,45 @@ de todas las ramas de todos los juegos. El resumen sin sesiones está en
 Verificación final de esta tanda: 2471 pruebas y 264 subpruebas correctas, con
 tres advertencias. La revisión independiente agregó negativos para callbacks
 que modifican su propia lista o impiden llegar a la acción posterior.
+
+
+## Ofertas yes/no repetidas y respin de torpedo (15 de octubre de 2026)
+
+La captura playin.com-2026-10-15T09-19-11-551Z.har se identifica por los recursos
+DasxBoot2/1.0.440. Contiene 73 intercambios correlacionados, diez raíces pagadas,
+seis aceptaciones playExtraSpin=yes y un rechazo playExtraSpin=no. No contiene
+init. El analizador conserva MISSING_INIT y no concede OK offline. Para las
+pruebas del ledger se usa una declaración de otra demo de la misma versión;
+el saldo de entrada de la primera ronda se deriva como contexto de prueba,
+sin presentarlo como un saldo inicial grabado. Las siguientes rondas sí enlazan
+con los saldos de cierre observados. La fixture reducida está en
+`tests/fixtures/nolimit_literal_extra.json`; no incluye identidades ni credenciales.
+
+Se incorporó el dialecto yes/no cuyo destino es la fase que ofrece el giro:
+la aceptación exige precio vigente, descuento exacto del premio, EXTRA_SPIN,
+isExtraSpin=true, un giro restante y retorno a esa fase. Una nueva oferta obtiene
+una cotización nueva. En el rechazo puede persistir isExtraSpin=true si ya había
+un giro extra en la historia; por sí solo ese indicador no significa aceptación.
+El rechazo exige delta cero, NORMAL, acumulado consistente y saldo liquidado.
+No se inventa un destino si la oferta carece de una fase de retorno demostrada.
+
+La continuación pagada y sus pasos posteriores usan la misma prueba monetaria
+y los enlaces actuales del cliente, separados de futuras decisiones EXTRA_SPIN.
+El contrato exportado incluye literal_extra_spin_monetary_contract; un contrato
+antiguo sin esa regla no valida las elecciones nuevas.
+
+El reconocedor de efectos admite una condición solo cuando ambos brazos prueban
+la misma acción sin argumentos, además de callbacks onComplete de timelines
+activos asignados. No ejecuta ni adivina el valor de la condición. Excluye cuerpos
+de funciones diferidas, accesos encadenados/computados/desconocidos al timeline,
+pausas y escalas de tiempo dinámicas o no positivas.
+
+En una sesión demo nueva, Das xBoot 2wei obtuvo OK con 9/9 modos, elecciones,
+liquidaciones y retorno normal. Su contrato exportado pasó la validación común
+y la del proveedor. Una comprobación adicional de Catfish Hunters conservó
+PARCIAL al ofrecer un extra sin fase de retorno demostrada; no se fuerza ese caso.
+
+Verificación final: 2494 pruebas y 264 subpruebas correctas, con tres
+advertencias. La revisión independiente añadió negativos para ternarios
+dentro de funciones no invocadas y cancelaciones encadenadas u opcionales
+de timelines; todos quedaron rechazados antes de publicar.
