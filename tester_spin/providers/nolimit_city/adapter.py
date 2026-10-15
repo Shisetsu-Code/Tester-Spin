@@ -15,7 +15,11 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
     runtime_outputs=('key','extPlayerKey'),protocol_static={'verification_contract':'nolimit-city/verified-runtime/v1',
         'bootstrap_endpoint':'https://demo.nolimitcity.com/EjsFrontWeb/fs','operator':'FANPAGE_DEMO',
         'websocket_path':'/EjsGameWeb/ws/game','outbound_codec':'RC4_HEX_JSON','inbound_codec':'LZW_JSON',
-        'protocol':'@nolimitcity/game-communication@0.4.1','free_spin_continuation':{'type':'zeroBet','bet':'0.00'},
+        'protocol':'@nolimitcity/game-communication@0.4.1',
+        'operation_contract':{'schema':'nolimit-city/operation-contract/v1','planner':'shared_live_and_corpus',
+            'ack':'response_mode_equals_requested_phase_plus_choice_ack','money':'round_ledger_required',
+            'client_source':'current_session_name_and_version_with_sha256','offline_ok_certified':False},
+        'free_spin_continuation':{'type':'zeroBet','bet':'0.00'},
         'selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
         'extra_spin_selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
         'extra_spin_monetary_contract':{'price':'previous.game.extraSpinCost','funding':'accumulatedRoundWin',
@@ -155,6 +159,9 @@ class NolimitCityProvider(ProviderAdapter):
                         if confirm:confirm(answer)
                         save(directory/'ledger.json',ledger.proof())
                         if done:break
+                        if hasattr(session,'next_command'):
+                            content=session.next_command(ledger.last_answer,directory,mode['id'],mode,raw_answer=answer)
+                            continue
                         try:
                             content=continuation(ledger.last_answer,raw_answer=answer,declared_options=mode['declared_feature_options'],declared_categories=mode['declared_feature_categories'],declared_purchase_options=mode['declared_purchase_options'],declared_catalog=mode.get('declared_feature_catalog'),declared_game_modes=mode.get('declared_game_modes',()))
                         except Unlearned:

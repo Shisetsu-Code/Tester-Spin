@@ -47,7 +47,7 @@ def _exported_class(source,name):
 
 
 def _event_bridge(source):
-    subscription=r'BalanceEvent\.ZERO_BET,(\w+)=>this\.onZeroBet\(\1\.params\[0\]\)'
+    subscription=r'BalanceEvent\.ZERO_BET,\(?(\w+)=>this\.onZeroBet\(\1\.params\[0\]\)'
     handler=r'onZeroBet\(\w+\)\{this\._slotApi\.betHandler\.zeroBet\(\),'
     return bool(re.search(subscription,source) and re.search(handler,source))
 
@@ -75,17 +75,16 @@ def automatic_command(source,answer):
         if re.search(r'\b'+re.escape(match[1])+r'\s*=',prefix[assignment.end():]):continue
         body=_exported_class(source,assignment[1])
         if not body:continue
-        # Two explicitly observed unconditional presentation lifecycles.
-        direct=r'complete\(\)\{\w+\.SlotGame\.apiPlugin\.betHandler\.zeroBet\(\),this\._flowStateController\.finish\(\)\}'
-        timeline=r'start\((\w+)\)\{const (\w+)=\w+\.gsap\.timeline\(\{onComplete:\(\)=>\{\1\.finish\(\)\}\}\);\2\.add\(\(\)=>\{\w+\.SlotGame\.apiPlugin\.betHandler\.zeroBet\(\)\}\)'
-        if re.search(direct,body) and re.search(r'start\(\w+\)\{this\._flowStateController=\w+,\w+\.SimplePresentationRunner\.run\(this\._presentations,\(\)=>this\.complete\(\)',body):return result
-        if re.search(timeline,body):return result
+        from .lifecycle import proves_zero_bet
+        if proves_zero_bet(body,_block):return result
     # Legacy animation lists can include a conditional pick presentation. Only
     # its explicit argument-free ELSE branch is automatic in other bound modes.
     for config in re.finditer(r'\b'+re.escape(mode)+r':\{idle:\[([^\]]{0,1600})\]',source):
         for name in re.findall(r'new \w+\.(\w+)',config[1]):
             body=_exported_class(source,name)
             if not body:continue
+            from .lifecycle import proves_zero_bet
+            if proves_zero_bet(body,_block,entry='getAnimation'):return result
             branch=re.search(r'^\{getAnimation\((\w+)\)\{const \w+=new \w+\.TimelineLite,\w+=\1\.nextMode===\w+\.\w+\.[A-Z_]+\|\|\w+\.\w+\.[A-Z_]+\?\1\.freespinsLeft-1:-1;return \w+\.add\(\(\)=>\{if\(\1\.nextMode===\w+\.\w+\.([A-Z_]+)\)\{const (\w+)=\{selectedIndex:[\w.]+\};\w+\.\w+\.api\.betHandler\.zeroBet\(\3\)\}else \w+\.\w+\.api\.betHandler\.zeroBet\(\);',body)
             left=game.get('freespinsLeft',answer.get('remainingFreeSpins'))
             if branch and mode!=branch[2] and type(left) is int and left>0:return result
@@ -97,8 +96,15 @@ def automatic_command(source,answer):
         if match[2]=='FreespinZeroBetController':
             left=game.get('freespinsLeft',answer.get('remainingFreeSpins'))
             if type(left) is not int or left<=0:continue
-        trigger=r'calculateIsTriggered\((\w+)\)\{return \1\.nextMode===\w+\.\w+\.'+re.escape(mode)+r'\}'
-        if not re.search(trigger,body):continue
+        trigger=re.search(r'calculateIsTriggered\((\w+)\)\{return ([^{};]+)\}',body)
+        if not trigger:continue
+        expression=re.sub(r'^this\.\w+='+re.escape(trigger[1])+r'\.nextMode,','',trigger[2])
+        clauses=expression.split('||');phases=[]
+        for clause in clauses:
+            condition=re.fullmatch(re.escape(trigger[1])+r'\.nextMode=={1,2}\w+\.\w+\.([A-Z][A-Z0-9_]+)',clause)
+            if condition is None:break
+            phases.append(condition[1])
+        if len(phases)!=len(clauses) or mode not in phases:continue
         export=re.match(r'\w+\.(\w+)='+re.escape(match[1])+r'(?=[};,])',source[match.end()-1+len(body):])
         if not export:continue
         if re.search(r'ZERO_BETS=\[[^\]]{0,1500}?\(\)=>new \w+\.'+re.escape(export[1])+r'(?=[,\]])',source):return result

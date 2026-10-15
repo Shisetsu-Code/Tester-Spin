@@ -24,7 +24,7 @@ def sanitized(data):
 
 class NolimitSession:
     def __init__(self):
-        self.socket=None;self.rows=[];self.capture=None;self.remembered={};self.counter=0;self.uuid=uuid.uuid4().hex;self.choice_domains={};self.pending_choice=None;self.choice_client=None;self.pending_automatic=None
+        self.socket=None;self.rows=[];self.capture=None;self.remembered={};self.counter=0;self.uuid=uuid.uuid4().hex;self.choice_domains={};self.pending_choice=None;self.choice_client=None;self.pending_automatic=None;self.pending_contract=None
     def open(self,game,http,timeout,stop,directory):
         self.timeout=max(.1,float(timeout));self.stop=stop
         response=http.get(CDN+game.symbol+'/info.json',timeout=self.timeout);response.raise_for_status()
@@ -32,6 +32,7 @@ class NolimitSession:
         if info.get('name')!=game.symbol or not isinstance(version,str) or not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+',version):
             raise Unlearned('Nolimit City: identidad o versión de cliente desconocida')
         self.client_info=info;self.http=http;self.choice_root=directory
+        self.client_cache=directory.parents[3]/'_clients'/info['name']/(version+'.js')
         save(directory/'client-info.json',info)
         payload={'action':'open_game','clientString':'FANPAGE_DEMO','language':'en','gameCodeString':game.symbol+'@desktop'}
         save(directory/'bootstrap-request.json',payload)
@@ -91,70 +92,57 @@ class NolimitSession:
             self.remembered={'extPlayerKey':ext}
         return answer
     def exchange(self,content,directory):return self._exchange(content,directory)
-    def choice_command(self,answer,directory,root_id):
-        from .choices import choice_domain,has_collect_contract
-        if self.choice_client is None:
-            info=self.client_info
-            target=CDN+info['name']+'/'+info['version']+'/game.js'
-            response=self.http.get(target,timeout=self.timeout);response.raise_for_status()
-            if len(response.content)>MAX_BODY:raise Unlearned('Nolimit City: cliente excede el límite de descubrimiento')
-            self.choice_client=response.text
-        from .client_actions import automatic_command
-        automatic=automatic_command(self.choice_client,answer)
-        if automatic is not None:
-            self.pending_automatic=(answer.get('game') or {}).get('nextMode')
+    def _load_choice_client(self):
+        if self.choice_client is not None:return
+        info=self.client_info
+        target=CDN+info['name']+'/'+info['version']+'/game.js'
+        cache=getattr(self,'client_cache',None)
+        if cache is not None and cache.is_file() and cache.stat().st_size<=MAX_BODY:
+            self.choice_client=cache.read_text(encoding='utf-8');return
+        response=self.http.get(target,timeout=self.timeout);response.raise_for_status()
+        if len(response.content)>MAX_BODY:raise Unlearned('Nolimit City: cliente excede el limite de descubrimiento')
+        self.choice_client=response.text
+        if cache is not None:
+            cache.parent.mkdir(parents=True,exist_ok=True);cache.write_text(self.choice_client,encoding='utf-8')
+
+    def next_command(self,answer,directory,root_id,mode=None,*,raw_answer=None):
+        from .contracts import resolve_operation
+        try:contract=resolve_operation(answer,mode,raw_answer=raw_answer,client_source=self.choice_client)
+        except Unlearned:
+            self._load_choice_client()
+            contract=resolve_operation(answer,mode,raw_answer=raw_answer,client_source=self.choice_client)
+        self.pending_contract=contract
+        save(directory/f'operation-{self.counter:04d}.json',contract)
+        if contract['domain'] is None:
+            self.pending_automatic=contract['state']
             save(directory/'automatic-action.json',{'schema':'nolimit-client-bound-zero-bet/v1',
-                'state':self.pending_automatic,'request':automatic,
-                'client_sha256':hashlib.sha256(self.choice_client.encode('utf-8')).hexdigest(),
-                'client_version':getattr(self,'client_info',{}).get('version')})
-            return automatic
-        game=answer.get('game') or {}
-        from .operation_fields import collect_available
-        if collect_available(game):
-            if not has_collect_contract(self.choice_client):
-                raise Unlearned('Nolimit City: cobro no declarado por cliente')
-            domain={'state':'GAMBLE','options':[True],'available':[True],'ack_field':'gambleCollect',
-                'request_field':'gambleCollected','request_type':'gambleBet','source':'CLIENT_CONFIRMED_COLLECT','scope':'SETTLEMENT_ONLY'}
-        elif _extra_response(game) and game.get('nextMode')=='EXTRA_SPIN':
-            if not all(re.search(r'zeroBet\(\{playExtraSpin:[\"\']'+value+r'[\"\']\}\)',self.choice_client) for value in ('yes','no')):
-                raise Unlearned('Nolimit City: cliente no declara ambas decisiones del extra spin')
-            price=_money(game.get('extraSpinCost'),positive=True)
-            if _money(game.get('accumulatedRoundWin'))<price:
-                raise Unlearned('Nolimit City: premio insuficiente para cubrir ambas decisiones del extra spin')
-            domain={'state':'EXTRA_SPIN','options':['yes','no'],'available':['yes','no'],
-                'ack_field':'extra_spin_transition','request_field':'playExtraSpin','price_source':'game.extraSpinCost'}
-        else:
-            try:domain=choice_domain(self.choice_client,answer)
-            except ValueError as exc:raise Unlearned(str(exc)) from exc
-        key=(root_id,domain['state']);known=self.choice_domains.get(key)
+                'state':contract['state'],'request':contract['request'],**contract['evidence']})
+            return contract['request']
+        domain=contract['domain'];key=(root_id,domain['state']);known=self.choice_domains.get(key)
         if known is None:
             known={**domain,'covered':[]};self.choice_domains[key]=known
         elif known['options']!=domain['options'] or known['ack_field']!=domain['ack_field']:
-            raise Unlearned('Nolimit City: dominio de elección cambió durante la prueba')
+            raise Unlearned('Nolimit City: dominio de eleccion cambio durante la prueba')
         selected=next((option for option in domain['available'] if option not in known['covered']),domain['available'][0])
         self.pending_choice=(domain,selected,key)
         save(directory/'choice-domain.json',{**domain,'selected':selected,'root_mode':root_id})
-        return {'type':domain.get('request_type','zeroBet'),'bet':'0.00','playerInteraction':{domain.get('request_field','selectedIndex'):selected if domain.get('request_field')=='gambleCollected' else str(selected)}}
+        return {'type':domain.get('request_type','zeroBet'),'bet':'0.00','playerInteraction':{
+            domain.get('request_field','selectedIndex'):selected if domain.get('request_field')=='gambleCollected' else str(selected)}}
+
+    def choice_command(self,answer,directory,root_id):
+        # Compatibility entry point; both paths use the same operation planner.
+        return self.next_command(answer,directory,root_id)
+
     def confirm_pending_choice(self,answer):
-        if self.pending_automatic is not None:
-            if (answer.get('game') or {}).get('mode')!=self.pending_automatic:
-                raise Unlearned('Nolimit City: continuación automática sin acuse de la fase solicitada')
-            self.pending_automatic=None
-        if self.pending_choice is None:return
-        from .choices import confirm_choice
-        domain,selected,key=self.pending_choice
-        if domain.get('request_field')=='gambleCollected':
-            game=answer.get('game') or {}
-            if game.get('mode')!='GAMBLE' or game.get('nextMode')!='NORMAL' or game.get('gambleCollect') is not True:
-                raise Unlearned('Nolimit City: cobro no confirmado')
-        elif domain.get('request_field')=='playExtraSpin':
-            game=answer.get('game') or {}
-            if game.get('mode')!='EXTRA_SPIN' or (selected=='yes' and (game.get('nextMode')!='FREESPIN' or game.get('isExtraSpin') is not True)) or (selected=='no' and game.get('nextMode')!='NORMAL'):
-                raise Unlearned('Nolimit City: decisión extra spin no confirmada')
-        else:confirm_choice(domain,selected,answer)
-        covered=self.choice_domains[key]['covered']
-        if selected not in covered:covered.append(selected)
-        self.pending_choice=None
+        if self.pending_contract is None:return
+        from .contracts import confirm_operation
+        selected=self.pending_choice[1] if self.pending_choice is not None else None
+        confirm_operation(self.pending_contract,answer,selected)
+        if self.pending_choice is not None:
+            domain,selected,key=self.pending_choice
+            covered=self.choice_domains[key]['covered']
+            if selected not in covered:covered.append(selected)
+        self.pending_choice=None;self.pending_automatic=None;self.pending_contract=None
     def sync_choices(self,mode):
         mode['choice_domains']=[{k:v for k,v in domain.items() if k not in ('available','before')}
             for (root_id,state),domain in self.choice_domains.items() if root_id==mode['id']]

@@ -38,7 +38,7 @@ def feature_observation(answer,catalog=(),game_modes=(),purchase_options=(),alte
         try:values=_labels(available)
         except ValueError:return {'kind':'UNRESOLVED_MENU','reason':'invalid_available'}
         catalogs=[catalog,*alternate_catalogs]
-        purchase_categories={item for items in alternate_catalogs for item in items if item=='FREESPIN'}
+        purchase_categories={'FREESPIN'} if purchase_options else set()
         if purchase_options and purchase_categories:catalogs.append(list(purchase_categories))
         matches=any(len(values)==len(items) and set(values)==set(items) for items in catalogs)
         if values and not matches:

@@ -84,7 +84,12 @@ def decode_capture(document):
         if url not in bootstraps:raise ValueError('Nolimit City: falta la clave de la conexión capturada')
         payload=frame.get('payload');direction=frame.get('direction')
         if frame.get('encoding')=='base64':payload=base64.b64decode(payload).decode('utf-8')
-        if direction=='sent':text=rc4_hex(bootstraps[url],payload)
+        if direction=='sent':
+            text=rc4_hex(bootstraps[url],payload)
+            # The historical Tester writer hex-encoded plaintext before RC4.
+            # The browser sends JSON directly. Both remain bound to this URL's key.
+            if re.fullmatch(r'[0-9a-fA-F]+',text or '') and len(text)%2==0:
+                text=bytes.fromhex(text).decode('latin1')
         elif direction=='received':text=lzw_decode(payload)
         else:raise ValueError('Nolimit City: dirección de trama desconocida')
         try:message=json.loads(text)
@@ -157,11 +162,12 @@ def analyze_messages(rows):
                 if quote['type']=='FREESPIN':category='purchase';mode_kind='PURCHASE'
                 elif quote['type'] in ('BOOSTED_BET','BOOSTED_BET_X_ROWS'):category='boosted_bet';mode_kind='FEATURE_SPIN'
                 else:raise ValueError('Nolimit City: tipo de opción no aprendido')
-            mode={'kind':mode_kind,'stake':str(stake),'price_multiplier':str(price),'selector':selector,
-                'declared_feature_options':allowed,'declared_purchase_options':[item['id'] for item in purchase],
-                'declared_feature_categories':(['BONUS_BUY'] if purchase else [])+(['BOOSTED_BET'] if boosted else []),
-                'declared_feature_catalog':(init.get('features') or {}).get('available',[]),
-                'declared_game_modes':init.get('allowedGameModes',[])}
+            from .declarations import declared_options
+            declared,_=declared_options(init)
+            original=next((item for item in declared if item['kind']==mode_kind
+                and (kind=='normalBet' or item.get('selector')==selector)),None)
+            if original is None:raise ValueError('Nolimit City: operación fuera de la declaración compartida')
+            mode={**original,'stake':str(stake),'price_multiplier':str(price),'selector':selector}
             ledger=RoundLedger(before,mode)
             active={'category':category,'selector':selector,'cost':ledger.cost,'ledger':ledger,'first_request':request['id']}
             roots+=1;total_paid+=ledger.cost

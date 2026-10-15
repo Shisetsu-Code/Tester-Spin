@@ -152,3 +152,8 @@ La repeticion final tambien encontro el respin del juego base durante un giro
 de retorno. Se incorporo la rama demostrada del mismo cliente, con prueba
 negativa de condiciones envolventes. El reconocedor final reproduce 16 estados
 reales de respin normal y gratuito; Harlequin volvio a obtener OK.
+
+## Consolidacion del corpus
+
+El contrato compartido, la correccion de espacios de nombres y los resultados
+comparados estan en [NOLIMIT_CORPUS.md](NOLIMIT_CORPUS.md).
