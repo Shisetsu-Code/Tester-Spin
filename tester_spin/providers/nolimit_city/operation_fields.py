@@ -27,7 +27,7 @@ def modifier_ack(game):
     if len(set(flags))>1:raise ValueError('Nolimit City: indicadores de modificador contradictorios')
     return flags[0] if flags else None
 
-def root_ack(game,mode,request):
+def root_ack(game,mode,request,*,debit_confirmed=False):
     kind=mode['kind'];purchase=game.get('wasFeatureBuy');boost=game.get('wasBoostedBet')
     if request is not None:
         expected='normalBet' if kind=='SPIN' else 'featureBet'
@@ -44,7 +44,10 @@ def root_ack(game,mode,request):
         if purchase is not True:raise ValueError('Nolimit City: compra no confirmada')
     elif kind=='FEATURE_SPIN':
         feature_ack=game.get('featureBet') is True and purchase is False
-        if purchase is not False or (boost is not True and not (boost is None and feature_ack)):
+        debit_ack=(debit_confirmed and mode.get('server_declared') is True
+            and mode.get('selector') in mode.get('declared_feature_options',())
+            and mode.get('server_type') in ('BOOSTED_BET','BOOSTED_BET_X_ROWS'))
+        if purchase is not False or (boost is not True and not (boost is None and (feature_ack or debit_ack))):
             raise ValueError('Nolimit City: modificador no confirmado')
     else:
         if purchase is True or boost is True:raise ValueError('Nolimit City: giro normal con modificador inexplicado')

@@ -22,6 +22,7 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
         'free_spin_continuation':{'type':'zeroBet','bet':'0.00'},
         'selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
         'extra_spin_selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
+        'numeric_extra_spin_monetary_contract':{'field':'playerSelectedExtraSpin','wire_type':'current_client_literal','funding':'pending_round_prize','price':'previous.game.extraSpinCost','accept':'exact_negative_quote_and_wasExtraSpin_true_and_quoted_target','reject':'zero_delta_and_wasExtraSpin_false_and_NORMAL','funded_continuation':'one_zeroBet_after_verified_debit','settlement':'round_ledger_required'},
         'extra_spin_monetary_contract':{'price':'previous.game.extraSpinCost','funding':'accumulatedRoundWin',
             'yes_ack':'mode=EXTRA_SPIN,nextMode=FREESPIN,freespinsLeft=1,isExtraSpin=true,win=-quoted_price',
             'no_ack':'mode=EXTRA_SPIN,nextMode=NORMAL,win=0','settlement':'initial_balance-root_cost+net_accumulated_win'},
@@ -34,7 +35,7 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
             'collect_ack':'previous_nextMode_GAMBLE_then_mode_GAMBLE_nextMode_NORMAL_gambleCollect_true_zero_step_win_unchanged_accumulated_win',
             'gamble_scope':'settlement_only_not_gamble_alternatives'},
         'selection_primitive_scope':'selectedIndex_only',
-        'selection_primitives':{
+        'selection_primitives':{'playerSelectedExtraSpin':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playerSelectedExtraSpin':'{choice:current_client_literal_type}'}},
             'selectedIndex':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
             'playExtraSpin':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
             'gambleCollected':{'type':'gambleBet','bet':'0.00','playerInteraction':{'gambleCollected':True}}},
@@ -251,6 +252,9 @@ class NolimitCityProvider(ProviderAdapter):
                 if static.get(key)!=SPEC.protocol_static[key]:errors.append('NOLIMIT_EXTRA_SPIN_CONTRACT_REQUIRED')
         if any(set(domain.get('options',[]))-set(domain.get('covered',[])) for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])):
             errors.append('NOLIMIT_CHOICES_NOT_COVERED')
+        if any(domain.get('request_field')=='playerSelectedExtraSpin' for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])):
+            if static.get('numeric_extra_spin_monetary_contract')!=SPEC.protocol_static['numeric_extra_spin_monetary_contract']:
+                errors.append('NOLIMIT_NUMERIC_EXTRA_SPIN_CONTRACT_REQUIRED')
         if any((mode.get('options') or {}).get('response_profile')=='rows_freespin_and_collect/v1' for mode in contract.get('modes',[])):
             if static.get('rows_response_contract')!=SPEC.protocol_static['rows_response_contract']:
                 errors.append('NOLIMIT_ROWS_AND_COLLECT_CONTRACT_REQUIRED')

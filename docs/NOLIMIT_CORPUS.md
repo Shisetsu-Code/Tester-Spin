@@ -138,3 +138,62 @@ Verificación final: 2434 pruebas y 264 subpruebas correctas, con tres advertenc
 La revisión independiente añadió negativos para propiedades de timeline colocadas
 después de onComplete; las configuraciones pausadas o con otros callbacks no
 autorizan una continuación.
+
+
+## Bloqueos compartidos de la siguiente tanda (15 de octubre de 2026)
+
+El registro recibido inicia una tanda de 72 pendientes y contiene nueve juegos
+terminados antes de comenzar el décimo. No permite dar un resultado de los 72.
+Se corrigieron estas familias, sin reglas basadas en nombres de juegos:
+
+- Acuse de apuesta mejorada omitido: cuando hay selector y precio declarados en
+  init, petición exacta y sobrecoste superior al giro normal, un débito conciliado
+  confirma la operación. Un indicador explícitamente falso sigue rechazado.
+  `ledger.json` distingue `DECLARED_PRICE_AND_DEBIT` de los acuses por indicador.
+- Etiqueta activa después de pagar: el ledger puede conservarla como anotación
+  si no hay menú desconocido, todos los contadores terminales están a cero,
+  no hay pendingWin y el saldo acredita exactamente el premio positivo.
+  La etiqueta no autoriza continuaciones; el retorno normal sigue siendo obligatorio.
+- Presentaciones locales: se reconoce un callback incondicional habilitado en
+  la lista que usa su runner. Las listas mutadas, referenciadas desde su propio
+  inicializador, no recorridas o bloqueadas por otro callback desconocido no
+  conceden permiso. Se respeta el alcance de parámetros que ocultan el nombre
+  de la lista. La variante importada `default.timeline` usa las mismas reglas.
+- Giro extra numérico: se descubren ambos literales de playerSelectedExtraSpin
+  en el cliente de la sesión, preservando número o texto según su construcción.
+  El 0 rechaza; el 1 solo se acepta con precio vigente, premio suficiente,
+  descuento exacto, acuse de giro extra y transición a una familia gratuita
+  conocida. Si la oferta anuncia destino debe coincidir; si lo omite se usa
+  la modalidad confirmada por la respuesta, sin adivinarla antes.
+
+Dos sesiones demo de descubrimiento contrastaron el rechazo (premio intacto y
+saldo liquidado) y la aceptación (win negativo igual al coste cotizado).
+Las fixtures reducidas `nolimit_numeric_extra.json`, `nolimit_modifier_debits.json`
+y `nolimit_paid_annotation.json` eliminan credenciales, identidades de sesión y
+matrices gráficas. El descubrimiento queda separado de una certificación de OK.
+
+Después del débito confirmado, una continuación gratuita consume el giro pagado
+incluso si el contador de giros regulares es cero. Los pasos posteriores con
+indicadores persistentes de ese extra requieren enlaces actuales e incondicionales
+del cliente. La fase EXTRA_SPIN se excluye de ese permiso: toda nueva decisión
+necesita una cotización nueva. Los marcadores internos se eliminan de la entrada
+del servidor y no se aceptan si aparecen en la respuesta original del HAR.
+
+Pruebas demo nuevas: Breakout obtuvo OK con 8/8 modos; Dead Men Walking con 9/9;
+Das xBoot con 3/3. Catfish Hunters avanzó a 8/10 y conserva una variante yes/no
+pendiente; Das xBoot 2wei conservó un respin de torpedo pendiente en el giro normal.
+Las otras familias del registro no se convierten en OK por estos cambios.
+
+
+La comparación con dacf0eb usa las mismas 1141 capturas y clientes exactos:
+9526 pasos aceptados y 1894 rondas cerradas (antes 9505 y 1875); 39 fallos
+monetarios (antes 60); 3 acciones todavía sin contrato (antes 54). Ninguna captura
+pierde pasos aceptados ni rondas cerradas. Los tres pasos de acción pendientes
+son dos GAMBLE_FIFTY_FIFTY y un SUPER_FREESPIN_END; otros problemas de dinero o
+inicialización se cuentan por separado. Son resultados históricos, no cobertura
+de todas las ramas de todos los juegos. El resumen sin sesiones está en
+`nolimit-followup-validation-20261015.json`.
+
+Verificación final de esta tanda: 2471 pruebas y 264 subpruebas correctas, con
+tres advertencias. La revisión independiente agregó negativos para callbacks
+que modifican su propia lista o impiden llegar a la acción posterior.

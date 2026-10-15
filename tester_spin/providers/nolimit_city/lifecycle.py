@@ -54,12 +54,12 @@ def proves_zero_bet(body,block,*,entry="start"):
     def callback(value,depth):
         match=re.fullmatch(r'\(\)=>\{(.*)\}',value,re.S)
         if match:return effects(match[1],depth+1)
-        match=re.fullmatch(r'\(\)=>(.*)',value,re.S)
+        match=re.fullmatch(r'(?:\(\w*\)|\w+)=>(.*)',value,re.S)
         return bool(match and effects(match[1],depth+1))
 
     def effects(text,depth=0):
         if depth>3:return False
-        timelines=set();parts=expressions(text)
+        timelines=set();arrays={};parts=expressions(text)
         for part in parts:
             if re.match(r'^(if|else|for|while|switch|try|do)\b',part):return False
             direct=part.removeprefix('return ').strip()
@@ -74,7 +74,21 @@ def proves_zero_bet(body,block,*,entry="start"):
             invoked=re.fullmatch(r'this\.(\w+)\([^()]*\)',direct)
             if invoked and invoked[1] in available and invoked[1] not in ('start','getAnimation'):
                 if effects(available[invoked[1]][1],depth+1):return True
-            timeline=re.fullmatch(r'(?:const|let|var) (\w+)=(?:\w+\.gsap\.timeline\((.*)\)|new \w+\.TimelineLite(?:\((.*)\))?)',part,re.S)
+            array=re.fullmatch(r'(?:const|let|var) (\w+)=\[(.*)\]',part,re.S)
+            if array:
+                name=re.escape(array[1])
+                mutated=bool(re.search(r'\b'+name+r'\b',array[2]))
+                for other in parts:
+                    if other==part or not re.search(r'\b'+name+r'\b',other):continue
+                    use=re.fullmatch(r'\w+\.SimplePresentationRunner\.run\('+name+r',(.*)\)',other.removeprefix('return '),re.S)
+                    if not use:mutated=True;break
+                    for argument in expressions(use[1]):
+                        shadow=re.match(r'(?:'+name+r'|\('+name+r'\))=>',argument)
+                        if not shadow and re.search(r'\b'+name+r'\b',argument):mutated=True;break
+                    if mutated:break
+                if not mutated:arrays[array[1]]=expressions(array[2])
+                continue
+            timeline=re.fullmatch(r'(?:const|let|var) (\w+)=(?:\w+\.(?:gsap|default)\.timeline\((.*)\)|new \w+\.TimelineLite(?:\((.*)\))?)',part,re.S)
             if timeline:
                 config=timeline[2] if timeline[2] is not None else timeline[3] or ''
                 name=re.escape(timeline[1])
@@ -89,6 +103,16 @@ def proves_zero_bet(body,block,*,entry="start"):
             if runner:
                 args=expressions(runner[1])
                 if len(args)>=2 and callback(args[1],depth):return True
+                if args and args[0] in arrays:
+                    for item in arrays[args[0]]:
+                        local=re.fullmatch(r'new \w+\.LocalPresentation\((.*)\)',item,re.S)
+                        values=expressions(local[1]) if local else []
+                        if (len(values)==3 and values[1] in ('()=>!0','()=>true')
+                                and re.fullmatch(r'["\'][^"\']*["\']',values[2])
+                                and callback(values[0],depth)):return True
+                        if local:break # Earlier unknown LocalPresentation may never finish.
+
+
             # An earlier return, throw or branch that can exit invalidates later
             # root calls. Conditional UI work without exits does not grant action.
             if re.search(r'\b(return|throw|break|continue)\b',part):return False

@@ -124,3 +124,40 @@ def test_comma_constructor_binding_uses_the_last_value_class():
 def test_trailing_timeline_properties_cannot_hide_from_completion_validation(callback,property):
     source=bound('{start(t){this.controller=t;n.gsap.timeline({onComplete:'+callback+','+property+'})}complete(){n.Game.apiPlugin.betHandler.zeroBet(),this.controller.finish()}}')
     assert client_actions.automatic_command(source,{'game':{'nextMode':'UNSEEN_PHASE'}}) is None
+
+
+def local_runner_body(predicate='()=>!0',runner='list',mutation=''):
+    return ('{start(t){const list=[new a.Intro,new r.LocalPresentation(t=>this.next(t),'+predicate+',"next")];'
+        +mutation+'n.SimplePresentationRunner.run('+runner+',()=>t.finish())}'
+        +'next(t){const tl=u.default.timeline();this.show&&tl.to(this,{duration:.3}),tl.add(()=>{n.Game.apiPlugin.betHandler.zeroBet(),t.finish()})}}')
+
+def test_unconditionally_enabled_local_presentation_is_reached_by_its_runner():
+    assert client_actions.automatic_command(bound(local_runner_body()),{'game':{'nextMode':'UNSEEN_PHASE'}})=={'type':'zeroBet','bet':'0.00'}
+
+@pytest.mark.parametrize('body',[
+    local_runner_body(predicate='()=>this.allowed'),
+    local_runner_body(runner='other'),
+    local_runner_body(mutation='list=[];'),
+    local_runner_body(mutation='list.pop();'),
+    local_runner_body(mutation='list.length=0;'),
+    local_runner_body(mutation='list[0]=null;'),
+    local_runner_body(mutation='mutate(list);'),
+])
+def test_unreached_or_conditional_local_presentation_does_not_authorize_a_bet(body):
+    assert client_actions.automatic_command(bound(body),{'game':{'nextMode':'UNSEEN_PHASE'}}) is None
+
+
+def test_runner_skip_callback_parameter_can_shadow_the_presentation_list():
+    body=local_runner_body().replace('list','e').replace('()=>t.finish())','()=>t.finish(),e=>t.setSkipCallback(e))')
+    assert client_actions.automatic_command(bound(body),{'game':{'nextMode':'UNSEEN_PHASE'}})=={'type':'zeroBet','bet':'0.00'}
+    body=local_runner_body().replace('()=>t.finish())','()=>t.finish(),()=>mutate(list))')
+    assert client_actions.automatic_command(bound(body),{'game':{'nextMode':'UNSEEN_PHASE'}}) is None
+
+
+@pytest.mark.parametrize('first',[
+    'new r.LocalPresentation(t=>list.pop(),()=>true,"remove")',
+    'new r.LocalPresentation(t=>this.hang(t),()=>true,"unknown")',
+])
+def test_earlier_local_callback_cannot_remove_or_block_the_later_action(first):
+    body='{start(t){const list=['+first+',new r.LocalPresentation(t=>n.Game.apiPlugin.betHandler.zeroBet(),()=>true,"next")];n.SimplePresentationRunner.run(list,()=>t.finish())}}'
+    assert client_actions.automatic_command(bound(body),{'game':{'nextMode':'UNSEEN_PHASE'}}) is None

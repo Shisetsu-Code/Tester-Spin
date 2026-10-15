@@ -127,7 +127,7 @@ class NolimitSession:
         self.pending_choice=(domain,selected,key)
         save(directory/'choice-domain.json',{**domain,'selected':selected,'root_mode':root_id})
         return {'type':domain.get('request_type','zeroBet'),'bet':'0.00','playerInteraction':{
-            domain.get('request_field','selectedIndex'):selected if domain.get('request_field')=='gambleCollected' else str(selected)}}
+            domain.get('request_field','selectedIndex'):selected if domain.get('request_field')=='gambleCollected' or domain.get('wire_encoding')=='PRESERVE_LITERAL' else str(selected)}}
 
     def choice_command(self,answer,directory,root_id):
         # Compatibility entry point; both paths use the same operation planner.
@@ -377,9 +377,10 @@ class RoundLedger:
         self.before=_money(before);self.mode=mode;self.stake=_money(mode['stake'],positive=True)
         self.cost=(self.stake*_money(mode['price_multiplier'],positive=True)).quantize(Decimal('.01'),rounding=ROUND_HALF_UP)
         if self.cost>self.before:raise Unlearned('Nolimit City: saldo Demo insuficiente para la opción declarada')
-        self.win=Decimal(0);self.steps=0;self.after=self.before;self.closed=False;self.had_feature=False;self.previous=None;self.extra_played=False;self.extra_cost=Decimal(0)
+        self.win=Decimal(0);self.steps=0;self.after=self.before;self.closed=False;self.had_feature=False;self.previous=None;self.extra_played=False;self.extra_cost=Decimal(0);self.root_ack_basis=None;self.numeric_extra_played=False
     def accept(self,answer,request=None,*,operation=None):
         answer=normalized_response(answer,self.mode.get('declared_feature_options',()),self.mode.get('declared_feature_categories',()),self.mode.get('declared_purchase_options',()),declared_catalog=self.mode.get('declared_feature_catalog'),declared_game_modes=self.mode.get('declared_game_modes',()),allow_unresolved_state=isinstance(request,dict))
+        answer.pop('_funded_extra_spin',None);answer.pop('_verified_numeric_extra_context',None)
         game=answer.get('game')
         if not isinstance(game,dict):raise Unlearned('Nolimit City: falta estado de juego')
         if 'win' not in game and 'totalSpinWinnings' in game:
@@ -392,8 +393,6 @@ class RoundLedger:
                 raise Unlearned('Nolimit City: campo monetario sin primitiva: '+field)
         if self.steps==0:
             if _money(game.get('playedBetValue'))!=self.stake:raise ValueError('Nolimit City: apuesta base no coincide')
-            from .operation_fields import root_ack
-            root_ack(game,self.mode,request)
         delta=None
         previous=self.previous or {}
         from .operation_fields import collect_available
@@ -417,16 +416,41 @@ class RoundLedger:
                 delta=-price;self.extra_cost+=price;self.extra_played=True
             elif game.get('nextMode')!='NORMAL' or _money(game.get('win'))!=0:
                 raise ValueError('Nolimit City: rechazo extra spin sin liquidación')
+        if isinstance(operation,dict) and operation.get('family')=='QUOTED_NUMERIC_EXTRA':
+            from .contracts import observed_request_matches,confirm_operation
+            domain=operation['domain'];matches,selected=observed_request_matches(operation,request or {})
+            if (not matches or not (operation.get('evidence') or {}).get('client_sha256') or previous.get('nextMode')!='EXTRA_SPIN'
+                    or _money(previous.get('extraSpinCost'),positive=True)!=_money(domain['quoted_price'])
+                    or _money(domain['quoted_accumulated'])!=self.win):
+                raise Unlearned('Nolimit City: giro extra fuera de su cotización actual')
+            confirm_operation(operation,answer,selected)
+            from .extra_choices import confirm_numeric
+            delta=confirm_numeric(domain,selected,answer)
+            if delta<0:
+                self.extra_cost-=delta;self.numeric_extra_played=True
+                answer['_funded_extra_spin']={'target_phase':game['nextMode'],'price':domain['quoted_price']}
         if delta is None and Decimal(str(game.get('win')))<0:
             from .contracts import selection_adjustment
             delta=selection_adjustment(operation,request,answer,previous,self.win)
-        if game.get('wasExtraSpin',False) is not False and not (_extra_response(game) and self.extra_played):
+        if game.get('wasExtraSpin',False) is not False and not ((_extra_response(game) and self.extra_played) or self.numeric_extra_played):
             raise Unlearned('Nolimit City: extra spin sin contrato aprendido')
         self.steps+=1;self.win+=_money(game.get('win')) if delta is None else delta
         self.previous=dict(game)
         if self.win!=_money(game.get('accumulatedRoundWin')):raise ValueError('Nolimit City: premio acumulado incoherente')
         from .state import settled_state
         self.closed=settled_state(answer);self.had_feature|=game.get('nextMode')!='NORMAL'
+        observation=answer.get('feature_observation') or {}
+        if (not self.closed and self.win>0 and observation.get('kind')=='UNRESOLVED_PHASE'
+                and answer.get('balance') is not None):
+            # Some clients retain the feature label after its prize is paid.
+            # Only a declared/no-choice menu, normal counters and an actual
+            # wallet credit can establish that this is an annotation.
+            candidate={**answer,'features':{**answer['features'],'active':'','available':[]},
+                'feature_observation':{'kind':'PAID_SETTLEMENT_ANNOTATION',
+                    'active':answer['features'].get('active'),'source':'normal_state_and_reconciled_wallet_credit'}}
+            if (settled_state(candidate)
+                    and _money(answer['balance'])==self.before-self.cost+self.win):
+                answer=candidate;self.closed=True
         expected=self.before-self.cost+(self.win if self.closed else Decimal(0))
         if answer.get('balance') is not None:
             self.after=_money(answer['balance'])
@@ -435,10 +459,19 @@ class RoundLedger:
             if isinstance(balances,dict) and 'TOTAL_BALANCE' in balances and _money(balances['TOTAL_BALANCE'])!=self.after:
                 raise ValueError('Nolimit City: saldos del servidor contradictorios')
         elif self.steps==1 or self.closed:raise ValueError('Nolimit City: falta saldo al apostar o liquidar')
+        if self.steps==1:
+            from .operation_fields import root_ack
+            debit_confirmed=(isinstance(request,dict) and self.cost>self.stake
+                and answer.get('balance') is not None and self.after==expected)
+            root_ack(game,self.mode,request,debit_confirmed=debit_confirmed)
+            self.root_ack_basis=('DECLARED_PRICE_AND_DEBIT' if self.mode['kind']=='FEATURE_SPIN'
+                and game.get('wasBoostedBet') is None and game.get('featureBet') is not True
+                else 'SERVER_FLAG_OR_OPERATION_ACK')
+        if self.numeric_extra_played:answer['_verified_numeric_extra_context']=True
         self.last_answer=answer
         return self.closed
     def proof(self):return {'schema':MONETARY,'before':str(self.before),'cost':str(self.cost),'win':str(self.win),
-                           'after':str(self.after),'steps':self.steps,'closed':self.closed,'had_feature':self.had_feature,'extra_spin_cost':str(self.extra_cost)}
+                           'after':str(self.after),'steps':self.steps,'closed':self.closed,'had_feature':self.had_feature,'extra_spin_cost':str(self.extra_cost),'root_ack_basis':self.root_ack_basis}
 
 def continuation(answer,*,declared_options=(),declared_categories=(),declared_purchase_options=(),declared_catalog=None,declared_game_modes=(),raw_answer=None):
     raw_game=((raw_answer if raw_answer is not None else answer).get('game') or {})

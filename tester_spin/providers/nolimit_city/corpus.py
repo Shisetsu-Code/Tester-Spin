@@ -37,7 +37,7 @@ def audit_exchanges(exchanges,*,client_source=None):
         elif previous is not None:
             phase=(previous.get('game') or {}).get('nextMode')
             try:
-                contract=resolve_operation(previous,mode,client_source=client_source)
+                contract=resolve_operation(ledger.last_answer if ledger is not None and not round_failed and hasattr(ledger,'last_answer') else previous,mode,raw_answer=previous,client_source=client_source)
                 matches,selected=observed_request_matches(contract,request)
                 if not matches:raise ValueError('OBSERVED_REQUEST_OUTSIDE_CONTRACT')
                 confirm_operation(contract,answer,selected)
