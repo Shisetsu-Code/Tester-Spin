@@ -125,11 +125,11 @@ por el cliente; un -1 durante NORMAL no activa una elección.
 
 | Referencia | Familia observada | Resultado de la comprobación real |
 |---|---|---|
-| Infectious 5 xWays | Catálogo por categoría, elección y continuación de la modalidad elegida | OK; 4/4 modos, 74 pasos |
+| Infectious 5 xWays | Catálogo por categoría, elección y continuación de la modalidad elegida | OK; 4/4 modos, 79 pasos |
 | Loner | Compra que enruta a otra modalidad y continúa automáticamente | PARCIAL; 5/9 modos; pendiente FEATURE_TICK_TICK_BOOM |
-| Fire In The Hole | Avalancha estructural con premio cero y otro alias monetario | OK; 4/4 modos, 56 pasos |
+| Fire In The Hole | Avalancha estructural con premio cero y otro alias monetario | OK; 4/4 modos, 78 pasos |
 | Golden Shower | Avalancha automática y comprobación previa a oferta de giro extra | PARCIAL; 5/9 modos; pendiente decisión de pago EXTRA_SPIN |
-| Harlequin Carnival | Respins dentro de tiradas gratuitas | OK; 2/2 modos, 16 pasos |
+| Harlequin Carnival | Respins dentro de tiradas gratuitas | OK; 2/2 modos, 21 pasos |
 
 Son resultados de comprobaciones por muestra y repeticiones tras corregir las
 primitivas, no una nueva tanda de todo el catálogo. Los OK exigen las compras
@@ -143,7 +143,12 @@ y nolimit_client_action_bindings.json, dentro de tests/fixtures. No incluyen
 credenciales ni HAR completos. Las pruebas contrastan los estados reales,
 importes, enlaces de cliente y negativos de continuación y cierre.
 
-Verificacion final del cambio: 2383 pruebas y 264 subpruebas correctas, con
+Verificacion final del cambio: 2385 pruebas y 264 subpruebas correctas, con
 tres advertencias. La revision independiente produjo un negativo adicional:
 una condicion envolvente no reconocida en una animacion del cliente bloquea
 la continuacion; no se extrae una rama interna fuera de su ciclo demostrado.
+
+La repeticion final tambien encontro el respin del juego base durante un giro
+de retorno. Se incorporo la rama demostrada del mismo cliente, con prueba
+negativa de condiciones envolventes. El reconocedor final reproduce 16 estados
+reales de respin normal y gratuito; Harlequin volvio a obtener OK.

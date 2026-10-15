@@ -106,11 +106,22 @@ def automatic_command(source,answer):
     # to the same server modes. The event argument controls only the UI counter.
     idle=re.finditer(r'\b'+re.escape(mode)+r':\{idle:\[([^\]]{0,1600})\]',source)
     left=game.get('freespinsLeft',answer.get('remainingFreeSpins'))
-    if game.get('respinActive') is not True or type(left) is not int or left<=0:return None
+    if game.get('respinActive') is not True or type(left) is not int or left<0:return None
     for config in idle:
         for name in re.findall(r'new \w+\.(\w+)',config[1]):
             body=_exported_class(source,name)
             if not body:continue
+            # Both arms of the exact callback dispatch zeroBet. Match them
+            # contiguously so an unknown enclosing guard cannot be skipped.
+            base_branch=(r'\.add\(\[\(\)=>\{if\(\(this\._inRespinFS\|\|this\._intoRespinFS\)&&"FREESPIN"!==this\._data\.nextMode\)'
+                r'\w+\.EventHandler\.dispatchEvent\(new \w+\.GameEvent\(\w+\.BalanceEvent\.ZERO_BET,this\._freespinsLeft\)\);else\{'
+                r'let (\w+)=-1;if\(this\._wildOverlays\.forEach\(\((\w+),(\w+)\)=>\{\2&&\(\1=\3\)\}\),'
+                r'\1>1&&this\._inRespin\|\|this\._intoRespin\|\|"'+re.escape(mode)+r'"===this\._data\.nextMode\)\{'
+                r'let (\w+)=-1;this\._wildOverlays\.forEach\(\((\w+),(\w+)\)=>\{\5&&\(\4=\6\)\}\),'
+                r'\w+\.EventHandler\.dispatchEvent\(new \w+\.GameEvent\(\w+\.BalanceEvent\.ZERO_BET,--\4\)\)')
+            into=r'this\._intoRespin="NORMAL"===\w+\.mode&&"'+re.escape(mode)+r'"===\w+\.nextMode'
+            if re.search(into,body) and re.search(base_branch,body) and game.get('mode') in ('NORMAL',mode):return result
+            if left==0:continue
             guards=(r'this\._intoRespinFS="FREESPIN"===\w+\.mode&&"'+re.escape(mode)+r'"===\w+\.nextMode',
                     r'this\._inRespinFS="'+re.escape(mode)+r'"===\w+\.mode',
                     r'if\(\(this\._inRespinFS\|\|this\._intoRespinFS\)&&"FREESPIN"!==this\._data\.nextMode\)\w+\.EventHandler\.dispatchEvent\(new \w+\.GameEvent\(\w+\.BalanceEvent\.ZERO_BET,this\._freespinsLeft\)\)')

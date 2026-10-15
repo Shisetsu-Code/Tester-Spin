@@ -92,3 +92,10 @@ def test_unknown_enclosing_condition_does_not_authorize_legacy_else_branch():
     source=source.replace('setZeroBetSpinCounter(i)}),t}', 'setZeroBetSpinCounter(i)}}),t}')
     assert automatic_command(source,case['answer']) is None
 
+
+
+def test_unknown_enclosing_guard_blocks_normal_respin_dispatch():
+    case=next(case for case in json.loads((Path(__file__).parent/'fixtures/nolimit_client_action_bindings.json').read_text()) if case['reference']=='base-respin')
+    source=case['source'].replace('else{let e=-1;if(this._wildOverlays','else{if(this.allowed){let e=-1;if(this._wildOverlays')
+    source=source.replace('setRespinSignAnimation(this._isRestore&&e<=0?-1:--e)}','setRespinSignAnimation(this._isRestore&&e<=0?-1:--e)}}')
+    assert automatic_command(source,case['answer']) is None
