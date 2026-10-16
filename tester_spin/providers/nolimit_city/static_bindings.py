@@ -177,7 +177,7 @@ def inactive_guard(body,game,source=None,position=None,block=None):
     return bool(values) and False in values
 
 
-def proves_bound_action(source,position,reference,answer,block,depth=0):
+def proves_bound_action(source,position,reference,answer,block,depth=0,*,direct_demo_transport=False):
     from .lifecycle import proves_zero_bet
     if depth>3:return False
     available=inherited_methods(source,position,reference,block)
@@ -196,7 +196,7 @@ def proves_bound_action(source,position,reference,answer,block,depth=0):
     flattened='{'+''.join(name+'('+args+'){'+body+'}' for name,(args,body,offset) in available.items())+'}' 
     if proves_zero_bet(flattened,block):return True
     from .async_lifecycle import proves_async_zero_bet
-    if proves_async_zero_bet(source,position,reference,answer,block):return True
+    if proves_async_zero_bet(source,position,reference,answer,block,direct_demo_transport=direct_demo_transport):return True
     # This exact inherited start creates and plays this.tl, then invokes the
     # active buildTimeline override. No phase or class name grants permission.
     start=available.get('start');build=available.get('buildTimeline')
@@ -224,5 +224,5 @@ def proves_bound_action(source,position,reference,answer,block,depth=0):
         if not child:return False
         condition=child.get('shouldRun')
         if condition and inactive_guard(condition[1],answer.get('game') or {},source,condition[2],block):continue
-        return proves_bound_action(source,constructor[2],match[1],answer,block,depth+1)
+        return proves_bound_action(source,constructor[2],match[1],answer,block,depth+1,direct_demo_transport=direct_demo_transport)
     return False

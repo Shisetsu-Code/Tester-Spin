@@ -34,3 +34,14 @@ def test_selector_rejects_mixed_incomplete_or_unrelated_domains(source):
 def test_selector_never_ignores_a_different_payload_expression(payload):
     source=SOURCE+'other(){g.zeroBet({playerSelectedExtraSpin:'+payload+'})}'
     assert numeric_domain(source,OFFER) is None
+
+
+@pytest.mark.parametrize('expression',["i?\"yes\":\"no\"","i?(j?\"yes\":\"no\"):\"no\""])
+def test_replay_ternary_with_the_same_literal_values_does_not_create_a_mixed_domain(expression):
+    source=SOURCE+'replay(){g.zeroBet({playerSelectedExtraSpin:'+expression+'})}'
+    assert numeric_domain(source,OFFER)['options']==['no','yes']
+
+@pytest.mark.parametrize('expression',["i?\"yes\":\"other\"","i?1:\"no\"","i?getChoice():\"no\""])
+def test_ternary_cannot_hide_an_unsupported_value_or_wire_type(expression):
+    source=SOURCE+'replay(){g.zeroBet({playerSelectedExtraSpin:'+expression+'})}'
+    assert numeric_domain(source,OFFER) is None

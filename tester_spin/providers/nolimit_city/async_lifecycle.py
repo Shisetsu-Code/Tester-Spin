@@ -248,7 +248,7 @@ def _declarations(text):
     return ';'.join(output)
 
 
-def proves_async_zero_bet(source,position,reference,answer,block,*,action_spins_active=None):
+def proves_async_zero_bet(source,position,reference,answer,block,*,action_spins_active=None,direct_demo_transport=False):
     """Prove one bound async start; optional context must come from the caller."""
     game=answer.get('game') if isinstance(answer,dict) else None
     if not isinstance(game,dict) or not all(isinstance(game.get(field),str) for field in ('mode','nextMode')):return False
@@ -277,6 +277,11 @@ def proves_async_zero_bet(source,position,reference,answer,block,*,action_spins_
             residual=re.sub(r'(?<![\w$.])'+re.escape(name)+r'\.'+IDENT,'__read',residual)
             if re.search(r'(?<![\w$.])'+re.escape(name)+r'(?![\w$])',residual):return False
             aliases[name]=alias[2]
+    if action_spins_active is None and direct_demo_transport is True:
+        from .action_spins_context import proves_action_spins_inactive
+        owners={value.rsplit('.model',1)[0] for value in model_refs}|set(aliases.values())
+        if len(owners)==1 and proves_action_spins_inactive(source,offset,next(iter(owners)),block,direct_demo_transport=True):
+            action_spins_active=False
     normalized=[]
     for part in expressions(_declarations(body)):
         guard=re.match(r'('+IDENT+r'\.'+IDENT+r'\.model\.isRestore|'+IDENT+r'\.isRestoreState)(?=&&|\?)',part)

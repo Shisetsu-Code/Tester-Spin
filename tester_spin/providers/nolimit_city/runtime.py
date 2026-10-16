@@ -26,6 +26,7 @@ def sanitized(data):
 class NolimitSession:
     def __init__(self):
         self.direct_demo_transport=False
+        self.automatic_actions={}
         self.socket=None;self.rows=[];self.capture=None;self.remembered={};self.counter=0;self.uuid=uuid.uuid4().hex;self.choice_domains={};self.pending_choice=None;self.choice_client=None;self.pending_automatic=None;self.pending_contract=None;self.extra_round=None;self.pending_repeat_reason=None
     def open(self,game,http,timeout,stop,directory):
         self.direct_demo_transport=False
@@ -118,7 +119,7 @@ class NolimitSession:
         self.pending_contract=contract
         save(directory/f'operation-{self.counter:04d}.json',contract)
         if contract['domain'] is None:
-            self.pending_automatic=contract['state']
+            self.pending_automatic=(root_id,contract['state'])
             save(directory/'automatic-action.json',{'schema':'nolimit-client-bound-zero-bet/v1',
                 'state':contract['state'],'request':contract['request'],**contract['evidence']})
             return contract['request']
@@ -154,6 +155,9 @@ class NolimitSession:
         from .contracts import confirm_operation
         selected=self.pending_choice[1] if self.pending_choice is not None else None
         confirm_operation(self.pending_contract,answer,selected)
+        if self.pending_automatic is not None and (self.pending_contract.get('evidence') or {}).get('client_sha256'):
+            encoded=json.dumps(self.pending_contract,sort_keys=True)
+            self.automatic_actions[(self.pending_automatic[0],encoded)]=json.loads(encoded)
         if self.pending_choice is not None:
             domain,selected,key=self.pending_choice
             covered=self.choice_domains[key]['covered']
@@ -183,6 +187,7 @@ class NolimitSession:
             if reason is not None:probe.update(status='COMPLETE',terminal_reason=reason)
         self.extra_round=None
     def sync_choices(self,mode):
+        mode['automatic_actions']=[json.loads(json.dumps(contract)) for (root_id,_),contract in self.automatic_actions.items() if root_id==mode['id']]
         mode['choice_domains']=[{k:v for k,v in domain.items() if k not in ('available','before')}
             for (root_id,state),domain in self.choice_domains.items() if root_id==mode['id']]
         from tester_spin.providers.repeat_purchase import repeat_complete

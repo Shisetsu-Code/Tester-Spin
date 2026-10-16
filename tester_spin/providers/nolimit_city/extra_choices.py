@@ -9,11 +9,27 @@ from .operation_fields import step_win
 from tester_spin.providers.repeat_purchase import funded_domain
 
 
+def _selector_values(expression,depth=0):
+    from .lifecycle import conditional_arms,_paren_end
+    if depth>4:return None
+    expression=expression.strip()
+    while expression.startswith('(') and _paren_end(expression,0)==len(expression)-1:
+        expression=expression[1:-1].strip()
+    if re.fullmatch(r"(?:0|1|\"(?:0|1|yes|no)\"|'(?:0|1|yes|no)')",expression):return [expression]
+    arms=conditional_arms(expression)
+    if arms is None:return None
+    left=_selector_values(arms[0],depth+1);right=_selector_values(arms[1],depth+1)
+    return left+right if left is not None and right is not None else None
+
+
 def numeric_domain(source,game,*,direct_demo_transport=False):
     if game.get('nextMode')!='EXTRA_SPIN':return None
     pattern=r'zeroBet\(\{playerSelectedExtraSpin:([^{}]{1,40})\}\)'
     literals=re.findall(pattern,source)
     if not literals or len(literals)!=len(re.findall(r'zeroBet\(\{playerSelectedExtraSpin:',source)):return None
+    branches=[_selector_values(value) for value in literals]
+    if any(value is None for value in branches):return None
+    literals=[literal for values in branches for literal in values]
     if all(value in ('0','1') for value in literals) and set(literals)=={'0','1'}:options=[0,1]
     elif all(re.fullmatch(r"[\"'](?:0|1)[\"']",value) for value in literals) and {value[1:-1] for value in literals}=={'0','1'}:options=['0','1']
     elif all(re.fullmatch(r"[\"'](?:yes|no)[\"']",value) for value in literals) and {value[1:-1] for value in literals}=={'no','yes'}:options=['no','yes']

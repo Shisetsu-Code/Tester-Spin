@@ -92,7 +92,7 @@ def automatic_command(source,answer,*,direct_demo_transport=False):
     for match in re.finditer(direct,source):
         from .static_bindings import proves_bound_action
         owner=re.search(r'new ([\w$]+\.[\w$]+)',match[0])
-        if owner and proves_bound_action(source,match.start(),owner[1],answer,_block):return result
+        if owner and proves_bound_action(source,match.start(),owner[1],answer,_block,**({'direct_demo_transport':True} if direct_demo_transport is True else {})):return result
         body=_exported_class(source,match[1])
         if body:
             from .lifecycle import proves_zero_bet
@@ -107,7 +107,7 @@ def automatic_command(source,answer,*,direct_demo_transport=False):
         if re.search(r'\b'+re.escape(match[1])+r'\s*=',prefix[assignment.end():]):continue
         from .static_bindings import proves_bound_action
         owner=re.search(r'new ([\w$]+\.[\w$]+)',assignment[0])
-        if owner and proves_bound_action(source,match.start(),owner[1],answer,_block):return result
+        if owner and proves_bound_action(source,match.start(),owner[1],answer,_block,**({'direct_demo_transport':True} if direct_demo_transport is True else {})):return result
         body=_exported_class(source,assignment[1] or assignment[2])
         if not body:continue
         from .lifecycle import proves_zero_bet
@@ -123,6 +123,9 @@ def automatic_command(source,answer,*,direct_demo_transport=False):
             branch=re.search(r'^\{getAnimation\((\w+)\)\{const \w+=new \w+\.TimelineLite,\w+=\1\.nextMode===\w+\.\w+\.[A-Z_]+\|\|\w+\.\w+\.[A-Z_]+\?\1\.freespinsLeft-1:-1;return \w+\.add\(\(\)=>\{if\(\1\.nextMode===\w+\.\w+\.([A-Z_]+)\)\{const (\w+)=\{selectedIndex:[\w.]+\};\w+\.\w+\.api\.betHandler\.zeroBet\(\3\)\}else \w+\.\w+\.api\.betHandler\.zeroBet\(\);',body)
             left=game.get('freespinsLeft',answer.get('remainingFreeSpins'))
             if branch and mode!=branch[2] and type(left) is int and left>0:return result
+    from .fixed_signals import fixed_signal_command
+    fixed=fixed_signal_command(source,answer,_block)
+    if fixed is not None:return fixed
     if not _event_bridge(source):return None
     # Older registered controllers: exact trigger expression, no win threshold.
     for match in re.finditer(r'class (\w+) extends \w+\.(ZeroBetController|FreespinZeroBetController)\{',source):
