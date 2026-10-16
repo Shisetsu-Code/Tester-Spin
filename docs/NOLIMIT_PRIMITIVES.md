@@ -1,5 +1,9 @@
 # Nolimit City: primitivas compartidas
 
+Estado vigente (2026-10-16): **95 OK, 44 PARCIAL y 1 ERROR de 140 juegos**.
+La verificación más reciente figura al final; las secciones anteriores conservan
+la evidencia y el alcance de sus respectivas versiones.
+
 El objetivo es aprender operaciones del proveedor, no excepciones por juego.
 La detección de una opción no depende de poder ejecutar todas sus fases.
 
@@ -301,3 +305,91 @@ Verificación: 2622 pruebas y 264 subpruebas correctas, tres advertencias previa
 71 pruebas correctas de Aislador. La revisión independiente contrastó negativos
 de campos anidados, mutaciones y destino cotizado contradictorio. El resumen
 sin sesiones está en `nolimit-aislador-validation-20261015.json`.
+
+
+## Cobertura por familias y verificación del 16 de octubre de 2026
+
+Se partió de 82 OK, 57 PARCIAL y un ERROR. Se ejecutaron los 58 pendientes con
+una versión fija y después dos subconjuntos afectados de once y cuatro juegos,
+cada uno con su propia versión fija. El resultado combinado es **95 OK,
+44 PARCIAL y un ERROR**: trece OK adicionales, sin degradar ninguno de los
+82 anteriores. No constituye otra ejecución remota de los 140 juegos.
+
+Aislador extrajo 1988 eventos y 790 patrones de las 58 capturas pendientes,
+sin eventos opacos. El extractor sigue siendo una herramienta offline; el
+programa no necesita instalarlo ni reenvía sesiones capturadas.
+
+Las ampliaciones son primitivas del proveedor, sin condiciones por nombre:
+
+- Los enlaces webpack resuelven módulo, alias, herencia y presentación activa,
+  incluidos wrappers y listas de presentaciones. Los métodos sustituidos,
+  llamadas inalcanzables y enlaces ambiguos no autorizan peticiones.
+- El contador mostrado puede proceder directamente del modelo o de su parser
+  `onGame`. Se sigue el propietario real y se conserva el hash del cliente.
+  Un número finito, integral y seguro como `0.0` se normaliza a entero sólo con
+  esa prueba; no se convierten cadenas, fracciones, booleanos ni valores ausentes.
+  El total exterior puede contar otros tipos de giro: se valida separadamente.
+  La regla anterior de coincidencia exterior queda como alternativa para alias
+  sin prueba del cliente, no como requisito de todos los dialectos.
+- Se reconoce el prefijo síncrono del `__awaiter` canónico cuando la entrega
+  GAME al modelo demuestra que restore ya quedó desactivado. Los yields
+  desconocidos no se omiten. Local Replay y Action Spins sólo pueden excluirse
+  con sesión demo nueva verificada por el transporte y el contrato específico
+  del cliente que limita su activación a la interfaz. Un flag del HAR no concede
+  ese contexto. Serial completó la prueba; Tanked 3 avanzó pero sigue parcial.
+- Las cotizaciones conservan el campo y tipo literal del cliente:
+  `playExtraSpin` yes/no y `playerSelectedExtraSpin` numérico, cadena numérica o
+  yes/no. Los ternarios de replay se admiten sólo si ambos brazos pertenecen al
+  mismo dominio finito; expresiones desconocidas o tipos mezclados no se ignoran.
+- El recibo del extra distingue flags reales de valores agregados por la
+  normalización antigua. Un `false` explícito sigue siendo contradictorio.
+  Además de retornos vinculados al cliente, se conserva el contrato compartido
+  de un único FREESPIN con ambos contadores explícitos en uno y sin decisión
+  pendiente. El destino cotizado explícitamente por el servidor tiene prioridad.
+  Precio, descuento del paso y acumulado deben conciliar antes de continuar.
+- Una lista booleana de casillas no elegidas conserva su dominio y comprueba
+  que sólo cambió la seleccionada. Otra familia confirma una elección mediante
+  un booleano anidado y el destino fijado por el cliente. Reconocer esa elección
+  no certifica automáticamente las fases posteriores: Misery Mining sigue parcial.
+- Un botón que siempre envía una señal fija no se convierte en varias elecciones.
+  Se vinculan fase, presentación, vista efectiva, botón alcanzable, callback
+  constante y constructor de petición del SDK. Home of the Brave envía
+  `zeroBet`, apuesta cero y `selectedIndex: "1"`; completó una sesión nueva.
+- Una compra sin `wasFeatureBuy` puede confirmarse con `featureBet=true`, selector
+  de compra de la inicialización actual, petición exacta y débito superior a la
+  apuesta base conciliado con el saldo. Un flag explícito false/null no se reemplaza.
+  La detección comercial sigue procediendo de init, nunca del precio aislado.
+- Un subconjunto del catálogo de compras conocido sólo puede reconocerse como
+  observación terminal: NORMAL/NORMAL, contadores cero, sin decisión activa,
+  sin premio pendiente y con saldo liquidado. No autoriza ninguna acción y no
+  convierte etiquetas desconocidas en compras ni en cierre.
+
+Las acciones automáticas confirmadas se conservan por raíz en `automatic_actions`,
+incluyendo petición exacta, hash del cliente, acuse de fase y contexto requerido.
+Se exportan con sus parámetros; no incrementan compras, antebets ni dominios
+ficticios de elección. El libro monetario y el retorno normal siguen siendo
+obligatorios. Las cachés de análisis retienen sólo dos clientes inmutables.
+
+### Evidencia y límites actuales
+
+La suite final pasó **2949 pruebas y 264 subpruebas**, con tres advertencias previas;
+se incluyeron las comprobaciones opcionales con clientes públicos locales.
+La comparación de las mismas 1141 capturas con 48be2c3, con fuente exacta en 1136,
+revisó 9565 pasos: 9534 a 9543 pasos monetarios aceptados, 1901 a 1935 cierres y
+31 a 22 fallos monetarios. Ninguna captura perdió pasos aceptados ni cierres.
+La comparación usa el estado completo del juego como clave de caché, no sólo
+su fase. Esta evidencia histórica no concede OK remoto.
+
+Los 95 contratos OK se reconstruyeron con los resultados originales y se
+validaron con el esquema actual; se actualizaron 93 exportaciones obsoletas.
+No se modificaron los resultados para hacerlos pasar. El resumen público,
+las versiones de las tandas y los trece OK nuevos están en
+[nolimit-bulk-validation-20261016.json](nolimit-bulk-validation-20261016.json).
+
+Quedan 31 acciones sin contrato suficiente, tres acuses de compra pendientes,
+una cobertura de elecciones incompleta, dos discrepancias de saldo, un contrato
+monetario y siete casos de otros contratos. Son grupos del último resultado de
+cada juego, no una clasificación de todas las fases aún no recorridas. Las
+listas de presentaciones con intros y callbacks, los bridges de eventos y
+las elecciones particulares siguen requiriendo aprendizaje compartido. El ERROR
+actual de Kiss My Chainsaw conserva la discrepancia de saldo; no se fuerza OK.

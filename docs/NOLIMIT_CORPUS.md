@@ -1,5 +1,9 @@
 # Nolimit City: contratos comunes y auditoría del corpus
 
+Estado vigente (2026-10-16): **95 OK, 44 PARCIAL y 1 ERROR de 140 juegos**.
+La verificación más reciente figura al final; las secciones anteriores conservan
+la evidencia y el alcance de sus respectivas versiones.
+
 El ejecutor y el analizador de HAR usan el mismo contrato de estado, acción,
 acuse y dinero. Las capturas documentan operaciones observadas; los dominios
 ejecutables provienen de la declaración del servidor y del cliente de la sesión.
@@ -268,3 +272,25 @@ muestra de once sesiones nuevas están documentadas en
 [NOLIMIT_PRIMITIVES.md](NOLIMIT_PRIMITIVES.md#familias-extraídas-con-aislador-2026-10-15).
 El libro monetario conserva prioridad para los premios de paso ya contrastados;
 un total del panel no sustituye automáticamente esa interpretación.
+
+
+## Comparación y ejecuciones del 16 de octubre de 2026
+
+La tanda de los 58 pendientes y dos repeticiones por familias (once y cuatro)
+dejaron el catálogo en **95 OK, 44 PARCIAL y un ERROR**, frente a 82/57/1.
+Los OK anteriores se conservaron. Catfish, las variantes Duck Hunters,
+Disturbed, Gator Hunters 2, Jingle Balls, Walk of Shame, Home of the Brave y
+Serial forman parte de los nuevos OK; la lista completa está en el resumen.
+
+Las mismas 1141 capturas congeladas no muestran regresiones monetarias o de
+cierre con las primitivas finales. El análisis offline no cambia estados OK.
+Las capturas siguen privadas y las nuevas fixtures son reducidas o sintéticas;
+los tests de fuentes públicas usan un caché opcional, sin publicar los bundles.
+
+La interpretación vigente de contadores, extras, señales fijas, contexto demo
+verificado y exportación de acciones está en
+[NOLIMIT_PRIMITIVES.md](NOLIMIT_PRIMITIVES.md#cobertura-por-familias-y-verificación-del-16-de-octubre-de-2026).
+El resumen verificable está en
+[nolimit-bulk-validation-20261016.json](nolimit-bulk-validation-20261016.json).
+Los ejemplos y límites fechados anteriormente documentan sus versiones; no
+sustituyen las condiciones actuales ni certifican juegos pendientes.
