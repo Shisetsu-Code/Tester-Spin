@@ -38,4 +38,6 @@ Suite completa de publicación: `3239 passed, 3 warnings, 276 subtests passed in
 
 Los contratos listos se reconstruyen y validan contra sus resultados originales, con respaldo local y sin generar nuevas pruebas. KA mantiene su ejecutor, pero todavía no implementa el contrato Farm estable; no se inventa esa exportación. Capturas, bundles públicos descargados, sesiones y SQLite quedan fuera del repositorio.
 
-Corrida nueva de BGaming al corte: **11/33**, estado **RUNNING**, resultados: PARCIAL 8, OK 1, ERROR 2. No se atribuye validación a los juegos aún no intentados.
+Corrida nueva de BGaming al corte: **13/33**, estado **RUNNING**, resultados: PARCIAL 9, OK 1, ERROR 3. No se atribuye validación a los juegos aún no intentados.
+
+CI de GitHub pasó después de añadir pantalla virtual para las pruebas de interfaz. El paquete wheel se construyó y contiene los recursos nuevos de KA, Hacksaw y Red Tiger. La instalación gestionada del escritorio se contrastó byte a byte con los 25 archivos de ejecución modificados.
