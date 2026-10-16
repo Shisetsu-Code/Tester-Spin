@@ -45,6 +45,7 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
         'selection_primitives':{'playerSelectedExtraSpin':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playerSelectedExtraSpin':'{choice:current_client_literal_type}'}},
             'selectedIndex':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
             'playExtraSpin':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
+            'extraSpin':{'type':'zeroBet','bet':'0.00','playerInteraction':{'extraSpin':'{choice:yes|no}'}},
             'gambleCollected':{'type':'gambleBet','bet':'0.00','playerInteraction':{'gambleCollected':True}}},
         'bound_literal_button_selection':{'source':'CLIENT_BOUND_LITERAL_BUTTONS','binding':'current_phase_runner_view_constructor_literal_buttons_same_argument_sdk_forward','ack':'requested_phase_then_client_declared_target_and_finite_nonnegative_result_path','money':'ROUND_LEDGER','category':'nested_choice_not_commercial_purchase'},
         'bound_settlement_selection':{'source':'CLIENT_BOUND_SETTLEMENT_BUTTONS','binding':'current_phase_idle_panel_buttons_callbacks_literal_ids_zero_stake_sdk','availability':'current_root_selector_client_model_predicate','ack':'requested_phase_NORMAL_no_pending_counters_wallet_required','money':'ROUND_LEDGER','category':'nested_choice_not_commercial_purchase'},
