@@ -86,3 +86,44 @@ El ejecutor de Playtech sigue pendiente: no se habilita una corrida ni se marca
 OK por haber leído una configuración. Los contratos sin acción verificada, las
 elecciones no recorridas y NGM/POP conservan ese límite. El fuzzer actual de
 Pragmatic/3 Oaks no se utiliza como si fuese un explorador de Playtech.
+
+## Opciones desconocidas con selección humana
+
+En Detalle, **Opciones del juego** lee la pestaña activa de HardFire y muestra
+controles visibles habilitados. Filtra únicamente etiquetas habituales exactas;
+**Mostrar también controles habituales** permite recuperarlas. La lista no
+interpreta un botón como compra ni cuenta características del juego.
+
+Elegí una opción y pulsá **Ejecutar y capturar**: se envía un solo click y se
+guarda el HAR. Las referencias vencidas no se reintentan. Para controles dibujados
+en canvas, **Ver pantalla** permite marcar vos el punto y confirmar ese único
+click. La imagen no pretende reconocer automáticamente todos los botones.
+Si falla el guardado, **Guardar HAR pendiente** reintenta el archivo sin repetir
+la acción. Si la grabación empezó tarde, el HAR puede carecer de inicialización.
+
+Aislador filtra el archivo en segundo plano cuando está configurado. No hay
+fuzzer, exploración automática, cambios de primitivas automáticos ni falsos OK.
+
+## Capturar nuevos fallos automáticamente
+
+Con `data/har-learning.json` configurado, cada ERROR/PARCIAL guardado inicia o
+despierta el trabajador de Aislador. La interfaz y las pruebas no esperan a que
+termine. El cursor evita descargar el historial: cada resultado nuevo tiene una
+captura independiente, y el reinicio recupera los pendientes. Los informes están
+en `data/har-learning/revision.json`, listos para revisión y nuevas primitivas.
+
+```json
+{
+  "enabled": true,
+  "aislador_root": "C:/Herramientas/Aislador",
+  "python": "C:/Python/python.exe",
+  "after_id": 100,
+  "seconds": 12
+}
+```
+
+El intérprete configurado necesita Playwright y Chromium para las capturas.
+`after_id` es el último resultado anterior a activar la función; las consultas no
+modifican la base. Configuración local, HAR y logs no se publican. La captura
+pasiva obtiene inicialización y tráfico espontáneo; no pulsa menús ni reproduce
+la rama que falló. Esa rama se puede capturar con la selección humana anterior.

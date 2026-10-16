@@ -57,14 +57,15 @@ class HardFireClient:
             time.sleep(.15)
         raise HardFireError('HardFire no terminó de iniciar en 30 segundos.')
 
-    def _rpc(self,name,arguments):
+    def _rpc(self,name,arguments,*,raw=False,timeout=30):
         self.counter+=1
         response=self.session.post(self.endpoint,headers={'Accept':'application/json, text/event-stream'},
-            json={'jsonrpc':'2.0','id':self.counter,'method':'tools/call','params':{'name':name,'arguments':arguments}},timeout=30)
+            json={'jsonrpc':'2.0','id':self.counter,'method':'tools/call','params':{'name':name,'arguments':arguments}},timeout=timeout)
         response.raise_for_status();message=response.json()
         result=message.get('result') if isinstance(message,dict) else None
         if not isinstance(result,dict) or message.get('id')!=self.counter or message.get('error') or result.get('isError'):
-            raise HardFireError('HardFire no pudo completar la apertura. Revisá que esté actualizado.')
+            raise HardFireError('HardFire no pudo completar la acción. Revisá la conexión y el estado de la pestaña.')
+        if raw:return result
         for block in result.get('content',[]):
             if block.get('type')=='text':
                 try:return json.loads(block['text'])

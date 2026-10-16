@@ -16,6 +16,9 @@ class Storage:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._lock = threading.RLock()
         self._initialize()
+        if (self.path.parent/"har-learning.json").is_file():
+            from tester_spin.har_learning import kick_worker
+            kick_worker(self.path)
 
     @contextmanager
     def _connect(self) -> Iterator[sqlite3.Connection]:
@@ -448,6 +451,10 @@ class Storage:
                     result.slug,
                 ),
             )
+
+        if result.status in ("ERROR", "PARCIAL"):
+            from tester_spin.har_learning import kick_worker
+            kick_worker(self.path)
 
     @staticmethod
     def _row_to_game(row: sqlite3.Row) -> Game:

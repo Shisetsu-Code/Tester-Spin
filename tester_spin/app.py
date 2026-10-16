@@ -238,6 +238,7 @@ class TesterSpinApp(tk.Tk):
         ttk.Button(detail_actions, text="Abrir juego", command=self._open_selected_url).pack(side="left")
         self.hardfire_btn = ttk.Button(detail_actions, text="Abrir en HardFire", command=self._open_selected_hardfire)
         self.hardfire_btn.pack(side="left", padx=(8, 0))
+        ttk.Button(detail_actions, text="Opciones del juego", command=self._open_manual_controls).pack(side="left", padx=(8, 0))
         ttk.Button(detail_actions, text="Abrir carpeta", command=self._open_selected_folder).pack(side="left", padx=(8, 0))
         ttk.Button(detail_actions, text="Probar este juego", command=self._test_selected).pack(side="left", padx=(8, 0))
 
@@ -535,6 +536,12 @@ class TesterSpinApp(tk.Tk):
             except Exception as exc:
                 self._events.put(('hardfire_error',str(exc)))
         threading.Thread(target=launch,daemon=True,name='open-hardfire').start()
+
+    def _open_manual_controls(self):
+        existing=getattr(self,"_manual_controls_dialog",None)
+        if existing is not None and existing.winfo_exists():existing.lift();return
+        from tester_spin.manual_controls_ui import ManualControlsDialog
+        self._manual_controls_dialog=ManualControlsDialog(self,self.data_root)
 
     def _finish_hardfire_open(self,kind,value):
         self._hardfire_opening=False
