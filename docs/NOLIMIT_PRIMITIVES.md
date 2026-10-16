@@ -1,6 +1,6 @@
 # Nolimit City: primitivas compartidas
 
-Estado vigente (2026-10-16): **95 OK, 44 PARCIAL y 1 ERROR de 140 juegos**.
+Estado vigente (2026-10-16): **109 OK, 31 PARCIAL y 0 ERROR de 140 juegos**.
 La verificación más reciente figura al final; las secciones anteriores conservan
 la evidencia y el alcance de sus respectivas versiones.
 
@@ -393,3 +393,60 @@ cada juego, no una clasificación de todas las fases aún no recorridas. Las
 listas de presentaciones con intros y callbacks, los bridges de eventos y
 las elecciones particulares siguen requiriendo aprendizaje compartido. El ERROR
 actual de Kiss My Chainsaw conserva la discrepancia de saldo; no se fuerza OK.
+
+
+## Continuaciones, pantallas y recibos compartidos (segunda ampliación, 2026-10-16)
+
+- `event_actions.py` sigue la configuración del singleton consumido por el juego,
+  la animación activa, el evento `ZERO_BET`, su dispatcher y el puente del SDK.
+  El contador del evento llega al teclado; no se envía como parámetro de apuesta.
+  El contexto de sesión Demo nueva es obligatorio para excluir Action Spins.
+- `presentation_progression.py` recorre listas de presentaciones del constructor.
+  Una introducción sólo se atraviesa si se demuestra su callback sin argumentos,
+  el botón que lo registra y la finalización local, sin operación del servidor.
+  Timelines detenidos, callbacks desconocidos y elecciones variables bloquean.
+- `literal_button_choices.py` reconoce botones con identificadores finitos y
+  demuestra que el mismo argumento llega al SDK. Algunas respuestas confirman
+  la fase y un resultado consumido por el cliente, sin devolver el índice elegido.
+  Ese recibo conserva `result_path` y `target_phase`; el premio nunca se usa
+  como índice. El ledger sigue comprobando importe y cierre independientemente.
+- El lector monetario acepta subconjuntos ordenados de argumentos del parser,
+  con la respuesta como primer argumento y enlace posicional al getter.
+  Reordenamientos, datos ajenos, duplicados y reasignaciones no son válidos.
+- El catálogo terminal puede quedar visible después de una fase de bonus.
+  Se exige la operación solicitada, su acuse de entrada, retorno a NORMAL,
+  ausencia de decisiones, contadores cero y saldo exacto. Los nombres deben
+  pertenecer al catálogo de compras declarado por la sesión. Una etiqueta activa
+  sólo se conserva como recibo si coincide con la compra actual, su acuse
+  explícito y la liquidación; otra compra activa sigue sin resolverse.
+- Los giros extra conservan el campo de petición declarado (`playExtraSpin`
+  o `extraSpin`). Un dominio ambiguo o incompleto no se transforma en otro.
+  La prueba de retorno usa el origen confirmado `EXTRA_SPIN`, necesario para
+  evaluar guardas del cliente; no elimina el control del descuento cotizado.
+
+Estos reconocedores interpretan la estructura de la versión actual del cliente.
+No ejecutan el JavaScript descargado ni contienen listas de juegos autorizados.
+
+
+El contador mostrado también puede proceder de un getter puro del modelo, incluido
+el nullish compilado que usa cero cuando no hay valor. El analizador sólo usa el
+campo real presente en la respuesta: ese cero por defecto no autoriza a inventar
+un contador ausente. Se mantienen los rechazos de fracciones, booleanos, números
+no finitos, valores inseguros y contradicciones con otros contadores.
+
+
+## Validación final de esta ampliación (2026-10-16)
+
+Se recorrieron los 45 pendientes de la versión publicada, después los 42 restantes
+y finalmente cinco regresiones con el ejecutor congelado. El catálogo quedó en
+**109 OK, 31 PARCIAL y cero ERROR**, frente a 95/44/1 al iniciar esta ampliación.
+Los 95 OK anteriores se conservaron; no se volvieron a ejecutar en vivo en esta ronda.
+
+Se verificaron 3066 pruebas y 264 subpruebas, más 11 pruebas de exportación después
+de completar el campo alternativo del giro extra. Los 109 contratos se regeneraron
+y validaron. La comparación de 1141 capturas históricas contra la versión publicada
+no perdió pasos monetarios aceptados ni rondas cerradas. Sus cifras y los bloqueos
+restantes están en `nolimit-bulk-validation-20261016.json`.
+
+Los 31 parciales conservan su motivo; reconocer una familia no concede cobertura
+a sus compras, elecciones o liquidaciones que todavía no estén contrastadas.

@@ -1,6 +1,6 @@
 # Nolimit City: contratos comunes y auditoría del corpus
 
-Estado vigente (2026-10-16): **95 OK, 44 PARCIAL y 1 ERROR de 140 juegos**.
+Estado vigente (2026-10-16): **109 OK, 31 PARCIAL y 0 ERROR de 140 juegos**.
 La verificación más reciente figura al final; las secciones anteriores conservan
 la evidencia y el alcance de sus respectivas versiones.
 
@@ -294,3 +294,20 @@ El resumen verificable está en
 [nolimit-bulk-validation-20261016.json](nolimit-bulk-validation-20261016.json).
 Los ejemplos y límites fechados anteriormente documentan sus versiones; no
 sustituyen las condiciones actuales ni certifican juegos pendientes.
+
+
+## Validación final de esta ampliación (2026-10-16)
+
+Se recorrieron los 45 pendientes de la versión publicada, después los 42 restantes
+y finalmente cinco regresiones con el ejecutor congelado. El catálogo quedó en
+**109 OK, 31 PARCIAL y cero ERROR**, frente a 95/44/1 al iniciar esta ampliación.
+Los 95 OK anteriores se conservaron; no se volvieron a ejecutar en vivo en esta ronda.
+
+Se verificaron 3066 pruebas y 264 subpruebas, más 11 pruebas de exportación después
+de completar el campo alternativo del giro extra. Los 109 contratos se regeneraron
+y validaron. La comparación de 1141 capturas históricas contra la versión publicada
+no perdió pasos monetarios aceptados ni rondas cerradas. Sus cifras y los bloqueos
+restantes están en `nolimit-bulk-validation-20261016.json`.
+
+Los 31 parciales conservan su motivo; reconocer una familia no concede cobertura
+a sus compras, elecciones o liquidaciones que todavía no estén contrastadas.
