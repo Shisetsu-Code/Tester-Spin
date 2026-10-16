@@ -66,6 +66,17 @@ class CatalogProvider(ProviderAdapter):
   result=GameTestResult(self.key,game.slug,game.name,game.url,spins,0,spins,'PARCIAL',symbol=game.symbol)
   result.error='Catálogo disponible; falta aprender y verificar el protocolo de ejecución del proveedor.'
   result.feature_domains={key:{'declaration_state':'UNKNOWN','options':[]} for key in ('purchase','antebet')}
+  if self.key=='playtech':
+   evidence=self.har_artifact_dir(game)/'protocol-evidence.json'
+   if evidence.is_file():
+    from tester_spin.providers.playtech.protocol import inspect_evidence
+    try:
+     learned=inspect_evidence(json.loads(evidence.read_text(encoding='utf-8')),game.symbol)
+     result.structural_map['playtech_protocol']=learned
+     result.feature_domains=learned['feature_domains']
+     result.error=f"GPAS: {len(learned['costs'])} declaraciones de coste recuperadas; falta verificar ejecución y cobertura de ramas en sesión nueva."
+    except (ValueError,TypeError,OSError) as exc:
+     result.error='Evidencia Playtech no válida para este juego: '+str(exc)
   progress(result.error);return result
 
 for key,spec in SOURCES.items():

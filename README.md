@@ -67,3 +67,22 @@ python -m pytest tests -q
 Las pruebas usan fixtures reducidos. Las capturas HAR completas, sesiones, datos locales y ejecutables generados no se publican en Git.
 
 Hay **24 proveedores registrados**: los 11 ejecutores existentes y 13 catálogos nuevos con ejecución pendiente. Los dos accesos del escritorio utilizan una única versión actualizable. [Catálogos, cobertura y actualización compartida](docs/SHARED_CATALOGS.md).
+
+## Observaciones de Playtech desde Aislador
+
+Aislador puede tomar muestras del catálogo pendiente, capturar demos frescas y
+entregar `protocol-evidence.json` en `data/providers/playtech/<slug>/analysis`.
+La identidad debe coincidir con el código publicado del juego y su conexión de
+inicialización. No se reutilizan sesiones ni se importan estados OK.
+
+Las primitivas `tester_spin.providers.playtech.protocol` leen los costes
+declarados por ámbito, retienen opciones y elecciones anidadas, y contrastan
+el cierre de ronda con sus importes. Los ámbitos `default` y `freespin` y las
+listas de tamaños de apuesta no se convierten en compras ni antebets. Las
+declaraciones repetidas se agrupan conservando todas sus referencias.
+
+El adaptador incorpora ese diagnóstico cuando encuentra evidencia compatible.
+El ejecutor de Playtech sigue pendiente: no se habilita una corrida ni se marca
+OK por haber leído una configuración. Los contratos sin acción verificada, las
+elecciones no recorridas y NGM/POP conservan ese límite. El fuzzer actual de
+Pragmatic/3 Oaks no se utiliza como si fuese un explorador de Playtech.
