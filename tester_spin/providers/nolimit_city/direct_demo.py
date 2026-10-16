@@ -4,6 +4,7 @@ The caller must independently attest a fresh direct demo transport. Wire fields
 never supply this context, and ordinary imported captures remain conservative.
 """
 import re
+from functools import lru_cache
 from .static_bindings import class_record,IDENT
 
 
@@ -70,6 +71,7 @@ def local_playback_contract(source,position,receiver,block):
     return True
 
 
+@lru_cache(maxsize=2)
 def direct_demo_source(source,block):
     """Select ELSE only for the verified developer local-playback condition."""
     from .lifecycle import conditional_arms

@@ -58,3 +58,37 @@ def test_literal_counter_contract_snapshot_handles_independent_outer_total():
 @pytest.mark.parametrize('read', ['this.data["isExtraSpin"]',"this.data['wasExtraSpin']",'({isExtraSpin})=>isExtraSpin'])
 def test_indirect_flag_access_cannot_enable_flagless_dialect(read):
     with pytest.raises(Unlearned):literal_domain(LITERAL+BIND+'read(){return '+read+'}',OFFER)
+
+
+@pytest.mark.parametrize('flagless',[False,True])
+def test_single_free_spin_receipt_remains_valid_alongside_other_client_bound_returns(flagless):
+    source=LITERAL+BIND
+    offer={**OFFER,'mode':'UNSEEN_AVALANCHE'}
+    if not flagless:offer['isExtraSpin']=False
+    domain=literal_domain(source,offer)
+    answer=copy.deepcopy(ACK);answer['game'].update(nextMode='FREESPIN',freespinsLeft=1);answer['remainingFreeSpins']=1
+    if not flagless:answer['game']['isExtraSpin']=True
+    assert confirm_literal(domain,'yes',answer)==-3
+
+
+def test_single_free_spin_receipt_does_not_override_an_explicit_server_target():
+    domain=literal_domain(LITERAL+BIND,{**OFFER,'nextModeForExtraSpin':'UNSEEN_AVALANCHE'})
+    answer=copy.deepcopy(ACK);answer['game'].update(nextMode='FREESPIN',freespinsLeft=1)
+    with pytest.raises(ValueError):confirm_literal(domain,'yes',answer)
+
+
+@pytest.mark.parametrize('outer',[None,0,2,'1',True])
+def test_native_single_extra_requires_explicit_single_outer_counter(outer):
+    domain=literal_domain(LITERAL+BIND,OFFER)
+    answer=copy.deepcopy(ACK);answer['game'].update(nextMode='FREESPIN',freespinsLeft=1)
+    if outer is not None:answer['remainingFreeSpins']=outer
+    with pytest.raises(ValueError):confirm_literal(domain,'yes',answer)
+
+@pytest.mark.parametrize('extra',[{'features':{'available':['CHOOSE_ME']}},{'features':{'active':'UNKNOWN_PICK'}},{'screens':[1]},{'game':{'pickAndClick':[1]}}])
+def test_native_single_extra_cannot_bypass_a_pending_decision(extra):
+    domain=literal_domain(LITERAL+BIND,OFFER)
+    answer=copy.deepcopy(ACK);answer['game'].update(nextMode='FREESPIN',freespinsLeft=1);answer['remainingFreeSpins']=1
+    for key,value in extra.items():
+        if key=='game':answer['game'].update(value)
+        else:answer[key]=value
+    with pytest.raises(ValueError):confirm_literal(domain,'yes',answer)

@@ -1,4 +1,4 @@
-"""Client-declared numeric offers funded only by the pending round prize."""
+"""Client-declared literal offers funded only by the pending round prize."""
 import hashlib,re
 from functools import lru_cache
 from decimal import Decimal
@@ -11,12 +11,12 @@ from tester_spin.providers.repeat_purchase import funded_domain
 
 def numeric_domain(source,game,*,direct_demo_transport=False):
     if game.get('nextMode')!='EXTRA_SPIN':return None
-    pattern=r'zeroBet\(\{playerSelectedExtraSpin:(0|1|"0"|"1"|\'0\'|\'1\')\}\)'
+    pattern=r'zeroBet\(\{playerSelectedExtraSpin:([^{}]{1,40})\}\)'
     literals=re.findall(pattern,source)
-    numbers={int(v) for v in literals if len(v)==1}
-    strings={v[1:-1] for v in literals if len(v)==3}
-    if numbers=={0,1} and not strings:options=[0,1]
-    elif strings=={'0','1'} and not numbers:options=['0','1']
+    if not literals or len(literals)!=len(re.findall(r'zeroBet\(\{playerSelectedExtraSpin:',source)):return None
+    if all(value in ('0','1') for value in literals) and set(literals)=={'0','1'}:options=[0,1]
+    elif all(re.fullmatch(r"[\"'](?:0|1)[\"']",value) for value in literals) and {value[1:-1] for value in literals}=={'0','1'}:options=['0','1']
+    elif all(re.fullmatch(r"[\"'](?:yes|no)[\"']",value) for value in literals) and {value[1:-1] for value in literals}=={'no','yes'}:options=['no','yes']
     else:return None
     price=_money(game.get('extraSpinCost'),positive=True)
     accumulated=_money(game.get('accumulatedRoundWin'))
@@ -107,7 +107,8 @@ def literal_domain(source,game,*,direct_demo_transport=False):
         'ack_field':'quoted_literal_transition','source':'CLIENT_QUOTED_LITERAL_EXTRA',
         'price_source':'game.extraSpinCost','quoted_price':str(price),'quoted_accumulated':str(accumulated),
         'target_phase':target,'history_extra':game.get('isExtraSpin'),'flag_contract':'NONE' if flagless else 'BOOLEAN',
-        'quoted_target_phase':game.get('nextModeForExtraSpin')}
+        'quoted_target_phase':game.get('nextModeForExtraSpin'),
+        'native_return_contract':'nolimit-city/single-extra-freespin/v1'}
     counter=counter_contract(source)
     if counter is not None:domain['remaining_counter_contract']=counter
     if bound_returns:
@@ -133,9 +134,18 @@ def confirm_literal(domain,selected,answer):
         if quoted_target is not None and game.get('nextMode')!=quoted_target:
             raise Unlearned('Nolimit City: retorno distinto del destino cotizado')
         allowed=domain.get('allowed_return_states')
-        if allowed:
-            target_ok=({'phase':game.get('nextMode'),'freespins_left':game.get('freespinsLeft')} in allowed
-                and bool(domain.get('return_binding_sha256')))
+        native=(domain.get('native_return_contract')=='nolimit-city/single-extra-freespin/v1'
+            and game.get('nextMode')=='FREESPIN' and type(game.get('freespinsLeft')) is int
+            and game['freespinsLeft']==1 and type(answer.get('remainingFreeSpins')) is int
+            and answer['remainingFreeSpins']==1
+            and isinstance(answer.get('features',{}),dict)
+            and answer.get('features',{}).get('available') in (None,[])
+            and answer.get('features',{}).get('active') in (None,'','FREESPIN')
+            and not any(container.get(field) not in (None,False,[],{})
+                for container in (answer,game) for field in ('screens','pickAndClick','gambleOptions')))
+        if allowed or native:
+            target_ok=(native or ({'phase':game.get('nextMode'),'freespins_left':game.get('freespinsLeft')} in allowed
+                and bool(domain.get('return_binding_sha256'))))
             try:accumulated_ok=_money(game.get('accumulatedRoundWin'))==_money(domain['quoted_accumulated'])-price
             except ValueError:accumulated_ok=False
         else:

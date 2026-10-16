@@ -1,7 +1,15 @@
 """Resolve bounded CommonJS webpack bindings without executing client code."""
 import re
+from functools import lru_cache
 
 IDENT = r"[A-Za-z_$][\w$]*"
+
+
+@lru_cache(maxsize=2)
+def _module_headers(source):
+    # Immutable source indexes may be reused across hundreds of free spins.
+    # Retain only the current and previous client, not a catalog of bundles.
+    return tuple(re.finditer(r"(?:^|[,{])([0-9]+(?:e[0-9]{1,3})?)(?::function|:)?\(("+IDENT+r"),("+IDENT+r")(?:,("+IDENT+r"))?\)(?:=>)?\{",source))
 
 
 def module_id(value):
@@ -11,7 +19,7 @@ def module_id(value):
 
 def bound_class(source, position, reference, block):
     """Resolve an imported class only inside the containing webpack module."""
-    headers=list(re.finditer(r"(?:^|[,{])([0-9]+(?:e[0-9]{1,3})?)(?::function|:)?\(("+IDENT+r"),("+IDENT+r")(?:,("+IDENT+r"))?\)(?:=>)?\{",source))
+    headers=_module_headers(source)
     owners=[m for m in headers if m.end()<=position]
     if not owners:return None
     owner=owners[-1]; body=block(source,owner.end()-1,len(source))
@@ -58,7 +66,7 @@ def proves_wrapped_flow(source,position,wrapper,items,block):
 
 def class_record(source,position,reference,block):
     """Return class body, parent reference and its lexical definition offset."""
-    headers=list(re.finditer(r"(?:^|[,{])([0-9]+(?:e[0-9]{1,3})?)(?::function|:)?\(("+IDENT+r"),("+IDENT+r")(?:,("+IDENT+r"))?\)(?:=>)?\{",source))
+    headers=_module_headers(source)
     owners=[m for m in headers if m.end()<=position]
     if not owners:return None
     owner=owners[-1];content=block(source,owner.end()-1,len(source))
@@ -131,7 +139,7 @@ def enum_literal(source,position,reference,block,depth=0):
     prefix=source[max(0,record[2]-150):record[2]]
     named=re.search(r'class ('+IDENT+r')(?: extends '+IDENT+r'\.'+IDENT+r')?$',prefix)
     if not named:return None
-    headers=list(re.finditer(r'(?:^|[,{])([0-9]+(?:e[0-9]{1,3})?)(?::function|:)?\('+IDENT+r','+IDENT+r'(?:,'+IDENT+r')?\)(?:=>)?\{',source))
+    headers=_module_headers(source)
     enclosing=[m for m in headers if m.end()<=record[2]]
     if not enclosing:return None
     content=block(source,enclosing[-1].end()-1,len(source))
@@ -187,6 +195,8 @@ def proves_bound_action(source,position,reference,answer,block,depth=0):
     available=normalized
     flattened='{'+''.join(name+'('+args+'){'+body+'}' for name,(args,body,offset) in available.items())+'}' 
     if proves_zero_bet(flattened,block):return True
+    from .async_lifecycle import proves_async_zero_bet
+    if proves_async_zero_bet(source,position,reference,answer,block):return True
     # This exact inherited start creates and plays this.tl, then invokes the
     # active buildTimeline override. No phase or class name grants permission.
     start=available.get('start');build=available.get('buildTimeline')

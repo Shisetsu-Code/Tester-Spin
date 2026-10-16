@@ -50,7 +50,12 @@ def root_ack(game,mode,request,*,debit_confirmed=False):
                 raise ValueError('Nolimit City: petición raíz sin selector declarado')
     if purchase is not None and type(purchase) is not bool:raise ValueError('Nolimit City: acuse de compra inválido')
     if kind=='PURCHASE':
-        if purchase is not True:raise ValueError('Nolimit City: compra no confirmada')
+        declared_debit_ack=('wasFeatureBuy' not in game and game.get('featureBet') is True
+            and debit_confirmed and isinstance(request,dict) and mode.get('server_declared') is True
+            and isinstance(mode.get('selector'),str) and bool(mode['selector'])
+            and mode['selector'] in mode.get('declared_feature_options',())
+            and mode['selector'] in mode.get('declared_purchase_options',()))
+        if purchase is not True and not declared_debit_ack:raise ValueError('Nolimit City: compra no confirmada')
     elif kind=='FEATURE_SPIN':
         feature_ack=game.get('featureBet') is True and purchase is False
         debit_ack=(debit_confirmed and mode.get('server_declared') is True

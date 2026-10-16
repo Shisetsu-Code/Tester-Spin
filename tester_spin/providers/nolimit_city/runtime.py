@@ -514,9 +514,16 @@ class RoundLedger:
                     or _money(previous.get('extraSpinCost'),positive=True)!=_money(domain['quoted_price'])
                     or _money(domain['quoted_accumulated'])!=self.win):
                 raise Unlearned('Nolimit City: giro extra fuera de su cotización actual')
-            confirm_operation(operation,answer,selected)
+            # A legacy normalizer may supply a default false flag. Receipts
+            # must distinguish that derived default from an explicit wire ACK.
+            receipt_answer=answer
+            if not any(key in raw_game for key in ('isExtraSpin','wasExtraSpin')):
+                receipt_game=dict(game)
+                receipt_game.pop('isExtraSpin',None);receipt_game.pop('wasExtraSpin',None)
+                receipt_answer={**answer,'game':receipt_game}
+            confirm_operation(operation,receipt_answer,selected)
             from .extra_choices import confirm_numeric,confirm_literal
-            delta=(confirm_literal if operation['family']=='QUOTED_LITERAL_EXTRA' else confirm_numeric)(domain,selected,answer)
+            delta=(confirm_literal if operation['family']=='QUOTED_LITERAL_EXTRA' else confirm_numeric)(domain,selected,receipt_answer)
             if delta<0:
                 self.extra_cost-=delta;self.numeric_extra_played=True
                 answer['_funded_extra_spin']={'target_phase':game['nextMode'],'price':domain['quoted_price'],'regular_left':game['freespinsLeft'],
@@ -561,7 +568,9 @@ class RoundLedger:
             debit_confirmed=(isinstance(request,dict) and self.cost>self.stake
                 and answer.get('balance') is not None and self.after==expected)
             root_ack(game,self.mode,request,debit_confirmed=debit_confirmed)
-            self.root_ack_basis=('DECLARED_PRICE_AND_DEBIT' if self.mode['kind']=='FEATURE_SPIN'
+            self.root_ack_basis=('DECLARED_PURCHASE_AND_DEBIT' if self.mode['kind']=='PURCHASE'
+                and 'wasFeatureBuy' not in game and game.get('featureBet') is True
+                else 'DECLARED_PRICE_AND_DEBIT' if self.mode['kind']=='FEATURE_SPIN'
                 and game.get('wasBoostedBet') is None and game.get('featureBet') is not True
                 else 'SERVER_FLAG_OR_OPERATION_ACK')
         if self.numeric_extra_played:answer['_verified_numeric_extra_context']=True

@@ -25,7 +25,8 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
         'selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
         'extra_spin_selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
         'literal_extra_spin_monetary_contract':{'field':'playExtraSpin','domain':'client_declared_yes_no','price':'current_offer.extraSpinCost','funding':'pending_round_prize','accept':'exact_negative_quote_accumulated_debit_client_bound_return_counter_boolean_or_client_flagless_dialect','reject':'zero_delta_NORMAL_wallet_settlement_history_flag_may_persist_only_after_prior_extra','funded_continuation':'one_zeroBet_after_verified_debit','repeat':'redeclare_quote_each_offer'},
-        'client_remaining_counter':{'source':'same_client_owner_keypad_direct_model_counter_with_sha256','values':'finite_nonnegative_safe_integral_number','outer_total':'independent_nonnegative_integer','conflict':'canonical_counter_must_agree'},
+        'native_paid_extra_return':{'schema':'nolimit-city/single-extra-freespin/v1','phase':'FREESPIN','counters':'regular_one_and_explicit_total_one','menu':'no_pending_decisions','receipt':'current_quote_exact_negative_step_and_accumulated_debit','priority':'explicit_server_target_remains_authoritative'},
+        'client_remaining_counter':{'source':'same_client_owner_keypad_direct_or_parsed_model_counter_with_sha256','values':'finite_nonnegative_safe_integral_number','outer_total':'independent_nonnegative_integer','conflict':'canonical_counter_must_agree'},
         'settled_catalog_subset':{'scope':'terminal_observation_only','domain':'current_init_declared_purchase_subset','proof':'NORMAL_NORMAL_no_active_decision_zero_counters_and_reconciled_wallet','unknown_labels':'remain_unresolved'},
         'numeric_extra_spin_monetary_contract':{'field':'playerSelectedExtraSpin','wire_type':'current_client_literal','funding':'pending_round_prize','price':'previous.game.extraSpinCost','accept':'exact_negative_quote_and_wasExtraSpin_true_and_quoted_target','reject':'zero_delta_and_wasExtraSpin_false_and_NORMAL','funded_continuation':'one_zeroBet_after_verified_debit','settlement':'round_ledger_required'},
         'extra_spin_monetary_contract':{'price':'previous.game.extraSpinCost','funding':'accumulatedRoundWin',
@@ -61,7 +62,7 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
             'explicit_step_aliases':['win','thisSpinWinning','thisSpinWinnings','thisAvalancheWinnings'],
             'total_only':'requires_current_request_total_matches_step_delta_or_accumulated_round_win_no_implicit_discount',
             'normal_root':'current_normalBet_exact_stake_and_no_extra_parameters_explicit_modifiers_not_true_cost_and_settlement_verified',
-            'purchase_root':'wasFeatureBuy_true_and_exact_declared_selector',
+            'purchase_root':'wasFeatureBuy_true_or_missing_flag_with_featureBet_true_current_declared_purchase_selector_and_reconciled_surcharge_debit',
             'terminal':'NORMAL_one_explicit_zero_remaining_counter_all_present_counters_zero_no_pendingWin_no_unknown_menu',
             'remaining_counters':['remainingFreeSpins','game.freespinsLeft','game.respinsLeft','game.secondStageFsLeft'],
             'collect_primitive':{'type':'gambleBet','bet':'0.00','playerInteraction':{'gambleCollected':True}},
@@ -166,7 +167,9 @@ class NolimitCityProvider(ProviderAdapter):
                         save(directory/f'{step:03d}.response.json',sanitized(answer))
                         attempt.wire_steps=step
                         previous_extra_cost=ledger.extra_cost
-                        if 'win' not in (answer.get('game') or {}):
+                        raw_game=answer.get('game') or {}
+                        if ('win' not in raw_game or any(type(raw_game.get(field)) is float
+                                for field in ('freespinsLeft','freespinsRemaining'))):
                             load_client=getattr(session,'_load_choice_client',None)
                             if load_client:load_client()
                         done=ledger.accept(answer,request=content,operation=getattr(session,'pending_contract',None),client_source=getattr(session,'choice_client',None))
@@ -297,6 +300,9 @@ class NolimitCityProvider(ProviderAdapter):
             if static.get('shared_observation_contract')!=SPEC.protocol_static['shared_observation_contract']:
                 errors.append('NOLIMIT_SHARED_OBSERVATION_CONTRACT_REQUIRED')
         domains=[domain for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])]
+        if any(domain.get('native_return_contract') for domain in domains):
+            if static.get('native_paid_extra_return')!=SPEC.protocol_static['native_paid_extra_return']:
+                errors.append('NOLIMIT_NATIVE_EXTRA_RETURN_REQUIRED')
         if any(domain.get('source')=='CLIENT_BOUND_SETTLEMENT_BUTTONS' for domain in domains):
             if static.get('bound_settlement_selection')!=SPEC.protocol_static['bound_settlement_selection']:
                 errors.append('NOLIMIT_BOUND_SETTLEMENT_SELECTION_REQUIRED')

@@ -21,3 +21,30 @@ def test_verified_flagless_purchase_funds_exactly_its_followup_without_invented_
            'balance':'10008.80','features':{'available':[]}}
     assert ledger.accept(final,request=followup['request'],operation=followup)
     assert 'isExtraSpin' not in ledger.last_answer['game']
+
+
+def test_flagless_receipt_uses_wire_flags_not_legacy_normalizer_defaults():
+    import copy
+    root=copy.deepcopy(ROOT);ack=copy.deepcopy(ACK)
+    for answer in (root,ack):
+        answer['game'].update(boostedBet=False,wasFeatureBuy=False,playedBetValue='.20',freespinsPlayed=1)
+    ledger=RoundLedger('10000',MODE)
+    assert not ledger.accept(root,request={'type':'normalBet','bet':'.20'})
+    operation=resolve_operation(ledger.last_answer,MODE,raw_answer=root,client_source=LITERAL+BIND)
+    request={'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'yes'}}
+    assert not ledger.accept(ack,request=request,operation=operation)
+    followup=resolve_operation(ledger.last_answer,MODE,raw_answer=ack,client_source=LITERAL+BIND)
+    assert followup['family']=='FUNDED_EXTRA_CONTINUATION'
+
+
+def test_explicit_wire_false_is_not_discarded_with_legacy_defaults():
+    import copy
+    root=copy.deepcopy(ROOT);ack=copy.deepcopy(ACK)
+    for answer in (root,ack):
+        answer['game'].update(boostedBet=False,wasFeatureBuy=False,playedBetValue='.20',freespinsPlayed=1)
+    ack['game']['wasExtraSpin']=False
+    ledger=RoundLedger('10000',MODE)
+    assert not ledger.accept(root,request={'type':'normalBet','bet':'.20'})
+    operation=resolve_operation(ledger.last_answer,MODE,raw_answer=root,client_source=LITERAL+BIND)
+    with pytest.raises(ValueError):
+        ledger.accept(ack,request={'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'yes'}},operation=operation)
