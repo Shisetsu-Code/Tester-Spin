@@ -56,7 +56,7 @@ class CatalogProvider(ProviderAdapter):
    try:metadata=json.loads(path.read_text(encoding='utf-8'))
    except (OSError,ValueError):metadata={}
    metadata.update(provider=self.key,slug=game.slug,name=game.name,symbol=game.symbol,public_url=game.url,catalog_source=source,
-     studio=r.get('studio',''),category=r.get('category',''),demo_availability=r.get('demo_availability','unknown'),catalog_aliases=r.get('catalog_aliases',[]),catalog_coverage=saved.get('coverage','public_listing'),execution_supported=False,catalog_updated_at=utc_now_iso())
+     studio=r.get('studio',''),category=r.get('category',''),demo_availability=r.get('demo_availability','unknown'),catalog_aliases=r.get('catalog_aliases',[]),catalog_coverage=saved.get('coverage','public_listing'),execution_supported=self.execution_supported,catalog_updated_at=utc_now_iso())
    path.write_text(json.dumps(metadata,ensure_ascii=False,indent=2),encoding='utf-8')
    found.append(game)
    if on_game:on_game(game)

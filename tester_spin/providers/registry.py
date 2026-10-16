@@ -17,6 +17,7 @@ PROVIDERS={
 
 from tester_spin.catalog_sources import SOURCES
 PROVIDERS.update({key:('catalogs.adapter',spec['class'],spec['name']) for key,spec in SOURCES.items()})
+PROVIDERS['playtech']=('playtech.adapter','PlaytechProvider','Playtech')
 
 def provider_class(key):
  if key not in PROVIDERS:raise ValueError('Proveedor no registrado: '+str(key))

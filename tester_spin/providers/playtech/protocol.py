@@ -122,6 +122,9 @@ def round_evidence(message,balance_before=None,balance_after=None):
     terminal=message.get("gameRoundClosed") is True and data.get("nextRound")=="BET_END_STATE_IDENTIFIER"
     return {"settlement_verified":bool(arithmetic and terminal),"terminal_observed":terminal,
             "continuation":{k:deepcopy(data[k]) for k in ("nextRound","requestParameters","currentTitleState","currentCycleState","currentSharedState") if k in data},
+            # Captured GPAS round serializer declares these independently of money.
+            # Preserve observations only: no price-derived identity or action binding.
+            "stake_selection":{k:deepcopy(data[k]) for k in ("stakeCostUuid","stakeCostName","stakeCostParameters","baseCostMultiplier") if k in data},
             "stake":stake,"win":win,"decisions":decision_evidence(data),"certifies_game_ok":False}
 
 

@@ -76,10 +76,10 @@ class PlaytechPrimitiveTests(unittest.TestCase):
         self.assertTrue(any(row.get("ref")=="ws:2" for row in r["evidence_issues"]))
 
     def test_catalog_adapter_consumes_matching_evidence_without_fake_ok(self):
-        from tester_spin.providers.registry import create_provider
+        from tester_spin.providers.catalogs.adapter import PlaytechProvider
         report={"schema":"aislador/playtech-evidence/v1","provider":"playtech","game_codes":["gpas_fixture"],"configurations":[{"ref":"ws:1","game_code":"gpas_fixture","data":configuration()}],"rounds":[],"coverage":"observations_only","certifies_game_ok":False}
         with tempfile.TemporaryDirectory() as td:
-            provider=create_provider("playtech",Path(td))
+            provider=PlaytechProvider(Path(td))
             game=Game("playtech","fixture","Fixture","https://www.playtechone.com/fixture",symbol="gpas_fixture")
             folder=provider.har_artifact_dir(game);(folder/"protocol-evidence.json").write_text(json.dumps(report))
             result=provider.test_game(game,spins=1,timeout_s=10,stop_event=threading.Event(),progress=lambda _:None)

@@ -10,7 +10,7 @@ def test_shared_registry_has_all_requested_catalogs(tmp_path):
  for key in KEYS:
   provider=create_provider(key,tmp_path)
   assert provider.key==key
-  assert provider.execution_supported is False
+  assert provider.execution_supported is (key=='playtech')
 
 def test_catalog_only_never_invents_buy_counts_or_ok(tmp_path):
  from tester_spin.providers.registry import create_provider
