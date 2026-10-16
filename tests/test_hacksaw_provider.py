@@ -92,7 +92,7 @@ def test_offline_catalog_does_not_authorize_deletions(tmp_path):
         def get(self,*a,**kw):raise OSError('offline')
     p.http=with_money(HTTP())
     games=p.crawl_catalog(stop_event=threading.Event(),progress=lambda _:None)
-    assert len(games)==186 and len({g.symbol for g in games})==186
+    assert len(games)==187 and len({g.symbol for g in games})==187
     assert not p.catalog_crawl_authoritative
 
 

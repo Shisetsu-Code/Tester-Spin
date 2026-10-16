@@ -1,7 +1,7 @@
 # Hacksaw: validación de catálogo y ejecución
 
-El catálogo público oficial /games/slots contiene 186 juegos y coincide con las
-186 filas locales. Se añadieron Wicked Grin y Le Vampire y se actualizó el snapshot
+La actualización del 16 de octubre incorporó The Jade Path Hold & Win: hay
+187 juegos cargados, 186 OK y uno nuevo pendiente. Se añadieron Wicked Grin y Le Vampire y se actualizó el snapshot
 distribuido. Esta coincidencia no autoriza borrar registros ni certifica otras
 categorías del sitio.
 

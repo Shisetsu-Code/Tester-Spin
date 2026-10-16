@@ -16,7 +16,7 @@ El ejecutable generado por `scripts/build-desktop.ps1` contiene una versión com
 
 Las descargas del ejecutable completo se publican en [GitHub Releases](https://github.com/Shisetsu-Code/Tester-Spin/releases). Las capturas originales y los datos de sesión permanecen locales.
 
-El catálogo oficial cargado de Hacksaw tiene **186 juegos, actualmente 186 OK**. La revisión del 16 de octubre recuperó los tres parciales restantes mediante primitivas compartidas del cliente; los otros 183 OK conservan su evidencia previa. Cada OK contrasta precios, débitos, premios acumulados, liquidación y dos rondas normales posteriores con IDs distintos. [Evidencia y límites](docs/HACKSAW.md).
+El catálogo cargado de Hacksaw tiene **187 juegos: 186 OK y uno nuevo pendiente**. La revisión del 16 de octubre recuperó los tres parciales restantes mediante primitivas compartidas del cliente; los otros 183 OK conservan su evidencia previa. Cada OK contrasta precios, débitos, premios acumulados, liquidación y dos rondas normales posteriores con IDs distintos. [Evidencia y límites](docs/HACKSAW.md).
 
 Yggdrasil queda pausado en **137 OK, 8 parciales y 14 errores de 159 juegos**; no se presenta como catálogo terminado. [Primitivas y pendientes](docs/YGGDRASIL.md).
 
@@ -36,6 +36,8 @@ Cada proveedor también puede ejecutarse por separado desde la PC o el workflow 
 Una bandera del servidor no basta para contar una compra ni convertirla automáticamente en una obligación pendiente. Existencia, capacidad de ejecución y validación son estados separados. [Reglas y ejemplos](docs/FEATURE_DETECTION.md).
 
 ## Documentación vigente
+
+- [Catálogos actualizados y OK por proveedor: 16/10/2026](docs/CATALOG_REFRESH_20261016.md)
 
 - [Reparación compartida y resultados por proveedor: 16/10/2026](docs/PROVIDER_REPAIRS_20261016.md)
 
