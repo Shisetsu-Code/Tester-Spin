@@ -36,10 +36,10 @@ def bootstrap_game(
     cached_profile=None,
     artifact_dir: Path | None = None,
 ):
-    """Use the official client envelope only when static init is rejected.
+    """Use the official client envelope when static math discovery cannot initialize.
 
-    Static bundle discovery remains the normal/fast path. If the gameserver
-    explicitly rejects ``action=init``, Chromium opens the already-resolved final
+    Static bundle discovery remains the normal/fast path. If math discovery fails
+    or the gameserver rejects ``action=init``, Chromium opens the resolved final
     launcher and observes only v_protocol/v_math/device_type from the official
     client's first init request. Session keys/funModeData from Chromium are never
     imported; the tester immediately creates and owns a fresh demo session.
@@ -53,7 +53,10 @@ def bootstrap_game(
             artifact_dir=artifact_dir,
         )
     except ValueError as exc:
-        if "RubyPlay init: status=" not in str(exc):
+        if (
+            "RubyPlay init: status=" not in str(exc)
+            and str(exc) != "RubyPlay: no se pudo descubrir v_math desde el cliente."
+        ):
             raise
 
         public = session.get(public_url, timeout=timeout_s, allow_redirects=True)

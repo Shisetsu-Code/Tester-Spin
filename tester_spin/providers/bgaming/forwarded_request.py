@@ -90,7 +90,7 @@ def forwarded_request_contracts(source: str) -> str:
         if (re.search(rf'^(?:return\s+await\s+|var\s+{ident};try\{{const\s+{ident}=await\s+){ident}\.post\(["\']/api["\'],\{{[^{{}}]{{0,300}}jsonrpc:["\']2\.0["\']', segment)
                 and re.search(rf'\bmethod:{re.escape(method)}\s*,\s*params:{re.escape(params)}\s*\}}', segment)):
             transports.add(name)
-    contracts = []
+    contracts = _two_argument_builder_contracts(text, code)
     for match in re.finditer(rf"\b({ident})\s*=\s*async\s+({ident})\s*=>\s*\{{", text):
         name, arg = match.groups()
         if not code[match.start()].strip() or not unambiguous(name):
@@ -117,3 +117,71 @@ def forwarded_request_contracts(source: str) -> str:
                 )
                 contracts.append("req:{" + body + "}")
     return "\n".join(contracts)
+
+
+def _two_argument_builder_contracts(text: str, code: str) -> list[str]:
+    """Prove base fields through an identity req/lock wrapper and called builder.
+
+    This path deliberately does not authorize purchase fields: modifiers applied
+    by a separate feature helper require their own data-flow proof.
+    """
+    ident = r"[A-Za-z_$][A-Za-z0-9_$]*"
+
+    def unique_assignment(name: str) -> bool:
+        escaped = re.escape(name)
+        if re.search(rf'\([^()]{{0,500}}\b{escaped}\b[^()]{{0,500}}\)\s*(?:=>|\{{)', code):
+            return False
+        definitions = set()
+        for assignment in re.finditer(rf"(?<![\w$.]){escaped}\s*=(?!=|>)", code):
+            start = assignment.end()
+            depth, end = 0, start
+            while end < len(code):
+                char = code[end]
+                if char in '([{':
+                    depth += 1
+                elif char in ')]}':
+                    if depth == 0:
+                        break
+                    depth -= 1
+                elif char in ',;' and depth == 0:
+                    break
+                end += 1
+            definitions.add(text[start:end].strip())
+        return len(definitions) == 1
+
+    transports = set()
+    for match in re.finditer(rf"\b({ident})=async\(({ident}),({ident})\)=>\{{", text):
+        name, method, params = match.groups()
+        if not code[match.start()].strip() or not unique_assignment(name):
+            continue
+        segment = text[match.end():match.end() + 650]
+        if (re.match(rf'const\s+({ident})=await\s+{ident}\.post\(["\']/api["\'],\{{[^{{}}]{{0,300}}jsonrpc:["\']2\.0["\']', segment)
+                and re.search(rf'\bmethod:{re.escape(method)},params:{re.escape(params)}\}}', segment)
+                and re.search(r'return\s+[\w$]+\.data\}', segment)):
+            transports.add(name)
+    out = []
+    pattern = (rf'\b({ident})=async\(({ident}),({ident})\)=>\(await\s+({ident})\(["\']play["\'],'
+               rf'\{{token:{ident}\(\),state_lock:\3,req:\2\}}\)\)\.result')
+    for wrapper in re.finditer(pattern, text):
+        name, req, lock, transport = wrapper.groups()
+        if not code[wrapper.start()].strip() or transport not in transports or not unique_assignment(name):
+            continue
+        # The local request must come directly from a zero-argument builder and
+        # be passed unchanged as the wrapper's first argument.
+        for call in re.finditer(rf'const\s+({ident})=({ident})\(\),({ident})=await\s+{re.escape(name)}\(\1,({ident})\.({ident})\)', text):
+            if not code[call.start()].strip():
+                continue
+            builder = call.group(2)
+            if not unique_assignment(builder):
+                continue
+            definition = re.search(rf'\b{re.escape(builder)}=\(\)=>\{{([^{{}}]{{0,500}})return\{{([^{{}}]{{1,1600}})\}}\}}', text)
+            if not definition or not code[definition.start()].strip():
+                continue
+            body = definition.group(2)
+            if not re.search(r'(?:^|,)bet:', body):
+                continue
+            # Preserve just the proven normal-spin bet_type literal, excluding
+            # freebet and unrelated feature vocabularies.
+            normal = re.search(r'(?:^|,)bet_type:[^,]*\?["\']freebet["\']:["\']([A-Za-z0-9_]+)["\'](?:,|$)', body)
+            out.append('req:{bet:observed' + (',bet_type:"' + normal.group(1) + '"' if normal else '') + '}')
+    return out

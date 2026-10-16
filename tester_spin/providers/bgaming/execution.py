@@ -519,7 +519,7 @@ class BGamingExecutionMixin:
             purchase_modes = (
                 []
                 if legacy_line_bets
-                else discover_purchase_modes(init_data)
+                else discover_purchase_modes(init_data, client_base_fallback=(active_profile.purchase_base_fallback if active_profile is not None else None))
             )
             from tester_spin.feature_domains import initialization_domains
             if not legacy_line_bets:

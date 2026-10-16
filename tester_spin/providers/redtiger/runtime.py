@@ -135,6 +135,8 @@ def purchase_declaration(game: Any) -> dict[str, Any]:
         for item in items:
             if not isinstance(item, dict):
                 return None
+            if math and item.get('type') in ('chanceIncrease','stateSwitch'):
+                continue
             if math and item.get('type') != 'featureBuy':
                 return None
             name = item.get('name')

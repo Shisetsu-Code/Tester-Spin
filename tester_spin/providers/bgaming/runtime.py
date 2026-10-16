@@ -816,6 +816,37 @@ def discover_additional_spin_option_choices(bundle: str) -> dict[str, list[Any]]
     return discovered
 
 
+def discover_line_mode_bet_multipliers(bundle: str) -> dict[str, float]:
+    """Trace mode to linesCount and a client-proven total/nominal bet ratio."""
+    from tester_spin.providers.bgaming.forwarded_request import _lexical_source
+    text, code = _lexical_source(bundle or "")
+    if not re.search(r"this\.additionalSpinOptions\.mode\s*=\s*this\.linesCount\b", code):
+        return {}
+    ident = r"[A-Za-z_$][A-Za-z0-9_$]*"
+    candidates = []
+    for match in re.finditer(rf"\b({ident})\s*=\s*\{{([^{{}}]{{1,500}})\}}", text):
+        name, body = match.groups()
+        if not code[match.start()].strip():
+            continue
+        pair = r'\s*["\']?(\d+)["\']?\s*:\s*(\d+(?:\.\d+)?)\s*'
+        if not re.fullmatch(pair + r'(?:,' + pair + r')+', body):
+            continue
+        mapping = {key: float(value) for key, value in re.findall(pair, body)}
+        if len(mapping) < 2 or any(value <= 0 for value in mapping.values()):
+            continue
+        alias = re.escape(name)
+        # Both directions must use the same table and selected lines. The
+        # nominal operand must originate in getBet(), never observed debit.
+        multiply = rf'\b({ident})=this\.getBet\(\);[^;{{}}]{{0,450}}!==\1\*{alias}\[this\.linesCount\]'
+        if not re.search(multiply, code):
+            continue
+        if not re.search(rf'\.bet\)?/{alias}\[this\.linesCount\]', code):
+            continue
+        candidates.append(mapping)
+    unique = {tuple(sorted(mapping.items())): mapping for mapping in candidates}
+    return next(iter(unique.values())) if len(unique) == 1 else {}
+
+
 def discover_effective_bet_multipliers(bundle: str) -> dict[str, float]:
     """Discover an unambiguous BET_BY_SPECIAL_LVL map from provider JS."""
     references = list(
@@ -827,7 +858,8 @@ def discover_effective_bet_multipliers(bundle: str) -> dict[str, float]:
             )
         )
     )
-    maps: list[dict[str, float]] = []
+    line_mapping = discover_line_mode_bet_multipliers(bundle)
+    maps: list[dict[str, float]] = [line_mapping] if line_mapping else []
     for variable in references:
         match = re.search(
             rf"\b{re.escape(variable)}\s*=\s*\{{([^{{}}]{{1,500}})\}}",
@@ -1034,6 +1066,8 @@ def discover_api_v2_wire_profile(
         "required_option_fields": required_option_fields,
         "spin_option_choices": spin_option_choices,
         "effective_bet_multipliers": effective_bet_multipliers,
+        "purchase_base_fallback": discover_purchase_base_fallback(bundle),
+        "effective_bet_selector": ("mode" if effective_bet_multipliers and discover_line_mode_bet_multipliers(bundle) == effective_bet_multipliers else ""),
         "source": sanitize_session_url(source) if source else "",
         "bundle_sha256": (
             hashlib.sha256(bundle.encode("utf-8", errors="replace")).hexdigest()
@@ -1148,7 +1182,42 @@ def resolve_base_bet(data: dict[str, Any]) -> tuple[int | float | None, str]:
     return None, ""
 
 
-def discover_purchase_modes(data: dict[str, Any]) -> list[dict[str, Any]]:
+def discover_purchase_base_fallback(bundle: str) -> float | None:
+    """Learn only a || default used to divide the advertised feature values."""
+    from tester_spin.providers.bgaming.forwarded_request import _lexical_source
+    text, code = _lexical_source(bundle or "")
+    ident = r"[A-Za-z_$][A-Za-z0-9_$]*"
+    defaults = set()
+    for method in re.finditer(rf'\binitBuyFeatures\(({ident})\)\{{', text):
+        if not code[method.start()].strip():
+            continue
+        depth, end = 1, method.end()
+        while end < len(code) and depth:
+            depth += (code[end] == '{') - (code[end] == '}')
+            end += 1
+        segment = code[method.end():end - 1]
+        arg = re.escape(method.group(1))
+        binding = re.search(rf'\b({ident})={arg}\.options\.feature_options\.feature_multipliers,({ident})=\1\.base_bet\|\|(\d+(?:\.\d+)?);', segment)
+        if not binding:
+            continue
+        mapping, denominator, value = binding.groups()
+        if any(len(re.findall(rf'(?<![\w$.]){re.escape(alias)}\s*=(?!=|>)', segment)) != 1
+               for alias in (mapping, denominator)):
+            continue
+        value_alias = re.search(rf'\b({ident})={re.escape(mapping)}\[({ident})\]', segment)
+        if not value_alias:
+            continue
+        item = re.escape(value_alias.group(1))
+        divisor = re.escape(denominator)
+        if not re.search(rf'={item}(?:\[{ident}\])?/{divisor}(?=[;,}}])', segment):
+            continue
+        fallback = float(value)
+        if fallback > 0:
+            defaults.add(fallback)
+    return next(iter(defaults)) if len(defaults) == 1 else None
+
+
+def discover_purchase_modes(data: dict[str, Any], *, client_base_fallback: float | None = None) -> list[dict[str, Any]]:
     """Return only purchase modes explicitly advertised by BGaming init.
 
     HAR 2026-09-09 (AlienFruits3) exposes:
@@ -1173,6 +1242,12 @@ def discover_purchase_modes(data: dict[str, Any]) -> list[dict[str, Any]]:
 
     base = multipliers.get("base_bet")
     base_source = "feature_multipliers.base_bet"
+    # Match the proven JavaScript || fallback only for absent/null/zero.
+    if ((base is None or base == 0) and not isinstance(base, bool)
+            and isinstance(client_base_fallback, (int, float))
+            and not isinstance(client_base_fallback, bool) and client_base_fallback > 0):
+        base = client_base_fallback
+        base_source = "client.feature_multipliers.base_bet-or-default"
     if not isinstance(base, (int, float)) or base <= 0:
         # Do not assume a denominator when the provider does not publish one.
         # The executor learns the effective cost from the authoritative balance

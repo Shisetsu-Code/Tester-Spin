@@ -19,13 +19,13 @@ def test_ka_waiting_request_can_be_cancelled():
  gate=RequestGate();stop=threading.Event();stop.set()
  with pytest.raises(InterruptedError):gate.acquire(stop)
 
-def test_404_stops_the_shared_run_and_sends_no_session_cleanup(tmp_path):
+def test_start_404_preserves_shared_run_and_sends_no_session_cleanup(tmp_path):
  from tester_spin.providers.ka_gaming.runtime import run_rmp_game
  stop=threading.Event();http=MagicMock()
  response=MagicMock(status_code=404,text='Not Found');response.raise_for_status.side_effect=RuntimeError('HTTP 404');http.post.return_value=response
  g=Game('ka_gaming','example','Example','https://gamesdemo.kaga88.com/?g=Example&p=demo',symbol='Example')
  result=run_rmp_game(g,http=http,root=tmp_path,profile=('2070','version','literal'),modes=[{'id':'SPIN'}],spins=100,timeout_s=1,stop_event=stop,progress=lambda _:None)
- assert stop.is_set() and http.post.call_count==1 and result.status=='ERROR'
+ assert not stop.is_set() and http.post.call_count==1 and result.status=='ERROR'
 
 def test_ka_provider_leaves_game_delay_to_user(tmp_path):
  from tester_spin.providers.ka_gaming.adapter import KAGamingProvider
@@ -47,7 +47,7 @@ def test_404_during_spin_skips_cleanup_of_an_open_session(tmp_path):
     game = Game('ka_gaming','example','Example','https://gamesdemo.kaga88.com/?g=Example&p=demo',symbol='Example')
     result = run_rmp_game(game,http=http,root=tmp_path,profile=('2070','version','literal'),
         modes=[{'id':'SPIN'}],spins=100,timeout_s=1,stop_event=stop,progress=lambda _:None)
-    assert stop.is_set() and http.post.call_count == 2
+    assert not stop.is_set() and http.post.call_count == 2
     assert result.successful_spins == 0
 
 

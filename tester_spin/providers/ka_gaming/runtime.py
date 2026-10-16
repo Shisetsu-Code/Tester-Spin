@@ -13,6 +13,7 @@ from urllib.parse import parse_qs, urlparse
 
 from tester_spin.models import Game, GameTestResult, SpinAttempt, utc_now_iso
 from tester_spin.providers.ka_gaming.limits import REQUEST_GATE
+from tester_spin.providers.ka_gaming.cooldown import ServerCooldown, ServerRetryAfter
 
 
 def load_signing_profile(root: Path) -> tuple[str, str, str] | None:
@@ -27,23 +28,36 @@ def load_signing_profile(root: Path) -> tuple[str, str, str] | None:
 
 
 def parse_signing_profile(source: str):
-    signer = re.search(r'Cc\.(?:I9e|H9e)=function\(a,b\)\{var d=Nb\.(?:w4d|v4d)\(\),e=Ob\.vFc\(a\+"(\d+)"\+b\.JKb\+d\),f=Ob\.vFc\(d\+b\.JKb\+b\.fKb\),g=\$b\.Bb\(\)\.(PXh|NXh)\(\),e=Rb\(0==e%2\?d\+"([^"]+)"\+e\+g\+f\+a\+"\1":g\+a\+f\+b\.fKb\+e\+"\1"\+d\);b\.Jub=e\+d\}', source)
+    # Match the observed serializer algorithm, rather than build-specific
+    # obfuscator names. Repeated context fields/hash functions must agree.
+    identifier = r"[A-Za-z_$][A-Za-z0-9_$]*"
+    signer = re.search(
+        r'Cc\.' + identifier + r'=function\(a,b\)\{var d=Nb\.' + identifier
+        + r'\(\),e=Ob\.(?P<hash>' + identifier + r')\(a\+"(?P<build>\d+)"\+b\.(?P<idv>' + identifier
+        + r')\+d\),f=Ob\.(?P=hash)\(d\+b\.(?P=idv)\+b\.(?P<device>' + identifier
+        + r')\),g=\$b\.Bb\(\)\.(?P<literal>' + identifier
+        + r')\(\),e=Rb\(0==e%2\?d\+"(?P<version>[^"\n]+)"\+e\+g\+f\+a\+"(?P=build)":g\+a\+f\+b\.(?P=device)\+e\+"(?P=build)"\+d\);b\.'
+        + identifier + r'=e\+d\}', source)
     if not signer:
         return None
-    literal = re.search(signer.group(2) + r':function\(\)\{return("(?:\\.|[^"\\])*")\}', source)
+    literal = re.search(re.escape(signer['literal']) + r':function\(\)\{return("(?:\\.|[^"\\])*")\}', source)
     if literal:
-        return signer.group(1), signer.group(3), json.loads(literal.group(1))
+        return signer['build'], signer['version'], json.loads(literal.group(1))
     return None
 
 
 def refresh_signing_profile(game, *, http, root, timeout_s, stop_event, progress):
     """Read the current official launcher and signer before each new session."""
+    cooldown = ServerCooldown(root)
     def get(url):
+        cooldown.check(stop_event)
         REQUEST_GATE.acquire(stop_event)
+        cooldown.check(stop_event)
         response = http.get(url, headers={"Cache-Control": "no-cache"}, timeout=timeout_s)
+        cooldown.observe(response.status_code, getattr(response, "headers", {}), url)
+        cooldown.check(stop_event)
         if response.status_code == 404:
-            stop_event.set()
-            progress("KA Gaming: HTTP 404 al actualizar cliente; ejecuciÃƒÂ³n detenida.")
+            progress("KA Gaming: HTTP 404 en este juego; se conserva el error y continúa el lote.")
         response.raise_for_status()
         return response.text
     if urlparse(game.url).hostname != "gamesdemo.kaga88.com":
@@ -139,11 +153,16 @@ def run_rmp_game(game: Game, *, http, root: Path, profile: tuple[str, str, str],
     from tester_spin.http_har import HTTPHar
     capture=HTTPHar(run_dir/"analysis"/"http.har")
     wire_index = 0
+    session_http_rejected = False
+    cooldown = ServerCooldown(root)
+    retry_metadata = {}
     artifact_dir = run_dir
 
     def post(path: str, body: dict) -> dict:
-        nonlocal wire_index
+        nonlocal wire_index, session_http_rejected
+        cooldown.check(stop_event)
         REQUEST_GATE.acquire(stop_event)
+        cooldown.check(stop_event)
         raw = json.dumps(body, separators=(",", ":"), ensure_ascii=False)
         ctx = signed_context(raw, context, profile, str(int(time.time() * 1000)))
         params = {"ak": "accessKey", "cr": "USD", "m": 0, "u": user}
@@ -159,9 +178,11 @@ def run_rmp_game(game: Game, *, http, root: Path, profile: tuple[str, str, str],
         response=http.post(endpoint_url,params=params,data=raw,headers=headers,timeout=timeout_s)
         capture.append(endpoint_url,params,raw,headers,response,time.monotonic()-sent)
         (artifact_dir / (label + ".response.raw.json")).write_text(response.text, encoding="utf-8")
+        cooldown.observe(response.status_code, getattr(response, "headers", {}), endpoint_url)
+        cooldown.check(stop_event)
         if response.status_code == 404:
-            stop_event.set()
-            progress("KA Gaming: HTTP 404; se detiene toda la ejecuciÃƒÆ’Ã‚Â³n del proveedor.")
+            session_http_rejected = True
+            progress("KA Gaming: HTTP 404 en este juego; se conserva el error y continúa el lote.")
         response.raise_for_status()
         data = response.json()
         if not isinstance(data, dict) or data.get("e") is not False or data.get("ec") != 0:
@@ -288,14 +309,20 @@ def run_rmp_game(game: Game, *, http, root: Path, profile: tuple[str, str, str],
                 if successes == len(jobs) and all(m.get("validated") for m in purchases):
                     status = "OK"
     except Exception as exc:
+        if isinstance(exc, ServerRetryAfter):
+            retry_metadata = exc.metadata
         status = "ERROR" if not successes else "PARCIAL"
         error = f"{type(exc).__name__}: {exc}"
     finally:
         artifact_dir = run_dir
-        if context.get("c") and not stop_event.is_set():
+        if context.get("c") and not stop_event.is_set() and not session_http_rejected and not retry_metadata:
             try:
                 post("rmp/endSession", {"es": "quit"})
             except Exception as exc:
+                if isinstance(exc, ServerRetryAfter):
+                    retry_metadata = exc.metadata
+                    status = "PARCIAL" if successes else "ERROR"
+                    error = str(exc)
                 progress(f"[{game.name}] KA RMP: cierre de sesiÃƒÆ’Ã‚Â³n pendiente ({type(exc).__name__}).")
 
     for mode in modes:
@@ -315,4 +342,5 @@ def run_rmp_game(game: Game, *, http, root: Path, profile: tuple[str, str, str],
         symbol=symbol, requested_spins=len(jobs) if 'jobs' in locals() else max(1,spins), successful_spins=successes,
         failed_spins=max(0,(len(jobs) if 'jobs' in locals() else max(1,spins))-successes), status=status, error=error, discovered_modes=modes,
         started_at=started, finished_at=utc_now_iso(), elapsed_ms=(time.monotonic() - clock) * 1000,
-        run_dir=str(run_dir), attempts=attempts, feature_domains=feature_domains)
+        run_dir=str(run_dir), attempts=attempts, feature_domains=feature_domains,
+        structural_map={"server_retry_after": retry_metadata} if retry_metadata else {})

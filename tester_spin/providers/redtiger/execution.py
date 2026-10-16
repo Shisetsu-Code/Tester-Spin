@@ -75,6 +75,7 @@ def _post_spin(
     feature_buy: FeatureBuy | None,
     timeout_s: float,
     stop_event,
+    game_mode=0,
 ) -> tuple[int, dict[str, Any], dict[str, Any], list[str]]:
     if stop_event.is_set():
         raise InterruptedError("Detención solicitada antes del spin Red Tiger.")
@@ -82,7 +83,7 @@ def _post_spin(
         runtime,
         stake=stake,
         feature_buy=feature_buy,
-        game_mode=0,
+        game_mode=game_mode,
     )
     _sanitize_direct_http_headers(runtime)
     request_timeout = min(5.0, max(1.0, float(timeout_s)))
@@ -212,7 +213,7 @@ class RedTigerExecutionMixin:
         responded = 0
         runtime: RedTigerRuntime | None = None
         cancelled = bool(stop_event.is_set())
-        mode_specs: list[tuple[str, str, FeatureBuy | None]] = []
+        mode_specs: list[tuple[str, str, FeatureBuy | dict[str, Any] | None]] = []
 
         launch_id = self.launch_id_for_game(game)
         if not launch_id:
@@ -312,6 +313,22 @@ class RedTigerExecutionMixin:
                     'reason':'El servidor anuncia compras; disponibilidad en el cliente sin confirmar',
                 })
 
+            from .modifiers import declared_modifiers
+            modifiers,unknown_modifiers=declared_modifiers(settings_game)
+            if modifiers:
+                feature_domains['ante']={'complete':not unknown_modifiers,'source':'SETTINGS.game.mathModes.chanceIncrease',
+                    'options':[str(m['gameMode']) for m in modifiers if m['kind']=='ANTE_BET']}
+            for modifier in modifiers:
+                mode_id=modifier['kind']+'_'+str(modifier['gameMode'])
+                discovered_modes.append({'id':mode_id,**modifier,'observed':True,'executable':True,'coverage_required':True,
+                    'required_options':[str(modifier['gameMode'])],'covered_options':[],'wire_command':'platform/game/spin',
+                    'stake':str(runtime.default_stake)})
+                mode_specs.append((mode_id,modifier['kind'],modifier))
+            for index,unknown in enumerate(unknown_modifiers):
+                discovered_modes.append({'id':'UNRESOLVED_GAME_MODE_'+str(index),'kind':'UNKNOWN_FEATURE',
+                    'observed':True,'executable':False,'coverage_required':True,'required_options':['DOMAIN_UNRESOLVED'],
+                    'covered_options':[],'declaration':unknown,'reason':'CURRENT_MODE_CONTRACT_REQUIRED'})
+                coverage_gaps.add('GAME_MODE_DECLARATION_UNRESOLVED')
             game_modes = settings_game.get("gameModes") if isinstance(settings_game, dict) else None
             if isinstance(game_modes, list) and game_modes:
                 discovered_modes.append(
@@ -328,7 +345,7 @@ class RedTigerExecutionMixin:
             progress(
                 f"[{game.name}] Red Tiger SETTINGS OK: gameId={runtime.game_id}, "
                 f"stakes={len(runtime.stakes)}, default={runtime.default_stake}, "
-                f"compras confirmadas={len(mode_specs)-1}, opciones del servidor={len(runtime.feature_buys)}, endpoint={runtime.spin_url}."
+                f"compras confirmadas={sum(1 for _,kind,_ in mode_specs if kind=='PURCHASE')}, modificadores={len(modifiers)}, opciones del servidor={len(runtime.feature_buys)}, endpoint={runtime.spin_url}."
             )
         except InterruptedError as exc:
             cancelled = True
@@ -364,12 +381,14 @@ class RedTigerExecutionMixin:
                         set_capture_directory(attempt_dir)
                         attempt_started = time.monotonic()
                         try:
+                            modifier=feature if isinstance(feature,dict) else None
                             status_code, request_payload, response_payload, warnings = _post_spin(
                                 runtime,
                                 stake=runtime.default_stake,
-                                feature_buy=feature,
+                                feature_buy=None if modifier is not None else feature,
                                 timeout_s=timeout_s,
                                 stop_event=stop_event,
+                                **({'game_mode':modifier['gameMode']} if modifier is not None else {}),
                             )
                             initial_summary = response_summary(response_payload)
                             _write_json(attempt_dir / "request.json", sanitize_payload(request_payload))
@@ -457,6 +476,14 @@ class RedTigerExecutionMixin:
                                     if discovered.get("id") == mode_id:
                                         discovered["validated"] = True
                                         discovered["covered_options"] = [feature.name]
+                            if validated and modifier is not None:
+                                from .modifiers import modifier_executed
+                                if modifier_executed(response_payload,request_payload,modifier):
+                                    for discovered in discovered_modes:
+                                        if discovered.get('id')==mode_id:
+                                            discovered['validated']=True;discovered['covered_options']=[str(modifier['gameMode'])];discovered['modifier_contract']='redtiger/settings-mode-receipt/v1'
+                                else:
+                                    validated=False;warnings.append('Modificador sin acuse, débito y liquidación concordantes')
                             successes += int(validated)
                             warnings_all.extend(warnings)
                             elapsed_ms = (time.monotonic() - attempt_started) * 1000.0

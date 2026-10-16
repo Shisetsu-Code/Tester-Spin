@@ -45,8 +45,8 @@ def feature_item_type(bonus):
             'BestOfBonusItem' if identifier.startswith('bob_') else 'BonusBuyItem')
 
 
-def _menu_body(source):
-    match = re.search(r'getFeatureBuyItems:function\([^)]*\)\{', source)
+def _menu_body(source, position=0):
+    match = re.compile(r'getFeatureBuyItems:function\([^)]*\)\{').search(source, position)
     if not match:
         return None
     start = match.end(); depth = 1; quote = None; escaped = False
@@ -71,12 +71,21 @@ def client_feature_types(source):
     if not registration:
         return {}
     constructor = re.search(r'function '+re.escape(registration[1])+r'\(([^)]*)\)\{([^}]*)\}', source)
-    body = _menu_body(source)
-    menus = re.findall(r'\breturn\s*\[([^][]*)\]', body or '')
+    menus=[]
+    for menu_match in re.finditer(r'getFeatureBuyItems:function\(',source):
+        body=_menu_body(source,menu_match.start())
+        if body is None:return {}
+        menus.extend(re.findall(r'\breturn\s*\[([^][]*)\]',body))
+        for choice in re.finditer(r'\breturn(?:\([^\[\]{};]{1,200}\)|[\w$.!]+)\?\[([^][]*)\]:\[([^][]*)\]',body):
+            menus.extend(choice.groups())
     if not constructor or not menus:
         return {}
     params = constructor[1].split(',')
     assignments = re.findall(r'this.featureBuyItemType=([A-Za-z_$][\w$]*)', constructor[2])
+    boolean_role=False
+    if not assignments:
+        assignments=re.findall(r'this.isFeatureSpin=([A-Za-z_$][\w$]*)',constructor[2])
+        boolean_role=True
     slots = [params.index(v) for v in assignments if v in params]
     if len(set(slots)) != 1:
         return {}
@@ -95,12 +104,24 @@ def client_feature_types(source):
             if not isinstance(identifier, str) or not BONUS_ID.fullmatch(identifier) or identifier in branch:
                 return {}
             raw = args[slot].strip()
-            if raw == 'null':
+            if boolean_role:
+                getter=(re.escape(registration[1])+r'\.prototype=\{get_isFeatureSpin:function\(\)\{var (\w+)=this\.isFeatureSpin;return null==\1\?\w+\.startsWith\(this\.bonusGameId,"mod_"\):\1\}')
+                if not re.search(getter,source):value='UNRESOLVED_CLIENT_TYPE'
+                elif raw in ('true','!0'):value='FeatureSpinItem'
+                elif raw in ('false','!1'):value='BonusBuyItem'
+                elif raw=='null':
+                    getter=(re.escape(registration[1])+r'\.prototype=\{get_isFeatureSpin:function\(\)\{var (\w+)=this\.isFeatureSpin;return null==\1\?\w+\.startsWith\(this\.bonusGameId,"mod_"\):\1\}')
+                    value=('FeatureSpinItem' if identifier.startswith('mod_') else 'BonusBuyItem') if re.search(getter,source) else 'UNRESOLVED_CLIENT_TYPE'
+                else:value='UNRESOLVED_CLIENT_TYPE'
+            elif raw == 'null':
                 default = re.search(r'get_featureBuyItemType:function\(\)\{([^}]*)\}', source)
                 known_default = (default and
                     re.search(r'\.startsWith\(this\.bonusGameId,"mod_"\)\?"FeatureSpinItem"', default[1]) and
                     re.search(r'\.startsWith\(this\.bonusGameId,"bob_"\)\?"BestOfBonusItem":"BonusBuyItem"', default[1]))
-                value = feature_item_type({'bonusGameId':identifier}) if known_default else 'UNRESOLVED_CLIENT_TYPE'
+                direct_consumer=(not re.search(r'get_featureBuyItemType\s*:',source) and re.search(
+                    r'(\w+)=null!=\1\?\1\.featureBuyItemType:null;[\w$.]+\.featureSpinActive=null!=\1&&"FeatureSpinItem"==\1',source))
+                value = (feature_item_type({'bonusGameId':identifier}) if known_default else
+                         'BonusBuyItem' if direct_consumer else 'UNRESOLVED_CLIENT_TYPE')
             else:
                 try:
                     value = json.loads(raw)

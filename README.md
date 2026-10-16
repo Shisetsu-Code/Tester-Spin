@@ -16,13 +16,13 @@ El ejecutable generado por `scripts/build-desktop.ps1` contiene una versión com
 
 Las descargas del ejecutable completo se publican en [GitHub Releases](https://github.com/Shisetsu-Code/Tester-Spin/releases). Las capturas originales y los datos de sesión permanecen locales.
 
-El catálogo oficial cargado de Hacksaw tiene **186 juegos**. La repetición completa dejó **183 OK verificados y 3 parciales**: Beam Boys, Mystery Motel y Tasty Treats, cuya clasificación de opciones sigue pendiente. Cada OK contrasta precios, débitos, premios acumulados, liquidación y dos rondas normales posteriores con IDs distintos. [Evidencia y límites](docs/HACKSAW.md).
+El catálogo oficial cargado de Hacksaw tiene **186 juegos, actualmente 186 OK**. La revisión del 16 de octubre recuperó los tres parciales restantes mediante primitivas compartidas del cliente; los otros 183 OK conservan su evidencia previa. Cada OK contrasta precios, débitos, premios acumulados, liquidación y dos rondas normales posteriores con IDs distintos. [Evidencia y límites](docs/HACKSAW.md).
 
 Yggdrasil queda pausado en **137 OK, 8 parciales y 14 errores de 159 juegos**; no se presenta como catálogo terminado. [Primitivas y pendientes](docs/YGGDRASIL.md).
 
 La grilla permite ordenar por cantidades de compras y antebets, identificar mecánicas particulares y ajustar las secciones con el mouse. [Distribución de la interfaz](docs/DESKTOP_LAYOUT.md) y [mecánicas](docs/GAME_MECHANICS.md).
 
-Nolimit City tiene **140 demos oficiales y ejecutor Demo RC4/LZW**. Airport Security completó sus siete opciones declaradas y el retorno normal; el resto del catálogo requiere su propia ejecución. Las variantes desconocidas quedan PARCIAL con HAR local. [Primitivas y alcance](docs/NOLIMIT_CITY.md).
+Nolimit City tiene **140 demos oficiales y ejecutor Demo RC4/LZW**, con **109 OK y 31 parciales** en la última ronda documentada. Las variantes desconocidas quedan PARCIAL con HAR local. [Primitivas y alcance](docs/NOLIMIT_CITY.md).
 
 Cada proveedor también puede ejecutarse por separado desde la PC o el workflow manual de GitHub Actions, con lotes WireGuard y máximo configurable de juegos por IP. El comando carga solo el proveedor elegido y conserva el pipeline de verificación. [Ejecutores independientes y configuración](docs/INDEPENDENT_RUNNERS.md).
 
@@ -36,6 +36,8 @@ Cada proveedor también puede ejecutarse por separado desde la PC o el workflow 
 Una bandera del servidor no basta para contar una compra ni convertirla automáticamente en una obligación pendiente. Existencia, capacidad de ejecución y validación son estados separados. [Reglas y ejemplos](docs/FEATURE_DETECTION.md).
 
 ## Documentación vigente
+
+- [Reparación compartida y resultados por proveedor: 16/10/2026](docs/PROVIDER_REPAIRS_20261016.md)
 
 - [Operación, instalación, pruebas y compilación](docs/OPERATIONS.md)
 - [Detección de compras y antebets](docs/FEATURE_DETECTION.md)

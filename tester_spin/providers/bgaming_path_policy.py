@@ -235,8 +235,8 @@ def _purchase_is_client_proven(name: str, client_features: set[str]) -> bool:
     )
 
 
-def _discover_purchase_modes_policy(data: dict[str, Any]) -> list[dict[str, Any]]:
-    advertised = _ORIGINAL_DISCOVER_PURCHASE_MODES(data)
+def _discover_purchase_modes_policy(data: dict[str, Any], *, client_base_fallback: float | None = None) -> list[dict[str, Any]]:
+    advertised = _ORIGINAL_DISCOVER_PURCHASE_MODES(data, client_base_fallback=client_base_fallback)
     client_features = getattr(_LOCAL, "client_purchase_features", None)
     if not isinstance(client_features, set):
         # No profile context means this is not the execution-stage call. Preserve

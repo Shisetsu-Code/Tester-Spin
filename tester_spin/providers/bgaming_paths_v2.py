@@ -183,8 +183,8 @@ def _purchase_mode_authorized(mode: dict[str, Any]) -> bool:
     return bool(dynamic and (level is None or level_supported))
 
 
-def _purchase_modes_guard(data: dict[str, Any]) -> list[dict[str, Any]]:
-    advertised = _policy._ORIGINAL_DISCOVER_PURCHASE_MODES(data)
+def _purchase_modes_guard(data: dict[str, Any], *, client_base_fallback: float | None = None) -> list[dict[str, Any]]:
+    advertised = _policy._ORIGINAL_DISCOVER_PURCHASE_MODES(data, client_base_fallback=client_base_fallback)
     if not _coverage_active():
         return advertised
 
@@ -366,6 +366,20 @@ _exhaustive._next_missing_choice = _next_missing_choice_guard
 _exhaustive._move_run = _move_run_guard
 
 
+def _enforce_required_mode_evidence(result: GameTestResult) -> None:
+    """Use the farm's evidence standard before publishing an OK execution."""
+    if result.status != "OK":
+        return
+    from tester_spin.providers.result_farm_contract import _mode_required, _mode_evidence
+    missing = [str(mode.get("id") or "unknown") for mode in result.discovered_modes
+               if isinstance(mode, dict) and _mode_required(mode)
+               and _mode_evidence(mode, result) != "DEMOSTRADO"]
+    if missing:
+        result.status = "PARCIAL"
+        reason = "BGaming cobertura requerida sin ejecución demostrada: " + ", ".join(missing) + "."
+        result.error = (result.error + " " + reason).strip()
+
+
 class BGamingProvider(_exhaustive.BGamingProvider):
     """BGaming exhaustive traversal with scoped purchase/wager policy."""
 
@@ -406,6 +420,7 @@ class BGamingProvider(_exhaustive.BGamingProvider):
             _write_server_guided_artifact(result)
             result = _policy.finalize_policy_artifacts(result)
             _annotate_mode_evidence(result, progress)
+            _enforce_required_mode_evidence(result)
             try:
                 capture.finish(result, self.game_dir(game))
             except Exception as exc:

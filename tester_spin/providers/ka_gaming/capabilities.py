@@ -61,7 +61,11 @@ def client_declarations(common, client, symbol, initial):
     required=['oda:function(){return!1}', 't$a:function(){return!1}',
               'this.cee()?Ab.kW(this.la,[1],', 'a.pos=[];',
               'a.YSb(b)', 'Uc=Eba.extend(', 'Oia:function(){returnthis.oda()?newEba:null}', 'v.uoa=a.EQd', 'b=a.dbf', 'a.Xqa(this.Ol,this.mj,this.ko,this.ti)']
-    if not all(token in compact for token in required):return result
+    if not all(token in compact for token in required):
+        from .declaration_names import normalize_declaration_sources
+        common,client=normalize_declaration_sources(common,client)
+        compact=re.sub(r'\s+','',common)
+        if not all(token in compact for token in required):return result
     # Uc is the effective button subclass. Reject an unknown member that could
     # replace its inherited event/dispatch contract; do not trust a base token
     # merely because it still exists elsewhere in the bundle.

@@ -16,8 +16,9 @@ _METADATA_ONLY_GAP = "GAME_MODES_WIRE_CONTRACT"
 def _normalize_metadata_only_partial(result: GameTestResult) -> None:
     """Keep settings-only gameModes as diagnostics, not failed executable coverage.
 
-    Red Tiger exposes ``gameModes`` in settings for many titles, while the actual
-    executable actions are the normal spin and the feature-buy contracts. The
+    A settings-only ``gameModes`` list is not itself executable authority. Modes
+    corroborated by current typed ``mathModes`` are registered separately and
+    remain required alongside normal spins and feature-buy contracts. The
     resulting runtime transitions (Normal, Respin, FreeSpins, etc.) are observed
     inside successful spin responses. If every requested executable action passed
     and the only reason for PARCIAL is the legacy GAME_MODES_WIRE_CONTRACT marker,

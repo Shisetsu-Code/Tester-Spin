@@ -1,5 +1,7 @@
 from __future__ import annotations
 import json
+import copy
+import hashlib
 import re
 import threading
 import time
@@ -19,8 +21,9 @@ from .runtime import API, checked_response, discover_modes, terminal, minimum_ro
 SPEC = ProviderFarmSpec(provider="hacksaw", protocol_family="hacksaw-casino-json",
     bootstrap_strategy="hacksaw-public-demo-authenticate", transport="http-json",
     terminal_contract={"type": "provider", "name": "hacksaw-completed-round", "round.status": "completed", "round.possibleActions": []},
-    stable_metadata_keys=("client_version",), mode_option_keys=("monetary_contract", "buyBonus", "feature_multiplier", "request_shape", "root_mode_id", "choice_field"),
+    stable_metadata_keys=("client_version",), mode_option_keys=("custom_bet_data", "custom_bet_data_evidence", "monetary_contract", "buyBonus", "feature_multiplier", "request_shape", "root_mode_id", "choice_field"),
     runtime_outputs=("sessionUuid",), protocol_static={"verification_contract": "hacksaw/verified-runtime/v2", "endpoint": API + "/play/bet",
+        "custom_bet_data": {"selector":"bets[].customData","source":"current_client_literal_publish_and_same_sdk_transport","purchase_context":"same_flag_menu_selector_mapping","price_override":"forbidden"},
         "purchase_selector": "bets[].buyBonus", "bet_amount": "bets[].betAmount",
         "confirmation_action": "win_presentation_complete", "confirmation_round_field": "roundId"})
 
@@ -149,10 +152,13 @@ class HacksawProvider(ProviderAdapter):
             data = checked_response(response)
             validate_declaration(data)
             account_balance = balance(data, "EUR")
+            client_source=''
+            custom_profile=None
             try:
                 client_response = self.http.get('https://static-live.hacksawgaming.com/'+game.symbol+'/'+version+'/main.js', timeout=timeout_s)
                 client_response.raise_for_status()
-                types = client_feature_types(client_response.text)
+                client_source=client_response.text
+                types = client_feature_types(client_source)
             except Exception:
                 types = {}
             data = {**data, 'client_feature_types':types, 'client_types_complete': bool(types)}
@@ -163,6 +169,25 @@ class HacksawProvider(ProviderAdapter):
             if not all(result.feature_domains.get(k, {}).get("complete") for k in ("purchase", "feature_spin")):
                 result.error = "Hacksaw: declaración de opciones sin clasificación completa"
                 return result
+            if 'updateCustomBetData' in client_source:
+                from .custom_bet_data import client_custom_bet_data
+                sdk=self.http.get('https://static-live.hacksawgaming.com/'+game.symbol+'/'+version+'/casino/hacksaw-casino.min.js',timeout=timeout_s)
+                sdk.raise_for_status()
+                custom_profile=client_custom_bet_data(client_source,sdk.text)
+                (directory/'custom-bet-data.json').write_text(json.dumps(custom_profile,indent=2),encoding='utf-8')
+                if not custom_profile.get('proven') or not isinstance(custom_profile.get('default'),dict):
+                    result.error='Hacksaw: datos adicionales de apuesta sin contrato de cliente y SDK'
+                    return result
+                evidence={'client_sha256':hashlib.sha256(client_source.encode('utf-8')).hexdigest(),
+                    'sdk_sha256':hashlib.sha256(sdk.text.encode('utf-8')).hexdigest()}
+                for mode in result.discovered_modes:
+                    value=(custom_profile['default'] if mode['kind']=='SPIN' else custom_profile.get('by_selector',{}).get(str(mode.get('buyBonus'))))
+                    if value is None:
+                        result.error='Hacksaw: contexto adicional de compra sin selector contrastado'
+                        return result
+                    mode['custom_bet_data']=copy.deepcopy(value)
+                    mode['custom_bet_data_evidence']=dict(evidence)
+                    if isinstance(mode.get('request_shape'),dict):mode['request_shape']['bets'][0]['customData']=copy.deepcopy(value)
             levels = data.get("betLevels")
             session = data.get("sessionUuid")
             if (not isinstance(session, str) or not session or not isinstance(levels, list)
@@ -207,6 +232,7 @@ class HacksawProvider(ProviderAdapter):
                 bet = {"betAmount": bet_amount}
                 if mode["kind"] in {"PURCHASE", "FEATURE_SPIN"}:
                     bet["buyBonus"] = mode["buyBonus"]
+                if custom_profile is not None:bet['customData']=copy.deepcopy(mode['custom_bet_data'])
                 ledger = RoundLedger(account_balance, "EUR", bet_amount,
                     mode.get("feature_multiplier") if mode["kind"] in {"PURCHASE", "FEATURE_SPIN"} else 1)
                 seq += 1
@@ -320,7 +346,9 @@ class HacksawProvider(ProviderAdapter):
                 def return_send(payload):
                     nonlocal seq
                     seq += 1
-                    request = {**payload, "seq": seq, "sessionUuid": session}
+                    request = copy.deepcopy({**payload, "seq": seq, "sessionUuid": session})
+                    if custom_profile is not None:
+                        for bet in request.get('bets',[]):bet['customData']=copy.deepcopy(custom_profile['default'])
                     answer = self.http.post(API + "/play/bet", json=request, timeout=timeout_s,
                         headers={"Origin": "https://static-live.hacksawgaming.com", "Content-Type": "application/json"})
                     return checked_response(answer)
@@ -363,4 +391,12 @@ class HacksawProvider(ProviderAdapter):
             if mode.get("kind") in {"SPIN", "PURCHASE", "FEATURE_SPIN"} and (mode.get("options") or {}).get("monetary_contract") != "hacksaw/round-ledger/v1":
                 errors.append("HACKSAW_CURRENT_MONEY_PROOF_REQUIRED")
                 break
+        for mode in contract.get('modes',[]):
+            options=mode.get('options') or {}
+            if options.get('custom_bet_data'):
+                if ((contract.get('protocol') or {}).get('static') or {}).get('custom_bet_data')!=SPEC.protocol_static['custom_bet_data']:
+                    errors.append('HACKSAW_CUSTOM_BET_DATA_REQUIRED')
+                evidence=options.get('custom_bet_data_evidence') or {}
+                if not all(isinstance(evidence.get(k),str) and re.fullmatch('[0-9a-f]{64}',evidence[k]) for k in ('client_sha256','sdk_sha256')):
+                    errors.append('HACKSAW_CUSTOM_BET_DATA_EVIDENCE_REQUIRED')
         return list(dict.fromkeys(errors))

@@ -82,6 +82,6 @@ def test_inline_history_never_overrides_pending_controls_or_broken_ledger():
         value=deepcopy(f['current']);game=value['result']['game']
         if change=='ledger':value['result']['user']['balance']['cash']['atEnd']='123456'
         if change=='pending':game['choices']={'selected':None,'available':['collect','continue']}
-        if change=='state':game['hasState']=True
+        if change=='state':game['hasState']='true'
         if change=='mandatory':game['mandatoryFeature']=True
         assert not classify_base_state(value,request=f['request'],previous=f['previous'])['base'],change

@@ -105,3 +105,17 @@ Cada juego mantiene `game.json` con launcher sanitizado, identificador interno,
 perfil cliente reutilizable y perfil de apuestas. Cada ejecución crea una carpeta
 `tests/<timestamp>/` con bootstrap, requests sanitizados, responses y pasos de
 continuación.
+
+## Recuperación de contrato de inicialización
+
+Si el análisis estático no puede demostrar `v_math`, se usa el mismo fallback del
+cliente oficial que ante un rechazo de `init`. Sólo se observan `v_protocol` y
+`v_math` del primer `action=init`; después el tester crea una sesión demo propia.
+No se recuperan valores desde IDs de juego ni se reutilizan tokens de sesiones.
+
+La revisión de octubre de 2026 confirmó seis fichas cuyo launcher oficial tenía
+`gamename` vacío después de intentar Play Demo. Por ejemplo, la ficha de Diamond
+Explosion Candy contiene tanto el enlace del popup como el iframe con el campo
+vacío. El resolver conserva el fallo explícito: no reconstruye un identificador ni
+clasifica el juego como SIN_DEMO sin evidencia suficiente. Los dominios de `select`
+no demostrados siguen marcados como cobertura pendiente.

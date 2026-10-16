@@ -38,6 +38,7 @@ _SPEC = ProviderFarmSpec(
         "math_modes",
     ),
     mode_option_keys=(
+        "gameMode", "price_multiplier", "server_type", "source", "modifier_contract",
         "stake",
         "stakes",
         "feature_buy",
@@ -49,6 +50,9 @@ _SPEC = ProviderFarmSpec(
     ),
     runtime_outputs=("runtime_game_id", "settings_endpoint", "spin_endpoint", "response_token"),
     protocol_static={
+        "settings_mode_primitive":{"field":"gameMode","declaration":"current_gameModes_and_mathModes_exact_id_name_price_match",
+            "types":["chanceIncrease","stateSwitch"],"ack":"same_gameMode_and_base_stake",
+            "money":"declared_multiplier_debit_and_exact_prize_credit","return":"two_confirmed_normal_rounds"},
         "spin_action": "platform/game/spin",
         "choice_action": "platform/game/choice",
         "choice_domains_must_be_observed": True,
@@ -73,7 +77,14 @@ class RedTigerProvider(_RedTigerProvider):
         return attach_execution_structure(contract, provider_domains=domains)
 
     def validate_farm_contract(self, contract: dict) -> list[str]:
-        return validate_result_farm_contract(contract, _SPEC)
+        errors=validate_result_farm_contract(contract,_SPEC)
+        if any(m.get('kind') in ('ANTE_BET','STATE_SWITCH') for m in contract.get('modes',[])):
+            if ((contract.get('protocol') or {}).get('static') or {}).get('settings_mode_primitive')!=_SPEC.protocol_static['settings_mode_primitive']:
+                errors.append('REDTIGER_SETTINGS_MODE_CONTRACT_REQUIRED')
+            for m in contract.get('modes',[]):
+                if m.get('kind') in ('ANTE_BET','STATE_SWITCH') and (m.get('options') or {}).get('modifier_contract')!='redtiger/settings-mode-receipt/v1':
+                    errors.append('REDTIGER_SETTINGS_MODE_RECEIPT_REQUIRED')
+        return list(dict.fromkeys(errors))
 
 
 RedTigerProvider.__module__ = "tester_spin.providers.redtiger.provider"

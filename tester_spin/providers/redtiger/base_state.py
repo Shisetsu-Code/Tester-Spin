@@ -1,4 +1,6 @@
 """Red Tiger base-state evidence, independent of catalog names and identifiers."""
+import re
+
 from .result_tree import result_nodes, walk_tree
 
 
@@ -14,6 +16,15 @@ def classify_base_state(payload, *, request=None, previous=None):
     nodes=result_nodes(game)
     if not nodes:
         return verdict(False, 'missing_outcome_evidence')
+    marker=game.get('mode')
+    if (isinstance(marker,dict) and set(marker)=={'active'} and marker['active'] is False
+            and _independent_settled_paid_round(payload,request,previous)):
+        projected_game=dict(game);projected_game.pop('mode')
+        projected={**payload,'result':{**result,'game':projected_game}}
+        proof=classify_base_state(projected,request=request,previous=previous)
+        if proof['base']:
+            return verdict(True,'independent_settled_round_with_inactive_mode_marker',
+                stake_debited=True,winnings_settled=True,round_advanced=True)
     # Inline Respin frames may be settled outcome history, not another round.
     # Only an explicitly closed paid Normal root with linked ledger/round IDs
     # can supply the closure proof when frames omit their own isLast flags.
@@ -28,13 +39,13 @@ def classify_base_state(payload, *, request=None, previous=None):
         return verdict(True,'independent_settled_nsp_round_with_empty_state_containers',
                        has_state=game['hasState'],stake_debited=True,winnings_settled=True,round_advanced=True)
     if (game.get('spinMode') == 'Normal' and type(game.get('gameMode')) is int
-            and game['gameMode'] == 0 and game.get('hasState') is False
+            and game['gameMode'] == 0 and type(game.get('hasState')) is bool
             and game.get('features') == [] and isinstance(game.get('respin'), list)
             and game['respin'] and choice_state(payload)['status'] in {'NONE','RESOLVED'}
             and _independent_settled_paid_round(payload, request, previous)
             and _choice_round_components_normal(game, settled_root=True)):
         return verdict(True, 'independent_settled_normal_round_with_inline_outcomes',
-                       has_state=False, stake_debited=True, winnings_settled=True,
+                       has_state=game['hasState'], stake_debited=True, winnings_settled=True,
                        round_advanced=True)
     # Success and a normal request do not override a returned bonus/choice.
     for path, value in walk_tree(game):
@@ -83,7 +94,7 @@ def classify_base_state(payload, *, request=None, previous=None):
             and len(nodes) == 1
             and _independent_settled_paid_round(payload, request, previous)):
         return verdict(True, 'independent_settled_nsp_round_with_persistent_state',
-                       has_state=True, stake_debited=True, winnings_settled=True, round_advanced=True)
+                       has_state=game['hasState'], stake_debited=True, winnings_settled=True, round_advanced=True)
     return verdict(False, 'insufficient_base_evidence',
                    has_state=game.get('hasState'), normal_mode=normal,
                    note='hasState alone does not identify a bonus or prove base state')
@@ -114,7 +125,10 @@ def _independent_settled_paid_round(payload, request, previous):
         game_stake = money(game.get('stake'))
         if set(game) == {'win', 'nsp', 'hasState'}:
             game_stake = money(game['win'].get('stake'))
-            if game_stake != money(game['nsp'].get('stake')):
+            nsp=game['nsp']
+            if 'stake' in nsp:
+                if game_stake != money(nsp['stake']):return False
+            elif not _closed_unstaked_nsp(nsp,game['win'],money):
                 return False
         win = money(result['game']['win'].get('total'))
         balance = result['user']['balance']['cash']
@@ -126,6 +140,50 @@ def _independent_settled_paid_round(payload, request, previous):
                 and start - after_bet == stake and end - after_bet == win)
     except (KeyError, TypeError, AttributeError):
         return False
+
+
+def _closed_unstaked_nsp(nsp,win,money):
+    """Closed NSP payout presentation whose stake is explicitly in game.win."""
+    required={'reels','winMul','lines','winning'}
+    allowed=required|{'spinning','randomWildOverlay','randomWildCount','lockedWildOverlay','lockedWildCount'}
+    if not isinstance(nsp,dict) or not required<=set(nsp) or set(nsp)-allowed:return False
+    if not isinstance(nsp['reels'],list) or not nsp['reels'] or any(not isinstance(v,str) or not v for v in nsp['reels']):return False
+    total,stake,total_multiplier=money(win.get('total')),money(win.get('stake')),money(win.get('winMul'))
+    line_multiplier=money(nsp['winMul'])
+    if any(v is None for v in (total,stake,total_multiplier,line_multiplier)):return False
+    if total<0 or stake<=0 or total_multiplier<0 or line_multiplier<0:return False
+    if money(nsp['winning'])!=total or total_multiplier*stake!=total:return False
+    # Line multipliers and the whole-stake multiplier have different units.
+    # Match each only to its own evidence, without guessing a line stake.
+    lines=nsp['lines']
+    if not isinstance(lines,list) or len(lines)>512:return False
+    line_total=money(0)
+    line_keys={'winMul','cells','hit','symbol','winCount'}
+    for line in lines:
+        if not isinstance(line,dict) or not line_keys<=set(line) or set(line)-line_keys-{'winStart'}:return False
+        multiplier=money(line['winMul']);cells=line['cells'];hit=line['hit'];symbol=line['symbol'];count=line['winCount']
+        if multiplier is None or multiplier<=0:return False
+        if not isinstance(cells,str) or not re.fullmatch(r'[0-9]{1,64}',cells):return False
+        if not isinstance(hit,str) or len(hit)!=len(cells):return False
+        if not isinstance(symbol,str) or not re.fullmatch(r'[A-Za-z0-9_]{1,64}',symbol):return False
+        if type(count) is not int or not 1<=count<=len(hit):return False
+        start=line.get('winStart',0)
+        if type(start) is not int or start<0 or start+count>len(hit):return False
+        line_total+=multiplier
+    if line_total!=line_multiplier:return False
+    for key in ('randomWildOverlay','lockedWildOverlay'):
+        if key in nsp and nsp[key]!=[]:return False
+    for key in ('randomWildCount','lockedWildCount'):
+        if key in nsp and (type(nsp[key]) is not int or nsp[key]!=0):return False
+    spinning=nsp.get('spinning',{})
+    if not isinstance(spinning,dict) or set(spinning)-{'spins','speeds','nearMiss'}:return False
+    if 'nearMiss' in spinning and type(spinning['nearMiss']) is not bool:return False
+    for key in ('spins','speeds'):
+        if key not in spinning:continue
+        values=spinning[key]
+        if not isinstance(values,list) or not values or any(money(v) is None or money(v)<0 for v in values):return False
+        if key=='spins' and any(money(v)!=0 for v in values):return False
+    return True
 
 
 def settled_paid_choice_round(request, entry, steps, previous=None):

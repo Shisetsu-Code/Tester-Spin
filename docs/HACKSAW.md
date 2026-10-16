@@ -64,3 +64,23 @@ arranque se comprobó. SHA256: 350a0d5390964c3af9b8fa896b8d1c62d944a3f98693c9b23
 
 Los HAR, sesiones y capturas originales permanecen locales. La evidencia de esta
 pasada se conserva en hacksaw-final-evidence.json y en el checkpoint local.
+
+## Compatibilidad de clientes y contexto de apuesta: 16 de octubre de 2026
+
+Se reconocen los menús alternativos literales y las variantes del constructor
+que expresan FeatureSpin mediante un booleano o un tipo nullable, únicamente
+cuando el getter o consumidor de esa misma versión prueba su significado.
+Los roles contradictorios y tipos desconocidos siguen sin certificar.
+
+Algunos clientes publican customBetData durante init y cambian ese contexto
+según la opción del menú. El extractor enlaza la publicación del cliente con
+updateCustomBetData del SDK y bets[].customData. Conserva el contexto por
+selector y el contexto base para los dos giros de regreso; no lo deduce del
+nombre del juego. Sólo admite literales finitos y rechaza reasignaciones,
+selectores sin contexto y sustituciones de betAmount. El contrato exportado
+conserva los hashes del cliente y del SDK que sustentan esa relación.
+
+Tres juegos pendientes se ejecutaron con sesiones nuevas: Mystery Motel,
+Tasty Treats y Beam Boys pasaron a OK. El estado local quedó en 186 OK, sin
+parciales ni errores. Los otros 183 OK son resultados anteriores conservados;
+esta reparación no supone una nueva ejecución de todo el catálogo.

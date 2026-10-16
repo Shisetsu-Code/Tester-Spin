@@ -64,10 +64,12 @@ class BGamingProfile:
     bundle_sha256: str = ""
     discovery_diagnostics: list[dict[str, Any]] = field(default_factory=list)
     validated: bool = False
+    purchase_base_fallback: float | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "schema": PROFILE_SCHEMA,
+            "purchase_base_fallback": self.purchase_base_fallback,
             "capability_version": self.capability_version,
             "family": self.family,
             "confidence": self.confidence,
@@ -161,6 +163,7 @@ class BGamingProfile:
                 dict(item) for item in diagnostics if isinstance(item, dict)
             ] if isinstance(diagnostics, list) else [],
             validated=bool(value.get("validated")),
+            purchase_base_fallback=(float(value["purchase_base_fallback"]) if isinstance(value.get("purchase_base_fallback"), (int, float)) and not isinstance(value.get("purchase_base_fallback"), bool) and value["purchase_base_fallback"] > 0 else None),
         )
 
 
@@ -351,6 +354,11 @@ def discover_profile(
     if isinstance(request_extra_data, dict):
         profile.request_extra_data.update(request_extra_data)
 
+    fallback = wire.get("purchase_base_fallback")
+    if isinstance(fallback, (int, float)) and not isinstance(fallback, bool) and fallback > 0:
+        profile.purchase_base_fallback = float(fallback)
+        profile.evidence.append("client.feature_multipliers.base_bet-or-default")
+
     options = wire.get("spin_options")
     if isinstance(options, dict):
         profile.spin_options.update(options)
@@ -410,6 +418,12 @@ def discover_profile(
                     f"client.additionalSpinOptions.{field}:choice"
                 )
 
+    proven_selector = str(wire.get("effective_bet_selector") or "")
+    if (proven_selector and proven_selector in profile.spin_options
+            and str(profile.spin_options[proven_selector]) in profile.effective_bet_multipliers):
+        profile.effective_bet_selector = proven_selector
+        profile.evidence.append(f"client.effective_bet_selector.{proven_selector}")
+
     selector_candidates: list[str] = []
     multiplier_keys = set(profile.effective_bet_multipliers)
     if multiplier_keys:
@@ -430,7 +444,7 @@ def discover_profile(
     if profile.dynamic_purchased_feature:
         discovered_purchase_features.update(
             str(mode.get("name") or "")
-            for mode in discover_purchase_modes(init_data)
+            for mode in discover_purchase_modes(init_data, client_base_fallback=profile.purchase_base_fallback)
             if str(mode.get("name") or "")
         )
     profile.purchase_features = sorted(discovered_purchase_features)

@@ -86,6 +86,15 @@ def main(argv=None):
         games=storage.list_games(args.provider)
         needs_catalog=args.command=='catalog' or (args.command=='run' and not args.dry_run and (not games or args.refresh_catalog))
         if needs_catalog:
+            check=getattr(provider,'test_start_block_reason',None)
+            reason=check(timeout_s=getattr(args,'timeout',30)) if check is not None else ''
+            if reason:
+                if args.command=='run' and games:
+                    needs_catalog=False
+                else:
+                    print(json.dumps({'provider':args.provider,'reason':'RATE_LIMIT','attempted':0,'error':reason},ensure_ascii=False))
+                    return 3
+        if needs_catalog:
             connection=WireGuardTunnel(profiles[0],stop_event=stop) if profiles else nullcontext()
             with connection:
                 found=provider.crawl_catalog(stop_event=stop,progress=lambda _:None,max_pages=100)
@@ -125,7 +134,18 @@ def main(argv=None):
             checkpoint['statuses'][result.status]=checkpoint['statuses'].get(result.status,0)+1
             checkpoint['results'].append({'provider':result.provider,'slug':result.slug,'status':result.status})
             write_json(target,public_report(checkpoint))
-        report=run_batches(games,execute=execute,record=record,profiles=profiles,games_per_ip=args.games_per_ip,stop_event=stop,progress=print)
+        def block_check(game):
+            check=getattr(provider,'test_start_block_reason',None)
+            reason=check(timeout_s=args.timeout) if check is not None else ''
+            if not reason:return None
+            from tester_spin.models import GameTestResult
+            result=GameTestResult(game.provider,game.slug,game.name,game.url,args.spins,0,args.spins,'ERROR',symbol=game.symbol,error=reason)
+            metadata_check=getattr(provider,'test_start_block_metadata',None)
+            metadata=metadata_check() if metadata_check is not None else {}
+            if isinstance(metadata,dict):result.structural_map.update(metadata)
+            result.structural_map['execution_block']={'source':'provider.test_start_block_reason','reason':reason}
+            return result
+        report=run_batches(games,execute=execute,record=record,profiles=profiles,games_per_ip=args.games_per_ip,stop_event=stop,progress=print,block_check=block_check)
         report.update(provider=args.provider,run_id=run_id,games_per_ip=args.games_per_ip)
         (directory/'summary.private.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
         safe=public_report(report)

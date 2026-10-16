@@ -15,6 +15,7 @@ def result_from_payload(payload):
 
 def _worker(game,data_root,spins,timeout,stop,result_path,log_path,vpn,gate):
     gate.wait()
+    if stop.is_set():return
     if vpn:
         for key in ('HTTP_PROXY','HTTPS_PROXY','ALL_PROXY','http_proxy','https_proxy','all_proxy'):os.environ.pop(key,None)
     with open(log_path,'w',encoding='utf-8') as log,contextlib.redirect_stdout(log),contextlib.redirect_stderr(log):
@@ -22,6 +23,17 @@ def _worker(game,data_root,spins,timeout,stop,result_path,log_path,vpn,gate):
         from tester_spin.scheduler import run_game_tests
         provider=create_provider(game.provider,Path(data_root))
         def save(result):Path(result_path).write_text(json.dumps(result.to_dict(),ensure_ascii=False),encoding='utf-8')
+        block_check=getattr(provider,'test_start_block_reason',None)
+        block_reason=block_check(timeout_s=timeout) if block_check is not None else ''
+        if block_reason:
+            result=GameTestResult(game.provider,game.slug,game.name,game.url,max(1,int(spins)),0,max(1,int(spins)),
+                'ERROR',symbol=game.symbol,error=block_reason)
+            metadata_check=getattr(provider,'test_start_block_metadata',None)
+            metadata=metadata_check() if metadata_check is not None else {}
+            if isinstance(metadata,dict):result.structural_map.update(metadata)
+            result.structural_map['execution_block']={'source':'provider.test_start_block_reason','reason':block_reason}
+            save(result)
+            return
         run_game_tests(provider,[game],concurrency=1,spins_per_game=spins,delay_between_starts_s=0,
             timeout_s=timeout,stop_event=stop,progress=lambda _:None,on_result=save)
 

@@ -9,6 +9,7 @@ from curl_cffi import requests
 from tester_spin.models import Game, GameTestResult
 from tester_spin.providers.base import GameCallback, Progress, ProviderAdapter
 from tester_spin.providers.ka_gaming.catalog import CATALOG_URL, declared_modes_from_row, games_from_catalog
+from tester_spin.providers.ka_gaming.cooldown import ServerCooldown, ServerRetryAfter
 
 
 class KAGamingProvider(ProviderAdapter):
@@ -27,6 +28,14 @@ class KAGamingProvider(ProviderAdapter):
         self._modes_path = self.provider_root / "catalog_modes.json"
         self._catalog_modes = self._load_catalog_modes()
 
+    def test_start_block_reason(self, *, timeout_s):
+        metadata = ServerCooldown(self.provider_root).details()
+        return str(ServerRetryAfter(metadata)) if metadata else ""
+
+    def test_start_block_metadata(self):
+        metadata = ServerCooldown(self.provider_root).details()
+        return {"server_retry_after": metadata} if metadata else {}
+
     def _load_catalog_modes(self) -> dict[str, list[dict[str, object]]]:
         try:
             raw = json.loads(self._modes_path.read_text(encoding="utf-8"))
@@ -40,8 +49,13 @@ class KAGamingProvider(ProviderAdapter):
             self.set_catalog_authority(False, "crawl detenido por el usuario")
             return []
         from tester_spin.providers.ka_gaming.limits import REQUEST_GATE
+        cooldown = ServerCooldown(self.provider_root)
+        cooldown.check(stop_event)
         REQUEST_GATE.acquire(stop_event)
+        cooldown.check(stop_event)
         response = self.http.get(self.catalog_url, params={"lang": "es"}, headers={"Origin": "https://www.kaga88.com", "Referer": "https://www.kaga88.com/"}, timeout=30)
+        cooldown.observe(response.status_code, getattr(response, "headers", {}), self.catalog_url)
+        cooldown.check(stop_event)
         if response.status_code == 404:
             stop_event.set()
             progress("KA Gaming: HTTP 404; ejecuciÃ³n detenida.")
@@ -72,7 +86,8 @@ class KAGamingProvider(ProviderAdapter):
             return GameTestResult(provider=self.key, slug=game.slug, game_name=game.name,
                 game_url=game.url, requested_spins=spins, successful_spins=0, failed_spins=spins,
                 status="ERROR", discovered_modes=self._discovered_modes(game),
-                error=f"Actualización de cliente KA: {type(exc).__name__}: {exc}")
+                error=f"Actualización de cliente KA: {type(exc).__name__}: {exc}",
+                structural_map={"server_retry_after": exc.metadata} if isinstance(exc, ServerRetryAfter) else {})
         if profile is not None:
             sources = {'common':'', 'client':''}
             try:
@@ -81,8 +96,13 @@ class KAGamingProvider(ProviderAdapter):
                 if not re.fullmatch(r'[A-Za-z0-9_-]+', game.symbol or ''):
                     raise ValueError('KA: simbolo de cliente invalido')
                 sources['common'] = (self.provider_root/'runtime'/('game.min.'+profile[0]+'.js')).read_text(encoding='utf-8')
+                cooldown = ServerCooldown(self.provider_root)
+                cooldown.check(stop_event)
                 REQUEST_GATE.acquire(stop_event)
+                cooldown.check(stop_event)
                 response = self.http.get('https://gamesdemo.kaga88.com/res/js/'+profile[0]+'/'+game.symbol.lower()+'.js',timeout=timeout_s)
+                cooldown.observe(response.status_code, getattr(response, 'headers', {}), 'https://gamesdemo.kaga88.com/res/js/'+profile[0]+'/'+game.symbol.lower()+'.js')
+                cooldown.check(stop_event)
                 response.raise_for_status()
                 sources['client'] = response.text
             except Exception as exc:
