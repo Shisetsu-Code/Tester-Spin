@@ -20,7 +20,7 @@ def _contract(answer,family,source,*,request=None,domain=None,client_source=None
         'evidence':evidence}
 
 
-def resolve_operation(answer,mode=None,*,raw_answer=None,client_source=None):
+def resolve_operation(answer,mode=None,*,raw_answer=None,client_source=None,direct_demo_transport=False):
     from .runtime import continuation,_extra_response
     from .client_actions import automatic_command
     from .choices import choice_domain,has_collect_contract
@@ -29,9 +29,8 @@ def resolve_operation(answer,mode=None,*,raw_answer=None,client_source=None):
     funded=answer.get('_funded_extra_spin') or {}
     if raw_answer is not None and '_funded_extra_spin' not in raw_answer and funded:
         game=raw.get('game') or {}
-        if (game.get('mode')=='EXTRA_SPIN' and game.get('nextMode')==funded.get('target_phase')
-                and (game.get('wasExtraSpin') is True or game.get('isExtraSpin') is True) and type(game.get('freespinsLeft')) is int
-                and game['freespinsLeft']==funded.get('regular_left',0)):
+        from .extra_choices import funded_followup_matches
+        if funded_followup_matches(funded,raw):
             return _contract(raw,'FUNDED_EXTRA_CONTINUATION','VERIFIED_QUOTED_PRIZE_DEBIT',
                 request={'type':'zeroBet','bet':'0.00'})
     try:
@@ -42,7 +41,8 @@ def resolve_operation(answer,mode=None,*,raw_answer=None,client_source=None):
         return _contract(raw,'AUTOMATIC_CONTINUATION','SERVER_STATE_PRIMITIVE',request=request)
     except Unlearned as blocker:
         if client_source is None:raise blocker
-    automatic=automatic_command(client_source,raw)
+    action_context={'direct_demo_transport':True} if direct_demo_transport is True else {}
+    automatic=automatic_command(client_source,raw,**action_context)
     if (automatic is None and answer.get('_verified_numeric_extra_context') is True
             and raw_answer is not None and '_verified_numeric_extra_context' not in raw_answer
             and ((raw.get('game') or {}).get('wasExtraSpin') is True or (raw.get('game') or {}).get('isExtraSpin') is True)
@@ -51,9 +51,12 @@ def resolve_operation(answer,mode=None,*,raw_answer=None,client_source=None):
         # a current client-bound, argument-free follow-up animation. A fresh
         # EXTRA_SPIN decision is always excluded and needs its own quoted domain.
         funded_view={**raw,'game':{**raw['game'],'extraSpinCost':0,'wasExtraSpin':False,'isExtraSpin':False}}
-        automatic=automatic_command(client_source,funded_view)
+        automatic=automatic_command(client_source,funded_view,**action_context)
         if automatic is not None:return _contract(raw,'AUTOMATIC_CONTINUATION','CURRENT_CLIENT_BINDING_AFTER_VERIFIED_EXTRA_DEBIT',request=automatic,client_source=client_source)
-    if automatic is not None:return _contract(raw,'AUTOMATIC_CONTINUATION','CURRENT_CLIENT_BINDING',request=automatic,client_source=client_source)
+    if automatic is not None:
+        contract=_contract(raw,'AUTOMATIC_CONTINUATION','CURRENT_CLIENT_BINDING',request=automatic,client_source=client_source)
+        if direct_demo_transport is True:contract['evidence']['execution_context']='DIRECT_FRESH_DEMO_TRANSPORT'
+        return contract
     game=raw.get('game') or {}
     if collect_available(game):
         if not has_collect_contract(client_source):raise Unlearned('Nolimit City: cobro no declarado por cliente')
@@ -71,11 +74,11 @@ def resolve_operation(answer,mode=None,*,raw_answer=None,client_source=None):
         family='QUOTED_EXTRA_SPIN'
     else:
         from .extra_choices import numeric_domain
-        domain=numeric_domain(client_source,game)
+        domain=numeric_domain(client_source,game,direct_demo_transport=direct_demo_transport)
         if domain is not None:
             return _contract(raw,'QUOTED_NUMERIC_EXTRA',domain['source'],domain=domain,client_source=client_source)
         from .extra_choices import literal_domain
-        domain=literal_domain(client_source,game)
+        domain=literal_domain(client_source,game,direct_demo_transport=direct_demo_transport)
         if domain is not None:
             return _contract(raw,'QUOTED_LITERAL_EXTRA',domain['source'],domain=domain,client_source=client_source)
         try:domain=choice_domain(client_source,raw,mode)

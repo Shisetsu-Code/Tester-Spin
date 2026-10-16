@@ -12,7 +12,7 @@ from tester_spin.providers.result_farm_contract import ProviderFarmSpec,build_re
 SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-lzw',
     bootstrap_strategy='nolimit-fanpage-new-demo',transport='websocket-rc4-lzw',
     terminal_contract={'type':'provider','name':'nolimit-settled-round','nextMode':'NORMAL','remaining_counter_contract':'one_explicit_zero_counter_all_other_present_counters_zero_no_pendingWin','features.available':{'modern':'empty_or_exact_initial_catalog_after_observation','batch_catalog':{'source':['declared_feature_catalog','declared_feature_options','declared_purchase_options','declared_feature_categories'],'match':'exact_full_domain_from_current_init_independent_of_money_dialect'},'legacy_freespin_category':{'available':['FREESPINS'],'required_fields':['featureBet','numberOfFreespinsPlayed','totalSpinWinnings','freespinTriggeredThisSpin','wasFeatureBuy','playedBetValue','accumulatedRoundWin','mode','nextMode','freespinsLeft'],'featureBet':'false_or_purchase_root'},'legacy_two_stage_enhanced_bet':'empty_or_exact_declared_catalog','source':'current_init_catalog_or_full_selectors_purchase_selectors_categories','legacy_required_fields':['thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft']}},
-    mode_option_keys=('selector','server_type','stake','price_multiplier','request_shape','monetary_contract','declared_feature_options','declared_feature_categories','declared_purchase_options','choice_domains','response_profile','declared_feature_catalog','declared_game_modes','observation_contract','execution_blocker','declared_additional_types'),
+    mode_option_keys=('settlement_observations','selector','server_type','stake','price_multiplier','request_shape','monetary_contract','declared_feature_options','declared_feature_categories','declared_purchase_options','choice_domains','response_profile','declared_feature_catalog','declared_game_modes','observation_contract','execution_blocker','declared_additional_types'),
     runtime_outputs=('key','extPlayerKey'),protocol_static={'verification_contract':'nolimit-city/verified-runtime/v1',
         'bootstrap_endpoint':'https://demo.nolimitcity.com/EjsFrontWeb/fs','operator':'FANPAGE_DEMO',
         'websocket_path':'/EjsGameWeb/ws/game','outbound_codec':'RC4_HEX_JSON','inbound_codec':'LZW_JSON',
@@ -24,7 +24,9 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
         'free_spin_continuation':{'type':'zeroBet','bet':'0.00'},
         'selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
         'extra_spin_selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
-        'literal_extra_spin_monetary_contract':{'field':'playExtraSpin','domain':'client_declared_yes_no','price':'current_offer.extraSpinCost','funding':'pending_round_prize','accept':'exact_negative_quote_and_isExtraSpin_true_and_current_client_bound_return_state_and_counter','reject':'zero_delta_NORMAL_wallet_settlement_history_flag_may_persist_only_after_prior_extra','funded_continuation':'one_zeroBet_after_verified_debit','repeat':'redeclare_quote_each_offer'},
+        'literal_extra_spin_monetary_contract':{'field':'playExtraSpin','domain':'client_declared_yes_no','price':'current_offer.extraSpinCost','funding':'pending_round_prize','accept':'exact_negative_quote_accumulated_debit_client_bound_return_counter_boolean_or_client_flagless_dialect','reject':'zero_delta_NORMAL_wallet_settlement_history_flag_may_persist_only_after_prior_extra','funded_continuation':'one_zeroBet_after_verified_debit','repeat':'redeclare_quote_each_offer'},
+        'client_remaining_counter':{'source':'same_client_owner_keypad_direct_model_counter_with_sha256','values':'finite_nonnegative_safe_integral_number','outer_total':'independent_nonnegative_integer','conflict':'canonical_counter_must_agree'},
+        'settled_catalog_subset':{'scope':'terminal_observation_only','domain':'current_init_declared_purchase_subset','proof':'NORMAL_NORMAL_no_active_decision_zero_counters_and_reconciled_wallet','unknown_labels':'remain_unresolved'},
         'numeric_extra_spin_monetary_contract':{'field':'playerSelectedExtraSpin','wire_type':'current_client_literal','funding':'pending_round_prize','price':'previous.game.extraSpinCost','accept':'exact_negative_quote_and_wasExtraSpin_true_and_quoted_target','reject':'zero_delta_and_wasExtraSpin_false_and_NORMAL','funded_continuation':'one_zeroBet_after_verified_debit','settlement':'round_ledger_required'},
         'extra_spin_monetary_contract':{'price':'previous.game.extraSpinCost','funding':'accumulatedRoundWin',
             'yes_ack':'mode=EXTRA_SPIN,nextMode=FREESPIN,freespinsLeft=1,isExtraSpin=true,win=-quoted_price',
@@ -187,6 +189,9 @@ class NolimitCityProvider(ProviderAdapter):
                     if finish:finish(mode['id'])
                     before=ledger.after
                     attempt.ok=attempt.terminal=True;attempt.status_code=200
+                    observation=(ledger.last_answer.get('feature_observation') or {}).get('kind')
+                    if observation=='SETTLED_CATALOG_SUBSET':
+                        mode['settlement_observations']=sorted(set(mode.get('settlement_observations',[]))|{observation})
                     if not return_probe:
                         option='spin' if mode['kind']=='SPIN' else mode['selector']
                         mode.update(validated=True,observed=True,evidence_level='REMOTE_EXECUTION',execution_state='PROVEN_TERMINAL',monetary_contract=MONETARY)
@@ -258,6 +263,10 @@ class NolimitCityProvider(ProviderAdapter):
     def validate_farm_contract(self,contract):
         errors=validate_result_farm_contract(contract,SPEC)
         static=(contract.get('protocol') or {}).get('static') or {}
+        if any('SETTLED_CATALOG_SUBSET' in (m.get('options') or {}).get('settlement_observations',[]) for m in contract.get('modes',[])):
+            if static.get('settled_catalog_subset')!=SPEC.protocol_static['settled_catalog_subset']:errors.append('NOLIMIT_SETTLED_CATALOG_SUBSET_REQUIRED')
+        if any(d.get('remaining_counter_contract') for m in contract.get('modes',[]) for d in (m.get('options') or {}).get('choice_domains',[])):
+            if static.get('client_remaining_counter')!=SPEC.protocol_static['client_remaining_counter']:errors.append('NOLIMIT_CLIENT_COUNTER_REQUIRED')
         if static.get('verification_contract')!='nolimit-city/verified-runtime/v1':errors.append('NOLIMIT_CURRENT_VERIFICATION_REQUIRED')
         if any((m.get('options') or {}).get('monetary_contract')!=MONETARY for m in contract.get('modes',[]) if m.get('kind') in {'SPIN','PURCHASE','FEATURE_SPIN'}):
             errors.append('NOLIMIT_CURRENT_MONEY_REQUIRED')

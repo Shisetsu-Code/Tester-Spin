@@ -111,13 +111,13 @@ def _closed(message):
     game=message.get('game') or {};available=(message.get('features') or {}).get('available')
     return game.get('nextMode')=='NORMAL' and type(game.get('freespinsLeft')) is int and game['freespinsLeft']==0 and available==[]
 
-def analyze_messages(rows,*,client_source=None):
+def analyze_messages(rows,*,client_source=None,direct_demo_transport=False):
     connections={}
     for row in rows:connections.setdefault(row.get('connection',0),[]).append(row)
     if len(connections)>1:
         reports=[];incomplete=[]
         for connection,items in connections.items():
-            try:reports.append({'connection':connection,**analyze_messages(items,client_source=client_source)})
+            try:reports.append({'connection':connection,**analyze_messages(items,client_source=client_source,direct_demo_transport=direct_demo_transport)})
             except ValueError as exc:incomplete.append({'connection':connection,'reason':str(exc)})
         return {'schema':'nolimit-city/multi-session-har-analysis/v1','sessions':reports,
                 'incomplete_sessions':incomplete,'ok_certified':False}
@@ -176,7 +176,7 @@ def analyze_messages(rows,*,client_source=None):
             if client_source is not None:
                 from .contracts import resolve_operation,observed_request_matches,confirm_operation
                 operation=resolve_operation(active['ledger'].last_answer,active['ledger'].mode,
-                    raw_answer=previous_response,client_source=client_source)
+                    raw_answer=previous_response,client_source=client_source,direct_demo_transport=direct_demo_transport)
                 matches,selected=observed_request_matches(operation,content)
                 if not matches:raise ValueError('Nolimit City: petición capturada fuera del contrato de cliente')
                 confirm_operation(operation,response,selected)

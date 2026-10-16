@@ -69,6 +69,22 @@ def methods(body,block):
     return result
 
 
+def _paren_end(text,start):
+    stack=[];quote=None;escaped=False
+    for index in range(start,len(text)):
+        char=text[index]
+        if quote:
+            if escaped:escaped=False
+            elif char=='\\':escaped=True
+            elif char==quote:quote=None
+        elif char in ('"',"'",'`'):quote=char
+        elif char in '([{':stack.append(char)
+        elif char in ')]}':
+            if not stack or '([{'.index(stack.pop())!=')]}'.index(char):return None
+            if not stack:return index
+    return None
+
+
 def proves_zero_bet(body,block,*,entry="start"):
     available=methods(body,block)
     if not available:return False
@@ -80,12 +96,16 @@ def proves_zero_bet(body,block,*,entry="start"):
         match=re.fullmatch(r'(?:\(\w*\)|\w+)=>(.*)',value,re.S)
         return bool(match and effects(match[1],depth+1))
 
-    def effects(text,depth=0):
-        if depth>3:return False
+    def effects(text,depth=0,known_timelines=()):
+        if depth>8:return False
         while text.startswith('(') and text.endswith(')') and expressions(text[1:-1]):text=text[1:-1].strip()
-        timelines=set();arrays={};parts=expressions(text)
+        timelines=set(known_timelines);arrays={};parts=expressions(text)
         for part in parts:
-            if re.match(r'^(if|else|for|while|switch|try|do)\b',part):return False
+            if part.startswith('if('):
+                end=_paren_end(part,2)
+                if end is not None and effects(part[3:end],depth+1,timelines):return True
+                return False
+            if re.match(r'^(else|for|while|switch|try|do)\b',part):return False
             direct=part.removeprefix('return ').strip()
             if re.fullmatch(zero,direct):return True
             arms=conditional_arms(direct)
@@ -122,8 +142,10 @@ def proves_zero_bet(body,block,*,entry="start"):
                 for other in parts:
                     if other!=part and re.search(r'\b'+name+r'\b',other):
                         known=re.sub(r'\b'+name+r'\.(?:add|addLabel|to|from|fromTo|set|totalProgress|timeScale|duration)\b','__known_timeline',other)
-                        if (re.search(r'\b'+name+r'\b',known)
-                                or re.search(r'\)\s*(?:\?\.|\.|\[)',other)):mutated=True
+                        if re.search(r'\b'+name+r'\b',known):mutated=True
+                        for call in re.finditer(r'\b'+name+r'\.\w+\(',other):
+                            end=_paren_end(other,call.end()-1)
+                            if end is None or re.match(r'\s*(?:\?\.|\.|\[)',other[end+1:]):mutated=True
                     for speed in re.finditer(r'\b'+name+r'\.timeScale\(',other):
                         value=re.match(r'([0-9]+(?:\.[0-9]+)?)\)',other[speed.end():])
                         if value is None or float(value[1])<=0:mutated=True

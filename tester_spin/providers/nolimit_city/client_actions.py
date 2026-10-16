@@ -63,8 +63,11 @@ def _mode_reference(source,mode):
     return '(?:'+'|'.join(references)+')'
 
 
-def automatic_command(source,answer):
+def automatic_command(source,answer,*,direct_demo_transport=False):
     if not isinstance(source,str) or len(source)>MAX_BODY:return None
+    if direct_demo_transport is True:
+        from .direct_demo import direct_demo_source
+        source=direct_demo_source(source,_block)
     game=answer.get('game') or {};mode=game.get('nextMode')
     if not isinstance(mode,str) or not re.fullmatch(r'[A-Z][A-Z0-9_]+',mode) or mode=='NORMAL':return None
     # A paid quote/decision never becomes a bare zeroBet.
@@ -79,9 +82,17 @@ def automatic_command(source,answer):
     inline=(r'addGameModeFlowStatePresentationMap\('+reference
         +r',new Map\(\[\[\w+\.FlowState\.IDLE,\{start:(\w+)=>\{\w+\.apiPlugin\.betHandler\.zeroBet\(\),\1\.finish\(\)\}\}\]')
     if re.search(inline,source):return result
+    wrapped=(r'addGameModeFlowStatePresentationMap\('+reference
+        +r',new Map\(\[\[\w+\.FlowState\.IDLE,([\w$]+\.[\w$]+)\.createFlow\(\[([^\]]{1,1600})\]\)')
+    for match in re.finditer(wrapped,source):
+        from .static_bindings import proves_wrapped_flow
+        if proves_wrapped_flow(source,match.start(),match[1],match[2],_block):return result
     direct=(r'addGameModeFlowStatePresentationMap\('+reference
         +r',new Map\(\[\[\w+\.FlowState\.IDLE,new \w+\.(\w+)(?:\(\))?\]')
     for match in re.finditer(direct,source):
+        from .static_bindings import proves_bound_action
+        owner=re.search(r'new ([\w$]+\.[\w$]+)',match[0])
+        if owner and proves_bound_action(source,match.start(),owner[1],answer,_block):return result
         body=_exported_class(source,match[1])
         if body:
             from .lifecycle import proves_zero_bet
@@ -94,6 +105,9 @@ def automatic_command(source,answer):
         if not assignments:continue
         assignment=assignments[-1]
         if re.search(r'\b'+re.escape(match[1])+r'\s*=',prefix[assignment.end():]):continue
+        from .static_bindings import proves_bound_action
+        owner=re.search(r'new ([\w$]+\.[\w$]+)',assignment[0])
+        if owner and proves_bound_action(source,match.start(),owner[1],answer,_block):return result
         body=_exported_class(source,assignment[1] or assignment[2])
         if not body:continue
         from .lifecycle import proves_zero_bet

@@ -34,6 +34,7 @@ def feature_observation(answer,catalog=(),game_modes=(),purchase_options=(),alte
     game=answer.get('game') or {};features=answer.get('features')
     if not isinstance(features,dict):return {'kind':'UNRESOLVED_MENU','reason':'missing_features_object'}
     active=features.get('active');available=features.get('available')
+    if isinstance(active,str) and not active.strip(' \t\r\n'):active=None
     if available is not None:
         try:values=_labels(available)
         except ValueError:return {'kind':'UNRESOLVED_MENU','reason':'invalid_available'}
@@ -77,3 +78,21 @@ def settled_state(answer):
     for key in ('freespinsLeft','respinsLeft','secondStageFsLeft'):
         if key in game:counters.append(game[key])
     return bool(counters) and all(type(value) is int and value==0 for value in counters)
+
+
+def settled_catalog_subset(answer,mode):
+    """Offer a terminal-only view; the caller must prove the actual wallet settlement."""
+    game=answer.get('game') or {};features=answer.get('features') or {}
+    if (answer.get('feature_observation') or {}).get('kind')!='UNRESOLVED_MENU':return None
+    if game.get('mode')!='NORMAL' or game.get('nextMode')!='NORMAL':return None
+    if features.get('active') not in (None,''):return None
+    try:values=_labels(features.get('available'))
+    except ValueError:return None
+    purchases=mode.get('declared_purchase_options',())
+    if not mode.get('server_declared') or not values or not set(values)<=set(purchases):return None
+    for node in (answer,game):
+        if any(node.get(key) not in (None,False,[],{}) for key in ('screens','pickAndClick','gambleOptions','gambleCollect')):return None
+    candidate={**answer,'features':{**features,'available':[]},
+        'feature_observation':{'kind':'SETTLED_CATALOG_SUBSET','available':values,
+            'source':'declared_purchase_subset_normal_counters_and_reconciled_wallet'}}
+    return candidate if settled_state(candidate) else None

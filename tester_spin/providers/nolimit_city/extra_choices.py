@@ -4,11 +4,12 @@ from functools import lru_cache
 from decimal import Decimal
 from .protocol import _money
 from .errors import Unlearned
+from .client_counters import counter_contract, counter_from_contract
 from .operation_fields import step_win
 from tester_spin.providers.repeat_purchase import funded_domain
 
 
-def numeric_domain(source,game):
+def numeric_domain(source,game,*,direct_demo_transport=False):
     if game.get('nextMode')!='EXTRA_SPIN':return None
     pattern=r'zeroBet\(\{playerSelectedExtraSpin:(0|1|"0"|"1"|\'0\'|\'1\')\}\)'
     literals=re.findall(pattern,source)
@@ -20,26 +21,41 @@ def numeric_domain(source,game):
     price=_money(game.get('extraSpinCost'),positive=True)
     accumulated=_money(game.get('accumulatedRoundWin'))
     target=game.get('nextModeForExtraSpin')
-    if target is not None and target not in ('FREESPIN','SUPER_FREESPIN','FREESPIN_SUPER','FREESPIN_BETTER'):
+    if target is not None and (not isinstance(target,str) or not re.fullmatch(r'[A-Z][A-Z0-9_]+',target) or target in ('NORMAL','EXTRA_SPIN','EXTRA_SPIN_CHECK')):
         raise Unlearned('Nolimit City: destino del giro extra no declarado')
     domain={'state':'EXTRA_SPIN','options':options,'available':options,
         'request_field':'playerSelectedExtraSpin','wire_encoding':'PRESERVE_LITERAL',
         'ack_field':'numeric_extra_transition','source':'CLIENT_QUOTED_NUMERIC_EXTRA',
         'price_source':'game.extraSpinCost','quoted_price':str(price),
         'quoted_accumulated':str(accumulated),'target_phase':target}
+    counter=counter_contract(source)
+    if counter is not None:domain['remaining_counter_contract']=counter
+    bound_returns=_bound_returns(source,direct_demo_transport)
+    if bound_returns:
+        domain['allowed_return_states']=[{'phase':phase,'freespins_left':left} for phase,left in bound_returns]
+        domain['return_binding_sha256']=hashlib.sha256(source.encode('utf-8')).hexdigest()
     return funded_domain(domain,price,accumulated,accept=options[1],decline=options[0],funding_source='ACCUMULATED_ROUND_WIN')
 
 
 def confirm_numeric(domain,selected,answer):
-    game=answer.get('game') or {};accept=selected==domain['options'][1]
+    game=dict(answer.get('game') or {});accept=selected==domain['options'][1]
+    if domain.get('remaining_counter_contract'):
+        game['freespinsLeft']=counter_from_contract(answer,domain['remaining_counter_contract'])
     price=_money(domain['quoted_price'],positive=True)
     if not any(type(selected) is type(value) and selected==value for value in domain['available']) or game.get('mode')!='EXTRA_SPIN' or _money(game.get('extraSpinCost'),positive=True)!=price:
         raise Unlearned('Nolimit City: giro extra sin precio o decisión confirmados')
     win=Decimal(str(step_win(game)))
     if accept:
-        if (game.get('wasExtraSpin') is not True or game.get('nextMode') not in ('FREESPIN','SUPER_FREESPIN','FREESPIN_SUPER','FREESPIN_BETTER')
+        allowed=domain.get('allowed_return_states')
+        if allowed:
+            target_ok=({'phase':game.get('nextMode'),'freespins_left':game.get('freespinsLeft')} in allowed and bool(domain.get('return_binding_sha256')))
+            accumulated_ok=_money(game.get('accumulatedRoundWin'))==_money(domain['quoted_accumulated'])-price
+        else:
+            target_ok=game.get('nextMode') in ('FREESPIN','SUPER_FREESPIN','FREESPIN_SUPER','FREESPIN_BETTER') and game.get('freespinsLeft')==0
+            accumulated_ok=True
+        if (game.get('wasExtraSpin') is not True or not target_ok or not accumulated_ok
                 or domain['target_phase'] is not None and game.get('nextMode')!=domain['target_phase']
-                or type(game.get('freespinsLeft')) is not int or game['freespinsLeft']!=0 or win!=-price):
+                or type(game.get('freespinsLeft')) is not int or win!=-price):
             raise Unlearned('Nolimit City: giro extra sin descuento o transición cotizados')
     elif game.get('wasExtraSpin') is not False or game.get('nextMode')!='NORMAL' or win!=0:
         raise Unlearned('Nolimit City: rechazo del giro extra sin liquidación confirmada')
@@ -49,7 +65,7 @@ def confirm_numeric(domain,selected,answer):
 
 
 @lru_cache(maxsize=8)
-def _bound_returns(source):
+def _bound_returns(source,direct_demo_transport=False):
     """Probe only static client phase references; the existing action prover decides."""
     from .client_actions import automatic_command
     from .protocol import MAX_BODY
@@ -69,27 +85,31 @@ def _bound_returns(source):
     for target in sorted(candidates-{'NORMAL','EXTRA_SPIN','EXTRA_SPIN_CHECK'}):
         for left in (0,1):
             view={'game':{'nextMode':target,'freespinsLeft':left}}
-            if automatic_command(source,view)=={'type':'zeroBet','bet':'0.00'}:
+            if automatic_command(source,view,**({'direct_demo_transport':True} if direct_demo_transport is True else {}))=={'type':'zeroBet','bet':'0.00'}:
                 result.append((target,left))
     return tuple(result)
 
 
-def literal_domain(source,game):
+def literal_domain(source,game,*,direct_demo_transport=False):
     """The yes/no dialect resumes the phase that advertised one extra spin."""
     if game.get('nextMode')!='EXTRA_SPIN':return None
     if not all(re.search(r'zeroBet\(\{playExtraSpin:["\']'+value+r'["\']\}\)',source) for value in ('yes','no')):return None
     price=_money(game.get('extraSpinCost'),positive=True);accumulated=_money(game.get('accumulatedRoundWin'))
     target=game.get('nextModeForExtraSpin',game.get('mode'))
-    if not isinstance(target,str) or not re.fullmatch(r'[A-Z][A-Z0-9_]+',target) or target in ('NORMAL','EXTRA_SPIN','EXTRA_SPIN_CHECK'):
+    bound_returns=_bound_returns(source,direct_demo_transport)
+    valid_target=isinstance(target,str) and re.fullmatch(r'[A-Z][A-Z0-9_]+',target) and target not in ('NORMAL','EXTRA_SPIN','EXTRA_SPIN_CHECK')
+    if not valid_target and ('nextModeForExtraSpin' in game or not bound_returns):
         raise Unlearned('Nolimit City: fase de retorno del giro extra no demostrada')
-    if type(game.get('isExtraSpin')) is not bool:raise Unlearned('Nolimit City: indicador de giro extra no demostrado')
-    bound_returns=_bound_returns(source)
+    flagless=('isExtraSpin' not in game and not re.search(r'\b(?:isExtraSpin|wasExtraSpin)\b',source) and bool(bound_returns))
+    if type(game.get('isExtraSpin')) is not bool and not flagless:raise Unlearned('Nolimit City: indicador de giro extra no demostrado')
     domain={'state':'EXTRA_SPIN','options':['no','yes'],'available':['no','yes'],
         'request_field':'playExtraSpin','wire_encoding':'PRESERVE_LITERAL',
         'ack_field':'quoted_literal_transition','source':'CLIENT_QUOTED_LITERAL_EXTRA',
         'price_source':'game.extraSpinCost','quoted_price':str(price),'quoted_accumulated':str(accumulated),
-        'target_phase':target,'history_extra':game['isExtraSpin'],
+        'target_phase':target,'history_extra':game.get('isExtraSpin'),'flag_contract':'NONE' if flagless else 'BOOLEAN',
         'quoted_target_phase':game.get('nextModeForExtraSpin')}
+    counter=counter_contract(source)
+    if counter is not None:domain['remaining_counter_contract']=counter
     if bound_returns:
         domain['allowed_return_states']=[{'phase':phase,'freespins_left':left} for phase,left in bound_returns]
         domain['return_binding_sha256']=hashlib.sha256(source.encode('utf-8')).hexdigest()
@@ -99,11 +119,15 @@ def literal_domain(source,game):
 def confirm_literal(domain,selected,answer):
     from .operation_fields import remaining_alias
     game=dict(answer.get('game') or {})
-    if 'freespinsLeft' not in game and 'freespinsRemaining' in game:game['freespinsLeft']=remaining_alias(answer)
+    if domain.get('remaining_counter_contract'):
+        game['freespinsLeft']=counter_from_contract(answer,domain['remaining_counter_contract'])
+    elif 'freespinsLeft' not in game and 'freespinsRemaining' in game:game['freespinsLeft']=remaining_alias(answer)
     price=_money(domain['quoted_price'],positive=True)
     if selected not in domain['available'] or game.get('mode')!='EXTRA_SPIN' or _money(game.get('extraSpinCost'),positive=True)!=price:
         raise Unlearned('Nolimit City: giro extra sin precio o decisión confirmados')
     win=Decimal(str(step_win(game)))
+    if domain.get('flag_contract')=='NONE' and 'wasExtraSpin' in game and game['wasExtraSpin'] is not (selected=='yes'):
+        raise Unlearned('Nolimit City: indicador secundario de giro extra contradictorio')
     if selected=='yes':
         quoted_target=domain.get('quoted_target_phase')
         if quoted_target is not None and game.get('nextMode')!=quoted_target:
@@ -117,11 +141,31 @@ def confirm_literal(domain,selected,answer):
         else:
             target_ok=game.get('nextMode')==domain['target_phase'] and game.get('freespinsLeft')==1
             accumulated_ok=True
-        if (game.get('isExtraSpin') is not True or not target_ok or not accumulated_ok
+        flag_ok=(game.get('isExtraSpin') is True or domain.get('flag_contract')=='NONE' and 'isExtraSpin' not in game and bool(allowed))
+        if (not flag_ok or not target_ok or not accumulated_ok
                 or type(game.get('freespinsLeft')) is not int or win!=-price):
             raise Unlearned('Nolimit City: giro extra sin descuento o retorno a la fase que lo ofreció')
         return -price
-    if (game.get('nextMode')!='NORMAL' or win!=0 or type(game.get('isExtraSpin')) is not bool
-            or game['isExtraSpin'] is True and domain['history_extra'] is not True):
+    flag_ok=(type(game.get('isExtraSpin')) is bool or domain.get('flag_contract')=='NONE' and 'isExtraSpin' not in game)
+    if (game.get('nextMode')!='NORMAL' or win!=0 or not flag_ok
+            or game.get('isExtraSpin') is True and domain['history_extra'] is not True):
         raise Unlearned('Nolimit City: rechazo del giro extra sin liquidación o con historia incoherente')
     return Decimal(0)
+
+
+def funded_followup_matches(receipt,answer):
+    """A ledger-produced receipt binds one paid continuation to its exact ACK."""
+    from .client_counters import counter_from_contract
+    from .operation_fields import remaining_alias
+    game=answer.get('game') or {}
+    try:
+        proof=receipt.get('remaining_counter_contract')
+        left=counter_from_contract(answer,proof) if proof else remaining_alias(answer)
+        price=_money(receipt.get('price'),positive=True)
+        flags=[game[k] for k in ('wasExtraSpin','isExtraSpin') if k in game]
+        flags_ok=(all(v is True for v in flags) and (bool(flags) or receipt.get('flag_contract')=='NONE'))
+        return (game.get('mode')=='EXTRA_SPIN' and game.get('nextMode')==receipt.get('target_phase')
+            and type(left) is int and left==receipt.get('regular_left',0) and flags_ok
+            and _money(game.get('extraSpinCost'),positive=True)==price
+            and Decimal(str(step_win(game)))==-price)
+    except (ValueError,ArithmeticError):return False

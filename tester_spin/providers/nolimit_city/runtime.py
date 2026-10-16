@@ -25,8 +25,10 @@ def sanitized(data):
 
 class NolimitSession:
     def __init__(self):
+        self.direct_demo_transport=False
         self.socket=None;self.rows=[];self.capture=None;self.remembered={};self.counter=0;self.uuid=uuid.uuid4().hex;self.choice_domains={};self.pending_choice=None;self.choice_client=None;self.pending_automatic=None;self.pending_contract=None;self.extra_round=None;self.pending_repeat_reason=None
     def open(self,game,http,timeout,stop,directory):
+        self.direct_demo_transport=False
         self.timeout=max(.1,float(timeout));self.stop=stop
         response=http.get(CDN+game.symbol+'/info.json',timeout=self.timeout);response.raise_for_status()
         info=validate_client_info(response.json(),game.symbol);version=info['version']
@@ -48,6 +50,9 @@ class NolimitSession:
         self.socket=http.ws_connect(target,headers={'Origin':'https://playin.com'},timeout=self.timeout)
         reply=self._exchange({'type':'init'},directory,version=version)
         if reply.get('init')!='ok':raise Unlearned('Nolimit City: inicialización no confirmada')
+        try:require_idle_initial_state(reply)
+        except ValueError:pass # Keep declarations available; the adapter still rejects non-fresh sessions.
+        else:self.direct_demo_transport=True
         return reply
     def _receive(self):
         deadline=time.monotonic()+self.timeout;parts=[];size=0
@@ -106,10 +111,10 @@ class NolimitSession:
 
     def next_command(self,answer,directory,root_id,mode=None,*,raw_answer=None):
         from .contracts import resolve_operation
-        try:contract=resolve_operation(answer,mode,raw_answer=raw_answer,client_source=self.choice_client)
+        try:contract=resolve_operation(answer,mode,raw_answer=raw_answer,client_source=self.choice_client,direct_demo_transport=self.direct_demo_transport)
         except Unlearned:
             self._load_choice_client()
-            contract=resolve_operation(answer,mode,raw_answer=raw_answer,client_source=self.choice_client)
+            contract=resolve_operation(answer,mode,raw_answer=raw_answer,client_source=self.choice_client,direct_demo_transport=self.direct_demo_transport)
         self.pending_contract=contract
         save(directory/f'operation-{self.counter:04d}.json',contract)
         if contract['domain'] is None:
@@ -259,12 +264,20 @@ def declaration(init, *, require_idle=True):
     return modes,domains
 
 
-def normalized_response(answer, declared_options=(), declared_categories=(),declared_purchase_options=(),*,declared_catalog=None,declared_game_modes=(),allow_unresolved_state=False,client_source=None):
+def normalized_response(answer, declared_options=(), declared_categories=(),declared_purchase_options=(),*,declared_catalog=None,declared_game_modes=(),allow_unresolved_state=False,client_source=None,declared_modifier_selector=None,counter_source=None):
     """Normalize proven server fields without treating catalog entries as choices."""
     answer=dict(answer);game=dict(answer.get('game') or {})
-    if 'freespinsLeft' not in game and 'freespinsRemaining' in game:
+    from .client_counters import counter_contract,counter_from_contract
+    counter_proof=counter_contract(counter_source if counter_source is not None else client_source)
+    if counter_proof is not None and counter_proof['field'] in game:
+        game['freespinsLeft']=counter_from_contract(answer,counter_proof)
+    elif 'freespinsLeft' not in game and 'freespinsRemaining' in game:
         from .operation_fields import remaining_alias
         game['freespinsLeft']=remaining_alias(answer)
+    if type(game.get('featureBuy')) is bool:
+        if 'wasFeatureBuy' in game and game['wasFeatureBuy'] is not game['featureBuy']:
+            raise ValueError('Nolimit City: acuses de compra contradictorios')
+        game['wasFeatureBuy']=game['featureBuy']
     explicit_no_extra=game.get('wasExtraSpin') is False
     legacy=all(key in game for key in ('thisSpinWinning','totalSpinWinnings','enhancedBet','featureName','firstStage','secondStage','secondStageFsLeft'))
     if legacy:
@@ -374,8 +387,10 @@ def normalized_response(answer, declared_options=(), declared_categories=(),decl
         if 'wasExtraSpin' in (answer.get('game') or {}) and answer['game']['wasExtraSpin'] is not game['isExtraSpin']:
             raise ValueError('Nolimit City: acuses extra spin contradictorios')
         game['wasExtraSpin']=game['isExtraSpin']
-    ack=modifier_ack(game)
+    ack=modifier_ack(game,declared_selector=declared_modifier_selector)
     if ack is not None:game['wasBoostedBet']=ack
+    if isinstance(game.get('boostedBetPlayed'),str) and ack is True:
+        game.pop('boostedBetPlayed') # Canonical boolean; the original response retains its selector.
     features=answer.get('features')
     if (batch_dialect or category_dialect or _extra_response(game) or _level_response(game)) and isinstance(features,dict):
         active=features.get('active','')
@@ -429,7 +444,11 @@ class RoundLedger:
         raw_answer=answer;raw_game=answer.get('game') or {}
         from .client_money import monetary_fields
         source_candidate=(client_source is not None and 'win' not in raw_game and monetary_fields(client_source) is not None)
-        normalize_options=dict(declared_catalog=self.mode.get('declared_feature_catalog'),declared_game_modes=self.mode.get('declared_game_modes',()),allow_unresolved_state=isinstance(request,dict))
+        normalize_options=dict(declared_catalog=self.mode.get('declared_feature_catalog'),declared_game_modes=self.mode.get('declared_game_modes',()),allow_unresolved_state=isinstance(request,dict),counter_source=client_source)
+        if (self.mode['kind']=='FEATURE_SPIN' and self.mode.get('server_declared') is True
+                and self.mode.get('selector') in self.mode.get('declared_feature_options',())
+                and self.mode.get('server_type') in ('BOOSTED_BET','BOOSTED_BET_X_ROWS')):
+            normalize_options['declared_modifier_selector']=self.mode['selector']
         declaration_args=(self.mode.get('declared_feature_options',()),self.mode.get('declared_feature_categories',()),self.mode.get('declared_purchase_options',()))
         answer=normalized_response(raw_answer,*declaration_args,**normalize_options)
         client_money=False
@@ -500,7 +519,8 @@ class RoundLedger:
             delta=(confirm_literal if operation['family']=='QUOTED_LITERAL_EXTRA' else confirm_numeric)(domain,selected,answer)
             if delta<0:
                 self.extra_cost-=delta;self.numeric_extra_played=True
-                answer['_funded_extra_spin']={'target_phase':game['nextMode'],'price':domain['quoted_price'],'regular_left':game['freespinsLeft']}
+                answer['_funded_extra_spin']={'target_phase':game['nextMode'],'price':domain['quoted_price'],'regular_left':game['freespinsLeft'],
+                    'flag_contract':domain.get('flag_contract','BOOLEAN'),'remaining_counter_contract':domain.get('remaining_counter_contract')}
         if delta is None and Decimal(str(game.get('win')))<0:
             from .contracts import selection_adjustment
             delta=selection_adjustment(operation,request,answer,previous,self.win)
@@ -522,6 +542,11 @@ class RoundLedger:
                     'active':answer['features'].get('active'),'source':'normal_state_and_reconciled_wallet_credit'}}
             if (settled_state(candidate)
                     and _money(answer['balance'])==self.before-self.cost+self.win):
+                answer=candidate;self.closed=True
+        if not self.closed and answer.get('balance') is not None:
+            from .state import settled_catalog_subset
+            candidate=settled_catalog_subset(answer,self.mode)
+            if candidate is not None and _money(answer['balance'])==self.before-self.cost+self.win:
                 answer=candidate;self.closed=True
         expected=self.before-self.cost+(self.win if self.closed else Decimal(0))
         if answer.get('balance') is not None:

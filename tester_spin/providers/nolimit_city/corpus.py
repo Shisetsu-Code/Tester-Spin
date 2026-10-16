@@ -10,7 +10,7 @@ from .runtime import RoundLedger
 from .contracts import resolve_operation,confirm_operation,observed_request_matches
 
 
-def audit_exchanges(exchanges,*,client_source=None):
+def audit_exchanges(exchanges,*,client_source=None,direct_demo_transport=False):
     report={'schema':'nolimit-city/corpus-audit/v1','ok_certified':False,'steps_checked':0,
         'money_accepted_steps':0,'closed_rounds':0,'contract_actions':0,'unresolved_actions':[],
         'money_failures':[],'families':{}}
@@ -37,7 +37,7 @@ def audit_exchanges(exchanges,*,client_source=None):
         elif previous is not None:
             phase=(previous.get('game') or {}).get('nextMode')
             try:
-                contract=resolve_operation(ledger.last_answer if ledger is not None and not round_failed and hasattr(ledger,'last_answer') else previous,mode,raw_answer=previous,client_source=client_source)
+                contract=resolve_operation(ledger.last_answer if ledger is not None and not round_failed and hasattr(ledger,'last_answer') else previous,mode,raw_answer=previous,client_source=client_source,direct_demo_transport=direct_demo_transport)
                 matches,selected=observed_request_matches(contract,request)
                 if not matches:raise ValueError('OBSERVED_REQUEST_OUTSIDE_CONTRACT')
                 confirm_operation(contract,answer,selected)

@@ -24,12 +24,13 @@ def step_win(game,*,client_source=None):
     if len(set(values))!=1:raise ValueError('Nolimit City: premios de paso contradictorios')
     return game[names[0]]
 
-def modifier_ack(game):
+def modifier_ack(game,*,declared_selector=None):
     flags=[]
     for key in ('wasBoostedBet','boostedBet','boostedBetPlayed','enhancedBet'):
         if key not in game:continue
         value=game[key]
         if type(value) is bool:flags.append(value)
+        elif key=='boostedBetPlayed' and isinstance(value,str) and declared_selector is not None and value==declared_selector:flags.append(True)
         elif key=='enhancedBet' and type(value) is int and value>=0:flags.append(value>0)
         else:raise ValueError('Nolimit City: indicador de modificador inválido: '+key)
     if len(set(flags))>1:raise ValueError('Nolimit City: indicadores de modificador contradictorios')
@@ -55,7 +56,8 @@ def root_ack(game,mode,request,*,debit_confirmed=False):
         debit_ack=(debit_confirmed and mode.get('server_declared') is True
             and mode.get('selector') in mode.get('declared_feature_options',())
             and mode.get('server_type') in ('BOOSTED_BET','BOOSTED_BET_X_ROWS'))
-        if purchase is not False or (boost is not True and not (boost is None and (feature_ack or debit_ack))):
+        purchase_absent_but_boost_ack=(purchase is None and boost is True and debit_ack)
+        if (purchase is not False and not purchase_absent_but_boost_ack) or (boost is not True and not (boost is None and (feature_ack or debit_ack))):
             raise ValueError('Nolimit City: modificador no confirmado')
     else:
         if purchase is True or boost is True:raise ValueError('Nolimit City: giro normal con modificador inexplicado')
