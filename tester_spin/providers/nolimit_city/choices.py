@@ -20,6 +20,10 @@ def choice_domain(source,answer,root_mode=None):
             from .finite_choices import nested_boolean_domain
             nested=nested_boolean_domain(source,answer,ids)
             if nested is not None:candidates.append(nested)
+            else:
+                from .literal_button_choices import literal_button_domain
+                literal=literal_button_domain(source,answer,ids)
+                if literal is not None:candidates.append(literal)
             continue
         candidates.append({'state':mode,'options':ids,'available':ids,'ack_field':next(field for field in ('playerSelect','playerSelection','playerFSSelection') if type(game.get(field)) is int),'source':'CLIENT_STATIC_IDS'})
     automatic=r'automaticPickGame:\{[^{}]{0,1000}?optionSelection:(\w+)=>this\.(\w+)\(\1\)[^{}]{0,1000}?pickNeededForModes:\[([^\]]+)\]'
@@ -51,6 +55,15 @@ def confirm_choice(domain,selected,answer):
         if (game.get('mode')!=domain['state'] or game.get('nextMode')!='NORMAL'
                 or answer.get('balance') is None or not settled_state(answer)):
             raise ValueError('Nolimit City: boton sin liquidacion y acuse de fase contrastados')
+    elif domain['source']=='CLIENT_BOUND_LITERAL_BUTTONS':
+        from .protocol import _money
+        node=game
+        for key in domain['result_path']:
+            node=node.get(key) if isinstance(node,dict) else None
+        if (type(selected) is not int or game.get('mode')!=domain['state']
+                or game.get('nextMode')!=domain['target_phase']):
+            raise ValueError('Nolimit City: elección sin resultado de fase confirmado')
+        _money(node)
     elif domain['source']=='CLIENT_BOUND_NESTED_BOOLEAN':
         nested=game.get(domain['ack_path'][0])
         if (type(selected) is not int or game.get('nextMode')!=domain['target_phase'] or not isinstance(nested,dict)

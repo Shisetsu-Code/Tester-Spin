@@ -33,6 +33,7 @@ def _monetary_fields(source):
         parser=re.fullmatch(r'getParsedData:\((\w+),(\w+),(\w+)\)=>\((.*)\)',parsers[0],re.S)
         if not parser:continue
         args=parser.groups()[:3];data=re.escape(args[0])
+        if len(set(args))!=len(args):continue
         returned=expressions(parser[4])
         if not returned:continue
         # The observed comma prefix only stores a UI flag on this object.
@@ -45,12 +46,22 @@ def _monetary_fields(source):
         if any(not re.match(r'[A-Za-z_$][A-Za-z0-9_$]*:',value) for value in output):continue
         if any(sum(value.startswith(key+':') for value in output)!=1 for key in ('totalWin','totalSpinWinnings')):continue
         totals=[match[1] for value in output if (match:=re.fullmatch(r'totalWin:'+data+r'\.(\w+)',value))]
-        getters=[match[1] for value in output if (match:=re.fullmatch(r'totalSpinWinnings:this\.(\w+)\('+','.join(map(re.escape,args))+r'\)',value))]
+        getters=[match.groups() for value in output if (match:=re.fullmatch(r'totalSpinWinnings:this\.(\w+)\((\w+(?:,\w+)*)\)',value))]
         if len(totals)!=1 or len(getters)!=1:continue
-        getter=available.get(getters[0])
-        if not getter or getter[0]!=','.join(args):continue
+        name,actual_text=getters[0];actual=actual_text.split(',')
+        # The response must remain the first actual argument. Other arguments
+        # may be omitted, but never reordered, duplicated or supplied globally.
+        if (actual[0]!=args[0] or len(set(actual))!=len(actual)
+                or any(value not in args for value in actual)
+                or [args.index(value) for value in actual]!=sorted(args.index(value) for value in actual)):continue
+        getter=available.get(name)
+        if not getter or not re.fullmatch(r'\w+(?:,\w+)*',getter[0]):continue
+        formal=getter[0].split(',')
+        if len(formal)!=len(actual) or len(set(formal))!=len(formal):continue
+        member=r'(?:\.'+re.escape(name)+r'|\[\s*[\"\']'+re.escape(name)+r'[\"\']\s*\])'
+        if re.search(r'this'+member+r'\s*(?:[+*/-]?=(?!=)|\+\+|--)',body):continue
         if any(re.search(r'\b'+re.escape(arg)+r'\s*=(?!=)',value) for arg in args for value in returned[:-1]):continue
-        value=re.fullmatch(r'return '+data+r'\.(\w+)',getter[1])
+        value=re.fullmatch(r'return '+re.escape(formal[0])+r'\.(\w+)',getter[1])
         if value and not any('balance' in field.lower() for field in (value[1],totals[0])):
             candidates.append({'spin':value[1],'round':totals[0]})
     return candidates[0] if len(candidates)==1 else None

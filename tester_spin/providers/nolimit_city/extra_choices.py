@@ -100,7 +100,7 @@ def _bound_returns(source,direct_demo_transport=False):
     result=[]
     for target in sorted(candidates-{'NORMAL','EXTRA_SPIN','EXTRA_SPIN_CHECK'}):
         for left in (0,1):
-            view={'game':{'nextMode':target,'freespinsLeft':left}}
+            view={'game':{'mode':'EXTRA_SPIN','nextMode':target,'freespinsLeft':left}}
             if automatic_command(source,view,**({'direct_demo_transport':True} if direct_demo_transport is True else {}))=={'type':'zeroBet','bet':'0.00'}:
                 result.append((target,left))
     return tuple(result)
@@ -109,7 +109,21 @@ def _bound_returns(source,direct_demo_transport=False):
 def literal_domain(source,game,*,direct_demo_transport=False):
     """The yes/no dialect resumes the phase that advertised one extra spin."""
     if game.get('nextMode')!='EXTRA_SPIN':return None
-    if not all(re.search(r'zeroBet\(\{playExtraSpin:["\']'+value+r'["\']\}\)',source) for value in ('yes','no')):return None
+    # These are two wire field dialects, not game-specific aliases. Preserve
+    # the one declared by all call sites; never translate the outgoing key.
+    fields=[]
+    for field in ('playExtraSpin','extraSpin'):
+        values=re.findall(r'zeroBet\(\{'+field+r':([^{}]{1,40})\}\)',source)
+        if not values:continue
+        if len(values)!=len(re.findall(r'zeroBet\(\{'+field+r':',source)):return None
+        branches=[_selector_values(value) for value in values]
+        if any(value is None for value in branches):return None
+        literals=[literal for branch in branches for literal in branch]
+        if not all(re.fullmatch(r"[\"'](?:yes|no)[\"']",value) for value in literals):return None
+        if {value[1:-1] for value in literals}!={'yes','no'}:return None
+        fields.append(field)
+    if len(fields)!=1:return None
+    request_field=fields[0]
     price=_money(game.get('extraSpinCost'),positive=True);accumulated=_money(game.get('accumulatedRoundWin'))
     target=game.get('nextModeForExtraSpin',game.get('mode'))
     bound_returns=_bound_returns(source,direct_demo_transport)
@@ -119,7 +133,7 @@ def literal_domain(source,game,*,direct_demo_transport=False):
     flagless=('isExtraSpin' not in game and not re.search(r'\b(?:isExtraSpin|wasExtraSpin)\b',source) and bool(bound_returns))
     if type(game.get('isExtraSpin')) is not bool and not flagless:raise Unlearned('Nolimit City: indicador de giro extra no demostrado')
     domain={'state':'EXTRA_SPIN','options':['no','yes'],'available':['no','yes'],
-        'request_field':'playExtraSpin','wire_encoding':'PRESERVE_LITERAL',
+        'request_field':request_field,'wire_encoding':'PRESERVE_LITERAL',
         'ack_field':'quoted_literal_transition','source':'CLIENT_QUOTED_LITERAL_EXTRA',
         'price_source':'game.extraSpinCost','quoted_price':str(price),'quoted_accumulated':str(accumulated),
         'target_phase':target,'history_extra':game.get('isExtraSpin'),'flag_contract':'NONE' if flagless else 'BOOLEAN',

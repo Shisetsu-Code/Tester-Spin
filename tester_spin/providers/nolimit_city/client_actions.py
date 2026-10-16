@@ -123,6 +123,9 @@ def automatic_command(source,answer,*,direct_demo_transport=False):
             branch=re.search(r'^\{getAnimation\((\w+)\)\{const \w+=new \w+\.TimelineLite,\w+=\1\.nextMode===\w+\.\w+\.[A-Z_]+\|\|\w+\.\w+\.[A-Z_]+\?\1\.freespinsLeft-1:-1;return \w+\.add\(\(\)=>\{if\(\1\.nextMode===\w+\.\w+\.([A-Z_]+)\)\{const (\w+)=\{selectedIndex:[\w.]+\};\w+\.\w+\.api\.betHandler\.zeroBet\(\3\)\}else \w+\.\w+\.api\.betHandler\.zeroBet\(\);',body)
             left=game.get('freespinsLeft',answer.get('remainingFreeSpins'))
             if branch and mode!=branch[2] and type(left) is int and left>0:return result
+    from .event_actions import automatic_event_command
+    event=automatic_event_command(source,answer,_block,direct_demo_transport=direct_demo_transport)
+    if event is not None:return event
     from .fixed_signals import fixed_signal_command
     fixed=fixed_signal_command(source,answer,_block)
     if fixed is not None:return fixed

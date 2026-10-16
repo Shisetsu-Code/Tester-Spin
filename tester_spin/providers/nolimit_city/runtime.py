@@ -557,9 +557,26 @@ class RoundLedger:
                 answer=candidate;self.closed=True
         if not self.closed and answer.get('balance') is not None:
             from .state import settled_catalog_subset
-            candidate=settled_catalog_subset(answer,self.mode)
+            completed_phase=None
+            if (isinstance(operation,dict) and operation.get('schema')=='nolimit-city/operation-contract/v1'
+                    and previous.get('nextMode')==game.get('mode')
+                    and (operation.get('acknowledgment') or {}).get('phase')==game.get('mode')):
+                from .contracts import observed_request_matches,confirm_operation
+                matches,selected=observed_request_matches(operation,request or {})
+                if matches:
+                    confirm_operation(operation,raw_answer,selected)
+                    completed_phase=game['mode']
+            candidate=settled_catalog_subset(answer,self.mode,completed_phase=completed_phase)
             if candidate is not None and _money(answer['balance'])==self.before-self.cost+self.win:
                 answer=candidate;self.closed=True
+        if (not self.closed and self.win>0 and observation.get('kind')=='UNRESOLVED_MENU'
+                and answer.get('balance') is not None
+                and _money(answer['balance'])==self.before-self.cost+self.win):
+            # A coherent credit is not a wallet error. Unknown menu labels still
+            # block certification; this projection only classifies the blocker.
+            terminal_view={**answer,'features':{'active':'','available':[]},'feature_observation':{'kind':'NONE'}}
+            if settled_state(terminal_view):
+                raise Unlearned('Nolimit City: crédito reconciliado con catálogo terminal sin resolver')
         expected=self.before-self.cost+(self.win if self.closed else Decimal(0))
         if answer.get('balance') is not None:
             self.after=_money(answer['balance'])

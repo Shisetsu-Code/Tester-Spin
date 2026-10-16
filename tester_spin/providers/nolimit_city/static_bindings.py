@@ -184,6 +184,7 @@ def proves_bound_action(source,position,reference,answer,block,depth=0,*,direct_
     if not available:return False
     guard=available.get('shouldRun')
     if guard and guard[:2] not in (('', 'return!0'),('', 'return true')):return False
+    bound_available=available
     normalized={}
     runner_shape=(r'\{static run\((\w+),(\w+),(\w+)\)\{const (\w+)=\1\.concat\(\),(\w+)=\4\.shift\(\);null==\5\?\2\(\):\5\.shouldRun\(\)\?\5\.start\(\{finish:\(\)=>(\w+)\.run\(\4,\2,\3\),setSkipCallback:\3\}\):\6\.run\(\4,\2,\3\)\}\}')
     for name,(args,body,offset) in available.items():
@@ -201,14 +202,11 @@ def proves_bound_action(source,position,reference,answer,block,depth=0,*,direct_
     # active buildTimeline override. No phase or class name grants permission.
     start=available.get('start');build=available.get('buildTimeline')
     base=(r'this\.controller=(\w+),this\.tl=\w+\.gsap\.timeline\(\{onComplete:\(\)=>\{\1\.setSkipCallback\(\),\1\.finish\(\)\}\}\),this\.createSkipCallback&&this\.tl\.add\(\(\)=>\{this\.controller\.setSkipCallback\(\(\)=>\{this\.skip\(\)\}\)\},\.1\),this\.buildTimeline\(\)')
-    if start and build and re.fullmatch(base,start[1]):
-        # Alias substitution preserves all subsequent pause/mutation checks in
-        # the lifecycle recognizer; only a root alias of the proven timeline.
-        body=build[1]
-        body=re.sub(r'^(const|let|var) (\w+)=this\.tl(?=[,;])',r'\1 \2=known.gsap.timeline()',body)
-        if re.search(r'this\.tl\b',body):return False
-        synthetic='{start(){'+body+'}}'
-        if proves_zero_bet(synthetic,block):return True
+    from .presentation_progression import active_timeline_body
+    body=active_timeline_body(available)
+    if body is not None and proves_zero_bet('{start(){'+body+'}}',block):return True
+    from .presentation_progression import proves_presentation_progression
+    if proves_presentation_progression(source,bound_available,answer,block,depth):return True
     if not start:return False
     runner=re.fullmatch(r'(?:this\.\w+=\w+,)?\w+\.SimplePresentationRunner\.run\(this\.(\w+),\(\)=>[^;]+\)',start[1])
     constructor=available.get('constructor')

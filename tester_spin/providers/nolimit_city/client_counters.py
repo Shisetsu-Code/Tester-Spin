@@ -68,15 +68,20 @@ def _flat_field(source,position,owner,property_name):
     assignment=assignments[0]
     model=class_record(source,game[2]+assignment.start(),assignment[1],_block)
     if not model:return None
-    cursor=1;parsers=[]
+    cursor=1;parsers=[];getters=[]
     while cursor<len(model[0])-1:
         member=re.match(r'(?:(get|set|static) )?([\w$]+)\(([^)]*)\)\{',model[0][cursor:])
         if not member:return None
         body=_block(model[0],cursor+member.end()-1,len(model[0]))
         if not body:return None
-        if member[1] in ('get','set') and member[2]==property_name:return None
+        if member[2]==property_name:
+            if member[1]!='get' or member[3]:return None
+            getters.append(body[1:-1])
         if member[2]=='onGame' and member[1] is None:parsers.append((member[3],body[1:-1]))
         cursor+=member.end()-1+len(body)
+    if getters:
+        if len(getters)!=1:return None
+        return _getter_field(source,model,property_name,getters[0],_block)
     if len(parsers)!=1:return None
     arguments,body=parsers[0]
     parameters=re.fullmatch(r'([\w$]+)(?:,[\w$]+=(?:!0|!1))?',arguments)
@@ -101,6 +106,40 @@ def _flat_field(source,position,owner,property_name):
     if re.search(r'(?:delete\s+|(?:\+\+|--)\s*)'+re.escape(argument)+raw_property,body):return None
     if re.search(r'(?<![\w$.])'+re.escape(argument)+r'\[[^\]]{1,100}\](?:[+*/-]?=(?![=>])|\+\+|--)',body):return None
     return values[0]
+
+
+def _getter_field(source,model,property_name,body,block):
+    """Read an exact raw-field getter; the response must still contain that field."""
+    from .async_lifecycle import _owner,_aliases,_writes
+    direct=re.fullmatch(r'return this\.data\.([\w$]+)',body)
+    nullish=re.fullmatch(r'var ([\w$]+);return null!==\(\1=this\.data\.([\w$]+)\)&&void 0!==\1\?\1:0',body)
+    if direct:field=direct[1]
+    elif nullish:field=nullish[2]
+    else:return None
+    # Ordinary construction or a late prototype override cannot replace the
+    # getter that supplied the displayed counter.
+    if _writes(model[0],{'this'},property_name):return None
+    if re.search(r'this\[[^\]]+\]\s*=(?!=)',model[0]):return None
+    owner=_owner(source,model[2],block)
+    if not owner:return None
+    _,module,_=owner
+    prefix=source[max(0,model[2]-200):model[2]]
+    named=re.search(r'class ([\w$]+)(?: extends [\w$.]+)?$',prefix)
+    anonymous=re.search(r'([\w$]+\.[\w$]+)=class(?: extends [\w$.]+)?$',prefix)
+    if named:
+        seeds={named[1]}
+        seeds.update(m[1] for m in re.finditer(r'([\w$]+\.[\w$]+)='+re.escape(named[1])+r'(?=[,;}])',module))
+    elif anonymous:seeds={anonymous[1]}
+    else:return None
+    aliases=_aliases(module,seeds)
+    if aliases is None or _writes(module,aliases,'prototype'):return None
+    prototypes=_aliases(module,{alias+'.prototype' for alias in aliases})
+    if prototypes is None or _writes(module,prototypes,property_name):return None
+    targets='(?:'+'|'.join(re.escape(value) for value in aliases|prototypes)+')'
+    if re.search(r'Object\.(?:assign|defineProperty|defineProperties|setPrototypeOf)\('+targets+r'(?=[,)])',module):return None
+    raw=r'this\.data(?:\.'+re.escape(field)+r'|\[["\']'+re.escape(field)+r'["\']\])'
+    if re.search(raw+r'\s*(?:[+*/-]?=(?![=>])|\+\+|--)',model[0]):return None
+    return field
 
 
 def regular_counter(answer,source):

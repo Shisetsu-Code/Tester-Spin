@@ -80,19 +80,23 @@ def settled_state(answer):
     return bool(counters) and all(type(value) is int and value==0 for value in counters)
 
 
-def settled_catalog_subset(answer,mode):
-    """Offer a terminal-only view; the caller must prove the actual wallet settlement."""
+def settled_catalog_subset(answer,mode,*,completed_phase=None):
+    """Terminal view; caller proves wallet and any non-normal phase completion."""
     game=answer.get('game') or {};features=answer.get('features') or {}
     if (answer.get('feature_observation') or {}).get('kind')!='UNRESOLVED_MENU':return None
-    if game.get('mode')!='NORMAL' or game.get('nextMode')!='NORMAL':return None
-    if features.get('active') not in (None,''):return None
+    if game.get('nextMode')!='NORMAL':return None
+    if game.get('mode')!='NORMAL' and (not isinstance(completed_phase,str) or game.get('mode')!=completed_phase):return None
+    active=features.get('active')
+    purchase_label=(mode.get('kind')=='PURCHASE' and active==mode.get('selector')
+        and active in mode.get('declared_purchase_options',()) and game.get('wasFeatureBuy') is True)
+    if active not in (None,'') and not purchase_label:return None
     try:values=_labels(features.get('available'))
     except ValueError:return None
     purchases=mode.get('declared_purchase_options',())
     if not mode.get('server_declared') or not values or not set(values)<=set(purchases):return None
     for node in (answer,game):
         if any(node.get(key) not in (None,False,[],{}) for key in ('screens','pickAndClick','gambleOptions','gambleCollect')):return None
-    candidate={**answer,'features':{**features,'available':[]},
+    candidate={**answer,'features':{**features,'available':[],'active':''},
         'feature_observation':{'kind':'SETTLED_CATALOG_SUBSET','available':values,
             'source':'declared_purchase_subset_normal_counters_and_reconciled_wallet'}}
     return candidate if settled_state(candidate) else None

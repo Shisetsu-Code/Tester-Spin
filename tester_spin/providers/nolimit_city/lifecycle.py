@@ -85,6 +85,89 @@ def _paren_end(text,start):
     return None
 
 
+def _without_shadowed_arrows(text,name):
+    """Ignore lexical uses of a callback parameter that shadows an outer alias."""
+    pattern=re.compile(r'(?<![\w$.])(?:'+re.escape(name)+r'|\('+re.escape(name)+r'\))=>')
+    out=[];cursor=0;quote=None;escaped=False;i=0
+    while i<len(text):
+        char=text[i]
+        if quote:
+            if escaped:escaped=False
+            elif char=='\\':escaped=True
+            elif char==quote:quote=None
+            i+=1;continue
+        if char in ('"',"'",'`'):quote=char;i+=1;continue
+        match=pattern.match(text,i)
+        loop=re.match(r'for\(let '+re.escape(name)+r'=[0-9]+;'+re.escape(name)+r'<=[0-9]+;'+re.escape(name)+r'\+\+\)',text[i:])
+        if not match and not loop:i+=1;continue
+        start=match.end() if match else i+loop.end()
+        if start<len(text) and text[start]=='{':
+            end=_paren_end(text,start)
+            if end is None:return text
+            end+=1
+        else:
+            end=start;stack=[];inner_quote=None;inner_escaped=False
+            while end<len(text):
+                value=text[end]
+                if inner_quote:
+                    if inner_escaped:inner_escaped=False
+                    elif value=='\\':inner_escaped=True
+                    elif value==inner_quote:inner_quote=None
+                elif value in ('"',"'",'`'):inner_quote=value
+                elif value in '([{':stack.append(value)
+                elif value in ')]}':
+                    if not stack:break
+                    if '([{'.index(stack.pop())!=')]}'.index(value):return text
+                elif value in ',;' and not stack:break
+                end+=1
+        out.extend([text[cursor:i],'__shadowed_callback']);cursor=end;i=end
+    return ''.join(out)+text[cursor:]
+
+
+def expanded_expressions(text):
+    """Separate self-returning GSAP chains without swallowing unknown methods."""
+    result=[]
+    for part in expressions(text):
+        prefix=re.match(r'(?:(?:const|let|var) (\w+)=|return )((?:\w+\.(?:gsap|default)\.timeline|new \w+\.TimelineLite)\()',part)
+        if not prefix:
+            root=re.match(r'(\w+)\.(add|addLabel|to|from|fromTo|set)\(',part)
+            if not root:result.append(part);continue
+            end=_paren_end(part,root.end()-1)
+            if end is None:return None
+            tail=part[end+1:]
+            if not tail:result.append(part);continue
+            calls=[part[:end+1]];cursor=0
+            while cursor<len(tail):
+                method=re.match(r'\.(add|addLabel|to|from|fromTo|set)\(',tail[cursor:])
+                if not method:return None
+                close=_paren_end(tail,cursor+method.end()-1)
+                if close is None:return None
+                calls.append(root[1]+tail[cursor:close+1]);cursor=close+1
+            result.extend(calls);continue
+        end=_paren_end(part,prefix.end()-1)
+        if end is None:return None
+        tail=part[end+1:]
+        if not tail:result.append(part);continue
+        name=prefix[1]
+        if name is None:
+            index=0
+            while '__returned_timeline_'+str(index) in text:index+=1
+            name='__returned_timeline_'+str(index)
+        declaration='const '+name+'='+part[prefix.start(2):end+1]
+        calls=[];cursor=0
+        while cursor<len(tail):
+            method=re.match(r'\.(add|addLabel|to|from|fromTo|set|totalProgress|timeScale|duration)\(',tail[cursor:])
+            if not method:return None
+            close=_paren_end(tail,cursor+method.end()-1)
+            if close is None:return None
+            arguments=tail[cursor+method.end():close]
+            if method[1]=='timeScale' and (not re.fullmatch(r'[0-9]+(?:\.[0-9]+)?',arguments) or float(arguments)<=0):return None
+            calls.append(name+tail[cursor:close+1]);cursor=close+1
+        result.extend([declaration,*calls])
+        if prefix[1] is None:result.append('return '+name)
+    return result
+
+
 def proves_zero_bet(body,block,*,entry="start"):
     available=methods(body,block)
     if not available:return False
@@ -99,7 +182,8 @@ def proves_zero_bet(body,block,*,entry="start"):
     def effects(text,depth=0,known_timelines=()):
         if depth>8:return False
         while text.startswith('(') and text.endswith(')') and expressions(text[1:-1]):text=text[1:-1].strip()
-        timelines=set(known_timelines);arrays={};parts=expressions(text)
+        timelines=set(known_timelines);arrays={};parts=expanded_expressions(text)
+        if parts is None:return False
         for part in parts:
             if part.startswith('if('):
                 end=_paren_end(part,2)
@@ -138,8 +222,9 @@ def proves_zero_bet(body,block,*,entry="start"):
             if timeline:
                 config=timeline[2] if timeline[2] is not None else timeline[3] or ''
                 name=re.escape(timeline[1])
-                mutated=any(other!=part and re.search(r'\b'+name+r'(?:\s*=(?!=)|\.(?:pause|kill|stop|clear|reverse|reversed)\()',other) for other in parts)
+                mutated=any(other!=part and re.search(r'\b'+name+r'(?:\s*=(?![=>])|\.(?:pause|kill|stop|clear|reverse|reversed)\()',_without_shadowed_arrows(other,timeline[1])) for other in parts)
                 for other in parts:
+                    other=_without_shadowed_arrows(other,timeline[1])
                     if other!=part and re.search(r'\b'+name+r'\b',other):
                         known=re.sub(r'\b'+name+r'\.(?:add|addLabel|to|from|fromTo|set|totalProgress|timeScale|duration)\b','__known_timeline',other)
                         if re.search(r'\b'+name+r'\b',known):mutated=True

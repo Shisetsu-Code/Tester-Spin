@@ -24,11 +24,11 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
         'free_spin_continuation':{'type':'zeroBet','bet':'0.00'},
         'selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
         'extra_spin_selection_primitive':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
-        'literal_extra_spin_monetary_contract':{'field':'playExtraSpin','domain':'client_declared_yes_no','price':'current_offer.extraSpinCost','funding':'pending_round_prize','accept':'exact_negative_quote_accumulated_debit_client_bound_return_counter_boolean_or_client_flagless_dialect','reject':'zero_delta_NORMAL_wallet_settlement_history_flag_may_persist_only_after_prior_extra','funded_continuation':'one_zeroBet_after_verified_debit','repeat':'redeclare_quote_each_offer'},
+        'literal_extra_spin_monetary_contract':{'fields':['playExtraSpin','extraSpin'],'wire_field':'one_unambiguous_current_client_dialect','domain':'client_declared_yes_no','price':'current_offer.extraSpinCost','funding':'pending_round_prize','accept':'exact_negative_quote_accumulated_debit_client_bound_return_counter_boolean_or_client_flagless_dialect','reject':'zero_delta_NORMAL_wallet_settlement_history_flag_may_persist_only_after_prior_extra','funded_continuation':'one_zeroBet_after_verified_debit','repeat':'redeclare_quote_each_offer'},
         'source_bound_automatic_observations':{'source':'current_client_sha256','payload':'exact_zero_stake_request_including_constant_signal_parameters','ack':'confirmed_entry_in_requested_phase','money':'round_ledger_still_required','context':'direct_fresh_demo_transport_required_for_UI_only_action_spins_exclusion','category':'continuation_not_purchase_or_antebet'},
         'native_paid_extra_return':{'schema':'nolimit-city/single-extra-freespin/v1','phase':'FREESPIN','counters':'regular_one_and_explicit_total_one','menu':'no_pending_decisions','receipt':'current_quote_exact_negative_step_and_accumulated_debit','priority':'explicit_server_target_remains_authoritative'},
-        'client_remaining_counter':{'source':'same_client_owner_keypad_direct_or_parsed_model_counter_with_sha256','values':'finite_nonnegative_safe_integral_number','outer_total':'independent_nonnegative_integer','conflict':'canonical_counter_must_agree'},
-        'settled_catalog_subset':{'scope':'terminal_observation_only','domain':'current_init_declared_purchase_subset','proof':'NORMAL_NORMAL_no_active_decision_zero_counters_and_reconciled_wallet','unknown_labels':'remain_unresolved'},
+        'client_remaining_counter':{'source':'same_client_owner_keypad_direct_or_parsed_model_counter_with_sha256','values':'finite_nonnegative_safe_integral_number','outer_total':'independent_nonnegative_integer','flat_getter':'exact_raw_field_or_nullish_zero_with_actual_raw_field_required','conflict':'canonical_counter_must_agree'},
+        'settled_catalog_subset':{'scope':'terminal_observation_only','domain':'current_init_declared_purchase_subset','proof':'NORMAL_or_acknowledged_completed_phase_no_active_decision_zero_counters_and_reconciled_wallet','unknown_labels':'remain_unresolved'},
         'numeric_extra_spin_monetary_contract':{'field':'playerSelectedExtraSpin','wire_type':'current_client_literal','funding':'pending_round_prize','price':'previous.game.extraSpinCost','accept':'exact_negative_quote_and_wasExtraSpin_true_and_quoted_target','reject':'zero_delta_and_wasExtraSpin_false_and_NORMAL','funded_continuation':'one_zeroBet_after_verified_debit','settlement':'round_ledger_required'},
         'extra_spin_monetary_contract':{'price':'previous.game.extraSpinCost','funding':'accumulatedRoundWin',
             'yes_ack':'mode=EXTRA_SPIN,nextMode=FREESPIN,freespinsLeft=1,isExtraSpin=true,win=-quoted_price',
@@ -46,6 +46,7 @@ SPEC=ProviderFarmSpec(provider='nolimit_city',protocol_family='nolimit-city-rc4-
             'selectedIndex':{'type':'zeroBet','bet':'0.00','playerInteraction':{'selectedIndex':'{choice:string}'}},
             'playExtraSpin':{'type':'zeroBet','bet':'0.00','playerInteraction':{'playExtraSpin':'{choice:yes|no}'}},
             'gambleCollected':{'type':'gambleBet','bet':'0.00','playerInteraction':{'gambleCollected':True}}},
+        'bound_literal_button_selection':{'source':'CLIENT_BOUND_LITERAL_BUTTONS','binding':'current_phase_runner_view_constructor_literal_buttons_same_argument_sdk_forward','ack':'requested_phase_then_client_declared_target_and_finite_nonnegative_result_path','money':'ROUND_LEDGER','category':'nested_choice_not_commercial_purchase'},
         'bound_settlement_selection':{'source':'CLIENT_BOUND_SETTLEMENT_BUTTONS','binding':'current_phase_idle_panel_buttons_callbacks_literal_ids_zero_stake_sdk','availability':'current_root_selector_client_model_predicate','ack':'requested_phase_NORMAL_no_pending_counters_wallet_required','money':'ROUND_LEDGER','category':'nested_choice_not_commercial_purchase'},
         'choice_domain_source':'current_client_static_ids_or_server_array_with_client_verified_bounds',
         'response_aliases':{'boostedBet':'wasBoostedBet','boostedBetPlayed':'wasBoostedBet','enhancedBet':'wasBoostedBet_bool_or_nonnegative_enum','step_win':['thisSpinWinning','thisSpinWinnings','totalSpinWinnings'],'scope':'proven_monetary_response_signatures','wasExtraSpin':'boolean_extra_aliases_must_agree_true_requires_current_extra_contract'},
@@ -260,7 +261,7 @@ class NolimitCityProvider(ProviderAdapter):
             contract['ready']=False;contract['unresolved'].append('NOLIMIT_CURRENT_MONEY_AND_RETURN_REQUIRED')
         if any(set(domain.get('options',[]))-set(domain.get('covered',[])) for mode in roots for domain in mode.get('choice_domains',[])):
             contract['ready']=False;contract['unresolved'].append('NOLIMIT_CHOICES_NOT_COVERED')
-        if any((not repeat_complete(domain) or domain.get('request_field') in ('playExtraSpin','playerSelectedExtraSpin') and domain.get('repeat_purchase_policy')!=POLICY) for mode in roots for domain in mode.get('choice_domains',[])):
+        if any((not repeat_complete(domain) or domain.get('request_field') in ('playExtraSpin','extraSpin','playerSelectedExtraSpin') and domain.get('repeat_purchase_policy')!=POLICY) for mode in roots for domain in mode.get('choice_domains',[])):
             contract['ready']=False;contract['unresolved'].append('NOLIMIT_REPEAT_PURCHASE_NOT_COMPLETE')
         return contract
 
@@ -269,6 +270,8 @@ class NolimitCityProvider(ProviderAdapter):
         static=(contract.get('protocol') or {}).get('static') or {}
         if any('SETTLED_CATALOG_SUBSET' in (m.get('options') or {}).get('settlement_observations',[]) for m in contract.get('modes',[])):
             if static.get('settled_catalog_subset')!=SPEC.protocol_static['settled_catalog_subset']:errors.append('NOLIMIT_SETTLED_CATALOG_SUBSET_REQUIRED')
+        if any(d.get('source')=='CLIENT_BOUND_LITERAL_BUTTONS' for m in contract.get('modes',[]) for d in (m.get('options') or {}).get('choice_domains',[])):
+            if static.get('bound_literal_button_selection')!=SPEC.protocol_static['bound_literal_button_selection']:errors.append('NOLIMIT_BOUND_LITERAL_BUTTON_SELECTION_REQUIRED')
         if any(d.get('remaining_counter_contract') for m in contract.get('modes',[]) for d in (m.get('options') or {}).get('choice_domains',[])):
             if static.get('client_remaining_counter')!=SPEC.protocol_static['client_remaining_counter']:errors.append('NOLIMIT_CLIENT_COUNTER_REQUIRED')
         if static.get('verification_contract')!='nolimit-city/verified-runtime/v1':errors.append('NOLIMIT_CURRENT_VERIFICATION_REQUIRED')
@@ -280,7 +283,7 @@ class NolimitCityProvider(ProviderAdapter):
         if any((mode.get('options') or {}).get('choice_domains') for mode in contract.get('modes',[])):
             if static.get('selection_primitive')!=SPEC.protocol_static['selection_primitive']:
                 errors.append('NOLIMIT_SELECTION_PRIMITIVE_REQUIRED')
-        if any(domain.get('request_field')=='playExtraSpin' for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])):
+        if any(domain.get('request_field') in ('playExtraSpin','extraSpin') for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])):
             for key in ('extra_spin_selection_primitive','extra_spin_monetary_contract'):
                 if static.get(key)!=SPEC.protocol_static[key]:errors.append('NOLIMIT_EXTRA_SPIN_CONTRACT_REQUIRED')
         if any(set(domain.get('options',[]))-set(domain.get('covered',[])) for mode in contract.get('modes',[]) for domain in (mode.get('options') or {}).get('choice_domains',[])):
@@ -310,7 +313,7 @@ class NolimitCityProvider(ProviderAdapter):
         if any(domain.get('source')=='CLIENT_BOUND_SETTLEMENT_BUTTONS' for domain in domains):
             if static.get('bound_settlement_selection')!=SPEC.protocol_static['bound_settlement_selection']:
                 errors.append('NOLIMIT_BOUND_SETTLEMENT_SELECTION_REQUIRED')
-        if any(not repeat_complete(domain) or domain.get('request_field') in ('playExtraSpin','playerSelectedExtraSpin') and domain.get('repeat_purchase_policy')!=POLICY for domain in domains):errors.append('NOLIMIT_REPEAT_PURCHASE_NOT_COMPLETE')
+        if any(not repeat_complete(domain) or domain.get('request_field') in ('playExtraSpin','extraSpin','playerSelectedExtraSpin') and domain.get('repeat_purchase_policy')!=POLICY for domain in domains):errors.append('NOLIMIT_REPEAT_PURCHASE_NOT_COMPLETE')
         if any(domain.get('repeat_purchase_policy')==POLICY for domain in domains):
             if static.get('repeat_extra_purchase_policy')!=SPEC.protocol_static['repeat_extra_purchase_policy']:
                 errors.append('NOLIMIT_REPEAT_PURCHASE_POLICY_REQUIRED')
