@@ -74,7 +74,7 @@ class CatalogProvider(ProviderAdapter):
      learned=inspect_evidence(json.loads(evidence.read_text(encoding='utf-8')),game.symbol)
      result.structural_map['playtech_protocol']=learned
      result.feature_domains=learned['feature_domains']
-     result.error=f"GPAS: {len(learned['costs'])} declaraciones de coste recuperadas; falta verificar ejecución y cobertura de ramas en sesión nueva."
+     result.error=f"GPAS: {len(learned['effective_modes'])} modalidades declaradas, {len(learned['contexts'])} contextos de apuesta; falta verificar ejecución y cobertura de ramas en sesión nueva."
     except (ValueError,TypeError,OSError) as exc:
      result.error='Evidencia Playtech no válida para este juego: '+str(exc)
   progress(result.error);return result

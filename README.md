@@ -127,3 +127,18 @@ El intérprete configurado necesita Playwright y Chromium para las capturas.
 modifican la base. Configuración local, HAR y logs no se publican. La captura
 pasiva obtiene inicialización y tráfico espontáneo; no pulsa menús ni reproduce
 la rama que falló. Esa rama se puede capturar con la selección humana anterior.
+
+### Configuración GPAS por contexto
+
+El lector resuelve `scope` como el cliente capturado: deben coincidir todas sus
+claves; un valor de ámbito en lista acepta los valores de esa lista. Las filas
+que coinciden se combinan en el orden del servidor, conservando propiedades
+anidadas y reemplazando listas completas. No se concatenan opciones antiguas.
+
+`default` y `freespin` son contextos. Un mismo identificador de coste con la
+misma declaración se agrupa como una modalidad observada en varios contextos;
+si cambia cualquier parámetro, se conserva separado. Los tamaños de apuesta,
+límites y capacidades quedan ligados a cada contexto. Se mantienen las filas
+originales y sus referencias para auditar las sustituciones. Una configuración
+con errores no aporta modalidades efectivas para ejecutar. Nada de esto prueba
+por sí solo compras, antebets, cobertura de rondas ni un resultado OK.
