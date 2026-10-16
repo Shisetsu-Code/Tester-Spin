@@ -1,5 +1,7 @@
 # Evidencia GPAS: selección de coste (2026-10-16)
 
+Nota histórica de la fase del lector de HAR. El ejecutor incorporado después se documenta en [PLAYTECH_EXECUTION.md](PLAYTECH_EXECUTION.md); las menciones a ejecución pendiente y las cifras de pruebas de esta nota corresponden a esa fase anterior.
+
 `round_evidence` conserva en `stake_selection` los campos presentes de `gameData`: `stakeCostUuid`, `stakeCostName`, `stakeCostParameters` y `baseCostMultiplier`. Copia los valores sin normalizar ni completar ausencias; un objeto vacío significa selección no observada. No enlaza automáticamente una declaración, calcula precios ni autoriza comandos.
 
 Base: lectura estática del serializador GPAS capturado, recurso `http:25` de la muestra privada `bb37d8a224f013071fc8ff7a`. El lector y escritor de datos de ronda incluyen UUID, nombre, parámetros y multiplicador; `stakeCostId` aparece en otro objeto (saldo personal), por lo que no se trasladó al contrato de ronda. Ningún script capturado fue ejecutado.

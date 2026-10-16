@@ -60,7 +60,7 @@ class CatalogProvider(ProviderAdapter):
    path.write_text(json.dumps(metadata,ensure_ascii=False,indent=2),encoding='utf-8')
    found.append(game)
    if on_game:on_game(game)
-  progress(f'{self.display_name}: {len(found)} juegos; ejecutor pendiente de protocolo.')
+  progress(f'{self.display_name}: {len(found)} juegos; '+('ejecutor disponible para contratos reconocidos.' if self.execution_supported else 'ejecutor pendiente de protocolo.'))
   return found
  def test_game(self,game,*,spins,timeout_s,stop_event,progress):
   result=GameTestResult(self.key,game.slug,game.name,game.url,spins,0,spins,'PARCIAL',symbol=game.symbol)
