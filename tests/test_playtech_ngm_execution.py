@@ -281,3 +281,56 @@ def test_adapter_analyzes_saved_har_after_session_closes(tmp_path):
     report=json.loads((Path(result.run_dir)/'ngm-har-contracts.json').read_text(encoding='utf-8'))
     assert report['request_count']==3 and not report['network_used']
     assert result.structural_map['playtech_protocol']['har_analysis']['source_matches_session'] is True
+
+
+def test_free_continuation_requires_settled_free_feature_and_is_never_retried(tmp_path):
+    from types import SimpleNamespace
+    session,_=make_runtime(tmp_path)
+    session.ledger=apply(round_events()[:-2])
+    session.manifest={'configuration':{'features':{'free-spins':{'type':'free-spins'}}},'controls':[{'id':'start','type':'ibutton'}]}
+    calls=[]
+    def evaluate(expression):
+        if '__testerNgmState' in expression:return {'feature':{'current':'regular','pending':'free-spins'},'control':{'id':'start','ready':True}}
+        calls.append(expression)
+    frame=SimpleNamespace(evaluate=evaluate)
+    session._try_free_continuation(frame)
+    session._try_free_continuation(frame)
+    assert calls==['window.__testerNgmStart()']
+    assert len(session.continuations)==1
+    session.manifest['configuration']['features']['free-spins']['free']=False
+    session.continuation_tokens.clear()
+    session._try_free_continuation(frame)
+    assert len(calls)==1
+
+
+def test_free_bonus_rejects_an_extra_debit_even_if_final_balance_is_reconciled():
+    ledger=apply(round_events()[:-2]);ledger.accept('message',{'classifier':'ISetGameBalanceRequest','amount':ledger.balance-10})
+    ledger.accept('message',{'classifier':'ISetGameBalanceRequest','amount':1000-ledger.stake+ledger.win})
+    for kind,value in round_events()[-2:]:ledger.accept(kind,value)
+    assert 'UNDECLARED_CONTINUATION_DEBIT' in ledger.issues
+
+
+def test_continuation_does_not_bypass_disabled_control_or_modal(tmp_path):
+    from types import SimpleNamespace
+    session,_=make_runtime(tmp_path);session.ledger=apply(round_events()[:-2])
+    session.manifest={'configuration':{'features':{'free-spins':{'type':'free-spins'}}},'controls':[{'id':'start','type':'ibutton'}]}
+    calls=[]
+    frame=SimpleNamespace(evaluate=lambda expression: {'feature':{'current':'regular','pending':'free-spins'},'control':{'id':'start','ready':False}} if '__testerNgmState' in expression else calls.append(expression))
+    session._try_free_continuation(frame)
+    session.popups={'unknown':True}
+    frame.evaluate=lambda expression:calls.append(expression)
+    session._try_free_continuation(frame)
+    assert not calls
+
+
+@pytest.mark.parametrize('absent,expected',[(False,True),(True,False),(None,True)])
+def test_metadata_candidate_requires_observed_missing_handler(tmp_path,absent,expected):
+    import json
+    from types import SimpleNamespace
+    session,_=make_runtime(tmp_path);session.ledger=apply(round_events()[:-2])
+    session.passive_roles={'BonusNotice':'unhandled_candidate'}
+    value={'spin':None,'requestClass':'BonusNotice','handlerAbsent':absent}
+    row={'type':'offline.request','frame':'https://cachedownload.playtechone.com/ngmdistributed/legacy/1/index.html','data':{'value':value}}
+    session._console(SimpleNamespace(text='__TESTER_NGM__'+json.dumps(row)))
+    assert ('NGM_COMMAND_UNBOUND' in session.ledger.errors) is expected
+    assert session.ledger.spins==1

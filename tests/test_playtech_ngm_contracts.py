@@ -139,3 +139,63 @@ def test_platform_and_abstract_declarations_are_retained_separately_from_wire_re
     declarations={r['name']:r for r in report['source_declarations']}
     assert declarations['ShowHelpRequest']['channel']=='platform'
     assert declarations['PlatformRequest']['concrete'] is False
+
+
+def test_inherited_buttons_resolve_template_type_and_keep_provenance():
+    document=json.loads(json.dumps(MANIFEST))
+    document['ui']={'base':{'type':'ibutton','cursor':'hand'},'derived':{'@P':{'#ID':'ui/base'},'shortcut':'space'},'bar':{'content':[{'id':'start','@P':{'#ID':'ui/derived'}}]}}
+    report=functional_manifest(document,'example')
+    start=next(c for c in report['controls'] if c.get('id')=='start')
+    assert start['type']=='ibutton' and start['shortcut']=='space'
+    assert start['template_refs']==['/ui/derived','/ui/base']
+    assert start['ref']=='/ui/bar/content/0'
+    assert report['inventory_state']=='UNKNOWN'
+
+
+def test_invalid_template_references_are_explicit_and_do_not_invent_controls():
+    document=json.loads(json.dumps(MANIFEST))
+    document['ui']={'a':{'@P':{'#ID':'ui/b'}},'b':{'@P':{'#ID':'ui/a'}},'bad':{'@P':{'#ID':'ui/missing'}}}
+    report=functional_manifest(document,'example')
+    assert report['unresolved_templates']
+    assert not report['controls']
+
+
+def test_wire_subclasses_without_request_suffix_resolve_boxed_enum_ids():
+    source=CLIENT+"""
+    register(105,1,flags);var parent=type(ns,'AbstractGameRequest',105,root);
+    function Wrapper(v){this.value=v}
+    function initialize(){initialize=noop;wire=(enumInit(),BonusEnum).value.value}
+    function enumInit(){enumInit=noop;BonusEnum=new Wrapper(box(48265))}
+    function Notice(){initialize();base.call(this,box(wire))}
+    register(713,105,{713:1},Notice);var notice=type(ns,'ExampleBonusStarted',713,parent);
+    function noticeWriter(req,out){var model,v;check(req,713);model=req;v=model.id;v!=null&&put(out,'ID',number(v))}
+    """
+    row=next(r for r in request_catalog(source) if r['name']=='ExampleBonusStarted')
+    assert row['message_id']==48265 and row['fields']=={'ID':'id'}
+    assert row['id_evidence']=='boxed_enum'
+    ambiguous=source+'BonusEnum=new Wrapper(box(999));'
+    assert not any(r['name']=='ExampleBonusStarted' for r in request_catalog(ambiguous))
+
+
+def test_wire_message_without_request_suffix_remains_pending_if_unbound():
+    data=har();data['log']['entries'][0]['response']['content']['text']+="register(105,1,flags);var parent=type(ns,'AbstractGameRequest',105,root);register(998,105,{998:1},Missing);var m=type(ns,'BonusNotice',998,parent);"
+    assert 'NGM_REQUEST_CONTRACT_UNBOUND:BonusNotice' in analyze_har(data,'example')['unresolved']
+
+
+def test_indirect_id_needs_constructor_initialization_not_just_a_global_table():
+    source=CLIENT+"""
+    register(105,1,flags);var parent=type(ns,'AbstractGameRequest',105,root);
+    function Wrapper(v){this.value=v}
+    function initialize(){wire=(enumInit(),BonusEnum).value.value}
+    function enumInit(){BonusEnum=new Wrapper(box(48265))}
+    function Notice(){base.call(this,box(wire))}
+    register(713,105,{713:1},Notice);var notice=type(ns,'ExampleBonusStarted',713,parent);
+    function noticeWriter(req,out){var model,v;check(req,713);model=req;v=model.id;v!=null&&put(out,'ID',number(v))}
+    """
+    assert not any(r['name']=='ExampleBonusStarted' for r in request_catalog(source))
+
+
+def test_metadata_envelope_is_only_a_candidate_not_passive_authorization():
+    from tester_spin.providers.playtech.ngm_contracts import passive_request_roles
+    row={'name':'BuyFeature','wire_message':True,'fields':{'ID':'k','umid':'n','windowId':'j'},'declared_fields':['ID','umid','windowId'],'unresolved_fields':[]}
+    assert passive_request_roles([row])=={'BuyFeature':'unhandled_candidate'}

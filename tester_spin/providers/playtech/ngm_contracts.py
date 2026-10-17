@@ -32,7 +32,10 @@ def source_declarations(source):
     concrete = {match[1] for match in re.finditer(
         NAME+r'\((\d+),\d+,(?:\{[^{}]*\}|'+NAME+r'),'+NAME+r'\)', source)}
     rows = []
-    for match in re.finditer(NAME+r"\(("+NAME+r"),['\"]([^'\"]+Request)['\"],(\d+),[^;()]*\)", source):
+    wire = set(_wire_declarations(source))
+    for match in re.finditer(NAME+r"\(("+NAME+r"),['\"]([^'\"]+)['\"],(\d+),[^;()]*\)", source):
+        if (match[2], match[3]) not in wire:
+            continue
         values = constants.get(match[1], set())
         rows.append(dict(name=match[2], namespace=next(iter(values)) if len(values) == 1 else None,
                          concrete=match[3] in concrete))
@@ -45,6 +48,62 @@ def source_declarations(source):
     return rows
 
 
+
+def _wire_declarations(source):
+    """Names are descriptive; membership comes from the declared wire base."""
+    declarations = list(re.finditer(NAME+r"\([^;()]*['\"]([^'\"]+)['\"],(\d+),[^;()]*\)", source))
+    base = {m[2] for m in declarations if m[1] == 'AbstractGameRequest'}
+    parents = {}
+    for m in re.finditer(NAME+r'\((\d+),(\d+),(?:\{[^{}]*\}|'+NAME+r')(?:,'+NAME+r')?\)', source):
+        parents.setdefault(m[1], set()).add(m[2])
+    def wire(type_id):
+        seen = set()
+        while type_id not in seen and len(seen) < 64:
+            if type_id in base:
+                return True
+            seen.add(type_id)
+            choices = parents.get(type_id, set())
+            if len(choices) != 1:
+                return False
+            type_id = next(iter(choices))
+        return False
+    return [(m[1], m[2]) for m in declarations if m[1].endswith('Request') or wire(m[2])]
+
+
+def _message_id(body, functions, source):
+    direct = re.findall(r'\.call\(this,('+NAME+r')\((\d+)\)\)', body)
+    if len(direct) == 1:
+        return int(direct[0][1]), 'literal'
+    calls = re.findall(r'\.call\(this,('+NAME+r')\(('+NAME+r')\)\)', body)
+    if len(calls) != 1:
+        return None
+    boxer, variable = calls[0]
+    # A targeted lookup also handles large enum initializers omitted by the
+    # bounded function reader. No expressions from captured code are evaluated.
+    assignments = list(re.finditer(r'(?<![\w$.])'+re.escape(variable)+r'=(?![=])([^;{}]{1,256})', source))
+    initializers = [name for name, (_, init_body) in functions.items()
+                    if re.search(r'(?<![\w$.])'+re.escape(variable)+r'=', init_body)
+                    and re.search(r'(?<![\w$])'+re.escape(name)+r'\(\);', body)]
+    if len(initializers) != 1:
+        return None
+    expressions = [m[1] for m in assignments if m[1] != '0']
+    if len(expressions) != 1:
+        return None
+    enum = re.fullmatch(r'\(('+NAME+r')\(\),('+NAME+r')\)\.('+NAME+r')\.('+NAME+r')', expressions[0])
+    if not enum:
+        return None
+    writes = list(re.finditer(r'(?<![\w$.])'+re.escape(enum[2])+r'=(?![=])([^;{},]{1,256})', source))
+    if len(writes) != 1:
+        return None
+    value = re.fullmatch(r'new ('+NAME+r')\('+re.escape(boxer)+r'\((\d+)\)\)', writes[0][1])
+    if not value:
+        return None
+    args, wrapper = functions.get(value[1], ([], ''))
+    if len(args) != 1 or wrapper != 'this.'+enum[3]+'='+args[0]:
+        return None
+    return int(value[2]), 'boxed_enum'
+
+
 def request_catalog(source):
     """Class + constructor + serializer bindings, with unbound fields explicit."""
     if len(source.encode('utf-8')) > MAX_BODY:
@@ -55,8 +114,8 @@ def request_catalog(source):
     for match in re.finditer(NAME+r'\((\d+),\d+,(?:\{[^{}]*\}|'+NAME+r'),('+NAME+r')\)', source):
         registrations.setdefault(match[1], set()).add(match[2])
     declarations = {}
-    for match in re.finditer(NAME+r"\([^;()]*['\"]([^'\"]+Request)['\"],(\d+),[^;()]*\)", source):
-        declarations.setdefault(match[1], set()).add(match[2])
+    for label, type_id in _wire_declarations(source):
+        declarations.setdefault(label, set()).add(type_id)
     rows = []
     for label, type_ids in declarations.items():
         if len(type_ids) != 1:
@@ -67,8 +126,8 @@ def request_catalog(source):
             continue
         constructor = next(iter(constructors))
         body = functions.get(constructor, ([], ''))[1]
-        ids = re.findall(r'\.call\(this,'+NAME+r'\((\d+)\)\)', body)
-        if len(ids) != 1:
+        message = _message_id(body, functions, source)
+        if message is None:
             continue
         serializers = [(fn, args, body) for fn, (args, body) in functions.items()
                        if len(args) == 2 and re.search(NAME+r'\('+re.escape(args[0])+','+type_id+r'\)', body)]
@@ -115,8 +174,8 @@ def request_catalog(source):
             unresolved.add('OUTPUT_USE_UNBOUND')
         for key in unresolved:
             fields.pop(key, None)
-        rows.append(dict(name=label, message_id=int(ids[0]), class_id=int(type_id),
-            constructor=constructor, serializer=serializer, fields=fields,
+        rows.append(dict(name=label, message_id=message[0], id_evidence=message[1], class_id=int(type_id),
+            constructor=constructor, serializer=serializer, fields=fields, wire_message=not label.endswith('Request'),
             declared_fields=sorted(declared), unresolved_fields=sorted((declared-set(fields)) | unresolved)))
     counts = {}
     for row in rows:
@@ -129,7 +188,7 @@ def functional_manifest(document, code):
     config = document.get('config') if isinstance(document, dict) else None
     if not isinstance(config, dict) or config.get('game_code') != code:
         raise ValueError('NGM_MANIFEST_IDENTITY_MISMATCH')
-    controls, math_resources = [], []
+    controls, math_resources, unresolved_templates = [], [], []
     config = dict(config)
     # Mathematical tables remain in the original HAR. Keep betting/menu
     # declarations inline; these references remove neither fields nor provenance.
@@ -142,11 +201,33 @@ def functional_manifest(document, code):
                 config[key] = dict(source_ref=ref)
     visual = {'pos', 'size', 'format', 'background', 'slice', 'slices', 'animations', 'animation', 'content'}
 
+    def resolve(value, path, chain=()):
+        reference = value.get('@P')
+        if reference is None:
+            return value, []
+        target = reference.get('#ID') if isinstance(reference, dict) else None
+        if not isinstance(target, str) or len(chain) >= 32:
+            unresolved_templates.append(dict(ref=path, reason='INVALID_OR_TOO_DEEP'))
+            return value, []
+        target = '/'+target.lstrip('/')
+        if target in chain:
+            unresolved_templates.append(dict(ref=path, template_ref=target, reason='CYCLE'))
+            return value, []
+        template = document
+        for part in target.strip('/').split('/'):
+            template = template.get(part) if isinstance(template, dict) else None
+        if not isinstance(template, dict):
+            unresolved_templates.append(dict(ref=path, template_ref=target, reason='MISSING'))
+            return value, []
+        inherited, refs = resolve(template, path, chain+(target,))
+        return dict(inherited, **value), [target]+refs
+
     def walk(value, path):
         if isinstance(value, dict):
-            kind = value.get('type', '')
-            if isinstance(kind, str) and ('button' in kind or any(k in value for k in ('action', 'command', 'choices', 'options'))):
-                controls.append(dict(ref=path, **{k: v for k, v in value.items() if k not in visual and k != 'ref'}))
+            effective, refs = resolve(value, path)
+            kind = effective.get('type', '')
+            if isinstance(kind, str) and ('button' in kind or any(k in effective for k in ('action', 'command', 'choices', 'options'))):
+                controls.append(dict(ref=path, template_refs=refs, **{k: v for k, v in effective.items() if k not in visual and k not in ('ref', 'template_refs')}))
             for key, child in value.items():
                 walk(child, path+'/'+str(key))
         elif isinstance(value, list):
@@ -156,7 +237,7 @@ def functional_manifest(document, code):
     for root in ('ui', 'scenes'):
         walk(document.get(root, {}), '/'+root)
     return dict(game_code=code, configuration=config, controls=controls, math_resources=math_resources,
-                inventory_state='UNKNOWN', control_presence_is_not_purchase_evidence=True)
+                inventory_state='UNKNOWN', unresolved_templates=unresolved_templates, control_presence_is_not_purchase_evidence=True)
 
 
 def passive_request_roles(catalog):
@@ -167,9 +248,14 @@ def passive_request_roles(catalog):
     roles = {}
     for row in catalog:
         spec = contracts.get(row['name'])
-        if not spec or row.get('unresolved_fields'):
+        if row.get('unresolved_fields'):
             continue
         declared = set(row.get('declared_fields', []))
+        if not spec and row.get('wire_message') and declared == metadata and declared == set(row.get('fields', {})):
+            roles[row['name']] = 'unhandled_candidate'
+            continue
+        if not spec:
+            continue
         if declared and declared <= spec[1] and declared == set(row.get('fields', {})):
             roles[row['name']] = spec[0]
     return roles

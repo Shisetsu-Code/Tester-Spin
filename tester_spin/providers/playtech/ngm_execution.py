@@ -26,6 +26,8 @@ class NGMRoundLedger:
                 self.started = True
             elif classifier == 'ISetGameBalanceRequest':
                 if _amount(value.get('amount')):
+                    if self.responses and value['amount'] < self.balance:
+                        self.errors.append('UNDECLARED_CONTINUATION_DEBIT')
                     self.balance = value['amount']
                     if self.started and not self.responses:
                         self.debit_balances.append(self.balance)

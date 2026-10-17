@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import urlencode, urlsplit
 
 from .ngm_execution import NGMRoundLedger
-from .ngm_observation import observation_points, spin_request_contract, spin_action_binding
+from .ngm_observation import observation_points, spin_request_contract, spin_action_binding, event_action_binding, continuation_probes
 from .ngm_contracts import request_catalog, functional_manifest, passive_request_roles
 
 
@@ -32,6 +32,7 @@ class NGMDemoSession:
         self.source_hashes = []
         self.points = []
         self.action_binding = None
+        self.continuation_binding = None
         self.errors = []
         self.scripts = []
         self.seen = set()
@@ -43,6 +44,9 @@ class NGMDemoSession:
         self.trace = None
         self.event_count = 0
         self.instrumentation_id = None
+        self.continuations = []
+        self.continuation_state = None
+        self.continuation_tokens = set()
 
     def __enter__(self):
         from playwright.sync_api import sync_playwright
@@ -66,7 +70,7 @@ class NGMDemoSession:
             url = 'https://cachedownload.playtechone.com/ngmdesktop/casinoclient.html?' + urlencode(
                 dict(game=self.code, preferedmode='offline', real='0'))
             self.page.goto(url, wait_until='domcontentloaded', timeout=int(self.timeout*1000))
-            self.wait(lambda: self.demo_verified and self.contract and len(self.points)==3 and
+            self.wait(lambda: self.demo_verified and self.contract and len(self.points)>=3 and
                       self.balance is not None and self.bet is not None and self.keyboard_filter is not None and
                       self.loaded and self.scene == 'game',
                       'NGM_BOOTSTRAP_INCOMPLETE')
@@ -179,6 +183,8 @@ class NGMDemoSession:
                     spin = value.get('spin') if isinstance(value, dict) else None
                     request_class = value.get('requestClass') if isinstance(value, dict) else None
                     dispatch_kind = 'spin' if isinstance(spin, dict) else self.passive_roles.get(request_class, 'unknown')
+                    if dispatch_kind == 'unhandled_candidate':
+                        dispatch_kind = 'round_metadata' if value.get('handlerAbsent') is True else 'unknown'
                     self.dispatch_stack.append(dispatch_kind)
                     if len(self.dispatch_stack) > 32:
                         raise ValueError('NGM_DISPATCH_DEPTH_LIMIT')
@@ -186,7 +192,7 @@ class NGMDemoSession:
                         if not self.ledger:
                             raise ValueError('NGM_UNEXPECTED_SPIN_OUTSIDE_ROUND')
                         self.ledger.accept('spin', spin)
-                    elif dispatch_kind == 'continuation':
+                    elif dispatch_kind in ('continuation', 'round_metadata'):
                         if not self.ledger or not self.ledger.started or self.ledger.ended or not self.ledger.spins:
                             raise ValueError('NGM_UNEXPECTED_CONTINUATION')
                     elif dispatch_kind == 'unknown' and self.ledger:
@@ -220,7 +226,7 @@ class NGMDemoSession:
                 continue
             contract, points = spin_request_contract(source), observation_points(source)
             action = spin_action_binding(source)
-            if not contract or len(points) != 3 or not action:
+            if not contract or len(points) < 3 or not action:
                 raise ValueError('NGM_CONTRACT_UNBOUND')
             digest = hashlib.sha256(source.encode('utf-8')).hexdigest()
             if self.source_hashes:
@@ -233,11 +239,24 @@ class NGMDemoSession:
                 self.points.append(dict(point, actualLocation=bound['actualLocation']))
             # Capture a reference in the live GWT closure when its event bus runs.
             # This is an official UI action; no HAR JavaScript is evaluated.
+            start = event_action_binding(source, 'StartEvent')
+            probes = continuation_probes(source)
+            start_expression = ''
+            if start and len(probes) == 2 and start['function'] == action['function']:
+                start_expression = 'window.__testerNgmStart=()=>'+start['function']+'(new '+start['constructor']+');'
             condition = ('(()=>{if(!window.__testerNgmSpin){window.__testerNgmSpin=()=>'+
-                         action['function']+'(new '+action['constructor']+')}return false})()')
+                         action['function']+'(new '+action['constructor']+');'+start_expression+'}return false})()')
+            bound_probes = []
+            for probe in probes if start_expression else []:
+                probe_condition = ('(()=>{window.__testerNgmState=window.__testerNgmState||{};'+
+                    'window.__testerNgmState['+json.dumps(probe['type'])+']='+probe['expression']+';return false})()')
+                bound_probe = self.debug.send('Debugger.setBreakpoint', {'location':dict(scriptId=sid,
+                    lineNumber=probe['lineNumber'], columnNumber=probe['columnNumber']), 'condition':probe_condition})
+                bound_probes.append(dict(probe, actualLocation=bound_probe['actualLocation']))
             bound = self.debug.send('Debugger.setBreakpoint', {'location':dict(scriptId=sid,
                 lineNumber=action['lineNumber'], columnNumber=action['columnNumber']), 'condition':condition})
             self.action_binding = dict(action, actualLocation=bound['actualLocation'])
+            self.continuation_binding = dict(start_event=start, probes=bound_probes) if start_expression else None
             self.contract = contract
             self.source_hashes.append(digest)
             self.request_schemas = request_catalog(source)
@@ -248,7 +267,7 @@ class NGMDemoSession:
                 self.instrumentation_id = None
             (self.directory/'bootstrap.json').write_text(json.dumps(dict(contract=contract,
                 source_sha256=self.source_hashes, points=self.points, fresh_demo=True,
-                transport=self.transport_kind, spin_action=self.action_binding), indent=2), encoding='utf-8')
+                transport=self.transport_kind, spin_action=self.action_binding, continuation=self.continuation_binding), indent=2), encoding='utf-8')
 
     def _action_frame(self):
         frames = [frame for frame in self.page.frames if self._trusted(frame.url) and
@@ -270,6 +289,62 @@ class NGMDemoSession:
             self.page.wait_for_timeout(100)
         raise TimeoutError(reason)
 
+    def _try_free_continuation(self, frame):
+        ledger = self.ledger
+        if self.stop.is_set():
+            raise InterruptedError('DETENIDO')
+        if self.errors or any(self.popups.values()) or not ledger or ledger.errors or not ledger.started or ledger.ended:
+            return
+        if not ledger.spins or ledger.spins != ledger.responses or ledger.responses != ledger.payouts:
+            return
+        state = frame.evaluate("""() => {
+            const s=window.__testerNgmState;
+            if(!s || typeof s.feature!=='function' || typeof s.control!=='function' || typeof window.__testerNgmStart!=='function') return null;
+            try { return {feature:s.feature(),control:s.control()}; }
+            catch(error) { return {unbound:String(error)}; }
+        }""")
+        if isinstance(state, dict) and state != self.continuation_state:
+            self.continuation_state = state
+            (self.directory/'continuation-state.json').write_text(json.dumps(state, indent=2), encoding='utf-8')
+        if not isinstance(state, dict) or not self.manifest:
+            return
+        control = state.get('control')
+        if not isinstance(control, dict) or control.get('id') != 'start' or control.get('ready') is not True:
+            return
+        feature_state = state.get('feature')
+        feature_id = feature_state.get('pending') if isinstance(feature_state, dict) else feature_state
+        features = self.manifest.get('configuration', {}).get('features', {})
+        feature = features.get(feature_id) if isinstance(feature_id, str) and isinstance(features, dict) else None
+        if not isinstance(feature, dict) or feature.get('type') != 'free-spins':
+            return
+        if feature.get('supported') is False or feature.get('free') is False:
+            return
+        # Pricing/choice declarations require their own binding; a free-spin
+        # label alone cannot authorize a priced extension or a selector.
+        if any(key in feature for key in ('cost', 'price', 'choices', 'options', 'buy', 'purchase')):
+            return
+        if not any(c.get('id') == 'start' and 'button' in str(c.get('type', '')) for c in self.manifest.get('controls', [])):
+            return
+        token = (ledger.spins, ledger.payouts, feature_id)
+        if token in self.continuation_tokens:
+            return
+        if len(self.continuation_tokens) >= 20:
+            raise ValueError('NGM_CONTINUATION_LIMIT')
+        # Record before sending. If dispatch fails or is ignored, never retry it.
+        self.continuation_tokens.add(token)
+        self.continuations.append(dict(feature=feature_id, control='start', after_step=ledger.spins,
+            round_event=self.event_count, cost_authority='declared-free-spins', action='StartEvent'))
+        (self.directory/'continuations.json').write_text(json.dumps(self.continuations, indent=2), encoding='utf-8')
+        frame.evaluate('window.__testerNgmStart()')
+
+    def _round_ready(self, ledger, frame):
+        if ledger.errors:
+            raise ValueError(ledger.errors[0])
+        if ledger.ended and ledger.allowed and self.busy is False:
+            return True
+        self._try_free_continuation(frame)
+        return False
+
     def spin(self):
         if self.stop.is_set():
             raise InterruptedError('DETENIDO')
@@ -277,6 +352,7 @@ class NGMDemoSession:
             raise ValueError(self.errors[0])
         if not self.demo_verified or not self.contract or self.ledger is not None or self.busy is True or any(self.popups.values()):
             raise ValueError('NGM_NOT_READY_FOR_SPIN')
+        self.continuation_tokens.clear()
         self.ledger = ledger = NGMRoundLedger(self.balance)
         try:
             frame = self._action_frame()
@@ -284,7 +360,7 @@ class NGMDemoSession:
                 raise ValueError('NGM_SPIN_ACTION_NOT_BOUND')
             # Exactly one official UI event; never retries an uncertain wager.
             frame.evaluate('window.__testerNgmSpin()')
-            self.wait(lambda: ledger.ended and ledger.allowed and self.busy is False,
+            self.wait(lambda: self._round_ready(ledger, frame),
                       'NGM_ROUND_NOT_CLOSED_AND_READY')
             if not ledger.verified:
                 raise ValueError(';'.join(ledger.issues))
