@@ -199,3 +199,17 @@ def test_metadata_envelope_is_only_a_candidate_not_passive_authorization():
     from tester_spin.providers.playtech.ngm_contracts import passive_request_roles
     row={'name':'BuyFeature','wire_message':True,'fields':{'ID':'k','umid':'n','windowId':'j'},'declared_fields':['ID','umid','windowId'],'unresolved_fields':[]}
     assert passive_request_roles([row])=={'BuyFeature':'unhandled_candidate'}
+
+
+def test_value_object_serializers_share_the_request_catalog_parser():
+    source="function Bet(){}register(100,1,{100:1},Bet);var value=type(ns,'CommonBet',100,parent);function encode(a,out){var m,v;check(a,100);m=a;v=m.amount;v!=null&&put(out,'stake',number(v));v=m.kind;v!=null&&put(out,'type',text(v))}"
+    row=request_catalog(source,value_classes=('CommonBet',))[0]
+    assert row['fields']=={'stake':'amount','type':'kind'}
+    assert row['message_id'] is None
+
+
+def test_request_named_plain_dto_is_not_an_outbound_wire_contract():
+    data=har();data['log']['entries'][0]['response']['content']['text']+="var obj=type(ns,'Object',1,null);register(105,1,flags);var wire=type(ns,'AbstractGameRequest',105,obj);function DTO(){}register(990,1,flags,DTO);var dto=type(ns,'LibraryPlaceBetsRequest',990,obj);"
+    report=analyze_har(data,'example')
+    assert 'NGM_REQUEST_CONTRACT_UNBOUND:LibraryPlaceBetsRequest' not in report['unresolved']
+    assert next(r for r in report['source_declarations'] if r['name']=='LibraryPlaceBetsRequest')['channel']=='value_object'

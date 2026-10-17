@@ -43,9 +43,10 @@ class NGMRoundLedger:
         elif kind == 'spin':
             if not self.started or self.ended or self.spins != self.payouts:
                 self.errors.append('SPIN_OUT_OF_ORDER')
-            if not _amount(value.get('bet')) or not _amount(value.get('numCoins')) or not value.get('numCoins'):
+            structured = value.get('wager_format') == 'structured-line' and value.get('bet_type') == 'line'
+            if not _amount(value.get('bet')) or (not structured and (not _amount(value.get('numCoins')) or not value.get('numCoins'))):
                 self.errors.append('INVALID_WAGER')
-            elif value.get('spinType') == 'regular' and self.spins == 0 and value['bet'] > 0:
+            elif (value.get('spinType') == 'regular' or structured) and self.spins == 0 and value['bet'] > 0:
                 self.stake += value['bet']
             elif value.get('spinType') != 'free' or self.spins == 0:
                 self.errors.append('SPIN_TYPE_UNSUPPORTED')

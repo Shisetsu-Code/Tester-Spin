@@ -41,3 +41,12 @@ python -m tester_spin.providers.playtech.ngm_contracts captura.har --code CODIGO
 El caso Heart of the Frontier reconstruye 13 formatos y 43 controles. La configuración declara cinco tiradas gratuitas; los avisos sí/no por cambios de apuesta con wilds persistentes no son compras. PickBonusRequest abstracto y respuestas genéricas compartidas no prueban una elección ejecutable. Las modalidades configuradas y las rutas enlazadas permiten declarar cero compras y cero antebets para este cliente, sin extender esa conclusión a todos los NGM.
 
 La validación integrada del 2026-10-17 usó `PlaytechProvider.test_game`, una sesión oficial demo nueva y el finalizador común: dos rondas cerradas, resultado OK y conteos (0, 0). Pruebas negativas cubren hashes/manifiestos distintos, modo demo no confirmado, rondas abiertas, precios anidados, controles nuevos, calculadores desconocidos y selectores alterados. Los recorridos de bonus no observados siguen distinguiéndose de esta validación de entrada y retorno normal.
+
+
+### Entrada estructurada CommonBet
+
+Los clientes gamelet pueden entrar mediante un mensaje StartSpinRequest con un objeto CommonBet, en lugar del SpinRequest clásico. Se reconstruyen el serializador de stake/type, su único productor, el reenvío sin modificaciones y la conversión explícita de unidades. No se inventan numCoins ni selectores ausentes. Un emisor clásico adicional impide declarar vacío el inventario económico.
+
+OpenGame, DisplayJackpot, FinishSpin y CommonSaveState solo se clasifican por esquema completo, relación con la entrada y título fijo enlazado. El observador registra los mensajes que produce el cliente; no los fabrica ni reproduce desde el HAR. FinishSpin requiere respuesta y premio resueltos. Los objetos de datos que heredan de Object se distinguen de los comandos que heredan de RequestMessage.
+
+Adventures Beyond Wonderland permitió comprobar esta primitiva: dos rondas normales cerradas de coste 30, premio 0 y saldo conciliado. Sus tablas ponderadas de símbolos y premios no son compras. Las modalidades gratuitas y sus elecciones mantienen los mismos límites de cobertura dinámica descritos arriba.

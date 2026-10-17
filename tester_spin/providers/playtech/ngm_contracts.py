@@ -27,24 +27,51 @@ def _constants(source):
     return constants
 
 
+def _value_object_types(source):
+    labels = {}
+    for match in re.finditer(NAME+r"\([^;()]*['\"]([^'\"]+)['\"],(\d+),[^;()]*\)", source):
+        labels.setdefault(match[1], set()).add(match[2])
+    wire = set().union(*(labels.get(name, set()) for name in ('RequestMessage','AbstractGameRequest')))
+    objects = labels.get('Object', set())
+    if not wire or not objects:
+        return set()
+    parents = {}
+    for m in re.finditer(NAME+r'\((\d+),(\d+),(?:\{[^{}]*\}|'+NAME+r')(?:,'+NAME+r')?\)', source):
+        parents.setdefault(m[1], set()).add(m[2])
+    values = set()
+    for identity in parents:
+        node, seen = identity, set()
+        while node not in seen and len(seen)<64:
+            if node in wire:
+                break
+            if node in objects:
+                values.add(identity);break
+            seen.add(node)
+            if len(parents.get(node, set()))!=1:
+                break
+            node=next(iter(parents[node]))
+    return values
+
+
 def source_declarations(source):
     constants = _constants(source)
     concrete = {match[1] for match in re.finditer(
         NAME+r'\((\d+),\d+,(?:\{[^{}]*\}|'+NAME+r'),'+NAME+r'\)', source)}
     rows = []
     wire = set(_wire_declarations(source))
+    value_types = _value_object_types(source)
     for match in re.finditer(NAME+r"\(("+NAME+r"),['\"]([^'\"]+)['\"],(\d+|null),[^;()]*\)", source):
         if (match[2], match[3]) not in wire and not (match[3] == 'null' and match[2].endswith('Request')):
             continue
         values = constants.get(match[1], set())
         rows.append(dict(name=match[2], namespace=next(iter(values)) if len(values) == 1 else None,
-                         concrete=match[3] in concrete))
+                         concrete=match[3] in concrete, value_object=match[3] in value_types))
     platform_namespaces = {row['namespace'] for row in rows
                            if row['name'] == 'PlatformRequest' and row['namespace']}
     for row in rows:
         row['channel'] = 'platform' if row['namespace'] and any(
             row['namespace'] == prefix or row['namespace'].startswith(prefix+'.')
-            for prefix in platform_namespaces) else 'wire_or_unbound'
+            for prefix in platform_namespaces) else ('value_object' if row['value_object'] else 'wire_or_unbound')
     return rows
 
 
@@ -104,7 +131,7 @@ def _message_id(body, functions, source):
     return int(value[2]), 'boxed_enum'
 
 
-def request_catalog(source):
+def request_catalog(source, *, value_classes=()):
     """Class + constructor + serializer bindings, with unbound fields explicit."""
     if len(source.encode('utf-8')) > MAX_BODY:
         return []
@@ -116,6 +143,9 @@ def request_catalog(source):
     declarations = {}
     for label, type_id in _wire_declarations(source):
         declarations.setdefault(label, set()).add(type_id)
+    for match in re.finditer(NAME+r"\([^;()]*['\"]([^'\"]+)['\"],(\d+),[^;()]*\)", source):
+        if match[1] in value_classes:
+            declarations.setdefault(match[1], set()).add(match[2])
     rows = []
     for label, type_ids in declarations.items():
         if len(type_ids) != 1:
@@ -128,7 +158,9 @@ def request_catalog(source):
         body = functions.get(constructor, ([], ''))[1]
         message = _message_id(body, functions, source)
         if message is None:
-            continue
+            if label not in value_classes:
+                continue
+            message = (None, 'value-object')
         serializers = [(fn, args, body) for fn, (args, body) in functions.items()
                        if len(args) == 2 and re.search(NAME+r'\('+re.escape(args[0])+','+type_id+r'\)', body)]
         if len(serializers) != 1:
@@ -181,7 +213,7 @@ def request_catalog(source):
     for row in rows:
         counts[row['constructor']] = counts.get(row['constructor'], 0)+1
     return sorted((row for row in rows if counts[row['constructor']] == 1),
-                  key=lambda row: (row['message_id'], row['name']))
+                  key=lambda row: (row['message_id'] is None, row['message_id'] or 0, row['name']))
 
 
 def functional_manifest(document, code):
@@ -240,7 +272,7 @@ def functional_manifest(document, code):
                 inventory_state='UNKNOWN', unresolved_templates=unresolved_templates, control_presence_is_not_purchase_evidence=True)
 
 
-def passive_request_roles(catalog):
+def passive_request_roles(catalog, *, structured=None):
     """Observe reviewed non-entry messages, never execute them or infer prices."""
     metadata = {'windowId', 'ID', 'umid'}
     contracts = {'LogUserPreferencesRequest': ('aux', metadata | {'value'}),
@@ -258,6 +290,8 @@ def passive_request_roles(catalog):
             continue
         if declared and declared <= spec[1] and declared == set(row.get('fields', {})):
             roles[row['name']] = spec[0]
+    if structured:
+        roles.update(structured.get('lifecycle_roles', {}))
     return roles
 
 
@@ -300,7 +334,7 @@ def analyze_har(har, code):
                 if catalog:
                     declarations = source_declarations(source)
                     sources.append((ref, source, catalog, declarations))
-                    names = {row['name'] for row in declarations if row['concrete'] and row['channel'] != 'platform'}
+                    names = {row['name'] for row in declarations if row['concrete'] and row['channel'] not in ('platform','value_object')}
                     unresolved.extend('NGM_REQUEST_CONTRACT_UNBOUND:'+name
                                       for name in sorted(names-{row['name'] for row in catalog}))
             elif parsed.path.endswith('.jmm'):

@@ -129,3 +129,8 @@ def test_enum_selector_requires_the_complete_closed_expression():
     for mutation in [lambda s:s.replace('v.name','v.purchase'), lambda s:s+"freeValue=new Phase('PURCHASE',3);", lambda s:s+"freeValue.name='purchase';"]:
         data=complete_har();content=data['log']['entries'][0]['response']['content'];content['text']=mutation(content['text'].replace("sendSpin(owner,'regular',",'sendSpin(owner,'+phase+',')+extra)
         assert not analyze_har(data,'example')['execution_plan']['complete']
+
+
+def test_feature_loader_resolves_semantic_constant_like_serializers():
+    data=complete_har();content=data['log']['entries'][0]['response']['content'];content['text']="var featureKey='features';"+content['text'].replace("read('features')",'read(featureKey)')
+    assert analyze_har(data,'example')['execution_plan']['complete']

@@ -128,43 +128,18 @@ def continuation_probes(source):
 
 
 def spin_request_contract(source):
-    """Bind opaque fields through the client's named class and serializer."""
-    functions = _function_bodies(source)
-    declarations = list(re.finditer(
-        r"\b"+NAME+r"\([^;()]*['\"]SpinRequest['\"],(\d+),[^;()]*\)", source))
-    if len(declarations) != 1:
+    """Use the same complete semantic serializer as the HAR analyzer."""
+    rows = [row for row in request_catalog(source) if row['name'] == 'SpinRequest']
+    if len(rows) != 1 or rows[0]['unresolved_fields']:
         return None
-    type_id = declarations[0][1]
-    registrations = list(re.finditer(
-        NAME+r"\("+type_id+r",\d+,(?:\{[^{}]*\}|"+NAME+r"),("+NAME+r")\)", source))
-    if len(registrations) != 1:
+    row = rows[0]
+    names = ('bet', 'numCoins', 'spinType')
+    if not all(name in row['fields'] for name in names):
         return None
-    constructor = registrations[0][1]
-    body = functions.get(constructor, ([], ""))[1]
-    ids = re.findall(r"\.call\(this,"+NAME+r"\((\d+)\)\)", body)
-    if len(ids) != 1:
+    fields = {name:row['fields'][name] for name in names}
+    if len(set(fields.values())) != len(names):
         return None
-    candidates = []
-    for _, (args, body) in functions.items():
-        if len(args) != 2 or not re.search(
-            NAME+r"\("+re.escape(args[0])+","+type_id+r"\)", body):
-            continue
-        aliases = re.findall(r"\b("+NAME+r")="+re.escape(args[0])+r";", body)
-        if len(aliases) != 1:
-            continue
-        fields = {}
-        for semantic in ("bet", "numCoins", "spinType"):
-            pattern = (r"("+NAME+r")=(?:"+NAME+r"\()?"+re.escape(aliases[0])+
-                       r"\.("+NAME+r")\)?;\1!=null&&"+NAME+r"\("+
-                       re.escape(args[1])+r",['\"]"+semantic+r"['\"],"+NAME+r"\(\1\)\)")
-            matches = list(re.finditer(pattern, body))
-            if len(matches) == 1:
-                fields[semantic] = matches[0][2]
-        if len(fields) == 3 and len(set(fields.values())) == 3:
-            candidates.append(fields)
-    if len(candidates) != 1:
-        return None
-    return dict(constructor=constructor, message_id=int(ids[0]), fields=candidates[0])
+    return dict(constructor=row['constructor'], message_id=row['message_id'], fields=fields)
 
 
 def observation_points(source):
@@ -201,8 +176,12 @@ def observation_points(source):
         if contract:
             fields = ",".join(key+":"+request+"."+value
                               for key, value in contract['fields'].items())
-            expression = ("({raw:"+request+",spin:"+request+" instanceof "+
-                          contract['constructor']+"?{"+fields+"}:null,requestClass:")
+            normalized = request+' instanceof '+contract['constructor']+'?{'+fields+'}:null'
+            from .ngm_structured import structured_spin_contract, observation_expression
+            structured = structured_spin_contract(source)
+            if structured:
+                normalized = '('+observation_expression(structured, request)+'||('+normalized+'))'
+            expression = '({raw:'+request+',spin:'+normalized+',requestClass:'
             expression += ''.join(request+' instanceof '+row['constructor']+'?'+json.dumps(row['name'])+':'
                                   for row in request_catalog(source))+'null})'
         body = functions[name][1]

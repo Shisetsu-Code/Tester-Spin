@@ -192,9 +192,11 @@ class NGMDemoSession:
                         if not self.ledger:
                             raise ValueError('NGM_UNEXPECTED_SPIN_OUTSIDE_ROUND')
                         self.ledger.accept('spin', spin)
-                    elif dispatch_kind in ('continuation', 'round_metadata'):
+                    elif dispatch_kind in ('continuation', 'round_metadata', 'state_save', 'round_finish'):
                         if not self.ledger or not self.ledger.started or self.ledger.ended or not self.ledger.spins:
                             raise ValueError('NGM_UNEXPECTED_CONTINUATION')
+                        if dispatch_kind == 'round_finish' and not (self.ledger.spins == self.ledger.responses == self.ledger.payouts):
+                            raise ValueError('NGM_FINISH_BEFORE_PAYOUT')
                     elif dispatch_kind == 'unknown' and self.ledger:
                         self.ledger.errors.append('NGM_COMMAND_UNBOUND')
                 elif kind == 'offline.response':
@@ -260,7 +262,11 @@ class NGMDemoSession:
             self.contract = contract
             self.source_hashes.append(digest)
             self.request_schemas = request_catalog(source)
-            self.passive_roles = passive_request_roles(self.request_schemas)
+            from .ngm_structured import structured_spin_contract
+            structured = structured_spin_contract(source)
+            if structured:
+                self.contract['structured_entry'] = structured
+            self.passive_roles = passive_request_roles(self.request_schemas, structured=structured)
             self._save_contracts()
             if self.instrumentation_id:
                 self.debug.send('Debugger.removeBreakpoint', {'breakpointId': self.instrumentation_id})

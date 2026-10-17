@@ -334,3 +334,8 @@ def test_metadata_candidate_requires_observed_missing_handler(tmp_path,absent,ex
     session._console(SimpleNamespace(text='__TESTER_NGM__'+json.dumps(row)))
     assert ('NGM_COMMAND_UNBOUND' in session.ledger.errors) is expected
     assert session.ledger.spins==1
+
+
+def test_spin_contract_uses_same_resolved_semantics_as_har_catalog():
+    source="var betKey='bet';"+SOURCE.replace("'bet'",'betKey')
+    assert spin_request_contract(source)==spin_request_contract(SOURCE)
