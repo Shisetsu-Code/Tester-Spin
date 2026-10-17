@@ -86,10 +86,11 @@ listas de tamaños de apuesta no se convierten en compras ni antebets. Las
 declaraciones repetidas se agrupan conservando todas sus referencias.
 
 El adaptador incorpora ese diagnóstico cuando encuentra evidencia compatible.
-El ejecutor de Playtech sigue pendiente: no se habilita una corrida ni se marca
-OK por haber leído una configuración. Los contratos sin acción verificada, las
-elecciones no recorridas y NGM/POP conservan ese límite. El fuzzer actual de
-Pragmatic/3 Oaks no se utiliza como si fuese un explorador de Playtech.
+GPAS ejecuta sesiones nuevas por HTTP/WebSocket. NGM offline valida rondas
+normales en el cliente oficial aislado y conserva PARCIAL mientras su inventario
+de compras/antebets sea desconocido. POP y contratos sin acción verificada siguen
+pendientes. Leer una configuración no basta para otorgar OK; las elecciones sin
+recorrer también conservan PARCIAL. No se usa el fuzzer para explorar Playtech.
 
 ## Opciones desconocidas con selección humana
 
@@ -150,6 +151,8 @@ por sí solo compras, antebets, cobertura de rondas ni un resultado OK.
 ## Playtech GPAS
 
 El ejecutor GPAS usa sesiones demo nuevas, modalidades por nombre o UUID, compras, antebets y elecciones con estado. Los motores no reconocidos conservan PARCIAL. Véase [el contrato de ejecución y sus límites](docs/PLAYTECH_EXECUTION.md).
+
+NGM offline tiene una ruta independiente para rondas normales demo: [contrato, evidencia y límites](docs/PLAYTECH_NGM_OBSERVATION.md).
 
 ## Grupos de fallos
 

@@ -4,7 +4,7 @@ Tester-Spin usa ahora un adaptador GPAS ejecutable desde la interfaz y los módu
 
 ## Contratos soportados
 
-- Sesión Chromium aislada, URL oficial offline con real=0 y comprobación GLU.game.isReal() === false. Espera al aviso real de carga de recursos al 100%; la configuración disponible no implica cliente preparado.
+- Ruta GPAS activa por HTTP/WebSocket directo, sesión demo nueva con real=0 y resume=false. Véase [transporte directo](DIRECT_TRANSPORT.md). La implementación antigua con Chromium queda como referencia.
 - Configuración efectiva del contexto default: merge ordenado de scopes y sustitución de listas. No contar de nuevo modalidades repetidas en freespin ni tratar multiplicadores como opciones.
 - Manifiesto y código descargados en esa sesión para vincular las APIs, comandos y modalidades. Hash SHA256 del contenido; el nombre compartido de un bundle no prueba que su código sea igual.
 - Ruta moderna: playMoney con betCost y featureType según el selector del cliente. La modalidad base modular puede usar alias default aunque la declaración se llame Default. El servidor debe devolver el UUID declarado.
@@ -19,7 +19,7 @@ Cada modalidad se ejecuta con el multiplicador mínimo declarado y tantas repeti
 
 La grilla recibe los dominios purchase y ante y sus UUID sin duplicar contextos. La marca validated enlaza las rondas realmente completadas con el verificador común. El cierre de una compra no equivale a cubrir todas sus elecciones: las opciones sin recorrer conservan PARCIAL y quedan en choice_domains/pending_choice_branches. No se declaran cubiertas ramas solo por aparecer en una respuesta.
 
-Los motores que no sean GPAS y los contratos desconocidos siguen como PARCIAL con causa explícita. También quedan pendientes inicializaciones incompletas, errores del servidor, opciones desconocidas, decisiones no vinculadas, falta de conciliación o límite de 200 comandos por ronda. Se respeta DETENER y el timeout configurado. Concurrencia GPAS máxima: dos sesiones.
+NGM offline valida rondas normales en un ejecutor local separado y conserva PARCIAL mientras el inventario de opciones sea desconocido; véase [NGM](PLAYTECH_NGM_OBSERVATION.md). Los demás motores y contratos desconocidos siguen como PARCIAL con causa explícita. También quedan pendientes inicializaciones incompletas, errores del servidor, opciones desconocidas, decisiones no vinculadas, falta de conciliación o límite de 200 comandos por ronda. Se respeta DETENER y el timeout configurado. Concurrencia GPAS máxima: dos sesiones.
 
 En la carpeta HAR del juego se guardan analysis/runs/<ejecución>/session.har (HTTP de inicialización y código más WebSocket), bootstrap.json, result.json y los request/response/summary de cada intento. Los HAR son privados y pueden contener sesiones; no se incluyen en Git. Los fallos permanecen disponibles para Aislador y revisión posterior.
 

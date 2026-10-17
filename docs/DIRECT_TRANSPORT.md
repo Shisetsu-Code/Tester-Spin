@@ -28,6 +28,7 @@ Reglas compartidas:
 | Hacksaw | HTTP | No requiere navegador en el ejecutor |
 | Nolimit City | WebSocket RC4/LZW | No requiere navegador en el ejecutor |
 | Playtech GPAS | WebSocket | Eliminado del ejecutor activo |
+| Playtech NGM offline | Motor local del cliente oficial | Requerido durante toda la ronda; ejecución de servidor no verificada |
 
 La descarga de catálogos y la captura auxiliar pueden seguir usando navegador. Esto no convierte en ejecutables a proveedores que solo tienen catálogo. Red Tiger y el respaldo de 3 Oaks siguen teniendo una dependencia explícita del navegador; no se afirma que toda ejecución sea completamente libre de Chromium.
 
@@ -39,7 +40,7 @@ La configuración vigente indica el servidor demo permitido. El handshake Socket
 
 El transporte compartido `CorrelatedSocket` tiene cancelación, plazo por respuesta, observación de tramas y cierre garantizado. Los controles de heartbeat/desconexión los declara el contrato GPAS; el transporte no los presupone para otros proveedores. Cada comando se envía una sola vez y se contrasta su correlación. No se inicia Chromium como reintento después de un timeout.
 
-Los motores Playtech no GPAS conservan PARCIAL hasta contar con contrato. La implementación anterior de navegador queda como referencia, sin ser seleccionada por el adaptador activo.
+NGM offline tiene un ejecutor separado de rondas normales en Chromium y conserva PARCIAL por inventario de opciones desconocido; véase [su contrato y límites](PLAYTECH_NGM_OBSERVATION.md). No es un respaldo tras fallar una apuesta GPAS. Los demás motores sin contrato continúan pendientes. La implementación GPAS anterior de navegador queda como referencia, sin ser seleccionada por el adaptador activo.
 
 ## Validación del cambio
 

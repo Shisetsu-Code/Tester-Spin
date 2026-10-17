@@ -1,0 +1,151 @@
+"""Financial and lifecycle checks for observed NGM offline rounds."""
+
+
+def _amount(value):
+    # NGM stores currency in integer minor units. Never accept bool/NaN/coercion.
+    return type(value) is int and 0 <= value <= 2**53-1
+
+
+class NGMRoundLedger:
+    def __init__(self, before):
+        if not _amount(before):
+            raise ValueError('BALANCE_UNKNOWN')
+        self.before = self.balance = before
+        self.started = self.ended = self.allowed = False
+        self.spins = self.responses = self.payouts = 0
+        self.stake = self.win = 0
+        self.errors = []
+        self.debit_balances = []
+
+    def accept(self, kind, value):
+        if kind == 'message':
+            classifier = value.get('classifier')
+            if classifier == 'GameRoundStartNotification':
+                if self.started:
+                    self.errors.append('OVERLAPPING_ROUND')
+                self.started = True
+            elif classifier == 'ISetGameBalanceRequest':
+                if _amount(value.get('amount')):
+                    self.balance = value['amount']
+                    if self.started and not self.responses:
+                        self.debit_balances.append(self.balance)
+                else:
+                    self.errors.append('INVALID_BALANCE')
+            elif classifier == 'GameRoundEndNotification':
+                if not self.started or self.ended:
+                    self.errors.append('ROUND_END_OUT_OF_ORDER')
+                self.ended = True
+            elif classifier == 'NextGameRoundAllowed':
+                if self.ended:
+                    self.allowed = True
+        elif kind == 'spin':
+            if not self.started or self.ended or self.spins != self.payouts:
+                self.errors.append('SPIN_OUT_OF_ORDER')
+            if not _amount(value.get('bet')) or not _amount(value.get('numCoins')) or not value.get('numCoins'):
+                self.errors.append('INVALID_WAGER')
+            elif value.get('spinType') == 'regular' and self.spins == 0 and value['bet'] > 0:
+                self.stake += value['bet']
+            elif value.get('spinType') != 'free' or self.spins == 0:
+                self.errors.append('SPIN_TYPE_UNSUPPORTED')
+            self.spins += 1
+        elif kind == 'response':
+            if not self.started or self.ended or self.responses >= self.spins:
+                self.errors.append('RESPONSE_OUT_OF_ORDER')
+            self.responses += 1
+        elif kind == 'payout':
+            if not self.started or self.ended or self.payouts >= self.responses:
+                self.errors.append('PAYOUT_OUT_OF_ORDER')
+            if _amount(value.get('calculatedWin')):
+                self.win += value['calculatedWin']
+            else:
+                self.errors.append('INVALID_PAYOUT')
+            self.payouts += 1
+
+    @property
+    def issues(self):
+        errors = list(self.errors)
+        if not self.started or not self.ended or not self.allowed:
+            errors.append('ROUND_NOT_CLOSED_AND_READY')
+        if not self.spins or self.responses != self.spins:
+            errors.append('RESPONSE_COUNT_MISMATCH')
+        if self.payouts != self.spins:
+            errors.append('PAYOUT_COUNT_MISMATCH')
+        if self.before-self.stake+self.win != self.balance:
+            errors.append('BALANCE_NOT_RECONCILED')
+        if not self.stake or self.before-self.stake not in self.debit_balances:
+            errors.append('WAGER_DEBIT_NOT_OBSERVED')
+        return list(dict.fromkeys(errors))
+
+    @property
+    def verified(self):
+        return not self.issues
+
+    def summary(self):
+        return dict(verified=self.verified, stake=self.stake, win=self.win,
+                    balance_before=self.before, balance_after=self.balance,
+                    steps=self.spins, issues=self.issues, local_demo=True)
+
+
+def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
+    """Validate base rounds; unknown feature inventory intentionally stays partial."""
+    import json
+    import time
+    import uuid
+    from tester_spin.models import GameTestResult, SpinAttempt, utc_now_iso
+
+    clock = time.monotonic()
+    run = provider.har_artifact_dir(game)/'runs'/(time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:8])
+    run.mkdir(parents=True)
+    count = max(1, int(spins))+1
+    result = GameTestResult(provider.key, game.slug, game.name, game.url, count, 0, 0,
+                            'PARCIAL', symbol=game.symbol, run_dir=str(run))
+    result.feature_domains = {key:dict(declaration_state='UNKNOWN', options=[])
+                              for key in ('purchase', 'antebet')}
+    issues = ['NGM_FEATURE_INVENTORY_UNKNOWN']
+    result.structural_map['playtech_protocol'] = dict(variant='ngm-offline',
+        transport='local-client-engine', fresh_demo=False, server_execution=False)
+    try:
+        if stop_event.is_set():
+            raise InterruptedError('DETENIDO')
+        with provider.ngm_session_factory(game.symbol, run, timeout_s, stop_event) as session:
+            result.structural_map['playtech_protocol'].update(
+                contract=session.contract, source_sha256=session.source_hashes,
+                fresh_demo=getattr(session, 'demo_verified', False))
+            mode = dict(id='NGM_REGULAR', kind='SPIN', name='Giro normal demo local', validated=False)
+            result.discovered_modes = [mode]
+            for index in range(1, count+1):
+                if stop_event.is_set():
+                    raise InterruptedError('DETENIDO')
+                attempt = SpinAttempt(index, False, mode_id=mode['id'], symbol=game.symbol,
+                                      artifact_dir=str(run))
+                result.attempts.append(attempt)
+                started = time.monotonic()
+                try:
+                    summary = session.spin()
+                    if summary.get('verified') is not True:
+                        raise ValueError('NGM_ROUND_NOT_VERIFIED')
+                    (run/f'attempt-{index}.json').write_text(json.dumps(summary, indent=2), encoding='utf-8')
+                    attempt.ok = attempt.terminal = True
+                    attempt.wire_steps = summary['steps']
+                    attempt.warning = 'Motor demo local; ejecución de servidor no verificada.'
+                    result.successful_spins += 1
+                    mode['validated'] = True
+                    if index == count:
+                        result.structural_map['return_to_base_verified'] = True
+                    progress(f'[{game.name}] NGM demo local: ronda cerrada, coste {summary["stake"]}, premio {summary["win"]}.')
+                except Exception as exc:
+                    attempt.error = str(exc)
+                    raise
+                finally:
+                    attempt.elapsed_ms = (time.monotonic()-started)*1000
+            issues.extend(session.errors)
+    except Exception as exc:
+        issues.append(type(exc).__name__+': '+str(exc))
+    result.failed_spins = sum(not attempt.ok for attempt in result.attempts)
+    result.error = '; '.join(dict.fromkeys(issues))
+    result.structural_map['execution_issues'] = list(dict.fromkeys(issues))
+    result.finished_at = utc_now_iso()
+    result.elapsed_ms = (time.monotonic()-clock)*1000
+    (run/'result.json').write_text(json.dumps(result.to_dict(), indent=2), encoding='utf-8')
+    progress(f'[{game.name}] PARCIAL: {result.successful_spins} rondas demo locales verificadas. '+result.error)
+    return result

@@ -31,8 +31,10 @@ _ROUTES={
  'playtech':('http','websocket','none'),
 }
 
-def execution_profile(provider):
+def execution_profile(provider, *, variant=None):
     route=_ROUTES.get(provider)
+    if provider=='playtech' and variant=='ngm-offline':
+        route=('browser','local-client-engine','local-engine-required')
     return {'schema':'tester-spin/transport-policy/v1', 'policy':asdict(POLICY),
         'contract_registered':route is not None,
         'bootstrap':route[0] if route else 'unimplemented',

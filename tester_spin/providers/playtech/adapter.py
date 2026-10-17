@@ -10,6 +10,7 @@ from tester_spin.providers.catalogs.sources import SOURCES
 from .protocol import resolve_configuration
 from .primitives import COMMAND, client_contract, discover_modes, entry_command, PickState, RoundLedger
 from .direct_runtime import DemoSession
+from .ngm_runtime import NGMDemoSession
 
 
 class PlaytechProvider(CatalogProvider):
@@ -19,12 +20,12 @@ class PlaytechProvider(CatalogProvider):
     execution_supported=True
     max_test_concurrency=2
     session_factory=DemoSession
+    ngm_session_factory=NGMDemoSession
 
     def test_game(self,game,*,spins,timeout_s,stop_event,progress):
         if not re.fullmatch(r'gpas_[A-Za-z0-9_]+',game.symbol or ''):
-            result=super().test_game(game,spins=spins,timeout_s=timeout_s,stop_event=stop_event,progress=progress)
-            result.error='Motor Playtech no GPAS: contrato pendiente; se conserva el catálogo y la evidencia.'
-            return result
+            from .ngm_execution import test_ngm_game
+            return test_ngm_game(self,game,spins=spins,timeout_s=timeout_s,stop_event=stop_event,progress=progress)
         start=time.monotonic();run=self.har_artifact_dir(game)/'runs'/(time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:8]);run.mkdir(parents=True)
         result=GameTestResult(self.key,game.slug,game.name,game.url,spins,0,0,'PARCIAL',symbol=game.symbol,run_dir=str(run))
         issues=[];pending={};offered={};covered={};replays={};targets_seen=set()

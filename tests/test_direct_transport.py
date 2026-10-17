@@ -47,3 +47,13 @@ def test_playtech_independent_install_has_direct_socket_dependency():
     from pathlib import Path
     project=tomllib.loads(Path('pyproject.toml').read_text(encoding='utf-8'))
     assert any(v.startswith('websocket-client') for v in project['project']['optional-dependencies']['playtech'])
+
+
+def test_ngm_route_is_explicitly_local_and_requires_browser():
+    from tester_spin.transport_policy import execution_profile
+    profile=execution_profile('playtech',variant='ngm-offline')
+    assert profile['bootstrap']=='browser'
+    assert profile['gameplay']=='local-client-engine'
+    assert profile['browser_requirement']=='local-engine-required'
+    assert execution_profile('playtech')['gameplay']=='websocket'
+    assert execution_profile('new_provider',variant='ngm-offline')['gameplay']=='unimplemented'
