@@ -216,7 +216,9 @@ class DemoSession:
         response = transport.post(self.endpoint, params={"gsc": command},
             data=json.dumps(body, separators=(",", ":")), timeout=self.timeout,
             headers={"Content-Type": "text/plain", "Origin": "https://3oaks.com", "Referer": "https://3oaks.com/"})
-        if (command == 'login' and not self.browser_active and self.browser_fallback is not None
+        from tester_spin.transport_policy import POLICY
+        if (POLICY.may_fallback(dispatched=command != 'login', bootstrap_only=command == 'login', contract_supported=self.browser_fallback is not None)
+                and command == 'login' and not self.browser_active and self.browser_fallback is not None
                 and getattr(response,'status_code',None) in {403,429}
                 and 'Just a moment' in response.text and 'challenge-platform' in response.text):
             (directory / (label + '.response.http-blocked.raw.html')).write_text(response.text,encoding='utf-8')

@@ -133,6 +133,8 @@ class ProviderAdapter(ABC):
         actually covered. Unknown wire contracts therefore stay PARCIAL instead of
         being silently reported as OK.
         """
+        from tester_spin.transport_policy import execution_profile
+        result.structural_map['transport_policy'] = execution_profile(self.key)
         from tester_spin.providers.path_coverage import enforce_complete_path_coverage
 
         from tester_spin.sample_catalog import write_sample_catalog

@@ -9,7 +9,7 @@ from tester_spin.providers.catalogs.adapter import CatalogProvider
 from tester_spin.providers.catalogs.sources import SOURCES
 from .protocol import resolve_configuration
 from .primitives import COMMAND, client_contract, discover_modes, entry_command, PickState, RoundLedger
-from .runtime import DemoSession
+from .direct_runtime import DemoSession
 
 
 class PlaytechProvider(CatalogProvider):
@@ -35,7 +35,7 @@ class PlaytechProvider(CatalogProvider):
                 resolved=resolve_configuration(session.config,{'betType':'default'})
                 plan=discover_modes(resolved,contract,session.sources)
                 result.discovered_modes=plan['modes'];result.feature_domains=plan['domains'];issues.extend(plan['unresolved'])
-                result.structural_map['playtech_protocol']={'contract':contract,'source_sha256':session.source_hashes,'configuration':resolved,'fresh_demo':True}
+                result.structural_map['playtech_protocol']={'contract':contract,'source_sha256':session.source_hashes,'configuration':resolved,'fresh_demo':True,'transport':getattr(session,'transport_kind','unspecified')}
                 (run/'bootstrap.json').write_text(json.dumps({'manifest':session.manifest,'configuration':resolved,'contract':contract,'source_sha256':session.source_hashes},indent=2),encoding='utf-8')
                 base=next((m for m in plan['modes'] if m['kind']=='SPIN'),None)
                 if base is None:raise ValueError('BASE_MODE_UNBOUND')
