@@ -33,6 +33,8 @@ def parser():
             p.add_argument('--wall-timeout',type=positive,default=180)
             p.add_argument('--statuses',nargs='+',default=['PENDIENTE','PARCIAL','ERROR','SIN_DEMO'])
             p.add_argument('--game');p.add_argument('--refresh-catalog',action='store_true')
+            p.add_argument('--group-report',type=Path,help='informe .groups.json de una corrida anterior')
+            p.add_argument('--group-id',help='identificador del grupo a repetir')
             p.add_argument('--dry-run',action='store_true');p.add_argument('--public-summary',type=Path)
     return root
 
@@ -68,6 +70,8 @@ def main(argv=None):
     for stream in (sys.stdout,sys.stderr):
         if hasattr(stream,'reconfigure'):stream.reconfigure(encoding='utf-8',errors='replace')
     args=parser().parse_args(argv)
+    if args.command=='run' and bool(args.group_report)!=bool(args.group_id):
+        parser().error('--group-report y --group-id se requieren juntos')
     if args.command=='providers':
         print(json.dumps({k:v[2] for k,v in PROVIDERS.items()},ensure_ascii=False,indent=2));return 0
     try:profiles=profiles_for(args)
@@ -104,7 +108,13 @@ def main(argv=None):
         if args.command=='catalog':
             print(json.dumps({'provider':args.provider,'catalog_games':len(games)}));return 0
         allowed={v.upper() for v in args.statuses}
-        if 'ALL' not in allowed:games=[g for g in games if g.last_status.upper() in allowed]
+        if args.group_report:
+            from tester_spin.failure_groups import select_group
+            if args.group_report.stat().st_size>8*1024*1024:raise ValueError('Informe de grupos demasiado grande')
+            group_data=json.loads(args.group_report.read_text(encoding='utf-8'))
+            slugs=select_group(group_data,args.group_id,args.provider)
+            games=[g for g in games if g.slug in slugs]
+        elif 'ALL' not in allowed:games=[g for g in games if g.last_status.upper() in allowed]
         if args.game:games=[g for g in games if g.slug==args.game or g.symbol==args.game]
         games=games[args.offset:]
         if args.limit:games=games[:args.limit]
@@ -115,6 +125,7 @@ def main(argv=None):
         from tester_spin.independent.worker import execute_game
         run_id=uuid.uuid4().hex;directory=data_root/'independent'/'runs'/run_id;directory.mkdir(parents=True)
         target=args.public_summary or directory/'summary.json';target.parent.mkdir(parents=True,exist_ok=True)
+        batch_results=[];baseline=storage.latest_results(args.provider)
         checkpoint={'provider':args.provider,'run_id':run_id,'games_per_ip':args.games_per_ip,'selected':len(games),
             'attempted':0,'pending':len(games),'reason':'RUNNING','statuses':{},'results':[]}
         write_json(target,checkpoint)
@@ -130,6 +141,7 @@ def main(argv=None):
                         contract.setdefault('unresolved',[]).append('CURRENT_EXECUTION_CONTEXT_NOT_VERIFIED')
                         p.write_text(json.dumps(contract,ensure_ascii=False,indent=2),encoding='utf-8')
             storage.record_result(result)
+            batch_results.append(result)
             checkpoint['attempted']+=1;checkpoint['pending']-=1
             checkpoint['statuses'][result.status]=checkpoint['statuses'].get(result.status,0)+1
             checkpoint['results'].append({'provider':result.provider,'slug':result.slug,'status':result.status})
@@ -148,6 +160,9 @@ def main(argv=None):
         report=run_batches(games,execute=execute,record=record,profiles=profiles,games_per_ip=args.games_per_ip,stop_event=stop,progress=print,block_check=block_check)
         report.update(provider=args.provider,run_id=run_id,games_per_ip=args.games_per_ip)
         (directory/'summary.private.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+        from tester_spin.failure_groups import write_report
+        write_report(batch_results,directory/'summary',baseline=baseline,expected_count=len(games))
+        groups_written=True
         safe=public_report(report)
         target=args.public_summary or directory/'summary.json';target.parent.mkdir(parents=True,exist_ok=True)
         write_json(target,safe)
@@ -162,6 +177,12 @@ def main(argv=None):
             return 4
         print('Ejecución detenida: '+type(exc).__name__+'. Revisá la configuración y los registros locales.',file=sys.stderr);return 2
     finally:
+        if 'batch_results' in locals() and not locals().get('groups_written',False):
+            try:
+                from tester_spin.failure_groups import write_report
+                write_report(batch_results,directory/'summary',baseline=baseline,expected_count=len(games))
+            except Exception:
+                print('No se pudo guardar el informe de grupos de la corrida interrumpida.',file=sys.stderr)
         for sig,handler in old_signal.items():signal.signal(sig,handler)
 
 if __name__=='__main__':

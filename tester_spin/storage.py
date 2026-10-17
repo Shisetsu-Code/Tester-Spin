@@ -360,15 +360,16 @@ class Storage:
                 artifact_runs.append((key, str(row["run_dir"])))
         return index
 
-    def latest_results(self) -> list[dict]:
+    def latest_results(self, provider: str | None = None) -> list[dict]:
         """Latest automatic evidence plus a separate human assessment, if present."""
         with self._lock, self._connect() as con:
             rows = con.execute("""
                 SELECT r.payload_json, v.approved_at, v.note
                 FROM test_results r LEFT JOIN manual_validations v ON v.result_id=r.id
                 WHERE r.id IN (SELECT MAX(id) FROM test_results GROUP BY provider, slug)
+                AND (? IS NULL OR r.provider=?)
                 ORDER BY r.provider, r.slug
-            """).fetchall()
+            """, (provider, provider)).fetchall()
         results = []
         for row in rows:
             result = json.loads(row["payload_json"])

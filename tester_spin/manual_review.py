@@ -162,9 +162,12 @@ def render_review(results, *, expected_count=None):
     return '\n'.join(lines) + '\n'
 
 
-def write_review(results, directory, *, expected_count=None):
+def write_review(results, directory, *, expected_count=None, baseline=None):
+    results = list(results)
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     path = directory / (datetime.now().strftime('%Y-%m-%d_%H-%M-%S') + '-' + uuid4().hex[:8] + '-revision-manual.txt')
-    path.write_text(render_review(results, expected_count=expected_count), encoding='utf-8')
+    from tester_spin.failure_groups import write_report
+    grouped = write_report(results, path, baseline=baseline, expected_count=expected_count)
+    path.write_text(render_review(results, expected_count=expected_count) + '\nGrupos y prioridades: ' + str(grouped['markdown']) + '\nSelección para reintento: ' + str(grouped['json']) + '\n', encoding='utf-8')
     return path

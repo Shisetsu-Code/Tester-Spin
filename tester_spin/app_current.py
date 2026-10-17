@@ -100,6 +100,9 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
             command=self._test_non_ok,
         )
         self.test_non_ok_btn.pack(side="left", padx=(8, 0))
+        from tester_spin.failure_groups_ui import show_groups
+        self.failure_groups_btn = ttk.Button(controls, text="GRUPOS / REPROBAR", command=lambda: show_groups(self))
+        self.failure_groups_btn.pack(side="left", padx=(8, 0))
         ttk.Label(
             controls,
             text=f"Ejecución: {self._execution_backend.display_name}",
@@ -121,6 +124,8 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
 
     def _set_busy(self, busy: bool) -> None:
         super()._set_busy(busy)
+        if hasattr(self, "failure_groups_btn"):
+            self.failure_groups_btn.configure(state="disabled" if busy else "normal")
         if hasattr(self, "test_non_ok_btn"):
             self.test_non_ok_btn.configure(state="disabled" if busy else "normal")
         if hasattr(self, "delete_catalog_selected_btn"):
@@ -285,7 +290,9 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
             self._events.put(("test_result", result))
 
         def orchestrator() -> None:
+            baseline = None
             try:
+                baseline = self.storage.latest_results(provider.key)
                 self._execution_backend.run(
                     provider,
                     games,
@@ -294,15 +301,17 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
                     progress=lambda message: self._events.put(("log", message)),
                     on_result=on_result,
                 )
-                from tester_spin.manual_review import write_review
-                try:
-                    report = write_review(batch_results, self.data_root / "reports", expected_count=len(games))
-                    self._events.put(("manual_review", report))
-                except OSError as exc:
-                    self._events.put(("log", f"No se pudo guardar la lista de revisión manual: {exc}"))
-                self._events.put(("tests_done", None))
             except Exception as exc:
                 self._events.put(("error", f"Pruebas: {type(exc).__name__}: {exc}"))
+            finally:
+                from tester_spin.manual_review import write_review
+                try:
+                    report = write_review(batch_results, self.data_root / "reports", expected_count=len(games), baseline=baseline)
+                    self._events.put(("log", f"Grupos y prioridades: {report.with_suffix('.groups.md')}"))
+                    self._events.put(("manual_review", report))
+                except OSError as exc:
+                    self._events.put(("log", f"No se pudo guardar la revisión y los grupos: {exc}"))
+                self._events.put(("tests_done", None))
 
         self._worker = threading.Thread(
             target=orchestrator,

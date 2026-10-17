@@ -146,3 +146,7 @@ por sí solo compras, antebets, cobertura de rondas ni un resultado OK.
 ## Playtech GPAS
 
 El ejecutor GPAS usa sesiones demo nuevas, modalidades por nombre o UUID, compras, antebets y elecciones con estado. Los motores no reconocidos conservan PARCIAL. Véase [el contrato de ejecución y sus límites](docs/PLAYTECH_EXECUTION.md).
+
+## Grupos de fallos
+
+**GRUPOS / REPROBAR** prioriza causas por cantidad de juegos, muestra representantes y permite repetir sus afectados. Las corridas generan informes comparables sin cambiar estados: [uso y límites](docs/FAILURE_GROUPS.md).
