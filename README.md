@@ -87,8 +87,9 @@ declaraciones repetidas se agrupan conservando todas sus referencias.
 
 El adaptador incorpora ese diagnóstico cuando encuentra evidencia compatible.
 GPAS ejecuta sesiones nuevas por HTTP/WebSocket. NGM offline valida rondas
-normales en el cliente oficial aislado y conserva PARCIAL mientras su inventario
-de compras/antebets sea desconocido. POP y contratos sin acción verificada siguen
+normales en el cliente oficial aislado y consume el plan reconstruido desde su HAR.
+Puede dar OK con inventario respaldado, rondas cerradas y retorno a base; conserva
+PARCIAL cuando sus contratos o modalidades siguen desconocidos. POP y contratos sin acción verificada siguen
 pendientes. Leer una configuración no basta para otorgar OK; las elecciones sin
 recorrer también conservan PARCIAL. No se usa el fuzzer para explorar Playtech.
 
@@ -152,7 +153,7 @@ por sí solo compras, antebets, cobertura de rondas ni un resultado OK.
 
 El ejecutor GPAS usa sesiones demo nuevas, modalidades por nombre o UUID, compras, antebets y elecciones con estado. Los motores no reconocidos conservan PARCIAL. Véase [el contrato de ejecución y sus límites](docs/PLAYTECH_EXECUTION.md).
 
-NGM offline tiene una ruta independiente para rondas normales demo y analiza automáticamente su HAR al cerrar la sesión, incluso si queda PARCIAL. El lector reconstruye formatos y conserva campos desconocidos como pendientes: [contrato, análisis offline y límites](docs/PLAYTECH_NGM_OBSERVATION.md).
+NGM offline tiene una ruta independiente para rondas normales demo y analiza automáticamente su HAR al cerrar la sesión, incluso si queda PARCIAL. El lector reconstruye formatos y el motor consume automáticamente su plan para publicar compras/antebets y comprobar cobertura; los contratos desconocidos siguen pendientes: [contrato, análisis offline y límites](docs/PLAYTECH_NGM_OBSERVATION.md).
 
 ## Grupos de fallos
 

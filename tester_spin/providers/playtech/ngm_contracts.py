@@ -33,8 +33,8 @@ def source_declarations(source):
         NAME+r'\((\d+),\d+,(?:\{[^{}]*\}|'+NAME+r'),'+NAME+r'\)', source)}
     rows = []
     wire = set(_wire_declarations(source))
-    for match in re.finditer(NAME+r"\(("+NAME+r"),['\"]([^'\"]+)['\"],(\d+),[^;()]*\)", source):
-        if (match[2], match[3]) not in wire:
+    for match in re.finditer(NAME+r"\(("+NAME+r"),['\"]([^'\"]+)['\"],(\d+|null),[^;()]*\)", source):
+        if (match[2], match[3]) not in wire and not (match[3] == 'null' and match[2].endswith('Request')):
             continue
         values = constants.get(match[1], set())
         rows.append(dict(name=match[2], namespace=next(iter(values)) if len(values) == 1 else None,
@@ -322,6 +322,8 @@ def analyze_har(har, code):
         report.update(manifest_ref=manifests[0][0], manifest=manifests[0][1])
     else:
         unresolved.append('NGM_MANIFEST_MISSING' if not manifests else 'NGM_MANIFEST_AMBIGUOUS')
+    from .ngm_plan import build_execution_plan
+    report['execution_plan'] = build_execution_plan(report, sources[0][1] if len(sources) == 1 else '')
     return report
 
 

@@ -89,7 +89,7 @@ class NGMRoundLedger:
 
 
 def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
-    """Validate base rounds; unknown feature inventory intentionally stays partial."""
+    """Execute observed rounds and consume the current captured client plan."""
     import json
     import time
     import uuid
@@ -102,7 +102,7 @@ def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
     result = GameTestResult(provider.key, game.slug, game.name, game.url, count, 0, 0,
                             'PARCIAL', symbol=game.symbol, run_dir=str(run))
     result.feature_domains = {key:dict(declaration_state='UNKNOWN', options=[])
-                              for key in ('purchase', 'antebet')}
+                              for key in ('purchase', 'ante')}
     issues = ['NGM_FEATURE_INVENTORY_UNKNOWN']
     result.structural_map['playtech_protocol'] = dict(variant='ngm-offline',
         transport='local-client-engine', fresh_demo=False, server_execution=False)
@@ -120,18 +120,22 @@ def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
             for index in range(1, count+1):
                 if stop_event.is_set():
                     raise InterruptedError('DETENIDO')
+                directory = run/f'attempt-{index}'
+                directory.mkdir()
                 attempt = SpinAttempt(index, False, mode_id=mode['id'], symbol=game.symbol,
-                                      artifact_dir=str(run))
+                                      artifact_dir=str(directory))
                 result.attempts.append(attempt)
                 started = time.monotonic()
                 try:
                     summary = session.spin()
                     if summary.get('verified') is not True:
                         raise ValueError('NGM_ROUND_NOT_VERIFIED')
-                    (run/f'attempt-{index}.json').write_text(json.dumps(summary, indent=2), encoding='utf-8')
+                    evidence = dict(summary, execution_scope='official-local-demo',
+                        server_execution=False, source_sha256=session.source_hashes, event_trace='../ngm-events.jsonl')
+                    (directory/'response.json').write_text(json.dumps(evidence, indent=2), encoding='utf-8')
                     attempt.ok = attempt.terminal = True
                     attempt.wire_steps = summary['steps']
-                    attempt.warning = 'Motor demo local; ejecución de servidor no verificada.'
+                    mode['execution_scope'] = 'official-local-demo'
                     result.successful_spins += 1
                     mode['validated'] = True
                     if index == count:
@@ -161,13 +165,31 @@ def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
                 request_count=report['request_count'], source_matches_session=matches, unresolved=report['unresolved'])
             if protocol.get('source_sha256') and not matches:
                 issues.append('NGM_HAR_SOURCE_MISMATCH')
+            manifest_matches = protocol.get('functional_manifest') == report.get('manifest') and report.get('manifest') is not None
+            protocol['har_analysis']['manifest_matches_session'] = manifest_matches
+            plan = report['execution_plan']
+            protocol['execution_plan'] = plan
+            (run/'execution-plan.json').write_text(json.dumps(plan, indent=2, ensure_ascii=False), encoding='utf-8')
+            if not manifest_matches:
+                issues.append('NGM_HAR_MANIFEST_MISMATCH')
+            if not protocol.get('fresh_demo'):
+                issues.append('NGM_DEMO_MODE_NOT_CONFIRMED')
+            if matches and manifest_matches and protocol.get('fresh_demo') and plan['complete']:
+                result.feature_domains = plan['domains']
+                issues.remove('NGM_FEATURE_INVENTORY_UNKNOWN')
+                result.structural_map['ngm_features'] = plan['features']
+            else:
+                issues.extend(plan['unresolved'])
         except (OSError, ValueError, TypeError) as exc:
             issues.append('NGM_HAR_ANALYSIS_FAILED:'+str(exc))
     result.failed_spins = sum(not attempt.ok for attempt in result.attempts)
+    result.status = 'OK' if (not issues and result.successful_spins == count
+        and len(result.attempts) == count and all(a.ok and a.terminal for a in result.attempts)
+        and result.structural_map.get('return_to_base_verified')) else 'PARCIAL'
     result.error = '; '.join(dict.fromkeys(issues))
     result.structural_map['execution_issues'] = list(dict.fromkeys(issues))
     result.finished_at = utc_now_iso()
     result.elapsed_ms = (time.monotonic()-clock)*1000
     (run/'result.json').write_text(json.dumps(result.to_dict(), indent=2), encoding='utf-8')
-    progress(f'[{game.name}] PARCIAL: {result.successful_spins} rondas demo locales verificadas. '+result.error)
+    progress(f'[{game.name}] {result.status}: {result.successful_spins} rondas demo locales verificadas. '+result.error)
     return result
