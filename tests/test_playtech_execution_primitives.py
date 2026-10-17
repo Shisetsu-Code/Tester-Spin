@@ -103,8 +103,8 @@ class AdapterIntegrationTests(unittest.TestCase):
   result=self.run_fixture();self.assertEqual(result.status,'OK',result.error);self.assertEqual(result.successful_spins,2);self.assertTrue(result.structural_map['return_to_base_verified'])
  def test_common_finalizer_recognizes_completed_antebet(self):
   result=self.run_fixture(ante=True);self.assertEqual(result.status,'OK',result.error);self.assertEqual(result.successful_spins,3)
- def test_closed_purchase_does_not_hide_uncovered_choices(self):
-  result=self.run_fixture(True);self.assertEqual(result.status,'PARCIAL');self.assertTrue(result.structural_map['pending_choice_branches']);self.assertEqual(result.successful_spins,3)
+ def test_closed_purchase_reenters_to_cover_other_choices(self):
+  result=self.run_fixture(True);self.assertEqual(result.status,'OK',result.error);self.assertFalse(result.structural_map['pending_choice_branches']);self.assertEqual(result.successful_spins,4)
  def test_non_gpas_does_not_start_a_browser(self):
   import tempfile,threading
   from pathlib import Path

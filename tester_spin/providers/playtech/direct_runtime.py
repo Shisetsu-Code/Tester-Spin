@@ -9,6 +9,7 @@ import requests
 import websocket
 from tester_spin.direct_transport import CorrelatedSocket
 from .runtime import DemoSession as BrowserDemoSession
+from .client_sources import script_dependencies
 
 ROOT='https://gpas-games.playtechone.com/'
 
@@ -50,12 +51,11 @@ class DemoSession(BrowserDemoSession):
                 if not url.startswith(game_root.rstrip('/')+'/'):raise ValueError('CLIENT_SOURCE_OUTSIDE_GAME')
                 seen.add(url)
                 source=self._get(url,as_json=False)
-                if 'GLU.game.' in source and ('40021' in source or '48775' in source):
-                    self.sources.append(source);self.source_hashes.append(hashlib.sha256(source.encode('utf-8')).hexdigest())
+                self.sources.append(source);self.source_hashes.append(hashlib.sha256(source.encode('utf-8')).hexdigest())
                 # Static script loaders only. Never evaluate downloaded JavaScript.
-                for resource in re.findall(r"setAttribute\([\"']src[\"'],\s*[\"']([^\"']+\.js)[\"']\)",source):
+                for resource in script_dependencies(source):
                     pending.append(urljoin(manifest_url,resource))
-            if not self.sources:raise ValueError('CLIENT_CONTRACT_MISSING')
+            if not self.sources:raise ValueError('CLIENT_SOURCES_MISSING')
             server=self._get(ROOT+release+'/brands/playtechhorizon/1/json/env_config.json')['server']
             if str(server.get('secure')).lower()!='true':raise ValueError('INSECURE_DEMO_ENDPOINT')
             host=server['host']

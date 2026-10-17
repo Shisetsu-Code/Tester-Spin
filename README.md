@@ -28,6 +28,8 @@ Cada proveedor también puede ejecutarse por separado desde la PC o el workflow 
 
 El ejecutor prioriza peticiones directas y registra una política común de transporte. Playtech GPAS inicia y juega por HTTP/WebSocket sin Chromium. [Rutas y excepciones por proveedor](docs/DIRECT_TRANSPORT.md).
 
+La ampliación de familias GPAS incorpora cargadores estáticos, scopes de modalidades y reentrada para elecciones. [Validación y evidencia pendiente](docs/PLAYTECH_FAMILY_EXPANSION.md).
+
 ## Interpretar resultados
 
 - **OK**: las operaciones requeridas y su cobertura comprobada terminaron correctamente.

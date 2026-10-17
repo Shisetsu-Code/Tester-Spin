@@ -8,6 +8,7 @@ import re
 import zlib
 from copy import deepcopy
 from .protocol import money
+from .client_sources import compiled_pick_binding
 
 COMMAND = "com.pt.casino.platform.game.GameCommand"
 GAME_CLASS = "com.pt.gpas.platform.game.OgwCorosinGameCommand"
@@ -49,7 +50,7 @@ def client_contract(manifest, sources):
         raise ValueError("CLIENT_BET_API_UNKNOWN")
     return {"dialect":dialect, "class":GAME_CLASS, "entry_id":40021, "continuation_id":48775,
             "base_selector": "default" if 'baseCostName:"default"' in text or "baseCostName:'default'" in text else None,
-            "pick_bound": bool(re.search(r'[\"\']pick[\"\']',text)) and ("FGPickController" in text)}
+            "pick_bound": (bool(re.search(r'[\"\']pick[\"\']',text)) and "FGPickController" in text) or compiled_pick_binding(text)}
 
 
 def discover_modes(configuration, contract, sources):
@@ -65,7 +66,19 @@ def discover_modes(configuration, contract, sources):
         raise ValueError("INVALID_ACTIVE_OPTIONS")
     text = "\n".join(sources)
     purchase_binding = bool(re.search(r"BuyFeature(?:Module|Controller|Configuration)",text))
-    ante_binding = "ExtraBetsModule" in text or bool(re.search(r"extraBetNum\s*:\s*1",text))
+    ante_binding = bool(re.search(r"ExtraBets?(?:Module|Controller|Configuration)",text)) or bool(re.search(r"extraBetNum\s*:\s*1",text))
+    descriptors={}
+    for match in re.finditer(r"baseCostName:[\"']([^\"']+)[\"'],betParams:\{betType:[\w$.]+\.(DEFAULT|BONUS|EXTRA)([^}]{0,160})\}",text):
+        kind={'DEFAULT':'SPIN','BONUS':'PURCHASE','EXTRA':'ANTE_BET'}[match[2]]
+        if re.search(r'extraBetNum\s*:\s*[1-9]',match[3]):kind='ANTE_BET'
+        descriptors.setdefault(match[1],set()).add(kind)
+    scopes=game.get("namedScopes",{})
+    if not isinstance(scopes,dict):raise ValueError("INVALID_NAMED_SCOPES")
+    volatility_binding="currentVolatilitySuffix" in text or "VolatilityController" in text
+    line_binding="winline" in text and "stakeCostUuid" in text and (contract['dialect']=="legacy" or ("stakeCostName" in text and "GLU.game.playMoney" in text))
+    line_domain=line_binding and len(costs)>1 and all(isinstance(r,dict) and isinstance(r.get('parameters'),dict)
+        and str(r.get('name','')).isdigit() and r['parameters'].get('winline')==r['name']
+        and r['parameters'].get('startingMode')=='Standard' for r in costs)
     modes=[]; issues=[]; names=set(); ids=set()
     for index, row in enumerate(costs):
         if not isinstance(row,dict) or not money(row.get("cost")) or row["cost"]<=0:
@@ -77,16 +90,22 @@ def discover_modes(configuration, contract, sources):
         if active is not None and name not in active and not (index==0 and "default" in active):
             continue
         normalized=name.casefold()
-        if normalized=="extra" and ante_binding:
+        scope=scopes.get(name,{})
+        if not isinstance(scope,dict):raise ValueError("INVALID_NAMED_SCOPE")
+        scoped=scope.get('betType')=='default' and scope.get('featureType')==name
+        declared_kinds=descriptors.get(name,set())
+        if len(declared_kinds)==1:
+            kind=next(iter(declared_kinds))
+        elif (normalized=="extra" or (scoped and re.fullmatch(r"extra(?:[0-9]+|x[0-9]+(?:low|mid|high)?)",normalized))) and ante_binding:
             kind="ANTE_BET"
-        elif normalized in {"bf","buyfeature"} and purchase_binding:
+        elif (normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized))) and purchase_binding:
             kind="PURCHASE"
-        elif normalized in {"default","base"} or (len(costs)==1 and normalized not in {"bf","buyfeature","extra"}):
+        elif line_domain or (scoped and volatility_binding and re.fullmatch(r"default(?:low|mid|high)",normalized)) or normalized in {"default","base"} or (len(costs)==1 and normalized not in {"bf","buyfeature","extra"}):
             kind="SPIN"
         else:
             kind="UNKNOWN_FEATURE";issues.append("UNBOUND_STAKE_MODE:"+name)
-        modes.append({"id":identity,"name":name,"kind":kind,"selector":(contract.get("base_selector") or name) if kind=="SPIN" and index==0 else name,"cost":row["cost"],
-                      "multiplier":min(factors),"declaration":deepcopy(row),"server_declared":True,"observed":True})
+        modes.append({"id":identity,"name":name,"kind":kind,"selector":scope.get("featureType",(contract.get("base_selector") or name) if kind=="SPIN" and index==0 else name),"cost":row["cost"],
+                      "bet_type":scope.get("betType","default"),"multiplier":min(factors),"declaration":deepcopy(row),"server_declared":True,"observed":True})
     if not any(m["kind"]=="SPIN" for m in modes):issues.append("BASE_MODE_UNBOUND")
     if active is not None:
         for name in active:
@@ -103,12 +122,12 @@ def entry_command(mode, contract):
     if contract["dialect"]=="legacy":
         data.update(bet=amount,stakeCostUuid=mode["id"],baseCostMultiplier=mode["multiplier"])
         return {"_type":COMMAND,"gameData":data,"betType":"default"}
-    return {"_type":COMMAND,"gameData":data,"autoplay":False,"betCost":amount,"betType":"default","featureType":mode["selector"]}
+    return {"_type":COMMAND,"gameData":data,"autoplay":False,"betCost":amount,"betType":mode.get("bet_type","default"),"featureType":mode["selector"]}
 
 
 class PickState:
-    def __init__(self):
-        self.consumed={}; self.offered={}; self.selected={}
+    def __init__(self, target=None):
+        self.consumed={}; self.offered={}; self.selected={}; self.target=dict(target or {});self.target_applied=set()
 
     def parameters(self, data, bound):
         for stack in data.get("playStack",[]):
@@ -126,7 +145,10 @@ class PickState:
         offered={o["index"] for o in options}; self.offered.setdefault(phase,set()).update(offered)
         available=sorted(offered-self.consumed.get(phase,set()))
         if not available:raise ValueError("NO_UNCONSUMED_PICK")
-        index=available[0];self.selected.setdefault(phase,set()).add(index)
+        preferred=self.target.get(phase)
+        index=preferred if phase not in self.target_applied and preferred in available else available[0]
+        self.target_applied.add(phase)
+        self.selected.setdefault(phase,set()).add(index)
         return [{"key":"pick","value":str(index)}]
 
     def pending(self):
