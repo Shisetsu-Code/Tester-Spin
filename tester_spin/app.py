@@ -405,7 +405,7 @@ class TesterSpinApp(tk.Tk):
                 game.symbol or "—",
                 game.display_status or "PENDIENTE",
                 game.last_test_at or "—",
-                game.url,
+                game.launch_url,
             )
             self.tree.insert("", "end", iid=iid, text="", image=image, values=values)
         self.count_var.set(f"{len(games)} juegos")
@@ -489,7 +489,7 @@ class TesterSpinApp(tk.Tk):
             f"Revisión manual: {game.manual_ok_at or '—'} {game.manual_ok_note}\n"
             f"Última prueba: {game.last_test_at or '—'}\n"
             f"Error: {game.last_error or '—'}\n\n"
-            f"Página:\n{game.url}\n\n"
+            f"Juego:\n{game.launch_url}\n\n"
             f"Miniatura original:\n{game.thumbnail_url or '—'}\n\n"
             f"Archivo:\n{game.thumbnail_path or '—'}"
         )
@@ -526,7 +526,7 @@ class TesterSpinApp(tk.Tk):
         if game is None or self._hardfire_opening:return
         self._hardfire_opening=True
         self.hardfire_btn.configure(state='disabled')
-        url,name=game.url,game.name
+        url,name=game.launch_url,game.name
         self._append_log('Abriendo en HardFire: '+name)
         def launch():
             try:
@@ -557,7 +557,7 @@ class TesterSpinApp(tk.Tk):
             return
         game = self._games.get(selection[0])
         if game:
-            webbrowser.open(game.url)
+            webbrowser.open(game.launch_url)
 
     def _open_selected_folder(self) -> None:
         selection = self.tree.selection()

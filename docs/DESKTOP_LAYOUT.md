@@ -13,3 +13,8 @@ Seleccionar un juego y pulsar **Abrir en HardFire**, o hacer doble clic en su fi
 Tester-Spin conecta con el MCP local de HardFire y, si hace falta, inicia su instalación local. Si HardFire no está instalado, muestra el problema sin bloquear las pruebas. Para instalaciones en otra ubicación se puede configurar `HARDFIRE_APP_PATH`; `HARDFIRE_MCP_URL` admite únicamente el servidor HTTP local.
 
 La distribución se conserva entre actualizaciones porque pertenece al directorio de datos compartido, no a la versión del programa.
+
+
+## Enlaces de juegos
+
+Para Playtech, la columna Link, el detalle, Abrir juego y la apertura en HardFire usan la entrada demo oficial con el identificador del juego, preferedmode=offline y real=0. Se aplica también a los registros existentes, sin recargar el catálogo. La URL original del catálogo se conserva internamente como procedencia y autoridad del catálogo. Los enlaces de otros proveedores no cambian.

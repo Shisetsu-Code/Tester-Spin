@@ -52,5 +52,5 @@ def game_sort_key(game: Game, column: str):
             stamp = 0.0
         return (0, stamp, str(game.name or "").casefold())
     if column == "url":
-        return (str(game.url or "").casefold(), str(game.name or "").casefold())
+        return (str(game.launch_url or "").casefold(), str(game.name or "").casefold())
     return (str(game.name or "").casefold(), str(game.slug or "").casefold())

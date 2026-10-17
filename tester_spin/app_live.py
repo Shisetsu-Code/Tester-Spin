@@ -211,7 +211,7 @@ class LiveTesterSpinApp(TesterSpinApp):
             game.symbol or "—",
             game.display_status or "PENDIENTE",
             game.last_test_at or "—",
-            game.url,
+            game.launch_url,
         )
         if self.tree.exists(iid):
             self.tree.item(iid, text="", image=image, values=values)

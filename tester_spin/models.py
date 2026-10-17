@@ -30,6 +30,19 @@ class Game:
     manual_ok_note: str = ""
 
     @property
+    def launch_url(self) -> str:
+        """Public demo entry; keep url as the catalog/evidence authority."""
+        if self.provider == "playtech":
+            from urllib.parse import unquote, urlencode
+            code = str(self.symbol or "").strip()
+            if not code and self.slug.startswith("game-"):
+                code = unquote(self.slug[5:]).strip()
+            if code:
+                return "https://cachedownload.playtechone.com/ngmdesktop/casinoclient.html?" + urlencode(
+                    {"game": code, "preferedmode": "offline", "real": "0"})
+        return self.url
+
+    @property
     def display_status(self) -> str:
         return "OK MANUAL" if self.manual_ok_at else self.last_status
 
