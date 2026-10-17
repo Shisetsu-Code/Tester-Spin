@@ -110,7 +110,9 @@ def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
         with provider.ngm_session_factory(game.symbol, run, timeout_s, stop_event) as session:
             result.structural_map['playtech_protocol'].update(
                 contract=session.contract, source_sha256=session.source_hashes,
-                fresh_demo=getattr(session, 'demo_verified', False))
+                fresh_demo=getattr(session, 'demo_verified', False),
+                request_schemas=getattr(session, 'request_schemas', []),
+                functional_manifest=getattr(session, 'manifest', None))
             mode = dict(id='NGM_REGULAR', kind='SPIN', name='Giro normal demo local', validated=False)
             result.discovered_modes = [mode]
             for index in range(1, count+1):
@@ -141,6 +143,24 @@ def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
             issues.extend(session.errors)
     except Exception as exc:
         issues.append(type(exc).__name__+': '+str(exc))
+    # The recorder finishes writing on context close. Analyze only afterwards;
+    # this path reads evidence and never reuses a captured session for execution.
+    har_path = run/'session.har'
+    if har_path.is_file():
+        try:
+            from .ngm_contracts import analyze_har
+            if har_path.stat().st_size > 256*1024*1024:
+                raise ValueError('NGM_HAR_TOO_LARGE')
+            report = analyze_har(json.loads(har_path.read_text(encoding='utf-8-sig')), game.symbol)
+            (run/'ngm-har-contracts.json').write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding='utf-8')
+            protocol = result.structural_map['playtech_protocol']
+            matches = report.get('source_sha256') in protocol.get('source_sha256', [])
+            protocol['har_analysis'] = dict(path=str(run/'ngm-har-contracts.json'),
+                request_count=report['request_count'], source_matches_session=matches, unresolved=report['unresolved'])
+            if protocol.get('source_sha256') and not matches:
+                issues.append('NGM_HAR_SOURCE_MISMATCH')
+        except (OSError, ValueError, TypeError) as exc:
+            issues.append('NGM_HAR_ANALYSIS_FAILED:'+str(exc))
     result.failed_spins = sum(not attempt.ok for attempt in result.attempts)
     result.error = '; '.join(dict.fromkeys(issues))
     result.structural_map['execution_issues'] = list(dict.fromkeys(issues))

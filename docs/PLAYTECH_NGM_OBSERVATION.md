@@ -33,3 +33,23 @@ El inventario completo de compras y antebets NGM todavía es UNKNOWN: no se dedu
 En `analysis/runs/<ejecución>` se guardan `session.har`, `bootstrap.json` con hashes y vínculos, `ngm-events.jsonl`, resúmenes financieros por ronda e intento y `result.json`. Son evidencia privada, fuera de Git. El observador auxiliar usa las mismas primitivas.
 
 Validación real 2026-10-17: Heart of the Frontier, sesión demo nueva, tres rondas normales de coste 20, premios 9 / 140 / 0 y saldos 100000 → 99989 → 100109 → 100089. Todas cerraron y permitieron el siguiente giro. Una auditoría posterior de esos eventos también pasó la exigencia explícita de débito. No equivale a una corrida del catálogo ni a validar un bonus completo.
+
+## Reconstrucción automática desde el HAR
+
+`ngm_contracts.py` complementa la extracción de Aislador: usa los cuerpos del cliente y del JMM que permanecen en el HAR. Funciona offline, no ejecuta los scripts capturados, no hace red y no reutiliza identificadores de sesión.
+
+```powershell
+python -m tester_spin.providers.playtech.ngm_contracts captura.har --code CODIGO --out informe-ngm.json
+```
+
+El informe vincula las clases de petición con sus constructores, identificadores y serializadores, incluidos campos escalares y listas. Conserva las declaraciones cuyo formato no se entiende como pendientes. Separa mensajes de plataforma mediante el namespace declarado de PlatformRequest y clases abstractas mediante su registro sin constructor; no los cuenta como apuestas.
+
+El manifiesto conserva modalidades y opciones sin convertir botones o nombres en compras. Los controles relevantes incluyen referencia a su nodo original. Las tablas grandes de rodillos y pesos pasan a referencias con hash; siguen en el HAR para reconstruir la matemática cuando corresponda. Las escrituras dinámicas, las delegaciones sobre el objeto de salida y los cuerpos incompletos impiden considerar completo un serializador.
+
+Tester-Spin aplica el mismo lector a la sesión oficial vigente y guarda `client-contracts.json`. Después de cerrar el contexto y terminar la grabación, analiza automáticamente `session.har`, genera `ngm-har-contracts.json` y contrasta el hash del código con el cliente observado. Esto también sucede cuando el intento termina PARCIAL o falla; una fuente ausente, incompleta o distinta queda explícita.
+
+Solo se observan pasivamente las preferencias y el inicio de bonus con serializadores completos dentro del contrato revisado. Un inicio de bonus requiere una ronda abierta con giro previo. No se envía ese comando desde el informe ni se asume que carece de coste por no llevar un precio: el débito inicial y el saldo final siguen comprobándose, y cualquier cobro extra sin contrato impide verificar la ronda. Las peticiones anidadas se emparejan mediante una pila para no atribuir la respuesta de preferencias al giro.
+
+La instalación de los vínculos ocurre antes de ejecutar el script del cliente, evitando depender de un evento de interfaz que ya pudo haber sucedido durante la carga.
+
+Validación adicional: el HAR de Heart of the Frontier permitió reconstruir 11 formatos concretos sin campos de serialización pendientes; la clasificación económica y el inventario completo continúan UNKNOWN. Otra sesión demo nueva completó dos rondas, recuperó automáticamente los mismos 11 formatos y el manifiesto. Esto no prueba una compra o bonus completo ni amplía el estado OK.

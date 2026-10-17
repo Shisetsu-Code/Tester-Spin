@@ -152,7 +152,7 @@ por sí solo compras, antebets, cobertura de rondas ni un resultado OK.
 
 El ejecutor GPAS usa sesiones demo nuevas, modalidades por nombre o UUID, compras, antebets y elecciones con estado. Los motores no reconocidos conservan PARCIAL. Véase [el contrato de ejecución y sus límites](docs/PLAYTECH_EXECUTION.md).
 
-NGM offline tiene una ruta independiente para rondas normales demo: [contrato, evidencia y límites](docs/PLAYTECH_NGM_OBSERVATION.md).
+NGM offline tiene una ruta independiente para rondas normales demo y analiza automáticamente su HAR al cerrar la sesión, incluso si queda PARCIAL. El lector reconstruye formatos y conserva campos desconocidos como pendientes: [contrato, análisis offline y límites](docs/PLAYTECH_NGM_OBSERVATION.md).
 
 ## Grupos de fallos
 

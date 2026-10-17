@@ -4,7 +4,9 @@ Bindings describe non-pausing logpoints in a freshly loaded official demo.
 They do not authorize wagers or certify the purchase inventory/round closure.
 """
 import re
+import json
 from .client_sources import _function_bodies
+from .ngm_contracts import request_catalog
 
 NAME = r"[A-Za-z_$][\w$]*"
 
@@ -111,7 +113,9 @@ def observation_points(source):
             fields = ",".join(key+":"+request+"."+value
                               for key, value in contract['fields'].items())
             expression = ("({raw:"+request+",spin:"+request+" instanceof "+
-                          contract['constructor']+"?{"+fields+"}:null})")
+                          contract['constructor']+"?{"+fields+"}:null,requestClass:")
+            expression += ''.join(request+' instanceof '+row['constructor']+'?'+json.dumps(row['name'])+':'
+                                  for row in request_catalog(source))+'null})'
         point("offline.request", name, 0, expression)
         point("offline.response", name, last.start(), last[1])
 

@@ -8,6 +8,7 @@ from urllib.parse import urlencode, urlsplit
 
 from .ngm_execution import NGMRoundLedger
 from .ngm_observation import observation_points, spin_request_contract, spin_action_binding
+from .ngm_contracts import request_catalog, functional_manifest, passive_request_roles
 
 
 class NGMDemoSession:
@@ -35,9 +36,13 @@ class NGMDemoSession:
         self.scripts = []
         self.seen = set()
         self.ledger = None
-        self.dispatch_spin = False
+        self.dispatch_stack = []
+        self.request_schemas = []
+        self.passive_roles = {}
+        self.manifest = None
         self.trace = None
         self.event_count = 0
+        self.instrumentation_id = None
 
     def __enter__(self):
         from playwright.sync_api import sync_playwright
@@ -51,10 +56,13 @@ class NGMDemoSession:
             self.context.add_init_script(path=str(Path(__file__).with_name('ngm_hook.js')))
             self.page = self.context.new_page()
             self.page.on('console', self._console)
+            self.page.on('response', lambda response: self._resource(response))
             self.debug = self.context.new_cdp_session(self.page)
             self.debug.on('Debugger.scriptParsed', lambda event: self.scripts.append(event))
-            self.debug.on('Debugger.paused', lambda _: self.debug.send('Debugger.resume'))
+            self.debug.on('Debugger.paused', lambda event: self._paused(event))
             self.debug.send('Debugger.enable', {'maxScriptsCacheSize': 32*1024*1024})
+            self.instrumentation_id = self.debug.send('Debugger.setInstrumentationBreakpoint',
+                {'instrumentation': 'beforeScriptExecution'})['breakpointId']
             url = 'https://cachedownload.playtechone.com/ngmdesktop/casinoclient.html?' + urlencode(
                 dict(game=self.code, preferedmode='offline', real='0'))
             self.page.goto(url, wait_until='domcontentloaded', timeout=int(self.timeout*1000))
@@ -82,6 +90,44 @@ class NGMDemoSession:
     def _trusted(self, url):
         parsed = urlsplit(url)
         return parsed.scheme == 'https' and parsed.hostname == 'cachedownload.playtechone.com'
+
+    def _paused(self, event):
+        try:
+            # Installation precedes the first client event, avoiding dependence
+            # on a later click to expose the live action's closure.
+            self._install()
+        except Exception as exc:
+            self.errors.append('NGM_INSTRUMENTATION_FAILED:'+str(exc)[:300])
+        finally:
+            self.debug.send('Debugger.resume')
+
+    def _resource(self, response):
+        path = urlsplit(response.url).path
+        if not self._trusted(response.url) or '/'+self.code+'/' not in path or not path.endswith('.jmm'):
+            return
+        try:
+            if response.status != 200:
+                return
+            raw = response.body()
+            if len(raw) > 8*1024*1024:
+                raise ValueError('NGM_MANIFEST_TOO_LARGE')
+            document = json.loads(raw)
+            if not isinstance(document, dict) or not isinstance(document.get('config'), dict):
+                return
+            manifest = functional_manifest(document, self.code)
+            if self.manifest is not None and self.manifest != manifest:
+                raise ValueError('NGM_MANIFEST_AMBIGUOUS')
+            self.manifest = manifest
+            self._save_contracts()
+        except (ValueError, UnicodeError) as exc:
+            self.errors.append(str(exc))
+
+    def _save_contracts(self):
+        (self.directory/'client-contracts.json').write_text(json.dumps(dict(
+            schema='tester-spin/ngm-static-contracts/v1', game_code=self.code,
+            source_sha256=self.source_hashes, requests=self.request_schemas,
+            request_count=len(self.request_schemas), manifest=self.manifest,
+            certifies_game_ok=False), indent=2, ensure_ascii=False), encoding='utf-8')
 
     def _console(self, message):
         prefix = '__TESTER_NGM__'
@@ -131,16 +177,25 @@ class NGMDemoSession:
                 value = data.get('value')
                 if kind == 'offline.request':
                     spin = value.get('spin') if isinstance(value, dict) else None
-                    self.dispatch_spin = isinstance(spin, dict)
-                    if self.dispatch_spin:
+                    request_class = value.get('requestClass') if isinstance(value, dict) else None
+                    dispatch_kind = 'spin' if isinstance(spin, dict) else self.passive_roles.get(request_class, 'unknown')
+                    self.dispatch_stack.append(dispatch_kind)
+                    if len(self.dispatch_stack) > 32:
+                        raise ValueError('NGM_DISPATCH_DEPTH_LIMIT')
+                    if dispatch_kind == 'spin':
                         if not self.ledger:
                             raise ValueError('NGM_UNEXPECTED_SPIN_OUTSIDE_ROUND')
                         self.ledger.accept('spin', spin)
-                    elif self.ledger:
+                    elif dispatch_kind == 'continuation':
+                        if not self.ledger or not self.ledger.started or self.ledger.ended or not self.ledger.spins:
+                            raise ValueError('NGM_UNEXPECTED_CONTINUATION')
+                    elif dispatch_kind == 'unknown' and self.ledger:
                         self.ledger.errors.append('NGM_COMMAND_UNBOUND')
-                elif kind == 'offline.response' and self.dispatch_spin and self.ledger:
-                    self.ledger.accept('response', {})
-                    self.dispatch_spin = False
+                elif kind == 'offline.response':
+                    if not self.dispatch_stack:
+                        raise ValueError('NGM_RESPONSE_WITHOUT_DISPATCH')
+                    if self.dispatch_stack.pop() == 'spin' and self.ledger:
+                        self.ledger.accept('response', {})
                 elif kind == 'offline.payout' and self.ledger:
                     self.ledger.accept('payout', value if isinstance(value, dict) else {})
             elif kind == 'hook.error':
@@ -185,6 +240,12 @@ class NGMDemoSession:
             self.action_binding = dict(action, actualLocation=bound['actualLocation'])
             self.contract = contract
             self.source_hashes.append(digest)
+            self.request_schemas = request_catalog(source)
+            self.passive_roles = passive_request_roles(self.request_schemas)
+            self._save_contracts()
+            if self.instrumentation_id:
+                self.debug.send('Debugger.removeBreakpoint', {'breakpointId': self.instrumentation_id})
+                self.instrumentation_id = None
             (self.directory/'bootstrap.json').write_text(json.dumps(dict(contract=contract,
                 source_sha256=self.source_hashes, points=self.points, fresh_demo=True,
                 transport=self.transport_kind, spin_action=self.action_binding), indent=2), encoding='utf-8')

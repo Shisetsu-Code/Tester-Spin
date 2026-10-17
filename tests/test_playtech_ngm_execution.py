@@ -186,3 +186,98 @@ def test_failed_bootstrap_does_not_claim_verified_fresh_demo(tmp_path):
     result=provider.test_game(Game('playtech','game-legacy','Legacy','https://www.playtechone.com/games/legacy',symbol='legacy'),spins=1,timeout_s=10,stop_event=threading.Event(),progress=lambda x:None)
     assert result.structural_map['playtech_protocol']['fresh_demo'] is False
     assert result.status=='PARCIAL' and not result.attempts
+
+
+def test_semantically_bound_preferences_do_not_count_as_another_wager(tmp_path):
+    import json
+    from types import SimpleNamespace
+    session,_=make_runtime(tmp_path);session.ledger=NGMRoundLedger(1000)
+    session.passive_roles={'LogUserPreferencesRequest':'aux'}
+    def emit(kind,value):
+        row={'type':kind,'frame':'https://cachedownload.playtechone.com/ngmdistributed/legacy/1/index.html','data':{'value':value}}
+        session._console(SimpleNamespace(text='__TESTER_NGM__'+json.dumps(row)))
+    emit('offline.request',{'raw':{},'spin':None,'requestClass':'LogUserPreferencesRequest'})
+    emit('offline.response',{})
+    assert session.errors==[] and session.ledger.errors==[]
+    assert session.ledger.spins==session.ledger.responses==0
+    emit('offline.request',{'raw':{},'spin':None,'requestClass':'StartBonusGameRequest'})
+    assert 'NGM_COMMAND_UNBOUND' in session.ledger.errors
+
+
+def test_declared_bonus_start_is_a_continuation_only_inside_an_open_round(tmp_path):
+    import json
+    from types import SimpleNamespace
+    session,_=make_runtime(tmp_path);session.ledger=apply(round_events()[:-2])
+    session.passive_roles={'StartBonusGameRequest':'continuation'}
+    def emit(kind,value):
+        row={'type':kind,'frame':'https://cachedownload.playtechone.com/ngmdistributed/legacy/1/index.html','data':{'value':value}}
+        session._console(SimpleNamespace(text='__TESTER_NGM__'+json.dumps(row)))
+    emit('offline.request',{'raw':{},'spin':None,'requestClass':'StartBonusGameRequest'})
+    emit('offline.response',{})
+    assert session.ledger.spins==1 and session.ledger.responses==1
+    assert not session.ledger.errors
+    session.ledger=None
+    emit('offline.request',{'raw':{},'spin':None,'requestClass':'StartBonusGameRequest'})
+    assert 'NGM_UNEXPECTED_CONTINUATION' in session.errors
+
+
+def test_instrumentation_installs_bindings_before_resuming_script(tmp_path):
+    from types import SimpleNamespace
+    session,_=make_runtime(tmp_path);calls=[]
+    session.debug=SimpleNamespace(send=lambda name,*args:calls.append(name))
+    session._install=lambda:calls.append('install')
+    session._paused({})
+    assert calls==['install','Debugger.resume']
+
+
+def test_nested_auxiliary_response_does_not_steal_spin_response(tmp_path):
+    import json
+    from types import SimpleNamespace
+    session,_=make_runtime(tmp_path);session.ledger=NGMRoundLedger(1000)
+    session.passive_roles={'LogUserPreferencesRequest':'aux'}
+    session.ledger.accept('message',{'classifier':'GameRoundStartNotification'})
+    session.ledger.accept('message',{'classifier':'ISetGameBalanceRequest','amount':980})
+    def emit(kind,value):
+        row={'type':kind,'frame':'https://cachedownload.playtechone.com/ngmdistributed/legacy/1/index.html','data':{'value':value}}
+        session._console(SimpleNamespace(text='__TESTER_NGM__'+json.dumps(row)))
+    emit('offline.request',{'spin':{'bet':20,'numCoins':1,'spinType':'regular'},'requestClass':'SpinRequest'})
+    emit('offline.request',{'spin':None,'requestClass':'LogUserPreferencesRequest'})
+    emit('offline.response',{})
+    assert session.ledger.responses==0
+    emit('offline.response',{})
+    assert session.ledger.responses==1
+    emit('offline.payout',{'calculatedWin':60})
+    for kind,value in round_events()[5:]:session.ledger.accept(kind,value)
+    assert session.ledger.verified
+
+def test_manifest_resource_is_saved_with_identity_and_without_visual_assets(tmp_path):
+    import json
+    from types import SimpleNamespace
+    session,_=make_runtime(tmp_path)
+    response=SimpleNamespace(url='https://cachedownload.playtechone.com/ngmdistributed/legacy/1/default.jmm',status=200,
+        body=lambda:json.dumps({'config':{'game_code':'legacy','features':{'regular':{'type':'reels-spin'}}},'resources':{'images':{'noise':1}}}).encode())
+    session._resource(response)
+    assert session.manifest['game_code']=='legacy'
+    report=json.loads((tmp_path/'client-contracts.json').read_text(encoding='utf-8'))
+    assert report['manifest']['inventory_state']=='UNKNOWN'
+    assert 'images' not in report['manifest']
+
+
+def test_adapter_analyzes_saved_har_after_session_closes(tmp_path):
+    import threading,json,hashlib
+    from pathlib import Path
+    from test_playtech_ngm_contracts import har,CLIENT
+    from tester_spin.models import Game
+    from tester_spin.providers.playtech.adapter import PlaytechProvider
+    class Session:
+        contract={};errors=[];demo_verified=True
+        source_hashes=[hashlib.sha256(CLIENT.encode()).hexdigest()]
+        def __init__(self,code,directory,*args):self.directory=directory
+        def __enter__(self):return self
+        def __exit__(self,*args):(self.directory/'session.har').write_text(json.dumps(har()),encoding='utf-8')
+        def spin(self):return apply(round_events()).summary()
+    provider=PlaytechProvider(tmp_path);provider.ngm_session_factory=Session
+    result=provider.test_game(Game('playtech','game-example','Example','https://www.playtechone.com/games/example',symbol='example'),spins=1,timeout_s=10,stop_event=threading.Event(),progress=lambda x:None)
+    report=json.loads((Path(result.run_dir)/'ngm-har-contracts.json').read_text(encoding='utf-8'))
+    assert report['request_count']==3 and not report['network_used']
+    assert result.structural_map['playtech_protocol']['har_analysis']['source_matches_session'] is True
