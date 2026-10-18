@@ -38,6 +38,7 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
         self._sort_reverse = False
         self._execution_backend = LocalThreadExecutionBackend()
         super().__init__()
+        self.bind("<FocusIn>", self._refresh_external_results, add="+")
         from tester_spin.ui_layout import LayoutPreferences
         self._layout_preferences = LayoutPreferences(self, self.data_root / "ui-layout.json")
         def backfill():
@@ -81,6 +82,22 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
             except (OSError, ValueError) as exc:
                 self._events.put(("log", f"Índice de mecánicas incompleto: {exc}"))
         threading.Thread(target=backfill, daemon=True, name="mechanics-history").start()
+
+    def _refresh_external_results(self, event) -> None:
+        """Reload shared persisted results when returning to an idle window."""
+        if event.widget is not self:
+            return
+        worker = getattr(self, "_worker", None)
+        if worker is not None and worker.is_alive():
+            return
+        selection = self.tree.selection()
+        position = self.tree.yview()
+        self._refresh_games()
+        remaining = [iid for iid in selection if self.tree.exists(iid)]
+        if remaining:
+            self.tree.selection_set(remaining)
+        if position:
+            self.tree.yview_moveto(position[0])
 
     def _build(self) -> None:
         super()._build()

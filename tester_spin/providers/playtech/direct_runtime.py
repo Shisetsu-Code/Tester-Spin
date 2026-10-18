@@ -42,7 +42,9 @@ class DemoSession(BrowserDemoSession):
             manifest_url=urljoin(game_root.rstrip('/')+'/', 'packs/manifest.json')
             self.manifest=self._get(manifest_url)
             if self.manifest.get('gameCode')!=self.code:raise ValueError('GAME_IDENTITY_MISMATCH')
-            pending=[urljoin(manifest_url,r) for r in self.manifest.get('javascript',[])]
+            # GLU6 puts script assets under game/, separately from packs/manifest.json.
+            script_base=urljoin(game_root.rstrip('/')+'/', 'game/') if self.manifest.get('env',{}).get('glu6') is True else manifest_url
+            pending=[urljoin(script_base,r) for r in self.manifest.get('javascript',[])]
             seen=set()
             while pending:
                 url=pending.pop(0)
@@ -54,7 +56,7 @@ class DemoSession(BrowserDemoSession):
                 self.sources.append(source);self.source_hashes.append(hashlib.sha256(source.encode('utf-8')).hexdigest())
                 # Static script loaders only. Never evaluate downloaded JavaScript.
                 for resource in script_dependencies(source):
-                    pending.append(urljoin(manifest_url,resource))
+                    pending.append(urljoin(script_base,resource))
             if not self.sources:raise ValueError('CLIENT_SOURCES_MISSING')
             server=self._get(ROOT+release+'/brands/playtechhorizon/1/json/env_config.json')['server']
             if str(server.get('secure')).lower()!='true':raise ValueError('INSECURE_DEMO_ENDPOINT')

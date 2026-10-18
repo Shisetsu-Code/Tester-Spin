@@ -58,3 +58,16 @@ def test_cleanup_on_bootstrap_failure(tmp_path):
         with pytest.raises(ValueError,match='rejected'):
             with Session('gpas_fixture',tmp_path,1,threading.Event()):pass
     assert w.closed
+
+
+def test_glu6_manifest_scripts_use_game_directory(tmp_path):
+    class Glu6(Session):
+        def _get(self,url,*,as_json=True):
+            if 'manifest.json' in url:return {'gameCode':self.code,'env':{'glu6':True},'javascript':['index.js']}
+            if url.endswith('index.js'):
+                assert url.endswith('/game/index.js')
+                return 'GLU.game.playMoney 40021 48775'
+            return super()._get(url,as_json=as_json)
+    with patch('websocket.create_connection',return_value=Wire()):
+        with Glu6('gpas_fixture',tmp_path,1,threading.Event()) as s:
+            assert s.demo_verified

@@ -31,3 +31,10 @@ Pruebas sintéticas de ambos formatos, scopes, alias default, compresión y lím
 ## Catálogo de slots
 
 La disponibilidad de demo y el motor NGM/GPAS no identifican una slot. El catálogo cruza getGamesConfiguration con getGamesFeed("casino-2026") y solo admite códigos de la categoría oficial `slots` para escritorio. Conserva motor y clasificación como campos separados. La actualización completa reemplaza el conjunto anterior; no lo mezcla con juegos de mesa o títulos sin clasificación. El respaldo incluido contiene únicamente slots con categoría verificada. Si falta la categoría, está vacía o falla la consulta, se conserva ese respaldo sin autoridad de eliminación. Los resultados históricos y HAR permanecen al retirar una fila de la grilla.
+
+
+### Clientes GLU6 y resultados externos
+
+Cuando `manifest.env.glu6` es true, las rutas javascript se resuelven contra `game/`, no `packs/`. La descarga mantiene los controles de origen, identidad y límites; resolver una ruta no autoriza un contrato de comandos desconocido. Epic Fish Net of Fortune y Marlin Madness superaron el 404 de carga, pero su vínculo de comandos continúa pendiente (`CLIENT_COMMAND_BINDING_UNKNOWN`). No se reclasifican como OK por descargar el cliente.
+
+La interfaz vuelve a leer el historial compartido al recuperar el foco si no hay una corrida activa, conservando selección y posición. Esto permite reflejar pruebas ejecutadas desde el analizador o la CLI sin reiniciar ni cambiar manualmente estados.
