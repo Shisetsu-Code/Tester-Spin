@@ -73,6 +73,24 @@ def parse_html(key,text):
    rows.append(row(name,url,thumbnail=urljoin(url,(img.get('src') or img.get('data-src') or '')) if img else ''))
  return rows
 
+def playtech_slot_rows(data,feed):
+ """Use official Slots membership; a demo engine is not a game category."""
+ groups=[c for c in feed.get('gamesFeedCategories',[]) if c.get('seoFriendlyCategoryName')=='slots']
+ if len(groups)!=1:raise ValueError('Categoría oficial Slots ausente o ambigua')
+ config=groups[0].get('desktopCategoryConfiguration',{})
+ codes=config.get('categoryGames')
+ if config.get('isActive') is not True or not isinstance(codes,list) or not codes or any(not isinstance(c,str) or not c for c in codes):
+  raise ValueError('Categoría oficial Slots incompleta')
+ slots=set(codes);rows=[];spec=SOURCES['playtech']
+ demo_types={t['name'] for t in data['gameTypes'] if t.get('demoPlayUrl')}
+ for game in data['games'].values():
+  if game.get('gameCode') not in slots or game.get('desktopGameType') not in demo_types:continue
+  item=row(game['name'],spec['url'],game['gameCode'],urljoin(spec['url'],game.get('defaultGameImage','')),category=game.get('desktopGameType',''))
+  item.update(slug='game-'+quote(str(game['gameCode']),safe=''),demo_availability=game.get('demoModeSupport','unknown'),game_kind='slot',classification_source=spec['url']+'initialResources/gamesFeeds/'+quote(feed.get('name','casino-2026'),safe=''),classification_category='slots')
+  rows.append(item)
+ if not rows:raise ValueError('La categoría Slots no produjo juegos demo verificables')
+ return rows
+
 def fetch_rows(key,http,stop_event,max_pages=100):
  spec=SOURCES[key];kind=spec['kind'];rows=[];max_pages=max_pages or 1000
  def get(url,**kwargs):
@@ -126,12 +144,9 @@ def fetch_rows(key,http,stop_event,max_pages=100):
     page=browser.new_page();page.goto(spec['url'],wait_until='domcontentloaded',timeout=45000)
     page.wait_for_function('typeof window.Playtech?.API?.game?.getGamesConfiguration === "function"',timeout=45000)
     data=page.evaluate('async () => await Playtech.API.game.getGamesConfiguration()')
+    feed=page.evaluate('async () => await Playtech.API.game.getGamesFeed("casino-2026")')
    finally:browser.close()
-  demo_types={t['name'] for t in data['gameTypes'] if t.get('demoPlayUrl')}
-  for game in data['games'].values():
-   if game.get('desktopGameType') not in demo_types:continue
-   item=row(game['name'],spec['url'],game['gameCode'],urljoin(spec['url'],game.get('defaultGameImage','')),category=game.get('desktopGameType',''))
-   item['slug']='game-'+quote(str(game['gameCode']),safe='');item['demo_availability']=game.get('demoModeSupport','unknown');rows.append(item)
+  rows=playtech_slot_rows(data,feed)
  elif kind=='sitemap':
   root=ElementTree.fromstring(get(spec['feed']).content)
   for element in root.iter():

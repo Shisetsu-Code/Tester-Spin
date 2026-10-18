@@ -26,3 +26,8 @@ En la carpeta HAR del juego se guardan analysis/runs/<ejecución>/session.har (H
 ## Validación
 
 Pruebas sintéticas de ambos formatos, scopes, alias default, compresión y límites, dominios desconocidos, elecciones consumidas, dinero acumulado, registro y verificador común. Pruebas reales limitadas de integración en demo; los resultados locales no actualizan el catálogo del usuario. La prueba masiva la realiza el usuario desde la aplicación.
+
+
+## Catálogo de slots
+
+La disponibilidad de demo y el motor NGM/GPAS no identifican una slot. El catálogo cruza getGamesConfiguration con getGamesFeed("casino-2026") y solo admite códigos de la categoría oficial `slots` para escritorio. Conserva motor y clasificación como campos separados. La actualización completa reemplaza el conjunto anterior; no lo mezcla con juegos de mesa o títulos sin clasificación. El respaldo incluido contiene únicamente slots con categoría verificada. Si falta la categoría, está vacía o falla la consulta, se conserva ese respaldo sin autoridad de eliminación. Los resultados históricos y HAR permanecen al retirar una fila de la grilla.

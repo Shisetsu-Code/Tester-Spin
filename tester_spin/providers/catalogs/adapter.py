@@ -40,11 +40,17 @@ class CatalogProvider(ProviderAdapter):
   if stop_event.is_set():return []
   snapshot=Path(__file__).with_name('snapshots')/(self.key+'.json')
   saved=json.loads(snapshot.read_text(encoding='utf-8')) if snapshot.exists() else {'games':[],'coverage':'pending'}
-  rows={r['slug']:r for r in validate_rows(self.key,saved['games'])};source='snapshot oficial incluido'
+  rows={r['slug']:r for r in validate_rows(self.key,saved['games']) if self.key!='playtech' or r.get('game_kind')=='slot'};source='snapshot oficial incluido'
+  self.set_catalog_authority(False,'Snapshot de respaldo: sin eliminación automática')
   try:
    live=validate_rows(self.key,self.fetch_live_rows(stop_event,max_pages))
    if not live:raise ValueError('La fuente no devolvió juegos verificables')
-   rows.update({r['slug']:r for r in live});source=SOURCES[self.key].get('feed',self.catalog_url)
+   if self.key=='playtech':
+    if any(r.get('game_kind')!='slot' or r.get('classification_category')!='slots' for r in live):raise ValueError('Clasificación Slots ausente')
+    rows={r['slug']:r for r in live}
+    self.set_catalog_authority(True,'Categoría oficial Slots completa')
+   else:rows.update({r['slug']:r for r in live})
+   source=SOURCES[self.key].get('feed',self.catalog_url)
   except InterruptedError:return []
   except Exception as exc:progress(f'{self.display_name}: se conserva el catálogo guardado ({type(exc).__name__}).')
   if not rows:raise RuntimeError(f'{self.display_name}: fuente pública pendiente; no se declara catálogo completo ni se eliminan datos.')
@@ -56,7 +62,7 @@ class CatalogProvider(ProviderAdapter):
    try:metadata=json.loads(path.read_text(encoding='utf-8'))
    except (OSError,ValueError):metadata={}
    metadata.update(provider=self.key,slug=game.slug,name=game.name,symbol=game.symbol,public_url=game.url,catalog_source=source,
-     studio=r.get('studio',''),category=r.get('category',''),demo_availability=r.get('demo_availability','unknown'),catalog_aliases=r.get('catalog_aliases',[]),catalog_coverage=saved.get('coverage','public_listing'),execution_supported=self.execution_supported,catalog_updated_at=utc_now_iso())
+     game_kind=r.get('game_kind','unknown'),classification_source=r.get('classification_source',''),classification_category=r.get('classification_category',''),studio=r.get('studio',''),category=r.get('category',''),demo_availability=r.get('demo_availability','unknown'),catalog_aliases=r.get('catalog_aliases',[]),catalog_coverage=saved.get('coverage','public_listing'),execution_supported=self.execution_supported,catalog_updated_at=utc_now_iso())
    path.write_text(json.dumps(metadata,ensure_ascii=False,indent=2),encoding='utf-8')
    found.append(game)
    if on_game:on_game(game)
