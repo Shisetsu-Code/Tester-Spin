@@ -50,6 +50,9 @@ def _value(expression, values):
 def script_dependencies(source):
     # Large bundles are not interpreted as global assignment environments.
     literals=re.findall(r"setAttribute\([\"']src[\"'],\s*[\"']([^\"']+\.js)[\"']\)",source)
+    for created in re.finditer(r'\b([A-Za-z_$][\w$]*)\s*=\s*document\.createElement\(["\']script["\']\)',source):
+        for assigned in re.finditer(r'(?<![\w$.])'+re.escape(created[1])+r'\.src\s*=\s*(["\'])([^"\'\n]{1,2048}\.js)\1\s*(?=[,;})])',source):
+            literals.append(assigned[2])
     if len(source)>32768:return list(dict.fromkeys(literals))
     values={'true':True,'false':False}
     for match in re.finditer(r"\b([A-Za-z_$][\w$]*)\s*=\s*[\"']noModule[\"']\s*in\s+HTMLScriptElement\.prototype",source):

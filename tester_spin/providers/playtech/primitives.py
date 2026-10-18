@@ -2,6 +2,7 @@
 
 No title-specific tables; declarations without a recognized binding stay pending.
 """
+import ast
 import base64
 import json
 import re
@@ -36,7 +37,7 @@ def decode_game_data(data, limit=8*1024*1024):
         raise ValueError("INVALID_PACKED_GAME_DATA") from exc
 
 
-def client_contract(manifest, sources):
+def client_contract(manifest, sources, adapter_config=None):
     text = "\n".join(sources)
     if GAME_CLASS not in text or not all(re.search(r"\b"+str(n)+r"\b",text) for n in (40021,48775)):
         raise ValueError("CLIENT_COMMAND_BINDING_UNKNOWN")
@@ -48,7 +49,7 @@ def client_contract(manifest, sources):
         dialect = "modern"
     else:
         raise ValueError("CLIENT_BET_API_UNKNOWN")
-    return {"dialect":dialect, "class":GAME_CLASS, "entry_id":40021, "continuation_id":48775,
+    return {"adapter_maps": deepcopy(adapter_config or {}) if all(key in text for key in ("game_adapter","bet_features","bet_feature_types","toFeatureTypes")) else {}, "dialect":dialect, "class":GAME_CLASS, "entry_id":40021, "continuation_id":48775,
             "standard_start_bound": ('startingMode' in text and 'stakeCostName' in text and bool(re.search(r'!\s*[A-Za-z_$][\w$]*\([A-Za-z_$][\w$]*,["\']Standard["\']\)',text))),
             "base_selector": "default" if 'baseCostName:"default"' in text or "baseCostName:'default'" in text else None,
             "pick_bound": (bool(re.search(r'[\"\']pick[\"\']',text)) and "FGPickController" in text) or compiled_pick_binding(text)}
@@ -68,6 +69,11 @@ def discover_modes(configuration, contract, sources):
     text = "\n".join(sources)
     purchase_binding = bool(re.search(r"BuyFeature(?:Module|Controller|Configuration)",text))
     ante_binding = bool(re.search(r"ExtraBets?(?:Module|Controller|Configuration|Widget)",text)) or bool(re.search(r"extraBetNum\s*:\s*1",text))
+    pot_domain=False
+    for declared in re.finditer(r'new RegExp\((["\'])([^"\']{1,128})\1\)\.test\([A-Za-z_$][\w$]*\)',text):
+        try:pattern=ast.literal_eval(declared[1]+declared[2]+declared[1])
+        except (ValueError,SyntaxError):continue
+        if pattern==r'^(BuyFeature\d+Pot)$':pot_domain=True
     descriptors={}
     for match in re.finditer(r"baseCostName:[\"']([^\"']+)[\"'],betParams:\{betType:[\w$.]+\.(DEFAULT|BONUS|EXTRA)([^}]{0,160})\}",text):
         kind={'DEFAULT':'SPIN','BONUS':'PURCHASE','EXTRA':'ANTE_BET'}[match[2]]
@@ -99,11 +105,16 @@ def discover_modes(configuration, contract, sources):
                   and parameters.get('startingMode')=='Standard' and type(parameters.get('startingPlays')) in (str,int) and parameters.get('startingPlays') in ('1',1)
                   and set(parameters)<={'startingMode','startingPlays','winline','discountable','evalPayout','disableBCMValidation'})
         declared_kinds=descriptors.get(name,set())
+        from .adapter_config import mapped_kind
+        mapped=mapped_kind(name,contract.get('adapter_maps',{}))
+        if mapped:declared_kinds=set(declared_kinds)|{mapped}
         if len(declared_kinds)==1:
             kind=next(iter(declared_kinds))
+        elif len(declared_kinds)>1:
+            kind='UNKNOWN_FEATURE';issues.append('STAKE_KIND_CONFLICT:'+name)
         elif (normalized=="extra" or (scoped and re.fullmatch(r"extra(?:[0-9]+|x[0-9]+(?:low|mid|high)?)",normalized))) and ante_binding:
             kind="ANTE_BET"
-        elif (normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized))) and purchase_binding:
+        elif (normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and (re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized) or (pot_domain and re.fullmatch(r"buyfeature[0-9]+pot",normalized))))) and purchase_binding:
             kind="PURCHASE"
         elif standard or line_domain or (scoped and volatility_binding and re.fullmatch(r"default(?:low|mid|high)",normalized)) or normalized in {"default","base"} or (len(costs)==1 and normalized not in {"bf","buyfeature","extra"}):
             kind="SPIN"

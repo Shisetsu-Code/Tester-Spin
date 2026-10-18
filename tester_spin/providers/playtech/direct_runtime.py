@@ -17,7 +17,7 @@ class DemoSession(BrowserDemoSession):
     transport_kind='direct-websocket'
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.http=requests.Session();self.direct=None;self.entries=[];self.initialized=False
+        self.http=requests.Session();self.direct=None;self.entries=[];self.initialized=False;self.adapter_config={}
         self.http.headers.update({'Origin':ROOT.rstrip('/'),'Referer':ROOT+'gpasclient.html'})
     def _get(self,url,*,as_json=True):
         if self.stop.is_set():raise InterruptedError('DETENIDO')
@@ -58,6 +58,20 @@ class DemoSession(BrowserDemoSession):
                 for resource in script_dependencies(source):
                     pending.append(urljoin(script_base,resource))
             if not self.sources:raise ValueError('CLIENT_SOURCES_MISSING')
+            from .adapter_config import projects, config_paths, merge_maps
+            declared_projects=projects(self.sources)
+            if len(declared_projects)>1:raise ValueError('CLIENT_PROJECT_AMBIGUOUS')
+            if declared_projects:
+                from concurrent.futures import ThreadPoolExecutor
+                project_url=urljoin(script_base,declared_projects[0])
+                project=self._get(project_url)
+                paths=config_paths(project)
+                urls=[urljoin(project_url,path) for path in paths]
+                if any(not url.startswith(game_root.rstrip('/')+'/') for url in urls):raise ValueError('CLIENT_SOURCE_OUTSIDE_GAME')
+                with ThreadPoolExecutor(max_workers=6) as pool:
+                    documents=list(pool.map(self._get,urls))
+                self.adapter_config=merge_maps(documents)
+
             server=self._get(ROOT+release+'/brands/playtechhorizon/1/json/env_config.json')['server']
             if str(server.get('secure')).lower()!='true':raise ValueError('INSECURE_DEMO_ENDPOINT')
             host=server['host']

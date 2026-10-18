@@ -33,7 +33,7 @@ class PlaytechProvider(CatalogProvider):
             if stop_event.is_set():raise InterruptedError('DETENIDO')
             with self.session_factory(game.symbol,run,timeout_s,stop_event) as session:
                 (run/'bootstrap.json').write_text(json.dumps({'manifest':session.manifest,'source_sha256':session.source_hashes,'contract':None,'configuration_status':'captured_in_session_har'},indent=2),encoding='utf-8')
-                contract=client_contract(session.manifest,session.sources)
+                contract=client_contract(session.manifest,session.sources,adapter_config=getattr(session,"adapter_config",None))
                 resolved=resolve_configuration(session.config,{'betType':'default'})
                 plan=discover_modes(resolved,contract,session.sources)
                 result.discovered_modes=plan['modes'];result.feature_domains=plan['domains'];issues.extend(plan['unresolved'])

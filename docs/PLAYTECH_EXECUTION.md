@@ -45,3 +45,12 @@ La interfaz vuelve a leer el historial compartido al recuperar el foco si no hay
 La modalidad base puede llamarse un número o Standard. El lector admite una única entrada con startingMode=Standard y startingPlays=1 si el cliente contiene el contraste explícito de Standard y los campos de selección de apuesta; no se permiten parámetros económicos adicionales. Su selector base de protocolo es default. Varias entradas Standard siguen exigiendo el contrato de líneas. ExtraBetWidget también se reconoce como evidencia de interfaz de antebet, pero las opciones y costes siguen procediendo de costConfiguration.
 
 El cliente compilado puede escribir la clave literal pick en un mapa y reenviarlo mediante callbacks. El lector enlaza esa construcción, el setter del mapa, reenvíos sin transformación y el comando de continuación 48775 hasta playOut. El ejecutor sigue eligiendo únicamente índices ofrecidos por el servidor, registra los resultados y exige cierre, conciliación y cobertura de ramas. No se amplía el dominio a partir de nombres de juegos ni se cambia un estado guardado sin ejecutar la prueba.
+
+
+### Cargadores DOM y mapas JMM modernos
+
+Los cargadores que crean un elemento script y asignan una ruta literal a `.src` se siguen igual que `setAttribute`; no se evalúan expresiones dinámicas. Se mantienen identidad, origen, límite de recursos y registro HAR.
+
+Cuando el constructor del cliente declara un proyecto `jmm/*.jmp`, el ejecutor descarga sus JMM de escritorio en orden y fusiona únicamente `config.game_adapter.bet_features` y `bet_feature_types`. Proyectos condicionales añadidos con push no se mezclan como autoridad permanente. Los mapas se vinculan a los lectores presentes en el código y se cruzan con cada opción del costConfiguration vigente. Las categorías conocidas son regular, extra_bet, buy_feature y lucky_box. Patrones ambiguos o fuera de la gramática acotada conservan UNKNOWN. Estas declaraciones clasifican opciones, pero OK sigue exigiendo ejecutar y conciliar todas las rondas y ramas.
+
+Los nombres BuyFeatureNPot solo se reconocen si el cliente declara el patrón correspondiente y los ámbitos y opciones activos del servidor lo confirman. No se construyen opciones a partir del número ni se mantiene una lista de títulos.
