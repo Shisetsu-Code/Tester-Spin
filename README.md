@@ -158,3 +158,5 @@ NGM offline tiene una ruta independiente para rondas normales demo y analiza aut
 ## Grupos de fallos
 
 **GRUPOS / REPROBAR** prioriza causas por cantidad de juegos, muestra representantes y permite repetir sus afectados. Las corridas generan informes comparables sin cambiar estados: [uso y límites](docs/FAILURE_GROUPS.md).
+
+**EXPORTAR PARCIALES** guarda los juegos con estado PARCIAL del proveedor seleccionado en un TXT para Fuzzer manual. Elegí dónde guardarlo; después, en Fuzzer manual, usá **Importar URLs → cargar archivo TXT → Importar lista**. El archivo lleva un enlace de lanzamiento por línea, sin duplicados ni cabeceras; Playtech usa su demo directa con `real=0`. La exportación lee los resultados guardados y no cambia estados ni importa automáticamente en el Fuzzer.

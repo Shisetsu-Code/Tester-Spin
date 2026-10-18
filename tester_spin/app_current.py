@@ -4,7 +4,7 @@ import queue
 import threading
 import time
 
-from tkinter import messagebox, ttk
+from tkinter import filedialog, messagebox, ttk
 
 from tester_spin.app_live import LiveTesterSpinApp
 from tester_spin.catalog_maintenance import purge_provider_catalog_artifacts
@@ -120,6 +120,8 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
         from tester_spin.failure_groups_ui import show_groups
         self.failure_groups_btn = ttk.Button(controls, text="GRUPOS / REPROBAR", command=lambda: show_groups(self))
         self.failure_groups_btn.pack(side="left", padx=(8, 0))
+        self.export_partials_btn = ttk.Button(controls, text="EXPORTAR PARCIALES", command=self._export_partials)
+        self.export_partials_btn.pack(side="left", padx=(8, 0))
         ttk.Label(
             controls,
             text=f"Ejecución: {self._execution_backend.display_name}",
@@ -143,6 +145,8 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
         super()._set_busy(busy)
         if hasattr(self, "failure_groups_btn"):
             self.failure_groups_btn.configure(state="disabled" if busy else "normal")
+        if hasattr(self, "export_partials_btn"):
+            self.export_partials_btn.configure(state="disabled" if busy else "normal")
         if hasattr(self, "test_non_ok_btn"):
             self.test_non_ok_btn.configure(state="disabled" if busy else "normal")
         if hasattr(self, "delete_catalog_selected_btn"):
@@ -187,6 +191,37 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
         )
         self.status_var.set(f"Eliminados del catálogo: {blocked}")
         self._refresh_games()
+
+    def _export_partials(self) -> None:
+        from datetime import datetime
+        from pathlib import Path
+        from tester_spin.partial_export import partial_urls, write_partial_export
+        provider = self._provider()
+        games = self.storage.list_games(provider.key)
+        try:
+            urls = partial_urls(games)
+        except ValueError as exc:
+            messagebox.showerror("Exportar parciales", str(exc), parent=self)
+            return
+        if not urls:
+            messagebox.showinfo("Exportar parciales", "Este proveedor no tiene juegos con estado PARCIAL.", parent=self)
+            return
+        target = filedialog.asksaveasfilename(
+            parent=self, title=f"Exportar {len(urls)} parciales de {provider.display_name}",
+            initialdir=str(Path.home() / "Desktop"),
+            initialfile=f"parciales-{provider.key}-{datetime.now():%Y%m%d-%H%M%S}.txt",
+            defaultextension=".txt", filetypes=[("Lista para Fuzzer manual", "*.txt")],
+        )
+        if not target:
+            return
+        try:
+            count = write_partial_export(target, games)
+        except (OSError, ValueError) as exc:
+            messagebox.showerror("Exportar parciales", str(exc), parent=self)
+            return
+        self._append_log(f"Exportados {count} parciales de {provider.display_name}: {target}")
+        self.status_var.set(f"Exportados {count} parciales para Fuzzer manual")
+        messagebox.showinfo("Exportar parciales", f"Exportados {count} juegos.\n\nEn Fuzzer manual: Importar URLs → cargar el archivo TXT.", parent=self)
 
     def _clear_provider_catalog(self) -> None:
         provider = self._provider()
