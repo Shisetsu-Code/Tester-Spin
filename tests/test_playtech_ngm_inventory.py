@@ -89,7 +89,9 @@ def test_executor_consumes_current_har_plan_and_never_promotes_bad_evidence(tmp_
         saved=json.loads((__import__('pathlib').Path(result.run_dir)/'result.json').read_text(encoding='utf-8'))
         assert saved['status']=='OK'
         finalized=provider.finalize_test_result(result,progress=lambda x:None)
-        assert finalized.status=='OK'
+        # This stub provides only a ledger summary, not observed dispatcher pairs.
+        # Actual runtime evidence is covered end-to-end in test_playtech_local_evidence.
+        assert finalized.status=='PARCIAL'
         from tester_spin.feature_summary import _feature_summary
         assert _feature_summary(finalized.to_dict(),counts_only=True)==(0,0)
 

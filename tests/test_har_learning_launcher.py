@@ -30,7 +30,7 @@ class LearningLauncherTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             root=Path(td);source=root/"Aislador";(source/"aislador").mkdir(parents=True);(source/"aislador/__main__.py").write_text("")
             (root/"har-learning.json").write_text(json.dumps({"enabled":True,"aislador_root":str(source),"python":"python.exe"}))
-            har=root/"capture.har";har.write_text('{"log":{"entries":[]}}')
+            har=root/"capture.har";har.write_text('{"log":{"entries":[{"request":{"url":"https://example.invalid/"}}]}}')
             completed=Mock(returncode=0,stdout='[{"output":"result"}]',stderr='')
             with patch("tester_spin.har_learning.subprocess.run",return_value=completed) as run:
                 r=isolate_capture(har,root)
@@ -63,3 +63,34 @@ def test_last_failure_during_worker_shutdown_is_not_lost(tmp_path):
     process=Mock();process.wait.return_value=0
     with patch("tester_spin.har_learning.kick_worker") as kick:_reap(process,db,tmp_path)
     kick.assert_called_once_with(db)
+
+
+def test_manual_empty_har_is_rejected_before_optional_learner(tmp_path):
+    har=tmp_path/'capture.har';har.write_text('{"log":{"entries":[]}}')
+    with patch('tester_spin.har_learning.subprocess.run') as run:
+        import pytest
+        with pytest.raises(ValueError,match='HAR_EMPTY_CAPTURE.*recarg'):
+            isolate_capture(har,tmp_path)
+        run.assert_not_called()
+
+
+def test_ngm_manual_capture_shows_diagnosis_even_without_aislador(tmp_path):
+    import pytest
+    har=tmp_path/'capture.har'
+    har.write_text(json.dumps({'log':{'entries':[{'request':{'url':'https://cachedownload.playtechone.com/ngmdistributed/ngm-desktop/igv/example/1/resources/config.json'},'response':{'status':200,'content':{'text':'{}'}}}]}}))
+    with pytest.raises(ValueError,match='NGM_CLIENT_SOURCE_MISSING') as error:
+        isolate_capture(har,tmp_path)
+    assert 'ngm-events.jsonl' in str(error.value)
+
+
+def test_manual_ngm_import_attaches_diagnostics_without_mutating_capture(tmp_path):
+    from test_playtech_ngm_contracts import har as fixture
+    source=tmp_path/'Aislador';(source/'aislador').mkdir(parents=True);(source/'aislador/__main__.py').write_text('')
+    (tmp_path/'har-learning.json').write_text(json.dumps({'enabled':True,'aislador_root':str(source)}))
+    capture=tmp_path/'capture.har';original=json.dumps(fixture());capture.write_text(original)
+    completed=Mock(returncode=0,stdout='[{"output":"result"}]',stderr='')
+    with patch('tester_spin.har_learning.subprocess.run',return_value=completed):
+        report=isolate_capture(capture,tmp_path)
+    assert report[0]['capture_diagnostics']['round_evidence']=='REQUIRES_RUNTIME_TRACE'
+    assert report[0]['capture_diagnostics']['entry_count']==2
+    assert capture.read_text()==original

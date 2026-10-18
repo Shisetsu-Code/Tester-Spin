@@ -11,8 +11,8 @@ from urllib.parse import parse_qsl
 from tester_spin.models import GameTestResult
 
 _SECRET = re.compile(r"(?i)(?:token|password|secret|cookie|authorization|session|state_lock|mgckey|^sid$|^sc$|^key$|api[_-]?key)")
-_TEXT_SECRET = re.compile(r'(?i)((?:[\w-]*(?:token|password|secret|cookie|authorization|session)[\w-]*|mgckey|sid|sc|key|api[_-]?key)\s*[=:]\s*)([^\s&,;\"\']+)')
-_QUOTED_SECRET = re.compile(r'''(?i)(["'](?:[\w-]*(?:token|password|secret|cookie|authorization|session)[\w-]*|mgckey|sid|sc|key|api[_-]?key)["']\s*:\s*)["'][^"']*["']''')
+_TEXT_SECRET = re.compile(r'(?i)((?:[\w-]*(?:token|password|secret|cookie|authorization|session)[\w-]*|state_lock|mgckey|sid|sc|key|api[_-]?key)\s*[=:]\s*)([^\s&,;\"\']+)')
+_QUOTED_SECRET = re.compile(r'''(?i)(["'](?:[\w-]*(?:token|password|secret|cookie|authorization|session)[\w-]*|state_lock|mgckey|sid|sc|key|api[_-]?key)["']\s*:\s*)["'][^"']*["']''')
 _AUTH_HEADER = re.compile(r'(?i)(authorization\s*[:=]\s*)(?:bearer|basic)\s+[^\s;,]+')
 _COOKIE_HEADER = re.compile(r'(?i)((?:set-cookie|cookie)\s*:\s*)[^\r\n]+')
 _MAX_PARSE = 2 * 1024 * 1024
@@ -20,7 +20,10 @@ _MAX_PARSE = 2 * 1024 * 1024
 
 def sanitize(value: Any) -> Any:
     if isinstance(value, dict):
-        return {str(k): '[REDACTED]' if _SECRET.search(str(k)) else sanitize(v) for k, v in value.items()}
+        # HAR-style header/query arrays represent keys as name/value records.
+        named_secret = isinstance(value.get('name'), str) and _SECRET.search(value['name'])
+        return {str(k): '[REDACTED]' if _SECRET.search(str(k)) or (named_secret and str(k).casefold() == 'value')
+                else sanitize(v) for k, v in value.items()}
     if isinstance(value, (list, tuple)):
         return [sanitize(v) for v in value]
     if isinstance(value, str):
@@ -137,6 +140,9 @@ def write_run_diagnostics(result: GameTestResult, *, journal_path: Path | None =
         responses = [e['path'] for e in evidence if e['kind'] == 'response']
         envelopes = [e['path'] for e in evidence if e['kind'] == 'envelope']
         trajectory = tree['trajectories'][attempt_index]
+        for detail in trajectory.get('gaps', []):
+            gaps.append({'code': 'TRAJECTORY_SEQUENCE_GAP', 'attempt': attempt.number,
+                         'trajectory_id': trajectory['id'], 'detail': detail})
         if trajectory['sequence_status'] != 'UNRESOLVED':
             requests = [s['request'][0]['path'] for s in trajectory['steps'] if s['request']]
             responses = [s['response'][0]['path'] for s in trajectory['steps'] if s['response']]
@@ -154,7 +160,9 @@ def write_run_diagnostics(result: GameTestResult, *, journal_path: Path | None =
                          'first_request': requests[0] if requests else None,
                          'last_request': requests[-1] if requests else None,
                          'last_response': responses[-1] if responses else None,
-                         'ordering': trajectory['sequence_status'], 'trajectory_id': trajectory['id']})
+                         'ordering': trajectory['sequence_status'], 'trajectory_id': trajectory['id'],
+                         'sequence_complete': trajectory.get('offline_replay_ready', False),
+                         'sequence_gaps': trajectory.get('gaps', [])})
     known = {str(m.get('id')): m for m in result.discovered_modes}
     for attempt in result.attempts:
         known.setdefault(attempt.mode_id, {'id': attempt.mode_id, 'kind': attempt.mode_kind})
@@ -172,6 +180,7 @@ def write_run_diagnostics(result: GameTestResult, *, journal_path: Path | None =
         validated = validated and all(a['evidence'] for a in runs)
         validated = validated and bool(coverage.get('complete')) and bool(samples.get('observed_paths_sampled'))
         validated = validated and all(a['last_request'] and a['last_response'] for a in runs)
+        validated = validated and all(a['sequence_complete'] for a in runs)
         validated = validated and all(not a.get('return_to_base') or a['return_to_base'].get('status') == 'CONFIRMED' for a in runs)
         status = 'VALIDATED' if validated else 'INCOMPLETE' if runs else 'DISCOVERED'
         modes.append({'id': mid, 'kind': metadata.get('kind'), 'status': status, 'validated': bool(validated),

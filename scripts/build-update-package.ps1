@@ -10,7 +10,8 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 
-if ($Version -notmatch '^[A-Za-z0-9._-]+$') {
+$Version = $Version.Trim()
+if ($Version -in @('.', '..') -or $Version -notmatch '^[A-Za-z0-9._-]{1,80}$') {
     throw "Version inválida: $Version"
 }
 

@@ -24,3 +24,22 @@ def test_dry_run_has_no_network_or_results_and_selects_only_one_provider(tmp_pat
  assert report['selected_games']==['example']
  assert not db.latest_results()
  assert not (tmp_path/'providers'/'hacksaw').exists()
+
+def test_last_cancelled_game_returns_cancelled_cli_status(tmp_path,monkeypatch):
+ from types import SimpleNamespace
+ import tester_spin.cli as command
+ import tester_spin.independent.worker as worker
+ from tester_spin.storage import Storage
+ from tester_spin.models import Game,GameTestResult
+ game=Game('playtech','cancelled','Cancelled','https://example.invalid/cancelled')
+ storage=Storage(tmp_path/'tester-spin.sqlite3');storage.upsert_games([game])
+ monkeypatch.setattr(command,'create_provider',lambda *args:SimpleNamespace())
+ def cancelled(selected,**kwargs):
+  kwargs['stop_event'].set()
+  return GameTestResult(game.provider,game.slug,game.name,game.url,1,0,1,'CANCELADO',error='INDEPENDENT_CANCELLED')
+ monkeypatch.setattr(worker,'execute_game',cancelled)
+ assert command.main(['run','playtech','--data-root',str(tmp_path),'--statuses','ALL'])==3
+ summary=next((tmp_path/'independent'/'runs').glob('*/summary.json'))
+ report=json.loads(summary.read_text(encoding='utf-8'))
+ assert report['reason']=='CANCELLED' and report['pending']==0
+ assert storage.latest_results('playtech')[0]['status']=='CANCELADO'

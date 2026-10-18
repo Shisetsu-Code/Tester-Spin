@@ -3,11 +3,41 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import re
+import tempfile
 import threading
+from contextlib import contextmanager
 from pathlib import Path
 
 _lock = threading.RLock()
+
+
+@contextmanager
+def _history_lock(root):
+    """Use a stable lock file for the entire read/merge/replace transaction."""
+    with _lock:
+        root.mkdir(parents=True, exist_ok=True)
+        # Never unlink the lock: waiters must all synchronize on the same file.
+        with (root / '.coverage-history.lock').open('a+b') as handle:
+            if os.name == 'nt':
+                import msvcrt
+                if handle.seek(0, os.SEEK_END) == 0:
+                    handle.write(b'\0')
+                    handle.flush()
+                handle.seek(0)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(handle, fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                if os.name == 'nt':
+                    handle.seek(0)
+                    msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+                else:
+                    fcntl.flock(handle, fcntl.LOCK_UN)
 
 
 def _archive_structural_replacements(pending, modes, migrations, source):
@@ -147,7 +177,7 @@ def retain_pending_branches(directory, result):
                         historical_source=prior.get('historical_source') or source)
             pending[key] = item
 
-    with _lock:
+    with _history_lock(root):
         pending = {}
         migrations = []
         if path.exists():
@@ -206,9 +236,15 @@ def retain_pending_branches(directory, result):
                 inherited.update(observed=False, historical_pending=True)
                 inherited['reason'] = 'Pendiente de una corrida anterior; no se volvió a demostrar su cobertura.'
                 result.discovered_modes.append(inherited)
-        root.mkdir(parents=True, exist_ok=True)
-        temporary = path.with_suffix('.tmp')
-        temporary.write_text(json.dumps({'schema':'tester-spin/coverage-history/v1',
-            'provider':result.provider,'slug':result.slug,'pending':pending,
-            'policy_migrations':migrations},ensure_ascii=False,indent=2),encoding='utf-8')
-        temporary.replace(path)
+        temporary = None
+        try:
+            with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8',
+                    prefix='.coverage-history-', suffix='.tmp', dir=root, delete=False) as output:
+                temporary = Path(output.name)
+                json.dump({'schema':'tester-spin/coverage-history/v1',
+                    'provider':result.provider,'slug':result.slug,'pending':pending,
+                    'policy_migrations':migrations}, output, ensure_ascii=False, indent=2)
+            temporary.replace(path)
+        finally:
+            if temporary is not None:
+                temporary.unlink(missing_ok=True)

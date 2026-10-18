@@ -9,8 +9,10 @@ import tempfile
 from concurrent.futures import Future, ThreadPoolExecutor
 from pathlib import Path
 from typing import Any, Callable
+from urllib.parse import quote, unquote_plus, urlsplit, urlunsplit
 
 from tester_spin.models import GameTestResult, utc_now_iso
+from tester_spin.run_diagnostics import sanitize
 
 Progress = Callable[[str], None]
 RESULT_BRANCH = "tester-spin-runs"
@@ -19,6 +21,10 @@ EXPECTED_REPOSITORY = "shisetsu-code/tester-spin"
 MAX_TEXT_FILE_BYTES = 2 * 1024 * 1024
 MAX_DOCUMENT_SOURCE_BYTES = 16 * 1024 * 1024
 _TEXT_SUFFIXES = {".json", ".jsonl", ".txt", ".raw", ".log"}
+_URL = re.compile(r'''\b(?:https?|wss?)://[^\s<>"']+''', re.IGNORECASE)
+_PARAMETER = re.compile(r'''(?<![\w.%+~\[\]-])(?P<name>[\w.%+~\[\]-]+)=(?P<value>[^\s&"'<>]*)''')
+_RAW_AUTHORIZATION = re.compile(r'(?i)(?<![\w-])(?:proxy-)?authorization[ \t]*:[ \t]*')
+_RAW_HEADER_LINE = re.compile(r"^[ \t]*[!#$%&'*+.^_`|~\w-]+[ \t]*:")
 _EXECUTOR = ThreadPoolExecutor(max_workers=1, thread_name_prefix="github-result-publisher")
 
 
@@ -111,6 +117,112 @@ def _read_artifact(path: Path) -> tuple[str, Any]:
     return "text", text
 
 
+def _public_field(name: str, item: str) -> str:
+    decoded = unquote_plus(name)
+    cleaned = sanitize({decoded: item})[decoded]
+    return name + '=' + (quote(cleaned, safe='') if cleaned != item else item)
+
+
+def _public_parameter(match: re.Match[str]) -> str:
+    return _public_field(match['name'], match['value'])
+
+
+def _public_query(query: str) -> str:
+    # Commas and semicolons can belong to one credential value. Within an
+    # already parsed query only '&' separates fields; preserve public bytes.
+    fields = []
+    for field in query.split('&'):
+        name, separator, item = field.partition('=')
+        fields.append(_public_field(name, item) if separator else field)
+    return '&'.join(fields)
+
+
+def _public_url(match: re.Match[str]) -> str:
+    try:
+        parts = urlsplit(match.group())
+        # Credentials in userinfo must never leave the local run directory.
+        return urlunsplit(parts._replace(netloc=parts.netloc.rsplit('@', 1)[-1],
+                                        query=_public_query(parts.query)))
+    except ValueError:
+        return '[REDACTED_URL]'
+
+
+def _public_raw_authorization(value: str) -> str:
+    """Remove complete raw header values, including HTTP continuation lines."""
+    output = []
+    authorization_prefix = None
+    for line in value.splitlines(keepends=True):
+        # JSONL records must be decoded by _public_value before touching their
+        # strings; matching serialized header text would eat JSON punctuation.
+        if line.lstrip().startswith(('{', '[')):
+            try:
+                json.loads(line)
+            except ValueError:
+                pass
+            else:
+                authorization_prefix = None
+                output.append(line)
+                continue
+        if authorization_prefix is not None:
+            content = line.removeprefix(authorization_prefix)
+            # A log may repeat its prefix for each folded header line. New
+            # headers (even indented ones) and blank lines end the value.
+            if (content.startswith((' ', '\t')) and content.strip()
+                    and not _RAW_HEADER_LINE.match(content)):
+                continue
+            authorization_prefix = None
+        header = _RAW_AUTHORIZATION.search(line)
+        if header:
+            authorization_prefix = line[:header.start()]
+            ending = line[len(line.rstrip('\r\n')):]
+            line = line[:header.end()] + '[REDACTED]' + ending
+        output.append(line)
+    return ''.join(output)
+
+
+def _public_value(value: Any) -> Any:
+    """Reuse protocol and session-path sanitizers at the publication boundary."""
+    if isinstance(value, dict):
+        # Reuse the shared key/name-value policy without running its text regexes
+        # over already serialized JSON children (where newlines are escaped).
+        fields = {str(key): item for key, item in value.items()}
+        policy = sanitize({key: item if key == 'name' and isinstance(item, str) else None
+                           for key, item in fields.items()})
+        return {key: '[REDACTED]' if policy[key] == '[REDACTED]' else _public_value(item)
+                for key, item in fields.items()}
+    if isinstance(value, (list, tuple)):
+        return [_public_value(item) for item in value]
+    if isinstance(value, str):
+        from tester_spin.providers.bgaming.runtime import sanitize_error_text
+        # Raw captures and JSONL can contain structured headers represented as
+        # name/value records. Apply the same recursive policy without changing
+        # the artifact's text encoding or inventing protocol fields.
+        if value.lstrip().startswith(('{', '[')):
+            try:
+                decoded = json.loads(value)
+            except ValueError:
+                pass
+            else:
+                # The fields are already sanitized. Raw-text regexes applied to
+                # this serialization could consume adjacent JSON punctuation.
+                return json.dumps(_public_value(decoded), ensure_ascii=False)
+        value = _public_raw_authorization(value)
+        lines = value.splitlines(keepends=True)
+        if len(lines) > 1:
+            # Logs can start with plain text before independently parseable JSON
+            # records; process each line regardless of the artifact's preamble.
+            return ''.join(_public_value(line.rstrip('\r\n')) + line[len(line.rstrip('\r\n')):]
+                           for line in lines)
+        value = _URL.sub(_public_url, value)
+        return sanitize(sanitize_error_text(_PARAMETER.sub(_public_parameter, value)))
+    return value
+
+
+def _private_artifact(path: Path) -> bool:
+    return any(part.startswith('.') or re.search(r'(?i)(?:^|[._-])private(?:$|[._-])', part)
+               for part in path.parts)
+
+
 def build_result_document(result: GameTestResult, *, source_commit: str = "") -> dict[str, Any]:
     root = Path(str(result.run_dir or ""))
     artifacts: dict[str, Any] = {}
@@ -128,6 +240,9 @@ def build_result_document(result: GameTestResult, *, source_commit: str = "") ->
             return (2, path.as_posix())
         for path in sorted((item for item in root.rglob("*") if item.is_file()
                             and item.resolve().is_relative_to(root.resolve())), key=priority):
+            if (_private_artifact(path.relative_to(root))
+                    or _private_artifact(path.resolve().relative_to(root.resolve()))):
+                continue
             if path.suffix.casefold() not in _TEXT_SUFFIXES:
                 continue
             try:
@@ -152,7 +267,7 @@ def build_result_document(result: GameTestResult, *, source_commit: str = "") ->
     result_payload = result.to_dict()
     if result_payload.get("run_dir"):
         result_payload["run_dir"] = root.name
-    return {
+    return _public_value({
         "schema": "tester-spin/github-run-result/v1",
         "published_at": utc_now_iso(),
         "source_commit": source_commit,
@@ -162,7 +277,7 @@ def build_result_document(result: GameTestResult, *, source_commit: str = "") ->
         "artifact_bytes_embedded": consumed,
         "artifacts": artifacts,
         "skipped_artifacts": skipped,
-    }
+    })
 
 
 def result_document_path(result: GameTestResult) -> str:

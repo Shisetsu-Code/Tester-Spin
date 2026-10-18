@@ -109,6 +109,13 @@ def write_run_tree(result: GameTestResult) -> dict:
         tid = hashlib.sha256(identity.encode()).hexdigest()[:20]
         steps, ordering, gaps = _pairs(root, Path(attempt.artifact_dir), metadata.get(attempt.mode_id, {})) if attempt.artifact_dir else ([], 'UNRESOLVED', ['Missing attempt directory'])
         events = []
+        if result.provider == 'playtech' and metadata.get(attempt.mode_id, {}).get('execution_scope') == 'official-local-demo':
+            from tester_spin.providers.playtech.ngm_capture import local_capture_gaps
+            directory = Path(attempt.artifact_dir).resolve()
+            if directory.is_relative_to(root):
+                gaps.extend(local_capture_gaps(directory, attempt.wire_steps, _read_capture))
+            else:
+                gaps.append('NGM_LOCAL_EVIDENCE_OUTSIDE_RUN')
         if attempt.wire_steps and steps and len(steps) != attempt.wire_steps:
             gaps.append(f'Captured exchanges={len(steps)}; executor reported wire_steps={attempt.wire_steps}.')
         if not steps and attempt.artifact_dir:
