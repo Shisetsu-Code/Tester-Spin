@@ -49,6 +49,7 @@ def client_contract(manifest, sources):
     else:
         raise ValueError("CLIENT_BET_API_UNKNOWN")
     return {"dialect":dialect, "class":GAME_CLASS, "entry_id":40021, "continuation_id":48775,
+            "standard_start_bound": ('startingMode' in text and 'stakeCostName' in text and bool(re.search(r'!\s*[A-Za-z_$][\w$]*\([A-Za-z_$][\w$]*,["\']Standard["\']\)',text))),
             "base_selector": "default" if 'baseCostName:"default"' in text or "baseCostName:'default'" in text else None,
             "pick_bound": (bool(re.search(r'[\"\']pick[\"\']',text)) and "FGPickController" in text) or compiled_pick_binding(text)}
 
@@ -66,7 +67,7 @@ def discover_modes(configuration, contract, sources):
         raise ValueError("INVALID_ACTIVE_OPTIONS")
     text = "\n".join(sources)
     purchase_binding = bool(re.search(r"BuyFeature(?:Module|Controller|Configuration)",text))
-    ante_binding = bool(re.search(r"ExtraBets?(?:Module|Controller|Configuration)",text)) or bool(re.search(r"extraBetNum\s*:\s*1",text))
+    ante_binding = bool(re.search(r"ExtraBets?(?:Module|Controller|Configuration|Widget)",text)) or bool(re.search(r"extraBetNum\s*:\s*1",text))
     descriptors={}
     for match in re.finditer(r"baseCostName:[\"']([^\"']+)[\"'],betParams:\{betType:[\w$.]+\.(DEFAULT|BONUS|EXTRA)([^}]{0,160})\}",text):
         kind={'DEFAULT':'SPIN','BONUS':'PURCHASE','EXTRA':'ANTE_BET'}[match[2]]
@@ -93,6 +94,10 @@ def discover_modes(configuration, contract, sources):
         scope=scopes.get(name,{})
         if not isinstance(scope,dict):raise ValueError("INVALID_NAMED_SCOPE")
         scoped=scope.get('betType')=='default' and scope.get('featureType')==name
+        parameters=row.get('parameters',{})
+        standard=(contract.get('standard_start_bound') is True and sum(isinstance(c,dict) and isinstance(c.get('parameters'),dict) and c['parameters'].get('startingMode')=='Standard' for c in costs)==1 and isinstance(parameters,dict)
+                  and parameters.get('startingMode')=='Standard' and type(parameters.get('startingPlays')) in (str,int) and parameters.get('startingPlays') in ('1',1)
+                  and set(parameters)<={'startingMode','startingPlays','winline','discountable','evalPayout','disableBCMValidation'})
         declared_kinds=descriptors.get(name,set())
         if len(declared_kinds)==1:
             kind=next(iter(declared_kinds))
@@ -100,11 +105,11 @@ def discover_modes(configuration, contract, sources):
             kind="ANTE_BET"
         elif (normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized))) and purchase_binding:
             kind="PURCHASE"
-        elif line_domain or (scoped and volatility_binding and re.fullmatch(r"default(?:low|mid|high)",normalized)) or normalized in {"default","base"} or (len(costs)==1 and normalized not in {"bf","buyfeature","extra"}):
+        elif standard or line_domain or (scoped and volatility_binding and re.fullmatch(r"default(?:low|mid|high)",normalized)) or normalized in {"default","base"} or (len(costs)==1 and normalized not in {"bf","buyfeature","extra"}):
             kind="SPIN"
         else:
             kind="UNKNOWN_FEATURE";issues.append("UNBOUND_STAKE_MODE:"+name)
-        modes.append({"id":identity,"name":name,"kind":kind,"selector":scope.get("featureType",(contract.get("base_selector") or name) if kind=="SPIN" and index==0 else name),"cost":row["cost"],
+        modes.append({"id":identity,"name":name,"kind":kind,"selector":scope.get("featureType",("default" if standard else (contract.get("base_selector") or name)) if kind=="SPIN" and index==0 else name),"cost":row["cost"],
                       "bet_type":scope.get("betType","default"),"multiplier":min(factors),"declaration":deepcopy(row),"server_declared":True,"observed":True})
     if not any(m["kind"]=="SPIN" for m in modes):issues.append("BASE_MODE_UNBOUND")
     if active is not None:

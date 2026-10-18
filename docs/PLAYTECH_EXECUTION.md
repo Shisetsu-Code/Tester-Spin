@@ -38,3 +38,10 @@ La disponibilidad de demo y el motor NGM/GPAS no identifican una slot. El catál
 Cuando `manifest.env.glu6` es true, las rutas javascript se resuelven contra `game/`, no `packs/`. La descarga mantiene los controles de origen, identidad y límites; resolver una ruta no autoriza un contrato de comandos desconocido. Epic Fish Net of Fortune y Marlin Madness superaron el 404 de carga, pero su vínculo de comandos continúa pendiente (`CLIENT_COMMAND_BINDING_UNKNOWN`). No se reclasifican como OK por descargar el cliente.
 
 La interfaz vuelve a leer el historial compartido al recuperar el foco si no hay una corrida activa, conservando selección y posición. Esto permite reflejar pruebas ejecutadas desde el analizador o la CLI sin reiniciar ni cambiar manualmente estados.
+
+
+### Variantes compiladas de apuestas y elecciones
+
+La modalidad base puede llamarse un número o Standard. El lector admite una única entrada con startingMode=Standard y startingPlays=1 si el cliente contiene el contraste explícito de Standard y los campos de selección de apuesta; no se permiten parámetros económicos adicionales. Su selector base de protocolo es default. Varias entradas Standard siguen exigiendo el contrato de líneas. ExtraBetWidget también se reconoce como evidencia de interfaz de antebet, pero las opciones y costes siguen procediendo de costConfiguration.
+
+El cliente compilado puede escribir la clave literal pick en un mapa y reenviarlo mediante callbacks. El lector enlaza esa construcción, el setter del mapa, reenvíos sin transformación y el comando de continuación 48775 hasta playOut. El ejecutor sigue eligiendo únicamente índices ofrecidos por el servidor, registra los resultados y exige cierre, conciliación y cobertura de ramas. No se amplía el dominio a partir de nombres de juegos ni se cambia un estado guardado sin ejecutar la prueba.

@@ -87,7 +87,6 @@ def compiled_pick_binding(source):
     Unknown or longer chains remain unbound.
     """
     aliases=set(re.findall(r"\b([A-Za-z_$][\w$]*)=[\"']pick[\"']",source))
-    if not aliases:return False
     functions=_function_bodies(source)
     sinks=[name for name,(args,body) in functions.items() if 'GLU.game.playOut' in body and re.search(r'parameters\s*:\s*JSON\.parse\(',body)]
     wrappers=set()
@@ -95,6 +94,25 @@ def compiled_pick_binding(source):
         for sink in sinks:
             for call in re.finditer(re.escape(sink)+r"\([^,;]+,[A-Za-z_$][\w$]*\.([A-Za-z_$][\w$]*),",body):
                 if re.search(r"\."+re.escape(call[1])+r"=48775\b",source):wrappers.add(name)
+    literal_wrappers=set(wrappers)
+    for _ in range(3):
+        for name,(args,body) in functions.items():
+            if len(args)<2 or len(re.findall(r'(?<![\w$.])'+re.escape(args[1])+r'(?![\w$])',body))!=1:continue
+            if any(re.search(re.escape(wrapper)+r'\([A-Za-z_$][\w$.]*,'+re.escape(args[1])+r'(?:,|\))',body) for wrapper in literal_wrappers):
+                literal_wrappers.add(name)
+    ident=r'[A-Za-z_$][\w$]*'
+    for _,(args,body) in functions.items():
+        for call in re.finditer(r'('+ident+r')\(('+ident+r')\.('+ident+r'),["\']pick["\'],('+ident+r')\)',body):
+            helper=functions.get(call[1])
+            if not helper or len(helper[0])!=3:continue
+            owner,key,value=helper[0]
+            setter=re.escape(owner)+r'\.'+ident+r'\.set\('+re.escape(key)+r',void 0==='+re.escape(value)+r'\?null:'+re.escape(value)+r'\)'
+            if not re.search(setter,helper[1]):continue
+            model=call[2]
+            if not re.search(re.escape(model)+r'=new '+ident,body):continue
+            # Container is constructed, populated once, then forwarded unchanged.
+            if len(re.findall(r'(?<![\w$.])'+re.escape(model)+r'(?![\w$])',body))!=4:continue
+            if any(re.search(re.escape(wrapper)+r'\('+ident+r','+re.escape(model)+r'(?:,|\))',body) for wrapper in literal_wrappers):return True
     for name,(args,body) in functions.items():
         for alias in aliases:
             for call in re.finditer(r"([A-Za-z_$][\w$]*)\(([A-Za-z_$][\w$]*),"+re.escape(alias)+r",",body):
