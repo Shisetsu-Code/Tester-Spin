@@ -14,10 +14,18 @@ on:
       - 'tester_spin/app_current.py'
       - 'tester_spin/updater.py'
       - 'tester_spin/providers/**'
+      - 'requirements*.txt'
+      - '.github/workflows/ci.yml'
       - '.github/workflows/build-pragmatic.yml'
 
+permissions:
+  contents: read
+
 jobs:
+  verify:
+    uses: ./.github/workflows/ci.yml
   build:
+    needs: verify
     runs-on: windows-latest
     timeout-minutes: 15
     strategy:
@@ -45,3 +53,4 @@ jobs:
         with:
           name: ${{ matrix.executable }}-windows-x64
           path: dist/${{ matrix.executable }}.exe
+          if-no-files-found: error

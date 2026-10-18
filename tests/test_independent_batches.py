@@ -68,6 +68,38 @@ def test_cancelled_before_start_does_not_activate_tunnel():
   tunnel_factory=lambda _:pytest.fail('activate'),stop_event=stop)
  assert report['attempted']==0 and report['reason']=='CANCELLED'
 
+@pytest.mark.parametrize('status,set_stop',[('CANCELADO',True),('CANCELADO',False),('PARCIAL',True)])
+def test_last_game_cancellation_is_reported_with_no_pending_games(status,set_stop):
+ from tester_spin.independent.batches import run_batches
+ stop=threading.Event();outputs=[]
+ def execute(game):
+  if set_stop:stop.set()
+  value=result(game);value.status=status;return value
+ report=run_batches(games(1),execute=execute,record=outputs.append,profiles=[],games_per_ip=None,stop_event=stop)
+ assert report['attempted']==1 and report['pending']==0
+ assert len(outputs)==1
+ assert report['reason']=='CANCELLED'
+
+def test_last_game_rate_limit_retains_priority_over_cancellation():
+ from tester_spin.independent.batches import run_batches
+ stop=threading.Event()
+ def execute(game):stop.set();return result(game,'HTTP 429')
+ report=run_batches(games(1),execute=execute,record=lambda _:None,profiles=[],games_per_ip=None,stop_event=stop)
+ assert report['pending']==0 and report['reason']=='RATE_LIMIT'
+
+def test_last_game_vpn_error_retains_priority_over_cancellation():
+ from tester_spin.independent.batches import run_batches
+ from tester_spin.vpn.wireguard import NetworkContextError
+ stop=threading.Event()
+ class Changed(Tunnel):
+  def verify(self):
+   if stop.is_set():raise NetworkContextError('changed')
+   return self.ip
+ def execute(game):stop.set();return result(game)
+ report=run_batches(games(1),execute=execute,record=lambda _:None,profiles=['one'],games_per_ip=1,
+  tunnel_factory=lambda p:Changed('203.0.113.1',[]),stop_event=stop)
+ assert report['pending']==0 and report['reason']=='VPN_ERROR'
+
 def test_reconstructing_result_preserves_attempts_and_feature_evidence():
  from tester_spin.independent.worker import result_from_payload
  from tester_spin.models import SpinAttempt

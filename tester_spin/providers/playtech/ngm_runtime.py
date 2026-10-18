@@ -38,6 +38,7 @@ class NGMDemoSession:
         self.seen = set()
         self.ledger = None
         self.dispatch_stack = []
+        self.capture_directory = None
         self.request_schemas = []
         self.passive_roles = {}
         self.manifest = None
@@ -185,12 +186,13 @@ class NGMDemoSession:
                     dispatch_kind = 'spin' if isinstance(spin, dict) else self.passive_roles.get(request_class, 'unknown')
                     if dispatch_kind == 'unhandled_candidate':
                         dispatch_kind = 'round_metadata' if value.get('handlerAbsent') is True else 'unknown'
-                    self.dispatch_stack.append(dispatch_kind)
+                    self.dispatch_stack.append((dispatch_kind, self.ledger.spins if dispatch_kind == 'spin' and self.ledger else None))
                     if len(self.dispatch_stack) > 32:
                         raise ValueError('NGM_DISPATCH_DEPTH_LIMIT')
                     if dispatch_kind == 'spin':
                         if not self.ledger:
                             raise ValueError('NGM_UNEXPECTED_SPIN_OUTSIDE_ROUND')
+                        self._capture_exchange(self.ledger.spins, 'request', row)
                         self.ledger.accept('spin', spin)
                     elif dispatch_kind in ('continuation', 'round_metadata', 'state_save', 'round_finish'):
                         if not self.ledger or not self.ledger.started or self.ledger.ended or not self.ledger.spins:
@@ -202,14 +204,24 @@ class NGMDemoSession:
                 elif kind == 'offline.response':
                     if not self.dispatch_stack:
                         raise ValueError('NGM_RESPONSE_WITHOUT_DISPATCH')
-                    if self.dispatch_stack.pop() == 'spin' and self.ledger:
-                        self.ledger.accept('response', {})
+                    dispatch_kind, step = self.dispatch_stack.pop()
+                    if dispatch_kind == 'spin' and self.ledger:
+                        self._capture_exchange(step, 'response', row)
+                        self.ledger.accept('response', value)
                 elif kind == 'offline.payout' and self.ledger:
                     self.ledger.accept('payout', value if isinstance(value, dict) else {})
             elif kind == 'hook.error':
                 raise ValueError('NGM_MESSENGER_HOOK_FAILED')
-        except (ValueError, TypeError, KeyError) as exc:
+        except (OSError, ValueError, TypeError, KeyError) as exc:
             self.errors.append(str(exc))
+
+    def _capture_exchange(self, step, direction, row):
+        if self.capture_directory is None:
+            return
+        evidence = dict(execution_scope='official-local-demo', server_execution=False,
+                        source_sha256=self.source_hashes, event_index=self.event_count, observation=row)
+        (Path(self.capture_directory)/f'step-{step}-{direction}.json').write_text(
+            json.dumps(evidence, ensure_ascii=False, indent=2), encoding='utf-8')
 
     def _install(self):
         while self.scripts:
@@ -372,6 +384,11 @@ class NGMDemoSession:
                 raise ValueError(';'.join(ledger.issues))
             return ledger.summary()
         finally:
+            if self.capture_directory is not None:
+                (Path(self.capture_directory)/'wire-events.json').write_text(json.dumps(dict(
+                    schema='tester-spin/ngm-ledger/v1', execution_scope='official-local-demo',
+                    server_execution=False, balance_before=ledger.before, events=ledger.events),
+                    ensure_ascii=False, indent=2), encoding='utf-8')
             (self.directory/('round-'+str(self.event_count)+'.json')).write_text(
                 json.dumps(ledger.summary(), indent=2), encoding='utf-8')
             # Failed rounds poison this session; the caller must close it.

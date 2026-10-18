@@ -63,6 +63,7 @@ def test_cli_wires_parent_pause_before_network_without_database(tmp_path, monkey
     class MemoryStorage:
         def __init__(self, path): pass
         def list_games(self, provider): return games()
+        def latest_results(self, provider=None): return []
         def record_result(self, result): recorded.append(result)
     class PausedProvider:
         execution_supported = True

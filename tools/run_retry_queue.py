@@ -13,6 +13,7 @@ import os
 import re
 import sys
 import threading
+import time
 from pathlib import Path
 
 # Workers are spawned under Windows with the active console code page.  Provider
@@ -27,7 +28,10 @@ def provider_for(key: str, data_root: Path):
     return create_provider(key,data_root)
 
 
-def _run_one(project_root: str, provider_key: str, game, timeout_s: float, spins: int = 1, shared_stop=None) -> None:
+def _run_one(project_root: str, provider_key: str, game, timeout_s: float, spins: int = 1, shared_stop=None, gate=None) -> None:
+    # The parent must own this process before provider/browser code can run.
+    if gate is not None:gate.wait()
+    if shared_stop is not None and shared_stop.is_set():return
     os.chdir(project_root)
     if project_root not in sys.path:
         sys.path.insert(0, project_root)
@@ -52,6 +56,36 @@ def _run_one(project_root: str, provider_key: str, game, timeout_s: float, spins
         progress=lambda message: print(f"[{game.name}] {message}", flush=True),
         on_result=record,
     )
+
+
+def _run_isolated(context, root, provider_key, game, timeout, spins, wall_timeout, shared_stop):
+    """Return only after every owned process exits; unsafe cleanup is fatal."""
+    from tester_spin.independent.processes import ProcessTree, UnsafeProcessTree
+
+    gate=context.Event();tree=ProcessTree();process=None;started=False
+    try:
+        process=context.Process(target=_run_one,args=(str(root),provider_key,game,timeout,spins,shared_stop,gate))
+        process.start();started=True
+        tree.bind(process.pid)
+        gate.set()
+        deadline=time.monotonic()+max(1.0,wall_timeout);reason=None
+        while process.is_alive():
+            if shared_stop.is_set():reason='STOPPED';break
+            remaining=deadline-time.monotonic()
+            if remaining<=0:reason='TIMEOUT';break
+            process.join(min(.2,remaining))
+        tree.stop_and_wait() # Also closes detached browser/driver descendants.
+        process.join(5)
+        if process.is_alive():raise UnsafeProcessTree('El árbol del juego no cerró; no se inicia otro juego')
+        return reason,process.exitcode
+    finally:
+        if started and not tree.bound:
+            # The gate is still closed, so no provider descendants can exist.
+            if process.is_alive():process.terminate();process.join(5)
+            if process.is_alive():process.kill();process.join(5)
+            if process.is_alive():raise UnsafeProcessTree('El proceso bloqueado no cerró; no se inicia otro juego')
+        tree.close() # Raises rather than advancing when ownership cannot be released safely.
+        if started and not process.is_alive():process.close()
 
 
 def main() -> int:
@@ -98,12 +132,8 @@ def main() -> int:
             print("STOP proveedor: seÃ±al compartida de detenciÃ³n; no se abre otra sesiÃ³n",flush=True)
             break
         print(f"START {index}/{len(games)} {game.name}", flush=True)
-        process = context.Process(target=_run_one, args=(str(root), provider.key, game, args.timeout, args.spins, shared_stop))
-        process.start()
-        process.join(max(1.0, args.wall_timeout))
-        if process.is_alive():
-            process.terminate()
-            process.join(10)
+        reason,exitcode=_run_isolated(context,root,provider.key,game,args.timeout,args.spins,args.wall_timeout,shared_stop)
+        if reason=='TIMEOUT':
             storage.record_result(
                 GameTestResult(
                     provider=game.provider,
@@ -120,7 +150,7 @@ def main() -> int:
             )
             print(f"TIMEOUT {game.name}", flush=True)
         else:
-            print(f"END {game.name} exit={process.exitcode}", flush=True)
+            print(f"END {game.name} exit={exitcode}", flush=True)
     return 0
 
 

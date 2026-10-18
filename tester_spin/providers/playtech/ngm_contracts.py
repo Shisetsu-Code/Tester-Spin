@@ -317,6 +317,8 @@ def _body(entry):
 
 def analyze_har(har, code):
     """Report only; imports no captured sessions and makes no network calls."""
+    from .ngm_capture import capture_diagnostics
+    capture = capture_diagnostics(har)
     sources, manifests, unresolved = [], [], []
     for index, entry in enumerate(har.get('log', {}).get('entries', [])):
         parsed = urlsplit(entry.get('request', {}).get('url', ''))
@@ -345,7 +347,7 @@ def analyze_har(har, code):
             unresolved.append(ref+':'+str(exc))
     report = dict(schema='tester-spin/ngm-static-contracts/v1', game_code=code,
                   network_used=False, scripts_executed=False, certifies_game_ok=False,
-                  request_count=0, unresolved=unresolved)
+                  request_count=0, unresolved=unresolved, capture_diagnostics=capture)
     if len(sources) == 1:
         ref, source, catalog, declarations = sources[0]
         report.update(source_ref=ref, source_sha256=hashlib.sha256(source.encode('utf-8')).hexdigest(),
@@ -356,6 +358,10 @@ def analyze_har(har, code):
         report.update(manifest_ref=manifests[0][0], manifest=manifests[0][1])
     else:
         unresolved.append('NGM_MANIFEST_MISSING' if not manifests else 'NGM_MANIFEST_AMBIGUOUS')
+    if not sources:
+        capture['next_steps'].append('Falta el cliente JavaScript .cache.js del juego. Recargá con caché desactivada y exportá el HAR con cuerpos de respuesta, incluyendo JavaScript y el manifiesto .jmm de la misma versión.')
+    if not manifests:
+        capture['next_steps'].append('Falta el manifiesto del juego: incluí la respuesta .jmm con config, sin filtros que eliminen recursos.')
     from .ngm_plan import build_execution_plan
     report['execution_plan'] = build_execution_plan(report, sources[0][1] if len(sources) == 1 else '')
     return report
@@ -377,7 +383,7 @@ def main():
     report = analyze_har(json.loads(args.har.read_text(encoding='utf-8-sig')), args.code)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
-    print(json.dumps(dict(output=str(args.out.resolve()), request_count=report['request_count'], unresolved=report['unresolved'])))
+    print(json.dumps(dict(output=str(args.out.resolve()), request_count=report['request_count'], unresolved=report['unresolved'], capture_diagnostics=report['capture_diagnostics'])))
 
 
 if __name__ == '__main__':

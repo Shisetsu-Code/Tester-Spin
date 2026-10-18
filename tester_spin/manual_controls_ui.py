@@ -106,7 +106,12 @@ class ManualControlsDialog(tk.Toplevel):
                 self.tree.delete(*self.tree.get_children());self.options.clear();self.original=None;self.image_box=None;self.point=None;self.canvas.delete("all")
                 text=("Acción enviada. " if value["executed"] else "Acción no enviada: "+str(value.get("error"))+". ")+"HAR: "+str(value.get("har_path"))
                 if value.get("capture_error"):text+=" · No se pudo guardar: "+value["capture_error"]+". Usá Guardar HAR pendiente; la acción ya fue consumida"
-                if value.get("analysis"):text+=" · Filtrado: "+value["analysis"][0]["output"]
+                if value.get("analysis"):
+                    analysis=value["analysis"][0]
+                    text+=" · Filtrado: "+analysis["output"]
+                    diagnostic=analysis.get("capture_diagnostics",{})
+                    details=diagnostic.get("issues",[])+diagnostic.get("contract_issues",[])+diagnostic.get("next_steps",[])
+                    if details:text+=" · "+"; ".join(details)
                 elif value.get("analysis_error"):text+=" · "+value["analysis_error"]
                 self.hint.set(text+". Actualizá para ver el menú nuevo.")
         except queue.Empty:pass

@@ -42,7 +42,8 @@ class SamplingRegressions(unittest.TestCase):
             r = result(root)
             r.attempts = [fso(root, 1, [0]), fso(root, 2, [1])]
             r.samples_per_path = 3
-            ProviderAdapter.finalize_test_result(None, r, progress=lambda _: None)
+            adapter = SimpleNamespace(key=r.provider)
+            ProviderAdapter.finalize_test_result(adapter, r, progress=lambda _: None)
             self.assertEqual(r.status, "PARCIAL")
             self.assertIn("Muestreo pendiente", r.error)
             self.assertEqual(json.loads((root / "result.json").read_text(encoding="utf-8"))["status"], "PARCIAL")

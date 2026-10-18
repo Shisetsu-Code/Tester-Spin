@@ -16,8 +16,11 @@ class NGMRoundLedger:
         self.stake = self.win = 0
         self.errors = []
         self.debit_balances = []
+        self.events = []
 
     def accept(self, kind, value):
+        from copy import deepcopy
+        self.events.append(dict(kind=kind, value=deepcopy(value)))
         if kind == 'message':
             classifier = value.get('classifier')
             if classifier == 'GameRoundStartNotification':
@@ -128,12 +131,13 @@ def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
                 result.attempts.append(attempt)
                 started = time.monotonic()
                 try:
+                    session.capture_directory = directory
                     summary = session.spin()
                     if summary.get('verified') is not True:
                         raise ValueError('NGM_ROUND_NOT_VERIFIED')
                     evidence = dict(summary, execution_scope='official-local-demo',
-                        server_execution=False, source_sha256=session.source_hashes, event_trace='../ngm-events.jsonl')
-                    (directory/'response.json').write_text(json.dumps(evidence, indent=2), encoding='utf-8')
+                        server_execution=False, source_sha256=session.source_hashes, event_trace='wire-events.json', session_trace='../ngm-events.jsonl')
+                    (directory/'summary.json').write_text(json.dumps(evidence, indent=2), encoding='utf-8')
                     attempt.ok = attempt.terminal = True
                     attempt.wire_steps = summary['steps']
                     mode['execution_scope'] = 'official-local-demo'
@@ -146,6 +150,7 @@ def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
                     attempt.error = str(exc)
                     raise
                 finally:
+                    session.capture_directory = None
                     attempt.elapsed_ms = (time.monotonic()-started)*1000
             issues.extend(session.errors)
     except Exception as exc:
@@ -163,7 +168,10 @@ def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
             protocol = result.structural_map['playtech_protocol']
             matches = report.get('source_sha256') in protocol.get('source_sha256', [])
             protocol['har_analysis'] = dict(path=str(run/'ngm-har-contracts.json'),
-                request_count=report['request_count'], source_matches_session=matches, unresolved=report['unresolved'])
+                request_count=report['request_count'], source_matches_session=matches, unresolved=report['unresolved'],
+                capture_diagnostics=report['capture_diagnostics'])
+            result.structural_map['capture_next_steps'] = report['capture_diagnostics']['next_steps']
+            issues.extend(code for code in report['capture_diagnostics']['issues'] if code == 'HAR_EMPTY_CAPTURE')
             if protocol.get('source_sha256') and not matches:
                 issues.append('NGM_HAR_SOURCE_MISMATCH')
             manifest_matches = protocol.get('functional_manifest') == report.get('manifest') and report.get('manifest') is not None
@@ -183,6 +191,9 @@ def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
                 issues.extend(plan['unresolved'])
         except (OSError, ValueError, TypeError) as exc:
             issues.append('NGM_HAR_ANALYSIS_FAILED:'+str(exc))
+    else:
+        issues.append('NGM_HAR_MISSING')
+        result.structural_map['capture_next_steps'] = ['No se guardó session.har. Revisá el error de arranque/cierre del navegador y repetí la prueba demo con captura completa.']
     result.failed_spins = sum(not attempt.ok for attempt in result.attempts)
     result.status = 'OK' if (not issues and result.successful_spins == count
         and len(result.attempts) == count and all(a.ok and a.terminal for a in result.attempts)
@@ -192,5 +203,8 @@ def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
     result.finished_at = utc_now_iso()
     result.elapsed_ms = (time.monotonic()-clock)*1000
     (run/'result.json').write_text(json.dumps(result.to_dict(), indent=2), encoding='utf-8')
+    if result.status == 'PARCIAL':
+        for step in result.structural_map.get('capture_next_steps', []):
+            progress(f'[{game.name}] Captura: {step}')
     progress(f'[{game.name}] {result.status}: {result.successful_spins} rondas demo locales verificadas. '+result.error)
     return result

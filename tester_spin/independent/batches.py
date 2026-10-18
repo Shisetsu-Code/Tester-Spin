@@ -65,9 +65,12 @@ def run_batches(games,*,execute,record,profiles,games_per_ip,stop_event,tunnel_f
                     if context_error:report['reason']='VPN_ERROR';return report
                     if 'SERVER_RETRY_AFTER' in (result.error or '') or re.search(r'\b(?:HTTP(?: Error)?\s+429|429(?:\s+Too Many Requests)?)\b',result.error or '',re.I):
                         report['reason']='RATE_LIMIT';stop_event.set();return report
+                    if result.status in {'CANCELADO','CANCELLED'} or stop_event.is_set():
+                        report['reason']='CANCELLED';stop_event.set();return report
         except NetworkContextError as exc:
             report['network_error']=str(exc)
             report['reason']='VPN_ERROR';return report
-    if report['pending'] and report['reason']=='COMPLETED':
-        report['reason']='CANCELLED' if stop_event.is_set() else 'IP_QUOTA_EXHAUSTED'
+    if report['reason']=='COMPLETED':
+        if stop_event.is_set():report['reason']='CANCELLED'
+        elif report['pending']:report['reason']='IP_QUOTA_EXHAUSTED'
     return report

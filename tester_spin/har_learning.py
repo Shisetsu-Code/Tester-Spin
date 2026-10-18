@@ -56,14 +56,52 @@ def kick_worker(database):
         return False
 
 
+def inspect_capture(har):
+    """Diagnose a saved capture before optional external filtering; no replay."""
+    import re
+    from urllib.parse import urlsplit
+    from tester_spin.har_capture_diagnostics import capture_entries
+    har=Path(har).resolve()
+    if not har.is_file() or har.suffix.casefold()!='.har':
+        raise ValueError('No se encontró el HAR guardado')
+    if har.stat().st_size > 256*1024*1024:
+        raise ValueError('HAR_TOO_LARGE: el límite de análisis es 256 MiB.')
+    try:
+        document=json.loads(har.read_text(encoding='utf-8-sig'))
+    except (ValueError, UnicodeError):
+        raise ValueError('HAR_INVALID_JSON: exportá nuevamente el HAR con contenido.') from None
+    entries=capture_entries(document)
+    if not entries and not document['log'].get('_warpWebSockets'):
+        raise ValueError('HAR_EMPTY_CAPTURE: iniciá la grabación antes de recargar la demo y exportá con contenido después de cerrar la ronda.')
+    codes=set()
+    for entry in entries:
+        try: url=urlsplit(entry.get('request',{}).get('url',''))
+        except ValueError: continue
+        if url.scheme=='https' and url.hostname=='cachedownload.playtechone.com':
+            match=re.match(r'/ngmdistributed/ngm-(?:desktop|mobile)/[^/]+/([A-Za-z0-9_]+)/',url.path)
+            if match: codes.add(match[1])
+    if len(codes)==1:
+        from tester_spin.providers.playtech.ngm_contracts import analyze_har
+        report=analyze_har(document,next(iter(codes)))
+        return dict(report['capture_diagnostics'], contract_issues=report['unresolved'])
+    return dict(entry_count=len(entries), issues=[], next_steps=[])
+
+
 def isolate_capture(har,data_root):
+    diagnostic=inspect_capture(har)
+    guidance='; '.join(diagnostic.get('issues',[])+diagnostic.get('contract_issues',[])+diagnostic['next_steps'])
     configured=configuration(data_root)
-    if configured is None:raise ValueError("Aislador no está configurado para este programa")
+    if configured is None:
+        raise ValueError((guidance+' · ' if guidance else '')+'Aislador no está configurado para este programa; el análisis local no cambia la cobertura del juego.')
     config,source=configured;har=Path(har).resolve()
-    if not har.is_file() or har.suffix.casefold()!=".har":raise ValueError("No se encontró el HAR guardado")
     command=[config.get("python") or sys.executable,"-m","aislador","extract",str(har),"--provider","auto",
              "--out",str(Path(data_root).resolve()/"har-learning/manual"),"--json"]
     completed=subprocess.run(command,cwd=source,capture_output=True,text=True,encoding="utf-8",timeout=120,
         creationflags=subprocess.CREATE_NO_WINDOW if os.name=="nt" else 0)
-    if completed.returncode:raise ValueError(completed.stderr.strip() or "No se pudo filtrar el HAR")
-    return json.loads(completed.stdout)
+    if completed.returncode:
+        raise ValueError((guidance+' · ' if guidance else '')+(completed.stderr.strip() or "No se pudo filtrar el HAR"))
+    result=json.loads(completed.stdout)
+    if isinstance(result,list):
+        for row in result:
+            if isinstance(row,dict):row['capture_diagnostics']=diagnostic
+    return result

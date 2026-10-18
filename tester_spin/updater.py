@@ -21,6 +21,11 @@ MANIFEST_SCHEMA = "tester-spin-update/v1"
 Status = Callable[[str], None]
 
 
+def _validate_version(version: str) -> None:
+    if version in {'.', '..'} or not re.fullmatch(r"[A-Za-z0-9._-]{1,80}", version):
+        raise ValueError("version inválida en manifest")
+
+
 def _local_appdata() -> Path:
     raw = os.environ.get("LOCALAPPDATA")
     if raw:
@@ -85,8 +90,7 @@ class UpdateManifest:
         url = str(value.get("url") or "").strip()
         digest = str(value.get("sha256") or "").strip().lower()
         entrypoint = str(value.get("entrypoint") or "run.py").strip().replace("\\", "/")
-        if not re.fullmatch(r"[A-Za-z0-9._-]{1,80}", version):
-            raise ValueError("version inválida en manifest")
+        _validate_version(version)
         if not url.startswith(("https://", "http://")):
             raise ValueError("URL de paquete inválida")
         if not re.fullmatch(r"[0-9a-f]{64}", digest):
@@ -176,18 +180,19 @@ class Updater:
         if not re.fullmatch(r"[a-f0-9]{40,64}", revision):
             raise RuntimeError("Revisión de runtime inválida")
         self.versions_root.mkdir(parents=True, exist_ok=True)
-        target = self.versions_root / ("git-" + revision)
+        target = self._checked_version_path(self.versions_root / ("git-" + revision))
         if (target / "run.py").is_file():
             return target
         status("Preparando una versión compartida de la interfaz y los módulos...")
         with tempfile.TemporaryDirectory(prefix=".git-runtime-", dir=self.versions_root) as temporary:
-            staging = Path(temporary)
+            staging = self._checked_version_path(Path(temporary))
             archive = staging / "app.zip"
             self._run([git, "-C", str(repo), "archive", "--format=zip", "--output=" + str(archive), revision])
             extracted = staging / "app"
             self.safe_extract_zip(archive, extracted)
             if not (extracted / "run.py").is_file():
                 raise RuntimeError("Runtime sin punto de entrada")
+            self._checked_version_path(target)
             try:
                 os.rename(extracted, target)
             except FileExistsError:
@@ -244,13 +249,23 @@ class Updater:
             raise RuntimeError("la copia runtime no contiene run.py")
         return repo
 
+    def _checked_version_path(self, path: Path) -> Path:
+        """Check resolved destinations before using or removing version data."""
+        root = self.versions_root.resolve()
+        resolved = path.resolve()
+        if resolved == root or not resolved.is_relative_to(root):
+            raise ValueError("ruta de versión fuera de versions")
+        return path
+
     def _read_current_manifest_runtime(self) -> Path | None:
         try:
             value = json.loads(self.current_path.read_text(encoding="utf-8"))
             version = str(value.get("version") or "")
+            _validate_version(version)
             entrypoint = str(value.get("entrypoint") or "run.py")
-            root = self.versions_root / version
-            if (root / entrypoint).exists():
+            root = self._checked_version_path(self.versions_root / version)
+            entry = (root / entrypoint).resolve()
+            if entry.is_relative_to(root.resolve()) and entry != root.resolve() and entry.is_file():
                 return root
         except Exception:
             return None
@@ -276,7 +291,8 @@ class Updater:
                 return fallback
             raise
 
-        target = self.versions_root / manifest.version
+        target = self._checked_version_path(self.versions_root / manifest.version)
+        staging = self._checked_version_path(self.versions_root / f".{manifest.version}.staging")
         if (target / manifest.entrypoint).exists():
             self._write_json_atomic(
                 self.current_path,
@@ -297,15 +313,19 @@ class Updater:
             if actual != manifest.sha256:
                 raise RuntimeError("SHA-256 del paquete no coincide con el manifest")
 
-            staging = self.versions_root / f".{manifest.version}.staging"
+            self._checked_version_path(staging)
             shutil.rmtree(staging, ignore_errors=True)
             staging.mkdir(parents=True, exist_ok=True)
             self.safe_extract_zip(archive, staging)
             if not (staging / manifest.entrypoint).exists():
+                self._checked_version_path(staging)
                 shutil.rmtree(staging, ignore_errors=True)
                 raise RuntimeError(f"el paquete no contiene {manifest.entrypoint}")
             if target.exists():
+                self._checked_version_path(target)
                 shutil.rmtree(target, ignore_errors=True)
+            self._checked_version_path(staging)
+            self._checked_version_path(target)
             os.replace(staging, target)
 
         self._write_json_atomic(
@@ -342,6 +362,9 @@ class Updater:
         dirs = [item for item in self.versions_root.iterdir() if item.is_dir() and not item.name.startswith(".")]
         dirs.sort(key=lambda item: item.stat().st_mtime, reverse=True)
         for old in dirs[max(1, keep):]:
+            if old.is_symlink():
+                continue
+            self._checked_version_path(old)
             shutil.rmtree(old, ignore_errors=True)
 
     def _find_system_python(self) -> Path:

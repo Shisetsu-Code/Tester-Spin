@@ -339,3 +339,24 @@ def test_metadata_candidate_requires_observed_missing_handler(tmp_path,absent,ex
 def test_spin_contract_uses_same_resolved_semantics_as_har_catalog():
     source="var betKey='bet';"+SOURCE.replace("'bet'",'betKey')
     assert spin_request_contract(source)==spin_request_contract(SOURCE)
+
+
+def test_partial_run_surfaces_empty_capture_and_recapture_steps(tmp_path):
+    import json,threading
+    from tester_spin.models import Game
+    from tester_spin.providers.playtech.adapter import PlaytechProvider
+    class Session:
+        source_hashes=[];contract={};errors=[];demo_verified=True
+        def __init__(self,code,directory,*args):self.directory=directory
+        def __enter__(self):return self
+        def __exit__(self,*args):(self.directory/'session.har').write_text('{"log":{"entries":[]}}')
+        def spin(self):return apply(round_events()).summary()
+    provider=PlaytechProvider(tmp_path);provider.ngm_session_factory=Session
+    messages=[]
+    result=provider.test_game(Game('playtech','game-example','Example','https://www.playtechone.com/games/example',symbol='example'),spins=1,timeout_s=10,stop_event=threading.Event(),progress=messages.append)
+    assert result.status=='PARCIAL'
+    diagnostic=result.structural_map['playtech_protocol']['har_analysis']['capture_diagnostics']
+    assert diagnostic['entry_count']==0
+    assert 'HAR_EMPTY_CAPTURE' in result.error
+    assert any('recarg' in message for message in messages)
+    assert result.structural_map['capture_next_steps']
