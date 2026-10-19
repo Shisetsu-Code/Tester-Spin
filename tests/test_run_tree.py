@@ -144,5 +144,78 @@ class RunTreeTests(unittest.TestCase):
             observations=json.loads((root/'server-observations.json').read_text())
             self.assertEqual(observations['unparsed'],0)
 
+    def gpas_fixture(self, root, count=13):
+        directory=root/'mode-3'; directory.mkdir()
+        for number in range(count):
+            suffix=f'-{number}' if number else ''
+            (directory/f'request{suffix}.json').write_text(
+                json.dumps({'command':'buy' if number == 0 else 'continue','step':number}),encoding='utf-8')
+            (directory/f'response{suffix}.json').write_text(
+                json.dumps({'step':number,'closed':number == count-1}),encoding='utf-8')
+        return GameTestResult(provider='playtech',slug='fixture',game_name='Fixture',
+            game_url='https://example.invalid',requested_spins=1,successful_spins=1,failed_spins=0,
+            status='OK',run_dir=str(root),discovered_modes=[{'id':'BuyBonus','kind':'PURCHASE'}],
+            attempts=[SpinAttempt(number=3,ok=True,terminal=True,mode_id='BuyBonus',mode_kind='PURCHASE',
+                                  wire_steps=count,artifact_dir=str(directory))])
+
+    def test_gpas_numbered_continuations_preserve_all_exchanges_in_numeric_order(self):
+        from tester_spin.run_diagnostics import write_run_diagnostics
+        mod=self.module()
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp); result=self.gpas_fixture(root)
+            path=mod.write_run_tree(result)['trajectories'][0]
+            self.assertEqual(len(path['steps']),13)
+            self.assertEqual(path['gaps'],[])
+            self.assertTrue(path['offline_replay_ready'])
+            replay=mod.replay_capture(root/'run-tree.json',path['id'])
+            self.assertEqual([s['request']['step'] for s in replay['steps']],list(range(13)))
+            self.assertEqual([s['response']['step'] for s in replay['steps']],list(range(13)))
+            self.assertEqual(path['steps'][-1]['response'][0]['path'],'mode-3/response-12.json')
+            (root/'path-coverage.json').write_text('{"complete":true,"branch_points":[]}',encoding='utf-8')
+            (root/'sample-catalog.json').write_text('{"observed_paths_sampled":true}',encoding='utf-8')
+            report=write_run_diagnostics(result)
+            self.assertEqual(report['modes'][0]['status'],'VALIDATED')
+            self.assertTrue(report['attempts'][0]['sequence_complete'])
+            self.assertEqual(report['evidence_gaps'],[])
+
+    def test_gpas_identical_continuation_is_not_an_alias_of_entry(self):
+        mod=self.module()
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp); result=self.gpas_fixture(root,count=2)
+            for direction in ('request','response'):
+                (root/'mode-3'/f'{direction}-1.json').write_bytes((root/'mode-3'/f'{direction}.json').read_bytes())
+            path=mod.write_run_tree(result)['trajectories'][0]
+            self.assertEqual(len(path['steps']),2)
+            self.assertTrue(path['offline_replay_ready'])
+            self.assertEqual(path['steps'][0]['request'][0]['path'],'mode-3/request.json')
+            self.assertEqual(path['steps'][1]['request'][0]['path'],'mode-3/request-1.json')
+
+    def test_gpas_missing_continuation_evidence_disables_replay(self):
+        mod=self.module()
+        for missing in (('response-7.json',),('request-7.json','response-7.json'),
+                        ('request-1.json','response-1.json')):
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as temp:
+                root=Path(temp); result=self.gpas_fixture(root)
+                for name in missing:
+                    (root/'mode-3'/name).unlink()
+                path=mod.write_run_tree(result)['trajectories'][0]
+                self.assertFalse(path['offline_replay_ready'])
+                self.assertTrue(any('Missing' in str(gap) for gap in path['gaps']))
+                with self.assertRaisesRegex(ValueError,'incomplete|unresolved'):
+                    mod.replay_capture(root/'run-tree.json',path['id'])
+
+    def test_gpas_continuations_without_entry_do_not_imply_a_complete_round(self):
+        mod=self.module()
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp); result=self.gpas_fixture(root,count=3)
+            result.attempts[0].wire_steps=0
+            for direction in ('request','response'):
+                (root/'mode-3'/f'{direction}.json').unlink()
+            path=mod.write_run_tree(result)['trajectories'][0]
+            self.assertFalse(path['offline_replay_ready'])
+            self.assertTrue(any('Missing step indices' in str(gap) for gap in path['gaps']))
+            with self.assertRaisesRegex(ValueError,'incomplete|unresolved'):
+                mod.replay_capture(root/'run-tree.json',path['id'])
+
 
 if __name__=='__main__': unittest.main()
