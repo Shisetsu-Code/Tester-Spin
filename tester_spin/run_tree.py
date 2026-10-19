@@ -29,6 +29,10 @@ def _pairs(root: Path, attempt_dir: Path, metadata: dict) -> tuple[list, str, li
             label = match[1]
         elif stem in {'request', 'response'}:
             label = 'entry'
+        elif match := re.fullmatch(r'(request|response)-(\d+)(?:\.raw)?', stem):
+            # GPAS records entry, then request-1/response-1, request-2/response-2.
+            # These are subsequent exchanges, even if their bytes equal entry.
+            label = 'exchange-' + match[2]
         else:
             continue
         key = (path.parent.as_posix(), label)
@@ -51,13 +55,16 @@ def _pairs(root: Path, attempt_dir: Path, metadata: dict) -> tuple[list, str, li
     parents = {step['directory'] for step in steps}
     numbers = []
     for step in steps:
-        match = re.search(r'(?:^|[-_])step[-_](\d+)', step['label'])
+        match = re.search(r'(?:^|[-_])(?:step[-_]|exchange-)(\d+)', step['label'])
         numbers.append(int(match[1]) if match else -1 if step['label'] == 'entry' else None)
     if steps and len(parents) == 1 and all(n is not None for n in numbers) and len(set(numbers)) == len(numbers):
         steps = [step for _, step in sorted(zip(numbers, steps), key=lambda pair: pair[0])]
         ordering = 'ARTIFACT_STEP_INDEX'
         nonnegative = sorted(n for n in numbers if n >= 0)
-        if nonnegative and (nonnegative[0] not in ({0, 1, 2} if -1 in numbers else {0, 1}) or nonnegative != list(range(nonnegative[0], nonnegative[-1]+1))):
+        allowed_starts = {0, 1, 2} if -1 in numbers else {0, 1}
+        if any(re.fullmatch(r'exchange-\d+', step['label']) for step in steps):
+            allowed_starts = {1} if -1 in numbers else {0}
+        if nonnegative and (nonnegative[0] not in allowed_starts or nonnegative != list(range(nonnegative[0], nonnegative[-1]+1))):
             gaps.append('Missing step indices: complete offline replay is not proven.')
     elif steps and len(parents) == 1 and isinstance(declared, list) and declared and all(s['label'] in declared for s in steps):
         steps.sort(key=lambda s: declared.index(s['label']))
