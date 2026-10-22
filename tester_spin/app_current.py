@@ -118,7 +118,7 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
         self._feature_filter_var = tk.StringVar(self,value="Todos")
         self.feature_filter_combo = ttk.Combobox(filter_bar,textvariable=self._feature_filter_var,values=list(FILTERS),state="readonly",width=27)
         self.feature_filter_combo.pack(side="left",padx=(6,8))
-        self.feature_filter_combo.bind("<<ComboboxSelected>>",lambda _:self._refresh_games())
+        self.feature_filter_combo.bind("<<ComboboxSelected>>",lambda _:self._filter_changed())
         self.export_filtered_btn = ttk.Button(filter_bar,text="EXPORTAR FILTRADOS",command=self._export_filtered)
         self.export_filtered_btn.pack(side="left")
 
@@ -501,10 +501,17 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
             f"PENDIENTE {counts['PENDIENTE']}"
         )
 
+    def _filter_changed(self) -> None:
+        # Filtering is a view operation; no database reads or image reloads.
+        self._apply_current_sort()
+        self._update_count_summary()
+
     def _refresh_games(self) -> None:
+        if not self.provider_var.get() or self.provider_var.get() not in self._display_to_key:
+            return
         self._feature_results = {
             f"{row.get('provider')}::{row.get('slug')}": row
-            for row in self.storage.latest_results()
+            for row in self.storage.latest_results(self._provider().key)
         }
         # Detached rows also need deleting before the provider reloads identities.
         for iid in list(self._games):

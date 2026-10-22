@@ -57,6 +57,7 @@ class TesterSpinApp(tk.Tk):
         self._stop_event = threading.Event()
         self._games: dict[str, Game] = {}
         self._thumb_images: dict[str, ImageTk.PhotoImage] = {}
+        self._thumb_signatures = {}
         self._preview_image: ImageTk.PhotoImage | None = None
         self._preview_original = None
         self._preview_size = None
@@ -79,7 +80,6 @@ class TesterSpinApp(tk.Tk):
 
         self._build()
         self._on_provider_changed()
-        self._refresh_games()
         self.after(100, self._drain_events)
 
     def _build(self) -> None:
@@ -392,14 +392,23 @@ class TesterSpinApp(tk.Tk):
         provider = self._provider()
         games = self.storage.list_games(provider.key)
         self._games.clear()
-        self._thumb_images.clear()
+        # Retain decoded images for this catalogue across refreshes, but release
+        # providers no longer displayed. Tk rows keep references through this cache.
+        paths = {str(Path(game.thumbnail_path)) for game in games if game.thumbnail_path}
+        self._thumb_images = {key: value for key, value in self._thumb_images.items() if key in paths}
+        self._thumb_signatures = {key: value for key, value in self._thumb_signatures.items() if key in paths}
+        self._thumbnail_generation = getattr(self, "_thumbnail_generation", 0) + 1
+        generation = self._thumbnail_generation
+        pending = []
         for item in self.tree.get_children():
             self.tree.delete(item)
 
         for game in games:
             iid = f"{game.provider}::{game.slug}"
             self._games[iid] = game
-            image = self._load_tree_thumbnail(game.thumbnail_path)
+            image = self._cached_tree_thumbnail(game.thumbnail_path)
+            if game.thumbnail_path and not image:
+                pending.append((iid, game.thumbnail_path))
             values = (
                 game.name,
                 game.symbol or "—",
@@ -409,6 +418,41 @@ class TesterSpinApp(tk.Tk):
             )
             self.tree.insert("", "end", iid=iid, text="", image=image, values=values)
         self.count_var.set(f"{len(games)} juegos")
+        if pending:
+            self.after(25, lambda: self._fill_tree_thumbnails(generation, iter(pending)))
+
+    def _fill_tree_thumbnails(self, generation, pending):
+        """Decode a bounded batch after the catalogue is already usable."""
+        import time
+        if generation != self._thumbnail_generation:
+            return
+        started = time.perf_counter()
+        for _ in range(12):
+            item = next(pending, None)
+            if item is None:
+                return
+            iid, path = item
+            if self.tree.exists(iid):
+                self.tree.item(iid, image=self._load_tree_thumbnail(path))
+            if time.perf_counter() - started >= 0.008:
+                break
+        self.after(15, lambda: self._fill_tree_thumbnails(generation, pending))
+
+    def _cached_tree_thumbnail(self, path_text):
+        if not path_text:
+            return ""
+        key = str(Path(path_text))
+        if key not in self._thumb_images:
+            return ""
+        try:
+            stat = Path(path_text).stat()
+            if self._thumb_signatures.get(key) == (stat.st_mtime_ns, stat.st_size):
+                return self._thumb_images[key]
+        except OSError:
+            pass
+        self._thumb_images.pop(key, None)
+        self._thumb_signatures.pop(key, None)
+        return ""
 
     def _load_tree_thumbnail(self, path_text: str):
         if not path_text:
@@ -417,14 +461,17 @@ class TesterSpinApp(tk.Tk):
         if not path.exists():
             return ""
         key = str(path)
-        if key in self._thumb_images:
-            return self._thumb_images[key]
+        cached = self._cached_tree_thumbnail(path_text)
+        if cached:
+            return cached
         try:
             with Image.open(path) as original:
                 image = original.copy()
             image.thumbnail((96, 64), Image.Resampling.LANCZOS)
             photo = ImageTk.PhotoImage(image)
             self._thumb_images[key] = photo
+            stat = path.stat()
+            self._thumb_signatures[key] = (stat.st_mtime_ns, stat.st_size)
             return photo
         except Exception:
             return ""
