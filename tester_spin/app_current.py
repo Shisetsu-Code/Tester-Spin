@@ -3,6 +3,8 @@ from __future__ import annotations
 import queue
 import threading
 import time
+import tkinter as tk
+from tester_spin.feature_filter import FILTERS, matches_features
 
 from tkinter import filedialog, messagebox, ttk
 
@@ -110,6 +112,16 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
             )
         self._update_sort_headings()
 
+        filter_bar = ttk.Frame(self.test_all_btn.master.master)
+        filter_bar.pack(fill="x", pady=(6,0))
+        ttk.Label(filter_bar,text="Mostrar:").pack(side="left")
+        self._feature_filter_var = tk.StringVar(self,value="Todos")
+        self.feature_filter_combo = ttk.Combobox(filter_bar,textvariable=self._feature_filter_var,values=list(FILTERS),state="readonly",width=27)
+        self.feature_filter_combo.pack(side="left",padx=(6,8))
+        self.feature_filter_combo.bind("<<ComboboxSelected>>",lambda _:self._refresh_games())
+        self.export_filtered_btn = ttk.Button(filter_bar,text="EXPORTAR FILTRADOS",command=self._export_filtered)
+        self.export_filtered_btn.pack(side="left")
+
         controls = self.test_all_btn.master
         self.test_non_ok_btn = ttk.Button(
             controls,
@@ -192,12 +204,38 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
         self.status_var.set(f"Eliminados del catálogo: {blocked}")
         self._refresh_games()
 
+    def _filtered_export_games(self,provider_key):
+        games=self.storage.list_games(provider_key)
+        mode=FILTERS.get(self._feature_filter_var.get(),"all") if hasattr(self,"_feature_filter_var") else "all"
+        if mode=="all":return games
+        results={row.get('slug'):row for row in self.storage.latest_results(provider_key)}
+        return [g for g in games if matches_features(results.get(g.slug,{}),mode)]
+
+    def _export_filtered(self):
+        from pathlib import Path
+        from datetime import datetime
+        from tester_spin.partial_export import write_game_export
+        provider=self._provider()
+        games=self._filtered_export_games(provider.key)
+        if not games:
+            messagebox.showinfo("Exportar filtrados","No hay juegos que coincidan con el filtro.",parent=self)
+            return
+        target=filedialog.asksaveasfilename(parent=self,title=f"Exportar {len(games)} juegos filtrados",initialdir=str(Path.home()/"Desktop"),initialfile=f"filtrados-{provider.key}-{datetime.now():%Y%m%d-%H%M%S}.txt",defaultextension=".txt",filetypes=[("Lista para Fuzzer manual","*.txt")])
+        if not target:return
+        try:count=write_game_export(target,games)
+        except (OSError,ValueError) as exc:
+            messagebox.showerror("Exportar filtrados",str(exc),parent=self)
+            return
+        self.status_var.set(f"Exportados {count} juegos filtrados")
+        self._append_log(f"Exportados {count} juegos filtrados de {provider.display_name}: {target}")
+        messagebox.showinfo("Exportar filtrados",f"Exportados {count} juegos para importar en Fuzzer manual.",parent=self)
+
     def _export_partials(self) -> None:
         from datetime import datetime
         from pathlib import Path
         from tester_spin.partial_export import partial_urls, write_partial_export
         provider = self._provider()
-        games = self.storage.list_games(provider.key)
+        games = CurrentTesterSpinApp._filtered_export_games(self,provider.key)
         try:
             urls = partial_urls(games)
         except ValueError as exc:
@@ -393,6 +431,13 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
             )
 
     def _apply_current_sort(self) -> None:
+        mode = FILTERS.get(self._feature_filter_var.get(),"all") if hasattr(self,"_feature_filter_var") else "all"
+        for iid, game in self._games.items():
+            if not self.tree.exists(iid):continue
+            if matches_features(self._feature_results.get(iid,{}),mode):
+                self.tree.move(iid,"","end")
+            else:
+                self.tree.detach(iid)
         rows: list[tuple[str, Game]] = []
         for iid in self.tree.get_children(""):
             game = self._games.get(iid)
@@ -443,13 +488,14 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
             "SIN_DEMO": 0,
             "PENDIENTE": 0,
         }
-        for game in self._games.values():
+        visible = [self._games[iid] for iid in self.tree.get_children("") if iid in self._games]
+        for game in visible:
             status = str(game.display_status or "PENDIENTE").strip().upper() or "PENDIENTE"
             if status not in counts:
                 status = "PENDIENTE"
             counts[status] += 1
         self.count_var.set(
-            f"{len(self._games)} juegos | OK {counts['OK']} | "
+            f"{len(visible)} de {len(self._games)} juegos | OK {counts['OK']} | "
             f"OK manual {counts['OK MANUAL']} | PARCIAL {counts['PARCIAL']} | ERROR {counts['ERROR']} | "
             f"SIN_DEMO {counts['SIN_DEMO']} | "
             f"PENDIENTE {counts['PENDIENTE']}"
@@ -460,6 +506,9 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
             f"{row.get('provider')}::{row.get('slug')}": row
             for row in self.storage.latest_results()
         }
+        # Detached rows also need deleting before the provider reloads identities.
+        for iid in list(self._games):
+            if self.tree.exists(iid):self.tree.delete(iid)
         super()._refresh_games()
         self._apply_current_sort()
         self._update_sort_headings()

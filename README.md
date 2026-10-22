@@ -160,3 +160,5 @@ NGM offline tiene una ruta independiente para rondas normales demo y analiza aut
 **GRUPOS / REPROBAR** prioriza causas por cantidad de juegos, muestra representantes y permite repetir sus afectados. Las corridas generan informes comparables sin cambiar estados: [uso y límites](docs/FAILURE_GROUPS.md).
 
 **EXPORTAR PARCIALES** guarda los juegos con estado PARCIAL del proveedor seleccionado en un TXT para Fuzzer manual. Elegí dónde guardarlo; después, en Fuzzer manual, usá **Importar URLs → cargar archivo TXT → Importar lista**. El archivo lleva un enlace de lanzamiento por línea, sin duplicados ni cabeceras; Playtech usa su demo directa con `real=0`. La exportación lee los resultados guardados y no cambia estados ni importa automáticamente en el Fuzzer.
+
+El selector **Mostrar** permite filtrar por compras, antebets, cualquiera de las dos o ambas. **EXPORTAR FILTRADOS** guarda todos los juegos que cumplen el filtro, cualquiera sea su estado. **EXPORTAR PARCIALES** guarda solo los parciales que cumplen ese mismo filtro. Ambos generan TXT de enlaces para Fuzzer manual; los datos desconocidos no se consideran compras o antebets presentes.
