@@ -109,3 +109,10 @@ Subir ambos archivos y configurar `manifest_url` una sola vez.
 `Abrir-Tester-Spin.cmd` continúa ejecutando el checkout de desarrollo y no usa el runtime administrado. Esto evita que el auto-updater interfiera con ramas, cambios locales o debugging.
 
 Los módulos independientes y la interfaz reciben la misma versión. [Detalles y catálogos](SHARED_CATALOGS.md).
+
+
+## Entorno de la aplicación al iniciar
+
+El lanzador empaquetado usa su propia copia temporal de Tcl/Tk para la ventana de progreso. Antes de iniciar el Python instalado, elimina del entorno hijo las rutas Tcl/Tk, PYTHONHOME/PYTHONPATH y las variables internas de PyInstaller. El proceso padre conserva su entorno. Así la aplicación puede seguir usando Tcl/Tk después de que cierre el lanzador y desaparezca su carpeta temporal `_MEI...`.
+
+Si una versión antigua muestra `couldn't read file .../_MEI.../_tcl_data/auto.tcl`, hay que reemplazar también el ejecutable estable con el lanzador reconstruido: actualizar solo los módulos descargados no cambia el código de arranque incrustado en el EXE. Los datos y la distribución de pantalla se conservan.

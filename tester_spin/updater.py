@@ -26,6 +26,19 @@ def _validate_version(version: str) -> None:
         raise ValueError("version inválida en manifest")
 
 
+def external_python_environment() -> dict[str, str]:
+    """Give installed Python its own libraries, not the frozen launcher's Tcl/Tk.
+
+    PyInstaller initializes Tcl paths inside its temporary extraction directory.
+    A detached child outlives that directory; inheriting those paths breaks Tk.
+    Keep the parent's environment intact because its splash still uses it.
+    """
+    blocked = {'TCL_LIBRARY', 'TK_LIBRARY', 'TCLLIBPATH', 'TKPATH',
+               'TIX_LIBRARY', 'PYTHONHOME', 'PYTHONPATH', '_MEIPASS2'}
+    return {key: value for key, value in os.environ.items()
+            if key.upper() not in blocked and not key.upper().startswith('_PYI_')}
+
+
 def _local_appdata() -> Path:
     raw = os.environ.get("LOCALAPPDATA")
     if raw:
@@ -394,7 +407,7 @@ class Updater:
         marker = self.venv_root / ".requirements.sha256"
         installed_hash = marker.read_text(encoding="utf-8").strip() if marker.exists() else ""
 
-        env = os.environ.copy()
+        env = external_python_environment()
         env["TESTER_SPIN_DATA_ROOT"] = str(self.data_dir)
         env["TESTER_SPIN_APP_HOME"] = str(self.home)
         env["PLAYWRIGHT_BROWSERS_PATH"] = str(self.browser_root)

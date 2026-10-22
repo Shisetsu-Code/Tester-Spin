@@ -9,6 +9,24 @@ from tester_spin.updater import MANIFEST_SCHEMA, UpdateManifest, Updater
 
 
 class UpdaterTests(unittest.TestCase):
+    def test_external_python_does_not_inherit_frozen_tk_paths(self) -> None:
+        import os
+        from unittest.mock import patch
+        from tester_spin.updater import external_python_environment
+        inherited = {'TCL_LIBRARY': 'C:/Temp/_MEIgone/_tcl_data',
+                     'TK_LIBRARY': 'C:/Temp/_MEIgone/_tk_data',
+                     'PYTHONHOME': 'C:/Temp/_MEIgone',
+                     'PYTHONPATH': 'C:/Temp/_MEIgone',
+                     '_PYI_APPLICATION_HOME_DIR': 'C:/Temp/_MEIgone',
+                     'PATH': 'keep-path', 'TESTER_SPIN_DATA_ROOT': 'keep-data'}
+        with patch.dict(os.environ, inherited, clear=True):
+            env = external_python_environment()
+            for key in ('TCL_LIBRARY', 'TK_LIBRARY', 'PYTHONHOME', 'PYTHONPATH', '_PYI_APPLICATION_HOME_DIR'):
+                self.assertNotIn(key, env)
+            self.assertEqual(env['PATH'], 'keep-path')
+            self.assertEqual(env['TESTER_SPIN_DATA_ROOT'], 'keep-data')
+            self.assertEqual(os.environ['TCL_LIBRARY'], inherited['TCL_LIBRARY'])
+
     def test_manifest_accepts_valid_package(self) -> None:
         manifest = UpdateManifest.from_dict(
             {
