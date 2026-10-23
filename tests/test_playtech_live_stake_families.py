@@ -172,7 +172,7 @@ def test_mixed_line_family_requires_complete_domain_not_price_ratios():
     source=SOURCE+' winline'
     assert not mixed_standard_line_selectors(rows,config,CONTRACT,SOURCE)
     bad=[dict(x,parameters=dict(x['parameters'])) for x in rows]
-    bad[-1]['parameters']['winline']='20'
+    bad[-1]['parameters']['winline']='21'
     assert not mixed_standard_line_selectors(bad,config,CONTRACT,source)
     bad=[dict(x) for x in rows]
     bad[-1]['uuid']=bad[0]['uuid']
