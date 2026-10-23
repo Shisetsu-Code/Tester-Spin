@@ -89,3 +89,24 @@ def test_unique_standard_base_does_not_authorize_unbound_held_respin_prices():
     assert p['modes'][0]['kind']=='SPIN' and p['modes'][0]['selector']=='default'
     assert p['modes'][1]['kind']=='UNKNOWN_FEATURE'
     assert p['unresolved']
+
+
+def test_source_bound_line_domain_uses_lines_prefix_and_all_declared_indices():
+    costs=[row(str(n),n,start='Standard',line=str(n)) for n in (1,5,10)]
+    game=dict(costConfiguration=costs,baseCostMultipliers=[1])
+    current=discover_modes({'game':game},CONTRACT,[SOURCE+' winline stakeCostName'])
+    assert [m['kind'] for m in current['modes']]==['SPIN']*3
+    assert [m['selector'] for m in current['modes']]==['lines-1','lines-5','lines-10']
+    assert not current['unresolved']
+    missing=discover_modes({'game':game},CONTRACT,[SOURCE])
+    assert missing['unresolved']
+    assert all(m['kind']=='UNKNOWN_FEATURE' for m in missing['modes'])
+
+
+def test_no_lines_prefix_if_one_configured_winline_disagrees():
+    costs=[row(str(n),n,start='Standard',line=str(n)) for n in (1,2,3)]
+    costs[1]['parameters']['winline']='20'
+    current=discover_modes({'game':dict(costConfiguration=costs,baseCostMultipliers=[1])},
+                           CONTRACT,[SOURCE+' winline stakeCostName'])
+    assert current['unresolved']
+    assert all(m['kind']=='UNKNOWN_FEATURE' for m in current['modes'])
