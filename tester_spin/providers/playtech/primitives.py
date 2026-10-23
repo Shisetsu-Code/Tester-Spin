@@ -155,6 +155,14 @@ def discover_modes(configuration, contract, sources):
             named_lines.get(name, mixed_lines.get(name, scope.get("featureType", (
                 "default" if standard or default_family_selector else (contract.get("base_selector") or name))
                 if kind=="SPIN" and (index==0 or default_family_selector) else name))))
+        # A current GPAS antebet can be displayed as "Extra" while its
+        # protocol selector is lower-case "extra". This requires an enabled
+        # ante declaration, the existing client ExtraBets binding and no
+        # explicit conflicting server scope; never lower-case arbitrary modes.
+        if (kind=="ANTE_BET" and normalized=="extra" and name!="extra"
+                and game.get('extraBetEnabled') is True and ante_binding
+                and 'featureType' not in scope):
+            selector="extra"
         modes.append({"id":identity,"name":name,"kind":kind,"selector":selector,"cost":row["cost"],
                       "bet_type":scope.get("betType","default"),"multiplier":min(factors),"declaration":deepcopy(row),"server_declared":True,"observed":True})
     if not any(m["kind"]=="SPIN" for m in modes):issues.append("BASE_MODE_UNBOUND")
