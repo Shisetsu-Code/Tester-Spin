@@ -13,11 +13,26 @@ from tester_spin.providers.playtech.client_sources import compiled_pick_binding
 def inspect(code):
     with TemporaryDirectory() as temp:
         with DemoSession(code,Path(temp),15,threading.Event()) as session:
-            contract=client_contract(session.manifest,session.sources,adapter_config=session.adapter_config)
+            text="\n".join(session.sources)
+            source_shape=dict(script_count=len(session.sources),
+                client_command_class="com.pt.gpas.platform.game.OgwCorosinGameCommand" in text,
+                literal_40021=bool(re.search(r'\\b40021\\b',text)),
+                literal_48775=bool(re.search(r'\\b48775\\b',text)),
+                play_money="GLU.game.playMoney" in text,
+                play_out="GLU.game.playOut" in text,
+                legacy_bet="GLU.game.bet" in text,
+                legacy_send="GLU.game.send" in text,
+                glu6=session.manifest.get('env',{}).get('glu6'),
+                command_labels=sorted(set(re.findall(
+                    r'com\\.pt\\.(?:gpas|casino)\\.[A-Za-z0-9_.]{1,88}(?:GameCommand|Command)',
+                    text)))[:12])
+            try:
+                contract=client_contract(session.manifest,session.sources,adapter_config=session.adapter_config)
+            except ValueError as exc:
+                return dict(code=code,error=str(exc),source_shape=source_shape)
             current=resolve_configuration(session.config,{"betType":"default"})
             game=current.get("game",{})
             costs=game.get("costConfiguration",[])
-            text="\n".join(session.sources)
             # Limited shape evidence for the unbound pick serializer, not a HAR.
             contexts=[]
             if code=='gpas_jdice_pop':
@@ -60,7 +75,7 @@ def inspect(code):
                     known_stake_cost="stakeCostUuid" in text,
                     known_feature_type="featureType" in text),
                 adapter_map_keys=sorted(contract.get("adapter_maps",{})),pick_shapes=contexts,
-                function_shapes=function_shapes)
+                function_shapes=function_shapes,source_shape=source_shape)
 
 def main():
     ap=argparse.ArgumentParser()
