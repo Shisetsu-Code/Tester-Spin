@@ -67,11 +67,21 @@ conserva el número de intentos y la huella del archivo de evidencia de cada jue
 
 El diagnóstico posterior de Mystery Heist identificó un fallo de resolución del
 loader: la ruta elegida por `SKIN_DIRS.basic` contiene `basic/` antes de la versión.
-El bundle exacto declarado respondió HTTP 200. Una corrección posterior dentro
-de este PR añade la resolución genérica de skins literales inequívocas y pruebas
-de regresión negativas. La prueba sintética del resolvedor pasó, pero **todavía
-faltan** la ejecución con el cliente actual, los tres niveles de compra, la
-contabilidad y el retorno confirmado: Mystery Heist sigue **PARCIAL**.
+El bundle exacto declarado respondió HTTP 200. El resolvedor genérico ahora
+exige enlazar una declaración literal de skin con la variable de versión y la
+construcción de `bundle.js`: una mención aislada no autoriza una URL. También se
+descartan referencias a scripts dentro de comentarios y comillas escapadas.
+La verificación **aislada** de 13 patrones de skin pasó; esto no sustituye la
+suite completa ni una ejecución en demo actual.
+
+La [ficha oficial de BGaming](https://bgaming.com/games/mystery-heist)
+declara exactamente tres compras: Free Spins, Super Free Spins y Mystery Buy.
+Pilot 2 acusó aprobación del origen demo ficticio, pero la sesión
+`d519407c-99bc-4cf6-9386-c35c60350afe` de la tanda
+`66acbded-e107-499f-8985-16302c9d35db` sigue en estado `pending`, sin
+navegador ni capturas. Es imprescindible demostrar desde el cliente los tres
+precios, ejecutar las tres compras demo, verificar contabilidad, bonus y dos
+rondas base consecutivas al finalizar. Mystery Heist **sigue PARCIAL**.
 
 ### Nolimit City
 
