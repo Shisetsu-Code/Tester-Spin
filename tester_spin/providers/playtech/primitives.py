@@ -112,11 +112,11 @@ def discover_modes(configuration, contract, sources):
             kind=next(iter(declared_kinds))
         elif len(declared_kinds)>1:
             kind='UNKNOWN_FEATURE';issues.append('STAKE_KIND_CONFLICT:'+name)
-        elif (normalized=="extra" or (scoped and re.fullmatch(r"extra(?:[0-9]+|x[0-9]+(?:low|mid|high)?)",normalized))) and ante_binding:
+        elif (normalized in {"extra","extrabet"} or (scoped and re.fullmatch(r"extra(?:[0-9]+|x[0-9]+(?:low|mid|high)?)",normalized))) and ante_binding:
             kind="ANTE_BET"
         elif (normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and (re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized) or (pot_domain and re.fullmatch(r"buyfeature[0-9]+pot",normalized))))) and purchase_binding:
             kind="PURCHASE"
-        elif standard or line_domain or (scoped and volatility_binding and re.fullmatch(r"default(?:low|mid|high)",normalized)) or normalized in {"default","base"} or (len(costs)==1 and normalized not in {"bf","buyfeature","extra"}):
+        elif standard or line_domain or (scoped and volatility_binding and re.fullmatch(r"default(?:low|mid|high)",normalized)) or normalized in {"default","base"} or (len(costs)==1 and normalized not in {"bf","buyfeature","extra","extrabet"}):
             kind="SPIN"
         else:
             kind="UNKNOWN_FEATURE";issues.append("UNBOUND_STAKE_MODE:"+name)
