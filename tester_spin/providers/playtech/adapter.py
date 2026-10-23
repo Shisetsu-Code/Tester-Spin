@@ -101,6 +101,9 @@ class PlaytechProvider(CatalogProvider):
         result.structural_map['pending_choice_branches']=pending
         result.structural_map['execution_issues']=list(dict.fromkeys(issues))
         result.status='OK' if not issues and result.attempts and all(a.ok for a in result.attempts) and result.structural_map.get('return_to_base_verified') else 'PARCIAL'
+        from .replay_rules import runtime_actions
+        result.structural_map['verification_worklist'] = (runtime_actions('gpas', list(dict.fromkeys(issues)))
+            if result.status == 'PARCIAL' else [])
         result.error='; '.join(dict.fromkeys(issues))
         result.finished_at=utc_now_iso();result.elapsed_ms=(time.monotonic()-start)*1000
         (run/'result.json').write_text(json.dumps(result.to_dict(),indent=2),encoding='utf-8')
