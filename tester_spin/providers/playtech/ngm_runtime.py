@@ -82,12 +82,11 @@ class NGMDemoSession:
             if any(key in self.keyboard_filter for key in (32, '32', 'SPACE', 'Space')):
                 raise ValueError('NGM_SPIN_KEY_SUPPRESSED')
             if self.popups.get('splash') is True:
-                if self.stop.is_set():
-                    raise InterruptedError('DETENIDO')
-                # A known intro can consume Space without wagering. Wait for its
-                # explicit close event before attempting the first paid round.
-                self.page.locator('body').press('Space', timeout=int(self.timeout*1000))
-                self.wait(lambda: self.popups.get('splash') is False, 'NGM_SPLASH_NOT_CLOSED')
+                # Splash is a game-frame notification. Keyboard input sent to
+                # the outer launcher body often never reaches the game iframe.
+                # Act once on the unique verified game frame, then require an
+                # explicit popup-close notification before any paid spin.
+                self._dismiss_splash()
             if any(self.popups.values()):
                 raise ValueError('NGM_POPUP_UNBOUND')
             self.wait(lambda: self._action_frame() is not None, 'NGM_SPIN_ACTION_NOT_BOUND')
@@ -299,6 +298,24 @@ class NGMDemoSession:
             (self.directory/'bootstrap.json').write_text(json.dumps(dict(contract=contract,
                 source_sha256=self.source_hashes, points=self.points, fresh_demo=True,
                 transport=self.transport_kind, spin_action=self.action_binding, continuation=self.continuation_binding), indent=2), encoding='utf-8')
+
+    def _dismiss_splash(self):
+        if self.stop.is_set():
+            raise InterruptedError('DETENIDO')
+        if self.popups.get('splash') is not True:
+            return
+        ready=self._action_frame()
+        if ready is None:
+            # Before the first SpinEvent is bound, a splash can exist inside
+            # exactly one game iframe. Never guess between multiple frames.
+            frames=[f for f in self.page.frames if self._trusted(f.url)
+                    and '/'+self.code+'/' in urlsplit(f.url).path]
+            if len(frames)!=1:
+                raise ValueError('NGM_SPLASH_GAME_FRAME_UNBOUND')
+            ready=frames[0]
+        ready.locator('body').press('Space',timeout=int(self.timeout*1000))
+        self.wait(lambda: self.popups.get('splash') is False,
+                  'NGM_SPLASH_NOT_CLOSED')
 
     def _action_frame(self):
         """Find the unique *bound* live game iframe, not the only matching URL.
