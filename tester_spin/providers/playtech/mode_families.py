@@ -90,3 +90,50 @@ def uniquely_declared_standard(row, costs, contract, source):
         not ('stakeCostUuid' in source and 'featureType' in source and 'GLU.game.playMoney' in source)):
         return False
     return sum(_parameters(x).get('startingMode')=='Standard' for x in costs)==1
+
+
+def mixed_standard_line_selectors(costs, game, contract, source):
+    """Bind a complete line ladder with one Standard base and several variants.
+
+    The live GPAS client must expose wager/selector/line bindings. Every cost
+    row must be an integer line tier, with a shared lines-per-unit ratio and
+    a unique server startingMode. Distinct row UUIDs, rather than names, are
+    still the settlement authority. No other declared economic modes may hide
+    in this family. Unbound patterns (e.g. proportional labels with constant
+    winline) remain UNKNOWN.
+    """
+    if (not isinstance(costs,list) or not isinstance(game,dict) or
+        not isinstance(contract,dict) or contract.get('dialect')!='modern'
+        or not _safe_legacy_flags(game) or not 3<=len(costs)<=30):
+        return {}
+    if not all(token in source for token in
+               ('GLU.game.playMoney','stakeCostUuid','featureType','winline')):
+        return {}
+    active=game.get('activeBetOptions')
+    if active is not None and (
+            not isinstance(active,list) or set(active)!={r.get('name') for r in costs if isinstance(r,dict)}):
+        return {}
+    ratios=set();standards=[];identities=set();mapping={}
+    for row in costs:
+        if not isinstance(row,dict) or not _base_plays(row):
+            return {}
+        name,cost=row.get('name'),row.get('cost')
+        p=_parameters(row)
+        start=p.get('startingMode')
+        winline=p.get('winline')
+        uuid=row.get('uuid')
+        if (type(name) is not str or not re.fullmatch(r'[1-9][0-9]{0,3}',name)
+            or type(cost) is not int or cost<=0 or cost!=int(name)
+            or not isinstance(winline,str) or not re.fullmatch(r'[1-9][0-9]{0,4}',winline)
+            or not isinstance(uuid,str) or not uuid or uuid in identities):
+            return {}
+        identities.add(uuid)
+        q,remain=divmod(int(winline),cost)
+        if remain or not 1<=q<=50:
+            return {}
+        ratios.add(q)
+        standards.append(name) if start=='Standard' else None
+        mapping[name]=('default' if start=='Standard' else 'lines-'+winline)
+    if len(ratios)!=1 or len(standards)!=1:
+        return {}
+    return mapping
