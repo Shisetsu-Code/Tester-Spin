@@ -37,18 +37,17 @@ def test_scoped_monetary_stakes_require_exact_cost_and_same_base_mode():
     assert bad['unresolved']
 
 
-def test_numeric_stake_ladder_requires_coherent_cost_and_distinct_starting_mode():
+def test_numeric_cost_ratio_never_substitutes_for_a_bound_feature_selector():
     names=['20','40','60','80','100']
     costs=[row(n,int(n)//2,start='s-'+n,line='20') for n in names]
-    good=plan(costs)
-    assert [m['kind'] for m in good['modes']]==['SPIN']*5
-    assert [m['selector'] for m in good['modes']]==['default']*5
-    assert not good['unresolved']
-    damaged=[dict(c,parameters=dict(c['parameters'])) for c in costs]
-    damaged[-1]['parameters']['startingMode']=damaged[0]['parameters']['startingMode']
-    broken=plan(damaged)
-    assert broken['unresolved']
-    assert all(m['kind']=='UNKNOWN_FEATURE' for m in broken['modes'])
+    blocked=plan(costs)
+    assert [m['kind'] for m in blocked['modes']]==['UNKNOWN_FEATURE']*5
+    assert 'BASE_MODE_UNBOUND' in blocked['unresolved']
+    # The live server refused 40/default and mapped 100/default to the wrong
+    # UUID. Merely having proportional prices is not an executable contract.
+    modified=[dict(c,parameters=dict(c['parameters'])) for c in costs]
+    modified[0]['parameters']['startingMode']='Standard'
+    assert plan(modified)['unresolved']
 
 
 def test_extra_fg_collector_are_ante_only_with_active_scopes_and_live_controller():
