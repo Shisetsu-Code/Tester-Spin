@@ -1034,6 +1034,11 @@ def _provider_script_references(
     text: str,
 ) -> list[str]:
     """Discover static provider-owned JS references from another JS resource."""
+    from tester_spin.providers.bgaming.forwarded_request import _lexical_source
+
+    # Quoted filenames inside inactive JS comments are not script references.
+    # Keep executable quoted literals, including imports and src assignments.
+    uncommented, _code = _lexical_source(text or "")
     resolved = _resource_script_references(runtime, text)
     refs: list[str] = list(dict.fromkeys(url for url, _start, _end in resolved))
     patterns = [
@@ -1042,7 +1047,10 @@ def _provider_script_references(
     ]
     seen: set[str] = set(refs)
     for pattern in patterns:
-        for match in re.finditer(pattern, text or ""):
+        for match in re.finditer(pattern, uncommented):
+            if (match.start() > 0 and uncommented[match.start() - 1] == "\\"):
+                # An escaped quote inside another string is not a new literal.
+                continue
             if any(start <= match.start() < end for _url, start, end in resolved):
                 continue
             raw = match.group(1)
