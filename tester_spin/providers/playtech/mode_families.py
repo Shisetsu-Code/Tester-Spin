@@ -137,3 +137,52 @@ def mixed_standard_line_selectors(costs, game, contract, source):
     if len(ratios)!=1 or len(standards)!=1:
         return {}
     return mapping
+
+
+def named_standard_line_selectors(costs, game, contract, source):
+    """Bind all-Standard line wagers with one explicitly named base row.
+
+    A genuine line domain can have numeric options named by their winline and
+    one named base option (e.g. BasePP). The whole server cost table, selectors
+    and cost/winline ratio must agree; this rule never promotes unknown buys.
+    """
+    if (not isinstance(costs,list) or not isinstance(game,dict) or
+        not isinstance(contract,dict) or contract.get('dialect')!='modern'
+        or not _safe_legacy_flags(game) or not 3<=len(costs)<=40):
+        return {}
+    if not all(key in source for key in
+               ('GLU.game.playMoney','stakeCostUuid','winline','stakeCostName')):
+        return {}
+    active=game.get('activeBetOptions')
+    if active is not None and (
+            not isinstance(active,list) or set(active)!={r.get('name') for r in costs if isinstance(r,dict)}):
+        return {}
+    special=[];ratio=set();mapping={};uuids=set();levels=[]
+    for row in costs:
+        if not isinstance(row,dict) or not _base_plays(row):
+            return {}
+        p=_parameters(row)
+        if p.get('startingMode')!='Standard':
+            return {}
+        name,cost,winline,uuid=row.get('name'),row.get('cost'),p.get('winline'),row.get('uuid')
+        if (type(name) is not str or type(cost) is not int or cost<=0
+            or not isinstance(winline,str) or not re.fullmatch(r'[1-9][0-9]{0,4}',winline)
+            or not isinstance(uuid,str) or not uuid or uuid in uuids):
+            return {}
+        uuids.add(uuid)
+        value=int(winline)
+        factor,remainder=divmod(value,cost)
+        if remainder or not 1<=factor<=100:
+            return {}
+        ratio.add(factor);levels.append(value)
+        if re.fullmatch(r'[1-9][0-9]{0,4}',name):
+            if int(name)!=value:return {}
+        elif re.fullmatch(r'(?i:base(?:pp)?)',name):
+            special.append((name,value))
+        else:
+            return {}
+        mapping[name]='lines-'+str(value)
+    if (len(special)!=1 or len(ratio)!=1 or len(set(levels))!=len(levels)
+        or special[0][1]!=max(levels)):
+        return {}
+    return mapping
