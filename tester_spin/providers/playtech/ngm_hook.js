@@ -4,6 +4,10 @@
   window.__testerNgmInstalled = true;
   const seen = new WeakSet();
   let budget;
+  // A random per-document tag disambiguates parallel same-URL iframes.
+  // It is not a login, session token or game-protocol identifier.
+  const frameInstance = (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function')
+    ? crypto.randomUUID() : String(performance.timeOrigin) + '-' + String(Math.random());
   function snapshot(value, depth = 0) {
     if (!depth) budget = 10000;
     if (--budget < 0 || depth > 40) return '[CAPTURE_LIMIT]';
@@ -26,7 +30,7 @@
     } finally { seen.delete(value); }
   }
   window.__testerNgmEmit = (type, data) => {
-    try { console.debug('__TESTER_NGM__' + JSON.stringify({type, data: snapshot(data), frame: location.origin + location.pathname})); }
+    try { console.debug('__TESTER_NGM__' + JSON.stringify({type, data: snapshot(data), frame: location.origin + location.pathname, frame_instance: frameInstance})); }
     catch (_) { /* Missing evidence is rejected by the Python ledger. */ }
   };
   const parse = value => { try { return typeof value === 'string' ? JSON.parse(value) : value; } catch (_) { return null; } };
