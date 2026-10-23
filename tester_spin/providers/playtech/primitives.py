@@ -133,7 +133,15 @@ def discover_modes(configuration, contract, sources):
             kind="SPIN"
         else:
             kind="UNKNOWN_FEATURE";issues.append("UNBOUND_STAKE_MODE:"+name)
-        modes.append({"id":identity,"name":name,"kind":kind,"selector":scope.get("featureType",("default" if standard else (contract.get("base_selector") or name)) if kind=="SPIN" and index==0 else name),"cost":row["cost"],
+        # Current demo proof: numeric cost bands and the unique Standard base
+        # bind through featureType='default'; prices/UUID still select the row.
+        # Monetary namedScopes must retain their explicit non-default selector.
+        default_family_selector = (name in band_names and name.isdigit()) or (
+            uniquely_declared_standard(row,costs,contract,text))
+        selector = scope.get("featureType", (
+            "default" if standard or default_family_selector else (contract.get("base_selector") or name))
+            if kind=="SPIN" and (index==0 or default_family_selector) else name)
+        modes.append({"id":identity,"name":name,"kind":kind,"selector":selector,"cost":row["cost"],
                       "bet_type":scope.get("betType","default"),"multiplier":min(factors),"declaration":deepcopy(row),"server_declared":True,"observed":True})
     if not any(m["kind"]=="SPIN" for m in modes):issues.append("BASE_MODE_UNBOUND")
     if active is not None:
