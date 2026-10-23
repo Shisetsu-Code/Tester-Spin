@@ -394,6 +394,7 @@ class NGMDemoSession:
         self.continuation_tokens.clear()
         self.round_pair_start = len(self.dispatch_journal.pairs)
         self.ledger = ledger = NGMRoundLedger(self.balance)
+        dispatch_verified = False
         try:
             frame = self._action_frame()
             if frame is None:
@@ -406,6 +407,7 @@ class NGMDemoSession:
                 raise ValueError(';'.join(ledger.issues))
             self.dispatch_journal.verify_round(from_pair=self.round_pair_start,
                                                expected_spins=ledger.spins)
+            dispatch_verified = True
             return ledger.summary()
         finally:
             if self.capture_directory is not None:
@@ -419,8 +421,9 @@ class NGMDemoSession:
                     ensure_ascii=False, indent=2), encoding='utf-8')
             (self.directory/('round-'+str(self.event_count)+'.json')).write_text(
                 json.dumps(ledger.summary(), indent=2), encoding='utf-8')
-            # Failed rounds poison this session; the caller must close it.
-            if ledger.verified:
+            # Ledger success is insufficient without verified dispatch
+            # receipts. An uncertain wager cannot unlock the next spin.
+            if dispatch_verified:
                 self.ledger = None
 
     def __exit__(self, *args):
