@@ -10,6 +10,7 @@ from tester_spin.providers.catalogs.sources import SOURCES
 from .protocol import resolve_configuration
 from .primitives import COMMAND, client_contract, discover_modes, entry_command, PickState, RoundLedger
 from .direct_runtime import DemoSession
+from .gpas_continuation import ContinuationPlanner
 from .ngm_runtime import NGMDemoSession
 
 
@@ -49,7 +50,7 @@ class PlaytechProvider(CatalogProvider):
                     directory=run/('mode-'+str(index));directory.mkdir()
                     attempt=SpinAttempt(index,False,mode_id=mode['id'],mode_kind=mode['kind'],symbol=game.symbol,artifact_dir=str(directory))
                     result.attempts.append(attempt);clock=time.monotonic()
-                    ledger=RoundLedger(session.balance,mode['id'],mode['cost']*mode['multiplier']);picks=PickState(mode.get('choice_target'))
+                    ledger=RoundLedger(session.balance,mode['id'],mode['cost']*mode['multiplier']);picks=PickState(mode.get('choice_target'));continuation=ContinuationPlanner()
                     request=entry_command(mode,contract)
                     (directory/'request.json').write_text(json.dumps(request,indent=2),encoding='utf-8')
                     try:
@@ -58,8 +59,9 @@ class PlaytechProvider(CatalogProvider):
                             (directory/('response.json' if step==0 else f'response-{step}.json')).write_text(json.dumps(response,indent=2),encoding='utf-8')
                             data=ledger.accept(response);attempt.wire_steps+=1
                             if ledger.closed:break
-                            parameters=picks.parameters(data,contract['pick_bound'])
-                            if not data.get('nextRound'):raise ValueError('CONTINUATION_STATE_UNKNOWN')
+                            if response.get('gameRoundClosed') is True:
+                                raise ValueError('CLOSED_ROUND_WITH_ACTIVE_CONTINUATION')
+                            parameters=continuation.parameters(data,contract,picks)
                             request={'_type':COMMAND,'gameData':{'_type':contract['class'],'ID':contract['continuation_id'],'parameters':parameters}}
                             if contract['dialect']=='modern':request['autoplay']=False
                             (directory/f'request-{step+1}.json').write_text(json.dumps(request,indent=2),encoding='utf-8')
@@ -87,7 +89,11 @@ class PlaytechProvider(CatalogProvider):
                                 sequence.insert(index,dict(declared,choice_target={phase:option}))
                                 result.requested_spins+=1
                         if mode.get('return_to_base'):result.structural_map['return_to_base_verified']=True
-                        (directory/'summary.json').write_text(json.dumps({'closed':True,'stake':ledger.cost,'win':ledger.wins,'balance_before':ledger.before,'balance_after':session.balance,'pending_choice_branches':missing},indent=2),encoding='utf-8')
+                        (directory/'continuation-plan.json').write_text(json.dumps({
+                            'schema':'tester-spin/gpas-continuation-plan/v1',
+                            'mode_id':mode['id'],'steps':continuation.records,
+                            'round_closed':ledger.closed},indent=2),encoding='utf-8')
+                        (directory/'summary.json').write_text(json.dumps({'closed':True,'stake':ledger.cost,'win':ledger.wins,'balance_before':ledger.before,'balance_after':session.balance,'pending_choice_branches':missing,'continuation_steps':len(continuation.records)},indent=2),encoding='utf-8')
                         progress(f"[{game.name}] {mode['name']}: ronda cerrada, coste {ledger.cost}, premio {ledger.wins}.")
                     except Exception as exc:
                         attempt.error=str(exc);issues.append(str(exc));raise
