@@ -566,6 +566,50 @@ def _bundle_contract_score(text: str) -> int:
         score += 2
     return score
 
+
+def _declared_loader_skin_directory(source: str) -> str:
+    """Extract a uniquely selected, literal skin subdirectory from loader JS.
+
+    A versioned bundle can live under SKIN_DIRS.basic (or another explicitly
+    selected skin), rather than directly under resources_path. Dynamic skin
+    selectors, mutations, comments and ambiguous declarations fail closed.
+    """
+    from tester_spin.providers.bgaming.forwarded_request import _lexical_source
+
+    clean, code = _lexical_source(source or "")
+    if "bundle.js" not in clean or re.search(r"\bSKIN_DIRS\s*\[", code):
+        return ""
+    selected = set(re.findall(
+        r"\bSKIN_DIRS\s*\.\s*([A-Za-z_$][A-Za-z0-9_$]*)\b", code
+    ))
+    if len(selected) != 1:
+        return ""
+    if len(re.findall(r"(?<![\w$.])SKIN_DIRS\s*=(?!=|>)", code)) != 1:
+        return ""
+    if re.search(
+        r"\bSKIN_DIRS\s*\.\s*[A-Za-z_$][A-Za-z0-9_$]*\s*"
+        r"(?:[+*/%-]=|=(?!=|>))", code
+    ) or re.search(r"\b(?:Object\.assign|Reflect\.set)\s*\(\s*SKIN_DIRS\b", code):
+        return ""
+    declarations = list(re.finditer(
+        r"(?<![\w$.])SKIN_DIRS\s*=\s*\{(?P<body>[^{}]{1,1200})\}", clean
+    ))
+    if len(declarations) != 1:
+        return ""
+    key = re.escape(next(iter(selected)))
+    pattern = (
+        rf"""(?:^|,)\s*(?:["']?{key}["']?)\s*:\s*"""
+        rf"""(?P<quote>["'])(?P<path>[^"'\\]{{1,120}})(?P=quote)"""
+    )
+    matches = list(re.finditer(pattern, declarations[0].group("body")))
+    if len(matches) != 1:
+        return ""
+    directory = matches[0].group("path").strip("/")
+    if not re.fullmatch(r"[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*", directory):
+        return ""
+    return directory
+
+
 def _runtime_bundle_candidates(
     runtime: BGamingRuntime,
     *,
@@ -624,6 +668,11 @@ def _runtime_bundle_candidates(
                     version = match.group(1).strip()
                     break
             if version and resources_path:
+                skin_directory = _declared_loader_skin_directory(loader_text)
+                if skin_directory:
+                    candidates.append(
+                        f"{resources_path}/{skin_directory}/{version}/bundle.js"
+                    )
                 candidates.append(f"{resources_path}/{version}/bundle.js")
             candidates.extend(url for url, _start, _end in _resource_script_references(runtime, loader_text))
 
