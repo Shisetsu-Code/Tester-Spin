@@ -185,3 +185,52 @@ def test_mixed_line_family_requires_complete_domain_not_price_ratios():
     # This is the previous unsafe pattern: numeric labels with same winline.
     other=[row(n,int(n)//2,start='id-'+n,line='20') for n in ('20','40','60','80','100')]
     assert not mixed_standard_line_selectors(other,config,CONTRACT,source)
+
+
+def test_named_all_standard_line_set_with_complete_server_cost_invariants():
+    from tester_spin.providers.playtech.mode_families import named_standard_line_selectors
+    rows=[row(str(n),n//5,start='Standard',line=str(n))
+          for n in (5,10,15,20)]
+    rows.append(row('BasePP',5,start='Standard',line='25'))
+    game=dict(costConfiguration=rows,baseCostMultipliers=[1])
+    source=SOURCE+' winline stakeCostName'
+    mapping=named_standard_line_selectors(rows,game,CONTRACT,source)
+    assert mapping=={'5':'lines-5','10':'lines-10','15':'lines-15',
+                     '20':'lines-20','BasePP':'lines-25'}
+    result=discover_modes({'game':game},CONTRACT,[source])
+    assert not result['unresolved']
+    assert len(result['modes'])==5
+    assert [m['kind'] for m in result['modes']]==['SPIN']*5
+    assert [m['selector'] for m in result['modes']]==[
+        'lines-5','lines-10','lines-15','lines-20','lines-25']
+
+
+def test_named_standard_line_set_rejects_partial_or_economic_ambiguity():
+    from tester_spin.providers.playtech.mode_families import named_standard_line_selectors
+    rows=[row(str(n),n//5,start='Standard',line=str(n))
+          for n in (5,10,15,20)]
+    rows.append(row('BasePP',5,start='Standard',line='25'))
+    good=dict(costConfiguration=rows,baseCostMultipliers=[1])
+    source=SOURCE+' winline stakeCostName'
+    def bound(values,config=good,src=source):
+        return named_standard_line_selectors(values,config,CONTRACT,src)
+    assert not bound(rows,src=SOURCE)
+    assert not bound(rows,dict(good,featureBetEnabled=True))
+    assert not bound(rows,dict(good,activeBetOptions=['5','10']))
+    bad=[dict(x,parameters=dict(x['parameters'])) for x in rows]
+    bad[0]['parameters']['startingMode']='another-paid-mode'
+    assert not bound(bad)
+    bad=[dict(x) for x in rows]
+    bad[-1]['cost']=999
+    assert not bound(bad)
+    bad=[dict(x) for x in rows]
+    bad[-1]['uuid']=bad[0]['uuid']
+    assert not bound(bad)
+    bad=[dict(x) for x in rows]
+    bad[-1]['name']='buyFeature'
+    assert not bound(bad)
+    bad=[dict(x) for x in rows]
+    bad[0]['name']='6'
+    assert not bound(bad)
+    assert bound(rows)=={'5':'lines-5','10':'lines-10','15':'lines-15',
+                        '20':'lines-20','BasePP':'lines-25'}
