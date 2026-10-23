@@ -1,0 +1,50 @@
+name: Playtech partial evidence
+run-name: Playtech partials - fresh official demos and public client evidence
+on:
+  push:
+    branches: [diagnostic/playtech-partials-20261023]
+permissions:
+  contents: read
+concurrency:
+  group: tester-spin-provider-execution
+  cancel-in-progress: false
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONUNBUFFERED: '1'
+      PYTHONUTF8: '1'
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Install official demo runtime
+        run: |
+          python -m pip install '.[playtech]'
+          python -m playwright install --with-deps chromium
+      - name: Verify known partial games
+        run: |
+          python scripts/playtech-actions-sample.py \
+            --games aogmt ashadv --spins 2 --timeout 45 --wall-timeout 180 \
+            --data-root "$RUNNER_TEMP/playtech-partials" --output-dir action-diagnostics
+      - name: Export sanitized events and independently public sources
+        if: always()
+        run: |
+          python scripts/playtech-partial-evidence.py \
+            --games aogmt ashadv --data-root "$RUNNER_TEMP/playtech-partials" \
+            --output-dir action-evidence
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: playtech-partial-evidence-${{ github.run_id }}
+          path: |
+            action-diagnostics/
+            action-evidence/
+          if-no-files-found: error
+          retention-days: 3
