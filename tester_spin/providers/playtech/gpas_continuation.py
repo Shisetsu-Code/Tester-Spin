@@ -39,12 +39,16 @@ class ContinuationPlanner:
         stage = active[0]
         play_index = data.get('playIndex')
         remaining = stage['remainingPlayCount']
-        if type(play_index) is not int or play_index < 0:
-            raise ValueError('CONTINUATION_PROGRESS_UNKNOWN')
         mode = stage.get('modeType')
         if not isinstance(mode,str) or not _PHASE.fullmatch(mode):
             raise ValueError('CONTINUATION_STAGE_UNBOUND')
         offered = data.get('listPickPlayerPickOptions')
+        if play_index is None and mode == 'LIST_PICK' and isinstance(offered, list) and offered:
+            # Explicit selections supply a distinct server-advertised index
+            # even on older client dialects without playIndex.
+            play_index = -1
+        elif type(play_index) is not int or play_index < 0:
+            raise ValueError('CONTINUATION_PROGRESS_UNKNOWN')
         if mode == 'LIST_PICK' and offered is None and 'listPickPlayerPickOptions' not in data and phase == 'FreeGame':
             # GPAS FreeGame can use LIST_PICK for automatic free plays. If the
             # server declares a pending FreeGame but no pick domain, do not
