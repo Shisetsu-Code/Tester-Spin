@@ -2,7 +2,8 @@ import json
 from unittest.mock import Mock
 
 from tester_spin.providers.bgaming.runtime import (
-    BGamingRuntime, _provider_script_references, discover_api_v2_wire_profile,
+    BGamingRuntime, _declared_loader_skin_directory, _provider_script_references,
+    discover_api_v2_wire_profile,
 )
 
 
@@ -50,3 +51,63 @@ def test_resource_assignment_must_be_executable_and_unchanged():
                    LOADER.replace("index-fixture.js');", "index-fixture.js' + variant);"),
                    LOADER.replace("resources_path +", "other_path +")]:
         assert correct not in _provider_script_references(runtime(), parent_url="https://cdn.bgaming-network.com/html/Fixture/loader.js", text=source)
+
+
+SKIN_LOADER = (
+    "const SKIN_DIRS={basic:'basic',mobile:'mobile'};"
+    "const skin=SKIN_DIRS.basic;"
+    "const release={res:t='v0.0.38_v14.19.2'};"
+    "const url=skin+'/'+t+'/bundle.js';"
+)
+
+
+def test_selected_skin_loader_resolves_versioned_bundle_from_provider_source():
+    rt = runtime()
+    base = "https://cdn.bgaming-network.com/html/Fixture"
+    selected = base + "/basic/v0.0.38_v14.19.2/bundle.js"
+
+    class Response:
+        status_code = 200
+
+        def __init__(self, text):
+            self.text = text
+
+        def raise_for_status(self):
+            pass
+
+    resources = {
+        base + "/loader.js": SKIN_LOADER,
+        selected: (
+            'this.linesCount=this.linesCount||"2";'
+            'this.additionalSpinOptions.mode=this.linesCount;'
+        ),
+    }
+    rt.session.get.side_effect = lambda url, **kwargs: Response(resources[url])
+    profile = discover_api_v2_wire_profile(rt, timeout_s=1)
+    assert _declared_loader_skin_directory(SKIN_LOADER) == "basic"
+    assert profile["source"] == selected
+    assert profile["spin_options"] == {"mode": "2"}
+    assert any(
+        diag.get("url") == selected and diag.get("ok")
+        for diag in profile["diagnostics"]
+    )
+
+
+def test_skin_loader_rejects_ambiguous_mutated_or_nonexecutable_paths():
+    untrusted = [
+        SKIN_LOADER.replace("SKIN_DIRS.basic", "SKIN_DIRS[skinName]"),
+        SKIN_LOADER.replace(
+            "const skin=SKIN_DIRS.basic;",
+            "const skin=SKIN_DIRS.basic;const other=SKIN_DIRS.mobile;",
+        ),
+        SKIN_LOADER.replace("basic:'basic'", "basic:'../secret'"),
+        SKIN_LOADER.replace("const skin=SKIN_DIRS.basic;", 
+                            'const skin="SKIN_DIRS.basic";'),
+        SKIN_LOADER.replace("const skin=SKIN_DIRS.basic;",
+                            "/* const skin=SKIN_DIRS.basic; */"),
+        SKIN_LOADER + "SKIN_DIRS.basic='changed';",
+        SKIN_LOADER + "Object.assign(SKIN_DIRS,{basic:'changed'});",
+        SKIN_LOADER.replace("basic:'basic'", "basic:'basic',basic:'other'"),
+    ]
+    for loader in untrusted:
+        assert _declared_loader_skin_directory(loader) == ""
