@@ -45,6 +45,7 @@ class NGMDemoSession:
         self.request_schemas = []
         self.passive_roles = {}
         self.manifest = None
+        self.nonmatching_manifest_candidates = 0
         self.trace = None
         self.event_count = 0
         self.instrumentation_id = None
@@ -122,6 +123,12 @@ class NGMDemoSession:
             document = json.loads(raw)
             if not isinstance(document, dict) or not isinstance(document.get('config'), dict):
                 return
+            if document['config'].get('game_code') != self.code:
+                # This game directory may also request a sibling game's JMM.
+                # Never parse it as our game's manifest or use it for economic
+                # authority. The session still requires one matching JMM.
+                self.nonmatching_manifest_candidates += 1
+                return
             manifest = functional_manifest(document, self.code)
             if self.manifest is not None and self.manifest != manifest:
                 raise ValueError('NGM_MANIFEST_AMBIGUOUS')
@@ -135,6 +142,7 @@ class NGMDemoSession:
             schema='tester-spin/ngm-static-contracts/v1', game_code=self.code,
             source_sha256=self.source_hashes, requests=self.request_schemas,
             request_count=len(self.request_schemas), manifest=self.manifest,
+            ignored_unrelated_jmm=self.nonmatching_manifest_candidates,
             certifies_game_ok=False), indent=2, ensure_ascii=False), encoding='utf-8')
 
     def _console(self, message):
