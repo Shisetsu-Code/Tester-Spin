@@ -288,11 +288,25 @@ class NGMDemoSession:
                 transport=self.transport_kind, spin_action=self.action_binding, continuation=self.continuation_binding), indent=2), encoding='utf-8')
 
     def _action_frame(self):
-        frames = [frame for frame in self.page.frames if self._trusted(frame.url) and
-                  '/'+self.code+'/' in urlsplit(frame.url).path]
-        if len(frames) != 1:
+        """Find the unique *bound* live game iframe, not the only matching URL.
+
+        A Playtech shell may retain preview/loading frames for the same game.
+        Extra inert frames must not make a valid demo look GAME_NOT_READY.
+        Ambiguous live dispatchers still fail closed; never guess a target.
+        """
+        if self.page is None:
             return None
-        return frames[0] if frames[0].evaluate("typeof window.__testerNgmSpin==='function'") else None
+        ready = []
+        for frame in self.page.frames:
+            if not self._trusted(frame.url) or '/'+self.code+'/' not in urlsplit(frame.url).path:
+                continue
+            try:
+                if frame.evaluate("typeof window.__testerNgmSpin==='function'") is True:
+                    ready.append(frame)
+            except Exception:
+                # Navigation may detach a candidate frame mid-probe.
+                continue
+        return ready[0] if len(ready) == 1 else None
 
     def wait(self, predicate, reason):
         deadline = time.monotonic()+self.timeout
