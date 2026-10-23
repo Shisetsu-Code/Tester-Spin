@@ -10,7 +10,8 @@ import zlib
 from copy import deepcopy
 from .protocol import money
 from .client_sources import compiled_pick_binding
-from .mode_families import base_price_families, is_disabled_extra_base, uniquely_declared_standard
+from .mode_families import (base_price_families, is_disabled_extra_base,
+                             uniquely_declared_standard, mixed_standard_line_selectors)
 
 COMMAND = "com.pt.casino.platform.game.GameCommand"
 GAME_CLASS = "com.pt.gpas.platform.game.OgwCorosinGameCommand"
@@ -88,6 +89,7 @@ def discover_modes(configuration, contract, sources):
         and str(r.get('name','')).isdigit() and r['parameters'].get('winline')==r['name']
         and r['parameters'].get('startingMode')=='Standard' for r in costs)
     band_names=base_price_families(costs,game,contract,text)
+    mixed_lines=mixed_standard_line_selectors(costs,game,contract,text)
     modes=[]; issues=[]; disabled=[]; names=set(); ids=set()
     for index, row in enumerate(costs):
         if not isinstance(row,dict) or not money(row.get("cost")) or row["cost"]<=0:
@@ -129,7 +131,7 @@ def discover_modes(configuration, contract, sources):
             # the active scoped selector and the live BuyFeature client binding.
             # Mode names alone are not purchase authorization.
             kind="PURCHASE"
-        elif (standard or line_domain or name in band_names or
+        elif (standard or line_domain or name in band_names or name in mixed_lines or
               is_disabled_extra_base(row,costs,game,contract) or
               uniquely_declared_standard(row,costs,contract,text) or
               (scoped and volatility_binding and re.fullmatch(r"default(?:low|mid|high)",normalized)) or
@@ -148,9 +150,9 @@ def discover_modes(configuration, contract, sources):
         # 1 and 10, with an open Respin branch for 5.
         explicit_line_selector = (kind=="SPIN" and line_domain and name.isdigit())
         selector = (("lines-"+name) if explicit_line_selector else
-            scope.get("featureType", (
+            mixed_lines.get(name, scope.get("featureType", (
                 "default" if standard or default_family_selector else (contract.get("base_selector") or name))
-                if kind=="SPIN" and (index==0 or default_family_selector) else name))
+                if kind=="SPIN" and (index==0 or default_family_selector) else name)))
         modes.append({"id":identity,"name":name,"kind":kind,"selector":selector,"cost":row["cost"],
                       "bet_type":scope.get("betType","default"),"multiplier":min(factors),"declaration":deepcopy(row),"server_declared":True,"observed":True})
     if not any(m["kind"]=="SPIN" for m in modes):issues.append("BASE_MODE_UNBOUND")
