@@ -213,3 +213,44 @@ def test_request_named_plain_dto_is_not_an_outbound_wire_contract():
     report=analyze_har(data,'example')
     assert 'NGM_REQUEST_CONTRACT_UNBOUND:LibraryPlaceBetsRequest' not in report['unresolved']
     assert next(r for r in report['source_declarations'] if r['name']=='LibraryPlaceBetsRequest')['channel']=='value_object'
+
+
+def test_unrelated_nested_game_manifest_does_not_poison_a_matching_manifest():
+    data=har()
+    sibling=json.loads(json.dumps(MANIFEST))
+    sibling['config']['game_code']='another-game'
+    data['log']['entries'].append({
+        'request':{'url':'https://cachedownload.playtechone.com/ngmdistributed/ngm-desktop/igv/example/1/resources/generic/jmm/sibling.jmm'},
+        'response':{'status':200,'content':{'mimeType':'application/json','text':json.dumps(sibling)}}
+    })
+    result=analyze_har(data,'example')
+    assert result['manifest']['game_code']=='example'
+    assert result['manifest_ref']=='http:1'
+    assert 'NGM_MANIFEST_AMBIGUOUS' not in result['unresolved']
+    assert not any('NGM_MANIFEST_IDENTITY_MISMATCH' in e for e in result['unresolved'])
+    assert result['capture_diagnostics']['ignored_unrelated_jmm_count']==1
+    # If the matching JMM is absent, unrelated JMM never supplies one.
+    data['log']['entries'].pop(1)
+    absent=analyze_har(data,'example')
+    assert 'NGM_MANIFEST_MISSING' in absent['unresolved']
+    assert 'NGM_MATCHING_GAME_MANIFEST_NOT_CAPTURED' in absent['unresolved']
+    assert 'manifest' not in absent
+
+
+def test_ngm_live_resource_ignores_sibling_jmm_but_never_adopts_it(tmp_path):
+    import threading
+    from types import SimpleNamespace
+    from tester_spin.providers.playtech.ngm_runtime import NGMDemoSession
+    session=NGMDemoSession('example',tmp_path,10,threading.Event())
+    url='https://cachedownload.playtechone.com/ngmdistributed/ngm-desktop/igv/example/1/resources/jmm/config.jmm'
+    sibling=json.loads(json.dumps(MANIFEST))
+    sibling['config']['game_code']='other'
+    response=lambda doc:SimpleNamespace(url=url,status=200,body=lambda:json.dumps(doc).encode())
+    session._resource(response(sibling))
+    assert session.manifest is None and session.errors==[]
+    assert session.nonmatching_manifest_candidates==1
+    session._resource(response(MANIFEST))
+    assert session.manifest['game_code']=='example'
+    assert session.errors==[]
+    saved=json.loads((tmp_path/'client-contracts.json').read_text(encoding='utf-8'))
+    assert saved['ignored_unrelated_jmm']==1
