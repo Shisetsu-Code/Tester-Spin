@@ -20,6 +20,7 @@ from tester_spin.providers.bgaming.runtime import (
 
 
 PROFILE_SCHEMA = "tester-spin/bgaming-profile/v1"
+PROFILE_CAPABILITY_VERSION = 3
 
 API_V2 = "api-v2"
 LEGACY_LINES = "legacy-lines"
@@ -43,7 +44,7 @@ class RuntimeClassification:
 
 @dataclass(slots=True)
 class BGamingProfile:
-    capability_version: int = 2
+    capability_version: int = PROFILE_CAPABILITY_VERSION
     family: str = UNKNOWN
     confidence: float = 0.0
     evidence: list[str] = field(default_factory=list)
@@ -65,6 +66,7 @@ class BGamingProfile:
     discovery_diagnostics: list[dict[str, Any]] = field(default_factory=list)
     validated: bool = False
     purchase_base_fallback: float | None = None
+    unverified_cached_capabilities: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -99,6 +101,7 @@ class BGamingProfile:
             "bundle_sha256": self.bundle_sha256,
             "discovery_diagnostics": list(self.discovery_diagnostics),
             "validated": self.validated,
+            "unverified_cached_capabilities": list(self.unverified_cached_capabilities),
         }
 
     @classmethod
@@ -118,6 +121,7 @@ class BGamingProfile:
         continuations = value.get("allowed_continuations")
         evidence = value.get("evidence")
         diagnostics = value.get("discovery_diagnostics")
+        unverified = value.get("unverified_cached_capabilities")
         return cls(
             capability_version=capability_version,
             family=family,
@@ -164,6 +168,8 @@ class BGamingProfile:
             ] if isinstance(diagnostics, list) else [],
             validated=bool(value.get("validated")),
             purchase_base_fallback=(float(value["purchase_base_fallback"]) if isinstance(value.get("purchase_base_fallback"), (int, float)) and not isinstance(value.get("purchase_base_fallback"), bool) and value["purchase_base_fallback"] > 0 else None),
+            unverified_cached_capabilities=[str(item) for item in unverified]
+            if isinstance(unverified, list) else [],
         )
 
 
@@ -261,6 +267,36 @@ def infer_variable_layout(init_data: dict[str, Any]) -> bool:
     return isinstance(rows, (int, float)) and rows >= 7
 
 
+def _unverified_cached_capabilities(
+    persisted: BGamingProfile, current: BGamingProfile, *, same_source: bool,
+) -> list[str]:
+    gaps: set[str] = set()
+    if not current.bundle_sha256 or current.source in {"", "init"}:
+        gaps.add("current-client-source")
+    for field_name in ("spin_options", "spin_option_choices", "request_extra_data"):
+        previous = getattr(persisted, field_name)
+        observed = getattr(current, field_name)
+        gaps.update(f"{field_name}.{name}" for name in previous if name not in observed)
+    if persisted.effective_bet_selector and not current.effective_bet_selector:
+        gaps.add(f"effective_bet_selector.{persisted.effective_bet_selector}")
+    if persisted.effective_bet_multipliers and not current.effective_bet_multipliers:
+        gaps.add("effective_bet_multipliers")
+    for capability in ("dynamic_purchased_feature", "purchase_feature_level_supported"):
+        if getattr(persisted, capability) and not getattr(current, capability):
+            gaps.add(capability)
+    gaps.update(
+        f"purchase_features.{name}" for name in persisted.purchase_features
+        if name not in current.purchase_features
+    )
+    if not same_source:
+        # Learned continuation parameters are tied to the client that was
+        # validated. A different/unavailable client cannot inherit them.
+        gaps.update(f"command_options.{command}" for command in persisted.command_options)
+        if persisted.rows_required and "rows" not in current.spin_options:
+            gaps.add("rows_required")
+    return sorted(gaps)
+
+
 def discover_profile(
     runtime: BGamingRuntime,
     init_data: dict[str, Any],
@@ -287,63 +323,6 @@ def discover_profile(
     if classification.family != API_V2:
         profile.source = "bootstrap+init"
         return profile
-
-    if (
-        persisted is not None
-        and persisted.family == API_V2
-        and persisted.validated
-        and persisted.capability_version >= 2
-    ):
-        advertised_purchases = discover_purchase_modes(init_data)
-        persisted_source = str(persisted.source or "")
-        parsed_source = urlparse(persisted_source)
-        third_party_source = bool(
-            parsed_source.scheme in {"http", "https"}
-            and not _provider_script_url(runtime, persisted_source)
-        )
-        purchase_contract_missing = bool(
-            advertised_purchases and not persisted.purchase_features
-        )
-
-        profile.spin_options.update(persisted.spin_options)
-        profile.command_options = {
-            command: dict(options)
-            for command, options in persisted.command_options.items()
-        }
-        if not profile.request_extra_data:
-            profile.request_extra_data = dict(persisted.request_extra_data)
-        profile.spin_option_choices = {
-            name: list(values)
-            for name, values in persisted.spin_option_choices.items()
-        }
-        profile.effective_bet_selector = persisted.effective_bet_selector
-        profile.effective_bet_multipliers = dict(
-            persisted.effective_bet_multipliers
-        )
-        profile.dynamic_purchased_feature = persisted.dynamic_purchased_feature
-        profile.purchase_feature_level_supported = (
-            persisted.purchase_feature_level_supported
-        )
-        profile.purchase_features = list(persisted.purchase_features)
-        profile.rows_required = persisted.rows_required
-        profile.allowed_continuations = [
-            item for item in persisted.allowed_continuations
-            if item in SAFE_CONTINUATION_COMMANDS
-        ]
-        profile.bundle_sha256 = persisted.bundle_sha256
-        profile.discovery_diagnostics = list(persisted.discovery_diagnostics)
-        profile.validated = True
-        profile.evidence.append("persisted.validated")
-
-        if not third_party_source and not purchase_contract_missing:
-            profile.source = "persisted-validated-profile"
-            return profile
-
-        profile.validated = False
-        if third_party_source:
-            profile.evidence.append("refresh:third-party-source")
-        if purchase_contract_missing:
-            profile.evidence.append("refresh:purchase-contract-missing")
 
     wire = (
         dict(wire_profile)
@@ -455,6 +434,67 @@ def discover_profile(
         dict(item) for item in diagnostics if isinstance(item, dict)
     ] if isinstance(diagnostics, list) else []
     profile.allowed_continuations = sorted(SAFE_CONTINUATION_COMMANDS)
+
+    if persisted is not None and persisted.family == API_V2:
+        same_source = bool(
+            wire.get("source") and profile.bundle_sha256
+            and profile.source == persisted.source
+            and profile.bundle_sha256 == persisted.bundle_sha256
+        )
+        profile.unverified_cached_capabilities = _unverified_cached_capabilities(
+            persisted, profile, same_source=same_source,
+        )
+        parsed_source = urlparse(str(persisted.source or ""))
+        third_party_source = bool(
+            parsed_source.scheme in {"http", "https"}
+            and not _provider_script_url(runtime, persisted.source)
+        )
+        purchase_contract_missing = bool(
+            discover_purchase_modes(init_data) and not persisted.purchase_features
+        )
+        compatible_options = (
+            persisted.spin_options.keys() == profile.spin_options.keys()
+            and all(
+                value == profile.spin_options[name]
+                or value in profile.spin_option_choices.get(name, [])
+                for name, value in persisted.spin_options.items()
+            )
+        )
+        compatible_contract = compatible_options and all(
+            getattr(persisted, name) == getattr(profile, name)
+            for name in (
+                "spin_option_choices", "effective_bet_selector", "effective_bet_multipliers",
+                "dynamic_purchased_feature", "purchase_feature_level_supported", "purchase_features",
+            )
+        )
+        if (
+            persisted.validated and persisted.capability_version >= PROFILE_CAPABILITY_VERSION
+            and same_source and compatible_contract
+            and not third_party_source and not purchase_contract_missing
+            and not profile.unverified_cached_capabilities
+        ):
+            # Preserve a validated selection only inside its current proven
+            # domain. Init extra_data always comes from current evidence.
+            profile.spin_options = dict(persisted.spin_options)
+            profile.command_options = {
+                command: dict(options) for command, options in persisted.command_options.items()
+            }
+            profile.rows_required = persisted.rows_required
+            profile.allowed_continuations = [
+                command for command in persisted.allowed_continuations
+                if command in SAFE_CONTINUATION_COMMANDS
+            ]
+            profile.validated = True
+            profile.evidence.append("persisted.validated")
+        else:
+            if third_party_source:
+                profile.evidence.append("refresh:third-party-source")
+            if purchase_contract_missing:
+                profile.evidence.append("refresh:purchase-contract-missing")
+            if not same_source or not compatible_contract:
+                profile.evidence.append("refresh:current-client-contract-changed")
+            if profile.unverified_cached_capabilities:
+                profile.evidence.append("refresh:cached-capabilities-unverified")
     return profile
 
 

@@ -296,6 +296,13 @@ def _annotate_mode_evidence(result: GameTestResult, progress: Progress) -> None:
         ]
 
         if proven:
+            # API-v2 discovery stores the actual purchase selector at the top
+            # level. Publish the same selector in the shared evidence schema
+            # only after its remote round has been proven terminal.
+            purchased_feature = mode.get("purchased_feature")
+            if mode.get("kind") == "PURCHASE" and isinstance(purchased_feature, str) and purchased_feature:
+                mode["purchase_name"] = purchased_feature
+                mode["purchase_level"] = mode.get("purchased_feature_level")
             mode["evidence_level"] = "REMOTE_EXECUTION"
             mode["execution_state"] = "PROVEN_TERMINAL"
             mode["validated"] = True

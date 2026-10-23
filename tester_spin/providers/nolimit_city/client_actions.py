@@ -60,6 +60,8 @@ def _mode_reference(source,mode):
     for match in re.finditer(enum,source):
         for value in re.finditer(r'\b'+re.escape(match[1])+r'\.(\w+)="'+re.escape(mode)+r'"(?=[,;]|$)',match[3]):
             references.append(r'\w+\.'+re.escape(match[2])+r'\.'+re.escape(value[1]))
+    from .phase_aliases import aliases_for
+    references.extend(re.escape(reference) for reference in aliases_for(source,mode,_block))
     return '(?:'+'|'.join(references)+')'
 
 
@@ -129,6 +131,9 @@ def automatic_command(source,answer,*,direct_demo_transport=False):
     from .fixed_signals import fixed_signal_command
     fixed=fixed_signal_command(source,answer,_block)
     if fixed is not None:return fixed
+    from .parsed_controllers import parsed_controller_command
+    parsed=parsed_controller_command(source,answer,_block,direct_demo_transport=direct_demo_transport)
+    if parsed is not None:return parsed
     if not _event_bridge(source):return None
     # Older registered controllers: exact trigger expression, no win threshold.
     for match in re.finditer(r'class (\w+) extends \w+\.(ZeroBetController|FreespinZeroBetController)\{',source):

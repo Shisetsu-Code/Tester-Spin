@@ -625,6 +625,7 @@ def _runtime_bundle_candidates(
                     break
             if version and resources_path:
                 candidates.append(f"{resources_path}/{version}/bundle.js")
+            candidates.extend(url for url, _start, _end in _resource_script_references(runtime, loader_text))
 
     if configured:
         candidates.append(configured)
@@ -899,6 +900,33 @@ def effective_bet_for_options(
         return float(requested_bet)
     return float(requested_bet) * float(multiplier)
 
+def _resource_script_references(runtime: BGamingRuntime, source: str) -> list[tuple[str, int, int]]:
+    """Resolve a loader's literal script suffix against its declared resource path.
+
+    A leading slash in ``resources_path + '/assets/...'`` is concatenation,
+    not an origin-relative URL. Preserve that relationship without executing JS.
+    """
+    from tester_spin.providers.bgaming.forwarded_request import _lexical_source
+    text, code = _lexical_source(source or "")
+    resources = str(runtime.options.get("resources_path") or "").rstrip("/")
+    if not resources or re.search(r'window\.__OPTIONS__\.resources_path\s*[+*/%-]?=(?!=)', code):
+        return []
+    pattern = (
+        r'(?<![\w$.])[A-Za-z_$][A-Za-z0-9_$]*\.src\s*=\s*\(?\s*'
+        r'window\.__OPTIONS__\.resources_path\s*\+\s*'
+        r'(?P<quote>["\'])(?P<suffix>/[^"\'\s\\]+\.js(?:\?[^"\'\s\\]*)?)(?P=quote)'
+        r'\s*\)?\s*(?=[;,}])'
+    )
+    refs = []
+    for match in re.finditer(pattern, text):
+        if not code[match.start()].strip():
+            continue
+        url = resources + match['suffix']
+        if _provider_script_url(runtime, url):
+            refs.append((url, match.start(), match.end()))
+    return refs
+
+
 def _provider_script_references(
     runtime: BGamingRuntime,
     *,
@@ -906,14 +934,18 @@ def _provider_script_references(
     text: str,
 ) -> list[str]:
     """Discover static provider-owned JS references from another JS resource."""
-    refs: list[str] = []
+    resolved = _resource_script_references(runtime, text)
+    refs: list[str] = list(dict.fromkeys(url for url, _start, _end in resolved))
     patterns = [
         r'["\']([^"\']+\.js(?:\?[^"\']*)?)["\']',
         r'import\(\s*["\']([^"\']+)["\']\s*\)',
     ]
-    seen: set[str] = set()
+    seen: set[str] = set(refs)
     for pattern in patterns:
-        for raw in re.findall(pattern, text or ""):
+        for match in re.finditer(pattern, text or ""):
+            if any(start <= match.start() < end for _url, start, end in resolved):
+                continue
+            raw = match.group(1)
             value = str(raw or "").strip()
             if not value:
                 continue
@@ -1035,6 +1067,13 @@ def discover_api_v2_wire_profile(
 
     spin_option_choices = discover_additional_spin_option_choices(bundle)
     effective_bet_multipliers = discover_effective_bet_multipliers(bundle)
+    from tester_spin.providers.bgaming.modern_api_v2 import modern_purchase_level_supported
+    # Modern bundles are ES modules with independent minified bindings. Prove
+    # the entire chain inside one resource rather than concatenating scopes.
+    modern_purchase_levels = any(
+        modern_purchase_level_supported(script, other_sources=[other for _rank, _path, other in contract_parts if other != script])
+        for _score, _url, script in contract_parts
+    )
 
     required_option_fields = sorted(
         {
@@ -1051,13 +1090,13 @@ def discover_api_v2_wire_profile(
         "spin_options": {},
         "request_extra_data": dict(request_extra_data),
         "purchase_features": sorted(purchase_features),
-        "dynamic_purchased_feature": bool(
+        "dynamic_purchased_feature": modern_purchase_levels or bool(
             re.search(
                 r"additionalSpinOptions\.purchased_feature(?:\b|\s*=)",
                 bundle,
             )
         ),
-        "purchase_feature_level_supported": bool(
+        "purchase_feature_level_supported": modern_purchase_levels or bool(
             re.search(
                 r"additionalSpinOptions\.purchased_feature_level(?:\b|\s*=)",
                 bundle,
@@ -1078,6 +1117,13 @@ def discover_api_v2_wire_profile(
     }
     if not bundle:
         return profile
+
+    from tester_spin.providers.bgaming.modern_variants import modern_variant_contract
+    modern_variants = [contract for _score, _url, script in contract_parts
+                       if (contract := modern_variant_contract(script))]
+    variant_contracts = {json.dumps(contract, sort_keys=True) for contract in modern_variants}
+    if len(variant_contracts) == 1 and not spin_option_choices and not effective_bet_multipliers:
+        profile.update(modern_variants[0])
 
     if "additionalSpinOptions.mode" in bundle:
         default_mode = ""

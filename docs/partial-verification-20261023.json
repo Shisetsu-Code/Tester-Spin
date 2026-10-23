@@ -1,0 +1,1135 @@
+{
+  "schema": "tester-spin/partial-verification/v1",
+  "date": "2026-10-23",
+  "base_commit": "50e71b76564675de9d6f68ae4a0ca7f2cd6d37c5",
+  "scope": "Casos identificados y evidencia accesible; no certifica todos los parciales históricos.",
+  "historical_unknown_obligations_closed": false,
+  "provider_counts": {
+    "bgaming": {
+      "OK": 20,
+      "PARCIAL": 12
+    },
+    "nolimit_city": {
+      "OK": 3,
+      "PARCIAL": 28
+    },
+    "yggdrasil": {
+      "OK": 4,
+      "PARCIAL": 4
+    }
+  },
+  "verification": {
+    "integrated": {
+      "state": "ENVIRONMENT_GATE_BLOCKED",
+      "passed": 4242,
+      "failed": 1,
+      "skipped": 29,
+      "subtests_passed": 282,
+      "warnings": 3,
+      "duration_seconds": 36.52,
+      "command": "xvfb-run -a python -m pytest -q -p no:cacheprovider",
+      "log_file": "final-integrated-tests-20261023-common-action.log",
+      "log_sha256": "89e1aad3b3691b40c151019a526c5b7018a7d67710bcc44cc23f8b455a58c641"
+    },
+    "bgaming_archives": {
+      "verified_archives": 20,
+      "verified_attempts": 70,
+      "all_hashes_match": true
+    },
+    "environment_gate": {
+      "test": "tests/test_process_tree.py::test_process_boundary_owns_and_closes_detached_descendants",
+      "blocker": "No cgroup creation permission under /sys/fs/cgroup; isolation unchanged."
+    },
+    "bgaming_suite": {
+      "passed": 418,
+      "subtests_passed": 16,
+      "failed": 0,
+      "command": "python -m pytest -q -p no:cacheprovider tests/test_bgaming*"
+    },
+    "bgaming_final_contract_recheck": {
+      "kind": "fresh_demo_with_previous_profile",
+      "archive": "bgaming-final-contract-jrnuxow2.tar.gz",
+      "archive_sha256": "32a4e2417c38285ec1122cbfa4cc0a02e3f0d8a6e947288e9fdedc801b2ab863",
+      "verified_attempts": 14,
+      "cases": [
+        {
+          "slug": "book-of-hidden-tombs",
+          "status": "OK",
+          "verified_attempts": 4,
+          "all_debits_match": true,
+          "all_returns_confirmed": true,
+          "minimum_consecutive_normal_probes": 2
+        },
+        {
+          "slug": "hot-chilli-bells",
+          "status": "OK",
+          "verified_attempts": 10,
+          "all_debits_match": true,
+          "all_returns_confirmed": true,
+          "minimum_consecutive_normal_probes": 2
+        }
+      ],
+      "har_capture": "Optional browser HAR capture unavailable in this invocation; HTTP request/response evidence captured by adapter."
+    },
+    "nolimit_disorder_independent_replay_check": {
+      "original_replay_only_bytes_excluded": 1074,
+      "forced_global_replay_bytes_excluded": 0,
+      "state": "PASS"
+    },
+    "compileall": {
+      "state": "PASS",
+      "command": "python -m compileall -q tester_spin tests run.py launcher.py provider_launcher.py run_standalone.py"
+    },
+    "fixture_sensitive_key_scan": {
+      "new_json_fixtures": 15,
+      "findings": 0
+    },
+    "yggdrasil_common_action_review": {
+      "focused_tests_passed": 43,
+      "independent_combinatorial_geometries": 4,
+      "source_rebinding_mutations_rejected": true,
+      "counter_metadata_type_mutations_rejected": true,
+      "scope": "Reviewed complete loader/engine/extension sources only; changed implementations remain unlearned."
+    }
+  },
+  "cases": [
+    {
+      "provider": "bgaming",
+      "slug": "alien-fruits-3",
+      "name": "Alien Fruits 3",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 3,
+      "requested_attempts": 3,
+      "verified_attempts": 3,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "alien-fruits-3-2026-10-22_20-56-53-bgaming-http-api-v2.tar.gz",
+      "archive_sha256": "65bd475cd7a8ad4f78b5ac7a0b1ce68ae04924521887242f57c497b8e1bc8bed"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "aztecs-claw-wild-dice",
+      "name": "Aztec's Claw Wild Dice",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 1,
+      "requested_attempts": 1,
+      "blocker": "El init deshabilita compras/chance; permanece la obligación histórica de compra."
+    },
+    {
+      "provider": "bgaming",
+      "slug": "blackbeards-bounty",
+      "name": "Blackbeard's Bounty",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 4,
+      "requested_attempts": 4,
+      "verified_attempts": 4,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "blackbeards-bounty-2026-10-22_20-48-20-bgaming-hyperhive-jsonrpc.tar.gz",
+      "archive_sha256": "4988ba0f47740cb055c9c6d865f70dfb7421dd07a1717dd29f98c1222a0a5249"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "book-of-hidden-tombs",
+      "name": "Book of Hidden Tombs",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 4,
+      "requested_attempts": 4,
+      "verified_attempts": 4,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "book-of-hidden-tombs-2026-10-22_21-36-50-bgaming-http-api-v2.tar.gz",
+      "archive_sha256": "661746cfd0605c07c1f618ff5fc9e15aa790d597e33fd7fd14deefeee215ddd4"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "burning-chilli-x",
+      "name": "Burning Chilli X",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 1,
+      "requested_attempts": 1,
+      "verified_attempts": 1,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "burning-chilli-x-2026-10-22_20-49-19-bgaming-http-api-v2.tar.gz",
+      "archive_sha256": "5b0deb08941b4486c2ed704016d0a0409eca9705d5c07bcd4f0c5550ddccabf2"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "chicken-fire",
+      "name": "Chicken Fire",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 5,
+      "requested_attempts": 5,
+      "verified_attempts": 5,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "chicken-fire-2026-10-22_20-49-23-bgaming-hyperhive-jsonrpc.tar.gz",
+      "archive_sha256": "245a0aff7fc661371804295a0617409947e59a2f6851c45be1e23ae81aa47bbf"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "clucking-hell",
+      "name": "Clucking Hell",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 1,
+      "requested_attempts": 1,
+      "verified_attempts": 1,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "clucking-hell-2026-10-22_20-49-32-bgaming-hyperhive-jsonrpc.tar.gz",
+      "archive_sha256": "753893db2b9d3bc185ecaacfc31306310ad7a2671bcf3d51b424f889505f4590"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "dig-dig-digger",
+      "name": "Dig Dig Digger",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 1,
+      "requested_attempts": 2,
+      "blocker": "Close sin outcome, retorno pendiente, gamble y nueve niveles de compra sin cerrar."
+    },
+    {
+      "provider": "bgaming",
+      "slug": "divine-queen-heart-of-ice",
+      "name": "Divine Queen: Heart of Ice",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 3,
+      "requested_attempts": 3,
+      "verified_attempts": 3,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "divine-queen-heart-of-ice-2026-10-22_21-30-31-bgaming-http-api-v2.tar.gz",
+      "archive_sha256": "b329dd9708bf6304bcafb694cf535306e747ac967b88227fa93309c2c94e7444"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "dusty-duel",
+      "name": "Dusty Duel",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 5,
+      "requested_attempts": 5,
+      "verified_attempts": 5,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "dusty-duel-2026-10-22_21-08-29-bgaming-http-api-v2.tar.gz",
+      "archive_sha256": "47067e60d5be00c96260ab6754753cd137b45d3100cd4a26899c948b937c2ea7"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "golden-avalon-hold-and-win",
+      "name": "Golden Avalon Hold and Win",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 2,
+      "requested_attempts": 2,
+      "blocker": "Cuatro niveles de compra en otra arquitectura; selector no demostrado."
+    },
+    {
+      "provider": "bgaming",
+      "slug": "grand-patron",
+      "name": "Grand Patron",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 0,
+      "requested_attempts": 1,
+      "blocker": "Recursos declarados del cliente devuelven 404."
+    },
+    {
+      "provider": "bgaming",
+      "slug": "hot-chilli-bells-100",
+      "name": "Hot Chilli \nBells 100",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 3,
+      "requested_attempts": 3,
+      "verified_attempts": 3,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "hot-chilli-bells-100-2026-10-22_21-30-50-bgaming-http-api-v2.tar.gz",
+      "archive_sha256": "415ba23cff37d746f354e969c2de450f2f73760101e1e9bc8beb5f4e0645103c"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "hot-chilli-bells",
+      "name": "Hot Chilli Bells",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 10,
+      "requested_attempts": 10,
+      "verified_attempts": 10,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "hot-chilli-bells-2026-10-22_21-33-29-bgaming-http-api-v2-exhaustive-333816438.tar.gz",
+      "archive_sha256": "8dfa983f24360d7f6e365a997f5a7006b9acd485c75ab5803258cbb4727f3ed5"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "johnny-vs-chicken",
+      "name": "Johnny vs Chicken",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 5,
+      "requested_attempts": 5,
+      "verified_attempts": 5,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "johnny-vs-chicken-2026-10-22_21-06-34-bgaming-http-api-v2.tar.gz",
+      "archive_sha256": "58e765c2378a50dc09f32198b2141032a556c81cab6ef15dc7102add0c356833"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "keepers-of-the-secret",
+      "name": "Keepers Of The Secret",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 0,
+      "requested_attempts": 1,
+      "blocker": "Recursos declarados 404; contrato de play no demostrado."
+    },
+    {
+      "provider": "bgaming",
+      "slug": "krakens-hunger",
+      "name": "Kraken's Hunger",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 0,
+      "requested_attempts": 7,
+      "blocker": "Escala de apuesta por filas y tarifas de compra con bases distintas; bet solicitado5 y declarado20."
+    },
+    {
+      "provider": "bgaming",
+      "slug": "multi-rush",
+      "name": "Multi Rush",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 1,
+      "requested_attempts": 1,
+      "verified_attempts": 1,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "multi-rush-2026-10-22_21-31-09-bgaming-hyperhive-jsonrpc.tar.gz",
+      "archive_sha256": "8878ef65da1957fa5f1af5ea2227df805c3e412027af89bb34bbcdf4c2dfdb97"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "mystery-heist",
+      "name": "Mystery Heist",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 1,
+      "requested_attempts": 1,
+      "blocker": "Loader skin resolution omits basic/ subdirectory. Exact declared basic/v0.0.38_v14.19.2/bundle.js downloaded HTTP200; product fix and three purchase levels still pending.",
+      "current_client_sha256": "7a09fe06c02ba9a964d4ef6a9bde986ac0f720e9e68c55c1b2012f523e83dca9"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "mystic-reels",
+      "name": "Mystic Reels",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 0,
+      "requested_attempts": 1,
+      "blocker": "Constructor y serialización no demostrados."
+    },
+    {
+      "provider": "bgaming",
+      "slug": "piggy-bank-holdwin",
+      "name": "Piggy Bank Hold&Win",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 1,
+      "requested_attempts": 1,
+      "blocker": "Tres niveles de compra de otra arquitectura sin demostrar."
+    },
+    {
+      "provider": "bgaming",
+      "slug": "recycle-riches",
+      "name": "Recycle Riches",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 0,
+      "requested_attempts": 1,
+      "blocker": "Constructor Object.assign y sendAction fuera del contrato probado."
+    },
+    {
+      "provider": "bgaming",
+      "slug": "red-hot-chilli-chickens",
+      "name": "Red Hot Chilli Chickens",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 3,
+      "requested_attempts": 3,
+      "verified_attempts": 3,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "red-hot-chilli-chickens-2026-10-22_21-21-10-bgaming-hyperhive-jsonrpc.tar.gz",
+      "archive_sha256": "4d92f4a986bea5a4e31a715b5d8d66f6c7d9e686afd3f4821effdc23c31efcf5"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "royal-fruits-multilines",
+      "name": "Royal Fruits MultiLines",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 1,
+      "requested_attempts": 1,
+      "verified_attempts": 1,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "royal-fruits-multilines-2026-10-22_20-52-44-bgaming-http-api-v2.tar.gz",
+      "archive_sha256": "7283c7b866bb44b37a845b8b9ca4906959e2fc3c13c0aafc60b1688bbfe518eb"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "sugar-mix",
+      "name": "Sugar Mix",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 0,
+      "requested_attempts": 1,
+      "blocker": "DTO/clases sin contrato de serialización demostrado."
+    },
+    {
+      "provider": "bgaming",
+      "slug": "sweet-samurai",
+      "name": "Sweet Samurai",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 0,
+      "requested_attempts": 1,
+      "blocker": "Recurso principal del cliente no disponible."
+    },
+    {
+      "provider": "bgaming",
+      "slug": "temple-of-power",
+      "name": "Temple of Power",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 1,
+      "requested_attempts": 1,
+      "verified_attempts": 1,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "temple-of-power-2026-10-22_21-31-33-bgaming-hyperhive-jsonrpc.tar.gz",
+      "archive_sha256": "07478bccaff18d1a9d01323c4dec89d983e2c7384bca4524ed9b1b7b7f0d3b64"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "train-heist-johnny-cash",
+      "name": "Train Heist Johnny Cash",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 5,
+      "requested_attempts": 5,
+      "verified_attempts": 5,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "train-heist-johnny-cash-2026-10-22_21-31-53-bgaming-http-api-v2.tar.gz",
+      "archive_sha256": "e79eabdb1ad9b1f7b1a1bb9a039ef941d7731305dcc505227f9c5c1099743c73"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "ultras",
+      "name": "Ultras",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 3,
+      "requested_attempts": 3,
+      "verified_attempts": 3,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "ultras-2026-10-22_20-57-52-bgaming-http-api-v2.tar.gz",
+      "archive_sha256": "0b29d8e060c4d49bdcea5ede352c94eaa613556abedac626e1a99f4a265e11c8"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "wild-clusters",
+      "name": "Wild Clusters",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 1,
+      "requested_attempts": 1,
+      "verified_attempts": 1,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "wild-clusters-2026-10-22_20-53-59-bgaming-hyperhive-jsonrpc.tar.gz",
+      "archive_sha256": "8ccbf77c75a41cf3216fb32a5b19b4574f6528d166192f786e90ee8c1f5fc0ad"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "wild-tiger-2",
+      "name": "Wild Tiger 2",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 10,
+      "requested_attempts": 10,
+      "verified_attempts": 10,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "wild-tiger-2-2026-10-22_21-32-21-bgaming-http-api-v2-exhaustive-691969464.tar.gz",
+      "archive_sha256": "60c880aaf893e6861f8120ed094584b839c0937074b4cb63a9e7e16e3f14f8a2"
+    },
+    {
+      "provider": "bgaming",
+      "slug": "wild-tiger",
+      "name": "Wild Tiger",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_attempts": 1,
+      "requested_attempts": 1,
+      "verified_attempts": 1,
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "archive": "wild-tiger-2026-10-22_20-44-14-bgaming-http-api-v2.tar.gz",
+      "archive_sha256": "32fbf0ee1fe38f8441c9007d2d11876561a09d38d40dffc623bbbb6123eca0dc"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "crazyexgirlfriend",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 2,
+      "declared_modes": 11,
+      "finding": "NORMAL_RESPIN: flujo con presentación previa cuyo shouldRun depende de activeFeature; falta probar que termina o no se ejecuta.",
+      "run_id": "2026-10-23T034343_0000-043fa611",
+      "result_sha256": "f9e18749284998bbe6ceec6fc791ea4d7bbc7c95138a5257f761a1fbbd467d1d"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "deaddeadordeader",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 2,
+      "declared_modes": 7,
+      "finding": "RESPIN: línea temporal heredada, reanudada desde start y zeroBet en finishPresentation; ciclo de finalización aún no demostrado.",
+      "run_id": "2026-10-23T034347_0000-af481ab3",
+      "result_sha256": "d5eb5f7f46bb397178d4b406aa1d55876d92b880b9228c961ee00af6d6299bdf"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "dingdongdeath",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 7,
+      "declared_modes": 11,
+      "finding": "FREESPIN_AVALANCHE: rama de restore y lista de presentaciones; falta probar el recorrido hasta complete().",
+      "run_id": "2026-10-23T034350_0000-8254ef1e",
+      "result_sha256": "a927e534fd23152978972a6ac3fb9ad36515c54cfbcd3643881b28b6a676b6f7"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "disorder",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 8,
+      "declared_modes": 8,
+      "finding": "CORREGIDO: método de reproducción separado por guarda SDK y alias de enum exportado después de sus campos. Oferta pagada, precios, descuentos, aceptación/rechazo y retorno verificados.",
+      "run_id": "2026-10-23T040401_0000-0c663fa9",
+      "result_sha256": "f4694a980d490aba9068cfafa1fc157ed6d3a9dbb1689338b1cd84b33a702c90",
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      }
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "duckhunters2",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 3,
+      "declared_modes": 13,
+      "finding": "EXTRA_SPIN: extraSpinCostMap con SAME/HALF y elección NO. El contrato actual admite una compra cotizada, no varias opciones con precios distintos.",
+      "run_id": "2026-10-23T034416_0000-8c92badb",
+      "result_sha256": "e6a06ff980b558140f41495d46b95255efb0b9fa5de9cf0d6668cb2c6e10c801"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "eastvswest",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 1,
+      "declared_modes": 3,
+      "finding": "Compra con wasFeatureBuy=false explícito aunque featureBet=true y débito correcto; acuse contradictorio, no se descarta la bandera.",
+      "run_id": "2026-10-23T034419_0000-eedda1d3",
+      "result_sha256": "897121b377d041c74fa3c1d0e2a1009dbaaec8d4eba1217f849738c55fcff06a"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "elpaso",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 0,
+      "declared_modes": 7,
+      "finding": "Ronda normal liquidada con features.available que no coincide con catálogo inicial ni selectores de compra; faltan alias demostrados por cliente.",
+      "run_id": "2026-10-23T034422_0000-1f52fed9",
+      "result_sha256": "90660bb60b53bdc10efebed5e12b60ee277c91e20029f8bb3a677dd0187f2a93"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "fireinthehole3",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 1,
+      "declared_modes": 12,
+      "finding": "NORMAL_AVALANCHE: flujo de continuación del cliente sin cadena automática demostrada.",
+      "run_id": "2026-10-23T034424_0000-a96f70a7",
+      "result_sha256": "211fcfdac7b6a453b6dd8006eba1e0abdcf8ad640564c432f59d3ea2d4bfd9e4"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "gluttony",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 2,
+      "declared_modes": 4,
+      "finding": "BUY_LUCKY_DRAW anuncia features.active=LUCK_DRAW (catálogo LUCKY_DRAW) y FREESPIN; ciclo async/timeline del cliente sin contrato demostrado.",
+      "run_id": "2026-10-23T034200_0000-09a90b56",
+      "result_sha256": "cef20a444a4da8c3fd4878023dfe6a11e2af05ce278e72c77cc9868a3db2b716"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "goldengenie",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 2,
+      "declared_modes": 2,
+      "finding": "CORREGIDO: controlador registrado lee propiedad derivada del parser activo; se enlazaron configuración, parser, getter y evento zeroBet.",
+      "run_id": "2026-10-23T035049_0000-56ba360b",
+      "result_sha256": "1c3cbc87f1c7b59fb834eb6de8e284c6e618b5139282b0c930b645b420cdd0a1",
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      }
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "kennethmustdie",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 0,
+      "declared_modes": 0,
+      "finding": "allowedFeatureBets y precios anidados bajo CAP_MODE_STANDARD/CAP_MODE_10000; faltan cambio de contexto y cobertura completa de ambos modos.",
+      "run_id": "2026-10-23T034434_0000-4a9b7298",
+      "result_sha256": "c4dc2f33ef7770834d2838400723754b705fa48ffcc35a65ed56a7b8e9fb5fa3"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "kissmychainsaw",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 0,
+      "declared_modes": 4,
+      "finding": "Catálogo terminal contiene SUPER_FREESPIN pero selector de compra es FREESPIN_4_SCATTERS; correspondencia no demostrada.",
+      "run_id": "2026-10-23T034436_0000-93fad77d",
+      "result_sha256": "ae0408316536ef59cf5347ab4e7639435f9ea3e4c7b1b5854cfb64f96b6928af"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "mental",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 1,
+      "declared_modes": 5,
+      "finding": "STANDARD_FREESPIN: presentación con métodos estáticos, callbacks de intro y ramas restore; ciclo hasta zeroBet aún no demostrado.",
+      "run_id": "2026-10-23T034442_0000-e50f18d0",
+      "result_sha256": "515cf1a1de7aba8e192c14ae2e5733226e5ae02c4081c9070fe23582be7432f9"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "miserymining",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 1,
+      "declared_modes": 5,
+      "finding": "BONUS: elección/continuación de bonus sin dominio completo demostrado tras la ruta ya conocida.",
+      "run_id": "2026-10-23T034445_0000-056f9b74",
+      "result_sha256": "a864f3e2beaf274be15edcdc6dca898eb42795a05b63b9f7388867fd4bcb7ed6"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "outsourced",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 0,
+      "declared_modes": 8,
+      "finding": "UPGRADE_BET anuncia upgradeBetCost y playUpgradeBet 0/1; además el cliente contiene CRASH_GAME con multiplicador dinámico. Faltan contratos completos de precio, acuse, continuación y elección.",
+      "run_id": "2026-10-23T034449_0000-189843c2",
+      "result_sha256": "70b9139d03ca2aa9fd397a4c92c0250c3dd35de72f04430b5017032aaed8f814"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "punkrocker2",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 2,
+      "declared_modes": 7,
+      "finding": "RESPIN: continuación del cliente sin ciclo automático demostrado.",
+      "run_id": "2026-10-23T034451_0000-ffbc100d",
+      "result_sha256": "179a52f8c8de8b9d150a41efdc05da18c1f98696722903ac9d147d4388dcebcf"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "punktoilet",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 1,
+      "declared_modes": 4,
+      "finding": "FREESPIN con etiqueta de feature FREESPIN_3_SCATTERS; fase/catálogo y continuación actuales aún no demostrados completamente.",
+      "run_id": "2026-10-23T034458_0000-defc7bfd",
+      "result_sha256": "4e517b08326a0bfcbb2eb5441d539c6504ed60d481327bc8b9ea8c19d8ca574a"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "roadkill",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 4,
+      "declared_modes": 4,
+      "finding": "CORREGIDO: alias de enum del cliente para FREESPIN_SUPER resuelto por import y literal inmutable. Todas las compras y retorno verificados.",
+      "run_id": "2026-10-23T040533_0000-5a863665",
+      "result_sha256": "9256898e87b4a972e05c8f58fab082e823a6f6a94c58f3a9fa7f35166e1f7458",
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      }
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "roadrage",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 1,
+      "declared_modes": 5,
+      "finding": "FREESPIN_SETUP: presentationManager.addController compone una lista; falta demostrar la cadena y cada presentación previa.",
+      "run_id": "2026-10-23T034500_0000-648ea033",
+      "result_sha256": "005e3f3c50c1689b17586d272cf20945ba694adb44e8297a77f0a517d9dbb9f1"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "sanquentin",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 1,
+      "declared_modes": 4,
+      "finding": "FREESPIN_SETUP: controlador legado/evento de continuación sin enlace suficiente.",
+      "run_id": "2026-10-23T034518_0000-ba885ef8",
+      "result_sha256": "725b2e03f34f456b14d1f19050b47aa2abd3bbffb17859c71bbc0d033455591d"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "sanquentin2",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 3,
+      "declared_modes": 7,
+      "finding": "FREESPIN_SETUP2 después de elección en FREESPIN_SETUP1; constructor dinámico de flujos/ZeroBetPresentation aún no enlazado.",
+      "run_id": "2026-10-23T034508_0000-53c054a4",
+      "result_sha256": "f56166125efbd4e5431125347ce71f982ac1d54b5f7e3f6c639861c8e9920a8d"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "sanquentinmanhunt",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 1,
+      "declared_modes": 8,
+      "finding": "FREESPIN_SETUP: constructor dinámico y callback done como propiedad; ciclo de vida aún no demostrado.",
+      "run_id": "2026-10-23T034511_0000-2c2347cb",
+      "result_sha256": "baa88fc9c9f58030e909058983c9d517db5b37f3f34e2b5cd2454114e24d6fe1"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "spacedonkey",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 1,
+      "declared_modes": 4,
+      "finding": "FREESPIN: flujo GoingBananasZeroBetIdlePresentation con rama restore, lista de intros y complete(); recorrido aún no demostrado.",
+      "run_id": "2026-10-23T034520_0000-444ecd96",
+      "result_sha256": "f1177f2a45d3f310f578d82005e4765b418282b6a9e14a06f229614fcd3b6ca3"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "supersized",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 2,
+      "declared_modes": 10,
+      "finding": "NORMAL_RESPIN: continuación automática del cliente sin cadena demostrada.",
+      "run_id": "2026-10-23T034524_0000-59d11d07",
+      "result_sha256": "ed650aebdb866bbab337af4523e395681b105158d9d7d8d95239bdfd4c711b65"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "tanked3",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 4,
+      "declared_modes": 9,
+      "finding": "EXTRA_SPIN: extraSpinCostMap de varios boosters; falta contrato multiopción de precio, financiación y acuse por selección.",
+      "run_id": "2026-10-23T034528_0000-1c5e83b8",
+      "result_sha256": "6a9dc0603c74e884dedb4f24f8669036c5a1a5070721e042482b97dededc7f02"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "theborder",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 3,
+      "declared_modes": 5,
+      "finding": "FREESPIN_SUPER_AVALANCHE en sesión nueva; causa histórica de descuento no reproducida aún, permanece pendiente también.",
+      "run_id": "2026-10-23T034541_0000-c9d55b85",
+      "result_sha256": "6aed23be932f6c26b2ef92fae25fabde5073caf860ea10c9ea0ce5dfbb526d01"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "therave",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 2,
+      "declared_modes": 6,
+      "finding": "FREESPIN: continuación del cliente sin contrato completo demostrado.",
+      "run_id": "2026-10-23T034549_0000-657dac74",
+      "result_sha256": "a06069347cef27c5f0af330f31d812153b7acf7ca871d96b65421049d34fd649"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "tombofakhenaten",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 0,
+      "declared_modes": 3,
+      "finding": "NORMAL/NORMAL con contadores cero, pero features.available=['Free Spins'] no tiene equivalencia demostrada con compras FREESPIN/FREESPIN_5_SCATTERS; catálogo terminal sin resolver.",
+      "run_id": "2026-10-23T034554_0000-049688ff",
+      "result_sha256": "1cb58675d0a3d4cc76e64ac8772652eeaeaedd0426fe418a8803aeb9a28b18a8"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "tombstonenomercy",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 7,
+      "declared_modes": 8,
+      "finding": "SUPER_FREESPIN: tres controladores y predicado derivado compuesto; se requiere probar cuál controla la fase.",
+      "run_id": "2026-10-23T034557_0000-643d78f6",
+      "result_sha256": "a79f6e046bac862091ff6931f2844dc8be4d09aeb09cdcd0f0fe5995a7cba753"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "tsarwars",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 0,
+      "declared_modes": 8,
+      "finding": "Rechazo explícito del servidor antes del primer giro validado: error='Internal server error', code=0. Se preserva el error; no se reinterpretan selectores.",
+      "run_id": "2026-10-23T034610_0000-104751d0",
+      "result_sha256": "95486aecd4d3cba974bea50a775b39a652a7989a684cd6d0af1a68a49d46a73b"
+    },
+    {
+      "provider": "nolimit_city",
+      "slug": "xwayshoarder2",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "validated_modes": 5,
+      "declared_modes": 8,
+      "finding": "SUPER_FREESPIN: continuación del cliente sin cadena automática demostrada.",
+      "run_id": "2026-10-23T034613_0000-494ff510",
+      "result_sha256": "34250f82dceef47795249728cd73e9d9dc849e7bca9180f20bf8c3dda5291f00"
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "jungle-books",
+      "name": "Jungle Books",
+      "status": "OK",
+      "evidence_kind": "fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "finding": "Host/guest agotado y retorno base.",
+      "archive": "jungle-books-20261022-213128-4a298b.zip",
+      "archive_sha256": "c3e1f3a3a8ac7d41e34181d4419121e53818a6060a99ba52f66bcf34cfa857e6",
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      }
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "nice-catch-doublemax",
+      "name": "Nice Catch DoubleMax",
+      "status": "OK",
+      "evidence_kind": "offline_revalidation_of_fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "finding": "Cuatro modos y cobertura7/7; cash/ANTE y cobro reconciliados.",
+      "archive": "verified-nicecatch-211635-cash-contract.zip",
+      "archive_sha256": "204d98ecab77b1da67144d04eaa860e43bfdb91425650b05a0c144c86e349a30",
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      }
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "nice-catch-2-doublemax",
+      "name": "Nice Catch2 DoubleMax",
+      "status": "OK",
+      "evidence_kind": "offline_revalidation_of_fresh_demo",
+      "historical_unknown_obligations_closed": false,
+      "finding": "Tres modos; cobertura5/5 suma opciones de modo y declaración de compra. COLLECT resuelto; GAMBLE no ejecutado. Captura original PARCIAL, cero peticiones nuevas.",
+      "archive": "verified-nice2-222616-coverage.zip",
+      "archive_sha256": "db04cbffc87211d485eb1c6c110f639e993c94547a4fde0ddc5d1901e2c9fa94",
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      }
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "pirates-2-mutiny",
+      "name": "Pirates2 Mutiny",
+      "status": "OK",
+      "evidence_kind": "same_session_continuation",
+      "historical_unknown_obligations_closed": false,
+      "finding": "Prefijo capturado y restauración de la misma sesión; MUTINY/CASCADE y ronda nueva con retorno.",
+      "archive": "verified-pirates-20261022-204517-e55319-same-session.zip",
+      "archive_sha256": "80392dd9543e7e5d996ac5189ecb679ba00ce3f8febc42fe2e324d7f5d88d696",
+      "return_to_base": {
+        "status": "CONFIRMED",
+        "minimum_consecutive_normal_probes": 2
+      },
+      "additional_archive": {
+        "name": "verified-pirates-20261022-224730-207791-same-session.zip",
+        "sha256": "24e062cecc772deb48b54af62e333790e121721365c2575ebc5376160dd932c1"
+      }
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "football-glory",
+      "name": "Football Glory",
+      "status": "PARCIAL",
+      "evidence_kind": null,
+      "historical_unknown_obligations_closed": false,
+      "finding": "Muestra base actual válida; obligación histórica de colección natural no observada."
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "badger-miners",
+      "name": "Badger Miners",
+      "status": "PARCIAL",
+      "evidence_kind": "same_session_captured_prefix_revalidation_and_continuation",
+      "historical_unknown_obligations_closed": false,
+      "finding": "Typed BUY queue revalidated; C settled exactly 3.10 in the same demo session; second return probe contains an unsupported booster.",
+      "return_to_base": {
+        "status": "REVIEW_REQUIRED",
+        "blocker": "Unsupported booster in second BASIC probe; not promoted to OK."
+      },
+      "evidence_archives": [
+        {
+          "file": "badger-miners-fresh-20261023T094509-322347e4.zip",
+          "sha256": "08549c721134afd5e261652b95d342472a6e4f63ef5560c22e4355c25d0b7f4b"
+        },
+        {
+          "file": "badger-miners-same-session-20261023T095005-5206b561.zip",
+          "sha256": "898190b861e853acace77eb2e8c5f0b1de06ae0caf7d5d4b35914875e554320f"
+        }
+      ]
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "lucky-apocalypse",
+      "name": "Lucky Apocalypse",
+      "status": "PARCIAL",
+      "evidence_kind": null,
+      "historical_unknown_obligations_closed": false,
+      "finding": "Sin launcher demo actual identificado."
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "golden-chip-roulette",
+      "name": "Golden Chip Roulette",
+      "status": "PARCIAL",
+      "evidence_kind": null,
+      "historical_unknown_obligations_closed": false,
+      "finding": "Launcher de producción sin contrato DEMO demostrado; no se enviaron apuestas."
+    }
+  ],
+  "additional_investigations": [
+    {
+      "provider": "pragmatic",
+      "name": "Book of Monsters",
+      "status": "PARCIAL",
+      "historical_unknown_obligations_closed": false,
+      "finding": "Muestra actual no cubre modo natural o nivel superior de la obligación histórica."
+    },
+    {
+      "provider": "pragmatic",
+      "name": "Bubble Up!",
+      "status": "PARCIAL",
+      "historical_unknown_obligations_closed": false,
+      "finding": "Muestra actual no cubre modo natural o nivel superior de la obligación histórica."
+    },
+    {
+      "provider": "pragmatic",
+      "name": "Money Stacks",
+      "status": "PARCIAL",
+      "historical_unknown_obligations_closed": false,
+      "finding": "Muestra actual no cubre modo natural o nivel superior de la obligación histórica."
+    },
+    {
+      "provider": "playtech",
+      "symbol": "aogmt",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_official_local_demo",
+      "server_execution": false,
+      "validated_rounds": 3,
+      "archive": "playtech-verified-rounds-u2hxbrd5.tar.gz",
+      "archive_sha256": "4e28bb2269ec3b05f53cc17e3fbbda5773d06141210c3013459fdc4a16360c40",
+      "finding": "Inventario de bonus/jackpot y campos del cliente sin contrato completo. No se cerró la obligación histórica de continuación."
+    },
+    {
+      "provider": "playtech",
+      "symbol": "ashadv",
+      "status": "PARCIAL",
+      "evidence_kind": "fresh_bootstrap",
+      "validated_rounds": 0,
+      "archive": "playtech-verified-rounds-gmmtr8sx.tar.gz",
+      "archive_sha256": "4ccedfea6a5f2a769aa7f9a6d11b22218ebafcdf78ecc39a53bf0d13c35a07ac",
+      "finding": "Entrada CommonOpen/Load/Place/Close no enlazada; no se envió apuesta."
+    },
+    {
+      "provider": "belatra",
+      "name": "Princess Suki",
+      "status": "PARCIAL",
+      "finding": "Destino demo declarado responde503 sin configuración de juego."
+    }
+  ],
+  "unavailable_history": [
+    {
+      "provider": "pragmatic",
+      "documented_partials_20261016": 25,
+      "limit": "Sólo tres nombres recuperados; faltan capturas originales y otras identidades."
+    },
+    {
+      "provider": "redtiger",
+      "documented_partials_20261016": 8,
+      "limit": "Faltan nombres y capturas de los casos parciales."
+    },
+    {
+      "provider": "rubyplay",
+      "documented_partials_20261016": 4,
+      "limit": "Faltan nombres y capturas de los casos parciales."
+    }
+  ]
+}

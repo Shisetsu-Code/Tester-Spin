@@ -174,7 +174,15 @@ class BGamingExecutionMixin:
         def persist_profile_snapshot() -> None:
             if active_profile is None:
                 return
-            save_profile(game_json, active_profile)
+            if active_profile.unverified_cached_capabilities and persisted_profile is not None:
+                # Preserve unresolved cached evidence without leaving it marked
+                # validated or feeding its fields back into the live session.
+                pending = BGamingProfile.from_dict(persisted_profile.to_dict())
+                pending.validated = False
+                pending.unverified_cached_capabilities = list(active_profile.unverified_cached_capabilities)
+                save_profile(game_json, pending)
+            else:
+                save_profile(game_json, active_profile)
             _write_json(run_dir / "profile.json", active_profile.to_dict())
 
         runtime = None
@@ -311,13 +319,7 @@ class BGamingExecutionMixin:
                 runtime,
                 timeout_s=timeout_s,
             )
-            persisted_extra_data = (
-                dict(persisted_profile.request_extra_data)
-                if persisted_profile is not None
-                else {}
-            )
             discovered_extra_data = preinit_wire_profile.get("request_extra_data")
-            runtime.request_extra_data.update(persisted_extra_data)
             if isinstance(discovered_extra_data, dict):
                 runtime.request_extra_data.update(discovered_extra_data)
 
@@ -415,6 +417,13 @@ class BGamingExecutionMixin:
                 wire_profile=preinit_wire_profile,
             )
             if active_profile.family == API_V2:
+                if active_profile.unverified_cached_capabilities:
+                    persist_profile_snapshot()
+                    raise ValueError(
+                        "BGaming: capacidades cacheadas sin contrato actual verificado; "
+                        "no se ejecutan comandos de juego: "
+                        + ", ".join(active_profile.unverified_cached_capabilities)
+                    )
                 captured_contract = load_api_capture(select_best_har(self.game_dir(game)), runtime.identifier)
                 if captured_contract.get("mode_multipliers"):
                     active_profile.effective_bet_selector = "mode"

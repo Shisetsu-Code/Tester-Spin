@@ -29,7 +29,7 @@ def _lexical_source(source):
             clean[start:i] = code[start:i] = ' ' * (i - start)
         elif source[i] == '/' and (not source[:i].rstrip()
                 or source[:i].rstrip()[-1] in '=(:,![&|?{;'
-                or re.search(r'\b(?:return|throw|case)\s*$', source[max(0, i-30):i])):
+                or re.search(r'(?:\b(?:return|throw|case)|=>)\s*$', source[max(0, i-30):i])):
             # A regex literal may itself contain quotes, slashes and braces.
             # Keep them out of the executable-token mask.
             start, in_class = i, False
@@ -119,7 +119,40 @@ def forwarded_request_contracts(source: str) -> str:
     return "\n".join(contracts)
 
 
-def _two_argument_builder_contracts(text: str, code: str) -> list[str]:
+def _assignment_value(text: str, code: str, start: int) -> str:
+    depth, end = 0, start
+    while end < len(code):
+        char = code[end]
+        if char in '([{':
+            depth += 1
+        elif char in ')]}':
+            if depth == 0:
+                break
+            depth -= 1
+        elif char in ',;' and depth == 0:
+            break
+        end += 1
+    return text[start:end].strip()
+
+
+def _unique_assignment(text: str, code: str, name: str) -> bool:
+    escaped = re.escape(name)
+    root = rf'(?<![\w$.]){escaped}(?![\w$])'
+    if (re.search(root + r'\s*(?:\+\+|--|(?:[+*/%&|^?-]|<<|>>>?|\*\*)=)', code)
+            or re.search(r'(?:\+\+|--)\s*' + root, code)):
+        return False
+    if re.search(rf'\([^()]{{0,500}}(?<![\w$]){escaped}(?![\w$])[^()]{{0,500}}\)\s*(?:=>|\{{)', code):
+        return False
+    if re.search(rf'(?<![\w$.]){escaped}\s*=>', code):
+        return False
+    definitions = {
+        _assignment_value(text, code, assignment.end())
+        for assignment in re.finditer(rf"(?<![\w$.]){escaped}\s*=(?!=|>)", code)
+    }
+    return len(definitions) == 1
+
+
+def _two_argument_builder_bindings(text: str, code: str) -> list[tuple[str, str, str]]:
     """Prove base fields through an identity req/lock wrapper and called builder.
 
     This path deliberately does not authorize purchase fields: modifiers applied
@@ -128,26 +161,7 @@ def _two_argument_builder_contracts(text: str, code: str) -> list[str]:
     ident = r"[A-Za-z_$][A-Za-z0-9_$]*"
 
     def unique_assignment(name: str) -> bool:
-        escaped = re.escape(name)
-        if re.search(rf'\([^()]{{0,500}}\b{escaped}\b[^()]{{0,500}}\)\s*(?:=>|\{{)', code):
-            return False
-        definitions = set()
-        for assignment in re.finditer(rf"(?<![\w$.]){escaped}\s*=(?!=|>)", code):
-            start = assignment.end()
-            depth, end = 0, start
-            while end < len(code):
-                char = code[end]
-                if char in '([{':
-                    depth += 1
-                elif char in ')]}':
-                    if depth == 0:
-                        break
-                    depth -= 1
-                elif char in ',;' and depth == 0:
-                    break
-                end += 1
-            definitions.add(text[start:end].strip())
-        return len(definitions) == 1
+        return _unique_assignment(text, code, name)
 
     transports = set()
     for match in re.finditer(rf"\b({ident})=async\(({ident}),({ident})\)=>\{{", text):
@@ -183,5 +197,12 @@ def _two_argument_builder_contracts(text: str, code: str) -> list[str]:
             # Preserve just the proven normal-spin bet_type literal, excluding
             # freebet and unrelated feature vocabularies.
             normal = re.search(r'(?:^|,)bet_type:[^,]*\?["\']freebet["\']:["\']([A-Za-z0-9_]+)["\'](?:,|$)', body)
-            out.append('req:{bet:observed' + (',bet_type:"' + normal.group(1) + '"' if normal else '') + '}')
+            out.append((name, builder, normal.group(1) if normal else ''))
     return out
+
+
+def _two_argument_builder_contracts(text: str, code: str) -> list[str]:
+    return [
+        'req:{bet:observed' + (',bet_type:"' + normal + '"' if normal else '') + '}'
+        for _wrapper, _builder, normal in _two_argument_builder_bindings(text, code)
+    ]
