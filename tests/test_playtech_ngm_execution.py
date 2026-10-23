@@ -125,6 +125,31 @@ def make_runtime(tmp_path):
     session.page=SimpleNamespace(frames=[frame],locator=lambda *args:body,wait_for_timeout=lambda *args:None)
     return session,calls
 
+
+def test_ngm_selects_unique_live_game_iframe_among_inert_and_detaching_frames(tmp_path):
+    from types import SimpleNamespace
+    session,_=make_runtime(tmp_path)
+    ready=session.page.frames[0]
+    inert=SimpleNamespace(url=ready.url, evaluate=lambda _:False)
+    detached=SimpleNamespace(url=ready.url, evaluate=lambda _:(_ for _ in ()).throw(RuntimeError('frame detached')))
+    wrong_host=SimpleNamespace(url='https://untrusted.invalid/ngmdistributed/legacy/1/index.html',
+                               evaluate=lambda _:True)
+    session.page.frames=[inert,detached,wrong_host,ready]
+    assert session._action_frame() is ready
+    second=SimpleNamespace(url=ready.url, evaluate=lambda _:True)
+    session.page.frames=[ready,second]
+    assert session._action_frame() is None  # Multiple live dispatchers: fail closed
+    session.page.frames=[inert,wrong_host]
+    assert session._action_frame() is None
+
+
+def test_ngm_runtime_partial_exposes_bounded_verification_worklist(tmp_path):
+    from tester_spin.providers.playtech.replay_rules import runtime_actions
+    instructions=runtime_actions('ngm', ['NGM_FEATURE_INVENTORY_UNKNOWN', 'NGM_HAR_MISSING'])
+    assert {x['rule'] for x in instructions} == {'VERIFY_DECLARED_MODES','CAPTURE_NGM_GAME_EVENTS'}
+    assert all(x['status']=='PARCIAL' for x in instructions)
+
+
 def test_uncertain_wager_is_never_retried(tmp_path):
     session,calls=make_runtime(tmp_path)
     with pytest.raises(TimeoutError):session.spin()
