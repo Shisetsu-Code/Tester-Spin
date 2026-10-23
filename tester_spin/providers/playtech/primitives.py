@@ -122,7 +122,12 @@ def discover_modes(configuration, contract, sources):
                 re.fullmatch(r"extra(?:[0-9]+|x[0-9]+(?:low|mid|high)?)",normalized) or
                 game.get('extraBetEnabled') is True and re.fullmatch(r"extra(?:fg|collector)",normalized)))) and ante_binding:
             kind="ANTE_BET"
-        elif (normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and (re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized) or (pot_domain and re.fullmatch(r"buyfeature[0-9]+pot",normalized))))) and purchase_binding:
+        elif (normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and (re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized) or (pot_domain and re.fullmatch(r"buyfeature[0-9]+pot",normalized)))) or
+              (scoped and game.get('featureBetEnabled') is True and
+               re.fullmatch(r'buyfeature(?:[1-9][0-9]*|red|green|blue|redgreen|redblue|greenblue|redgreenblue)', normalized))) and purchase_binding:
+            # Configured numbered / coloured bonus entries require *both*
+            # the active scoped selector and the live BuyFeature client binding.
+            # Mode names alone are not purchase authorization.
             kind="PURCHASE"
         elif (standard or line_domain or name in band_names or
               is_disabled_extra_base(row,costs,game,contract) or
