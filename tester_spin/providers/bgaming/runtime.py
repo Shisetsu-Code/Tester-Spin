@@ -567,7 +567,7 @@ def _bundle_contract_score(text: str) -> int:
     return score
 
 
-def _declared_loader_skin_directory(source: str) -> str:
+def _declared_loader_skin_directory(source: str, *, version: str | None = None) -> str:
     """Extract a uniquely selected, literal skin subdirectory from loader JS.
 
     A versioned bundle can live under SKIN_DIRS.basic (or another explicitly
@@ -606,6 +606,57 @@ def _declared_loader_skin_directory(source: str) -> str:
         return ""
     directory = matches[0].group("path").strip("/")
     if not re.fullmatch(r"[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*", directory):
+        return ""
+
+    # A mention of SKIN_DIRS and bundle.js in the same loader is not
+    # evidence that this skin is used for the bundle URL. Require a static
+    # binding from the version declared by the loader into the URL suffix.
+    bindings = [
+        match for match in re.finditer(
+            r"""(?<![\w$.])res\s*:\s*(?P<name>[A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*(?P<quote>['"])(?P<version>[A-Za-z0-9_.-]+)(?P=quote)""",
+            clean,
+        )
+        if code[match.start()].strip()
+    ]
+    if len(bindings) != 1:
+        return ""
+    declared_version = bindings[0].group("version")
+    if (version is not None and declared_version != version) or ".." in declared_version:
+        return ""
+    variable = bindings[0].group("name")
+    if len(re.findall(
+        rf"(?<![\w$.]){re.escape(variable)}\s*=(?!=|>)", code,
+    )) != 1:
+        return ""
+
+    skin_property = rf"SKIN_DIRS\s*\.\s*{key}"
+    aliases = list(re.finditer(
+        rf"(?<![\w$.])const\s+(?P<name>[A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*{skin_property}\b",
+        code,
+    ))
+    if len(aliases) > 1:
+        return ""
+    skin_expressions = [skin_property]
+    if aliases:
+        alias = aliases[0].group("name")
+        escaped_alias = re.escape(alias)
+        if len(re.findall(rf"(?<![\w$.]){escaped_alias}\s*=(?!=|>)", code)) != 1:
+            return ""
+        if re.search(rf"(?<![\w$.]){escaped_alias}\s*(?:[+*/%-]=|\+\+|--)", code):
+            return ""
+        skin_expressions.append(escaped_alias)
+
+    skin_expression = "(?:" + "|".join(skin_expressions) + ")"
+    version_variable = re.escape(variable)
+    bundle_path = (
+        rf"(?<![\w$.]){skin_expression}\s*\+\s*(?P<sep>['\"])/(?P=sep)"
+        rf"\s*\+\s*{version_variable}\s*\+\s*"
+        rf"(?P<end>['\"])/bundle\.js(?P=end)"
+    )
+    if not any(
+        code[match.start()].strip()
+        for match in re.finditer(bundle_path, clean)
+    ):
         return ""
     return directory
 
@@ -668,7 +719,7 @@ def _runtime_bundle_candidates(
                     version = match.group(1).strip()
                     break
             if version and resources_path:
-                skin_directory = _declared_loader_skin_directory(loader_text)
+                skin_directory = _declared_loader_skin_directory(loader_text, version=version)
                 if skin_directory:
                     candidates.append(
                         f"{resources_path}/{skin_directory}/{version}/bundle.js"
