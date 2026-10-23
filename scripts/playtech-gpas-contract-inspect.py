@@ -30,6 +30,16 @@ def inspect(code):
                 sketch(r"pick")
                 sketch(r"GLU\.game\.playOut")
                 sketch(r"48775")
+            function_shapes={}
+            if code=='gpas_jdice_pop':
+                from tester_spin.providers.playtech.client_sources import _function_bodies
+                functions=_function_bodies(text)
+                for name in ('XHg','gke','S8d','pke','qNc'):
+                    spec=functions.get(name)
+                    if spec:
+                        args,body=spec
+                        body=re.sub(r"[A-Za-z0-9+/=]{40,}","[OPAQUE]",body)
+                        function_shapes[name]=dict(args=args,body=body[:450],length=len(body))
             def row(x):
                 params=x.get("parameters") if isinstance(x.get("parameters"),dict) else {}
                 scope=game.get("namedScopes",{}).get(x.get("name"),{})
@@ -49,7 +59,8 @@ def inspect(code):
                     compiled_pick_binding=compiled_pick_binding(text),
                     known_stake_cost="stakeCostUuid" in text,
                     known_feature_type="featureType" in text),
-                adapter_map_keys=sorted(contract.get("adapter_maps",{})),pick_shapes=contexts)
+                adapter_map_keys=sorted(contract.get("adapter_maps",{})),pick_shapes=contexts,
+                function_shapes=function_shapes)
 
 def main():
     ap=argparse.ArgumentParser()
