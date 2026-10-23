@@ -234,3 +234,21 @@ def test_named_standard_line_set_rejects_partial_or_economic_ambiguity():
     assert not bound(bad)
     assert bound(rows)=={'5':'lines-5','10':'lines-10','15':'lines-15',
                         '20':'lines-20','BasePP':'lines-25'}
+
+
+def test_uppercase_display_extra_requires_live_enabled_ante_contract():
+    rows=[row('Standard',10,start='Standard'),
+          row('Extra',20,start='ante-uuid')]
+    c=dict(costConfiguration=rows,baseCostMultipliers=[1],extraBetEnabled=True)
+    source=SOURCE+' ExtraBetsModule'
+    result=discover_modes({'game':c},CONTRACT,[source])
+    assert [m['kind'] for m in result['modes']]==['SPIN','ANTE_BET']
+    assert [m['selector'] for m in result['modes']]==['default','extra']
+    assert not result['unresolved']
+    no_client=discover_modes({'game':c},CONTRACT,[SOURCE])
+    assert no_client['modes'][1]['kind']=='UNKNOWN_FEATURE'
+    server_scope=dict(c,namedScopes={'Extra':{'featureType':'Extra','betType':'default'}})
+    explicit=discover_modes({'game':server_scope},CONTRACT,[source])
+    assert explicit['modes'][1]['selector']=='Extra'
+    disabled=discover_modes({'game':dict(c,extraBetEnabled=False)},CONTRACT,[source])
+    assert disabled['modes'][1]['selector']=='Extra'
