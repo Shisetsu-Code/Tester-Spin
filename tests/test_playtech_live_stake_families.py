@@ -110,3 +110,39 @@ def test_no_lines_prefix_if_one_configured_winline_disagrees():
                            CONTRACT,[SOURCE+' winline stakeCostName'])
     assert current['unresolved']
     assert all(m['kind']=='UNKNOWN_FEATURE' for m in current['modes'])
+
+
+def test_original_numbered_and_colored_feature_buy_options_need_all_three_authorities():
+    purchase=['BuyFeatureRed','BuyFeatureGreen','BuyFeatureBlue',
+              'BuyFeatureRedGreen','BuyFeatureRedBlue','BuyFeatureGreenBlue','BuyFeatureRedGreenBlue']
+    costs=[row('default',20)]+[row(name,600+i*100,start='purchase-'+name)
+                               for i,name in enumerate(purchase)]
+    scopes={name:{'betType':'default','featureType':name} for name in purchase}
+    active=['default']+purchase
+    allowed=plan(costs,active=active,scopes=scopes,featureBetEnabled=True)
+    assert [m['kind'] for m in allowed['modes']]==['SPIN']+['PURCHASE']*7
+    assert allowed['domains']['purchase']['complete']
+    assert len(allowed['domains']['purchase']['options'])==7
+    unbound=plan(costs,active=active,scopes=scopes,featureBetEnabled=False)
+    assert [m['kind'] for m in unbound['modes'][1:]]==['UNKNOWN_FEATURE']*7
+    no_scope=plan(costs,active=active,featureBetEnabled=True)
+    assert [m['kind'] for m in no_scope['modes'][1:]]==['UNKNOWN_FEATURE']*7
+    no_client=discover_modes({'game':dict(costConfiguration=costs,baseCostMultipliers=[1],
+                activeBetOptions=active,namedScopes=scopes,featureBetEnabled=True)},
+                CONTRACT,[SOURCE])
+    assert all(m['kind']=='UNKNOWN_FEATURE' for m in no_client['modes'][1:])
+
+
+def test_second_numbered_buy_feature_uses_active_scope_and_live_client():
+    modes=[row('default',10),row('buyFeature',700,start='bf'),
+           row('buyFeature2',1200,start='bf2')]
+    scopes={name:{'betType':'default','featureType':name}
+            for name in ('buyFeature','buyFeature2')}
+    p=plan(modes,active=['default','buyFeature','buyFeature2'],
+           scopes=scopes,featureBetEnabled=True)
+    assert [m['kind'] for m in p['modes']]==['SPIN','PURCHASE','PURCHASE']
+    assert p['modes'][2]['selector']=='buyFeature2'
+    assert not p['unresolved']
+    negative=plan(modes,active=['default','buyFeature','buyFeature2'],
+                  scopes=scopes,featureBetEnabled=False)
+    assert negative['modes'][2]['kind']=='UNKNOWN_FEATURE'
