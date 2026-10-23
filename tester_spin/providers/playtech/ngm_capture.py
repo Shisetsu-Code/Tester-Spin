@@ -89,10 +89,33 @@ def local_capture_gaps(directory, reported_steps, read):
     try:
         trace = read(directory/'wire-events.json')
         summary = read(directory/'summary.json')
-        if (trace.get('schema') != 'tester-spin/ngm-ledger/v1' or
+        if (trace.get('schema') not in ('tester-spin/ngm-ledger/v1', 'tester-spin/ngm-ledger/v2') or
                 trace.get('execution_scope') != 'official-local-demo' or
                 trace.get('server_execution') is not False or not isinstance(trace.get('events'), list)):
             return ['NGM_LOCAL_TRACE_INVALID']
+        strict_pairs = trace.get('schema') == 'tester-spin/ngm-ledger/v2'
+        expected_pairs = {}
+        if strict_pairs:
+            journal = read(directory/'dispatch-journal.json')
+            rows = journal.get('pairs') if isinstance(journal, dict) else None
+            if (not isinstance(rows,list) or journal.get('schema') != 'tester-spin/ngm-dispatch-journal/v1'
+                    or journal.get('open_dispatches') != 0 or len(rows)>2048):
+                return ['NGM_DISPATCH_JOURNAL_MISSING_OR_INCOMPLETE']
+            identifiers = set()
+            for receipt in rows:
+                if not isinstance(receipt,dict) or not isinstance(receipt.get('dispatch_id'),str):
+                    return ['NGM_DISPATCH_PAIR_INVALID']
+                uid = receipt['dispatch_id']
+                first,last = receipt.get('request_event'),receipt.get('response_event')
+                if (uid in identifiers or type(first) is not int or type(last) is not int
+                        or first>=last or not isinstance(receipt.get('frame'),str)):
+                    return ['NGM_DISPATCH_PAIR_INVALID']
+                identifiers.add(uid)
+                if receipt.get('kind') == 'spin':
+                    step = receipt.get('step')
+                    if type(step) is not int or step in expected_pairs:
+                        return ['NGM_DISPATCH_PAIR_INVALID']
+                    expected_pairs[step] = receipt
         ledger = NGMRoundLedger(trace.get('balance_before'))
         inputs, outputs = [], []
         for event in trace['events']:
@@ -104,6 +127,8 @@ def local_capture_gaps(directory, reported_steps, read):
             if kind == 'response':outputs.append(value)
         if not ledger.verified or ledger.spins != reported_steps:
             return ['NGM_LOCAL_TRACE_INCOMPLETE: '+', '.join(ledger.issues or ['STEP_COUNT_MISMATCH'])]
+        if strict_pairs and set(expected_pairs) != set(range(reported_steps)):
+            return ['NGM_DISPATCH_SPIN_PAIR_MISMATCH']
         if any(summary.get(key) != value for key, value in ledger.summary().items()):
             return ['NGM_LOCAL_SUMMARY_MISMATCH']
         previous = -1
@@ -115,6 +140,11 @@ def local_capture_gaps(directory, reported_steps, read):
                         pair.get('source_sha256') != summary.get('source_sha256') or
                         type(event_index) is not int or event_index <= previous):
                     return ['NGM_LOCAL_PAIR_PROVENANCE_MISMATCH']
+                if strict_pairs:
+                    authority = expected_pairs[index]
+                    observed = authority['request_event' if direction=='request' else 'response_event']
+                    if pair.get('dispatch_id') != authority['dispatch_id'] or event_index != observed:
+                        return ['NGM_DISPATCH_PAIR_PROVENANCE_MISMATCH']
                 previous = event_index
                 observation = pair['observation']
                 if observation['type'] != 'offline.'+direction:
