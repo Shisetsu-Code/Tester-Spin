@@ -42,6 +42,7 @@ def test_numeric_stake_ladder_requires_coherent_cost_and_distinct_starting_mode(
     costs=[row(n,int(n)//2,start='s-'+n,line='20') for n in names]
     good=plan(costs)
     assert [m['kind'] for m in good['modes']]==['SPIN']*5
+    assert [m['selector'] for m in good['modes']]==['default']*5
     assert not good['unresolved']
     damaged=[dict(c,parameters=dict(c['parameters'])) for c in costs]
     damaged[-1]['parameters']['startingMode']=damaged[0]['parameters']['startingMode']
@@ -86,6 +87,6 @@ def test_single_extra_disabled_is_base_only_if_server_marks_extra_off():
 def test_unique_standard_base_does_not_authorize_unbound_held_respin_prices():
     p=plan([row('20',20,start='Standard'),row('HR10',200,start='bonus')],
            featureBetEnabled=None)
-    assert p['modes'][0]['kind']=='SPIN'
+    assert p['modes'][0]['kind']=='SPIN' and p['modes'][0]['selector']=='default'
     assert p['modes'][1]['kind']=='UNKNOWN_FEATURE'
     assert p['unresolved']
