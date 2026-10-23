@@ -74,6 +74,23 @@ class ExecutionPrimitivesTests(unittest.TestCase):
   ledger.accept({"stakeAmount":100,"betCost":100,"winAmount":20,"gameRoundClosed":False,"gameData":{"stakeCostUuid":"id","totalWinAmount":20,"nextRound":"F"}})
   ledger.accept({"stakeAmount":0,"betCost":0,"winAmount":30,"gameRoundClosed":True,"gameData":{"stakeCostUuid":"id","totalWinAmount":50,"nextRound":"BET_END_STATE_IDENTIFIER"}})
   self.assertTrue(ledger.verify(950));self.assertFalse(ledger.verify(951))
+ def test_game_data_stake_and_terminal_phase_must_agree_with_server(self):
+  start=dict(stakeAmount=500,betCost=500,winAmount=0,gameRoundClosed=False,
+             gameData=dict(stakeCostUuid='stake-id',stake=500,nextRound='FreeGame'))
+  ledger=RoundLedger(1000,'stake-id',500)
+  ledger.accept(start)
+  bad=dict(start,gameData=dict(start['gameData'],stake=499))
+  with self.assertRaisesRegex(ValueError,'GAME_DATA_STAKE_MISMATCH'):
+   RoundLedger(1000,'stake-id',500).accept(bad)
+  contradictory=dict(start,gameRoundClosed=True)
+  with self.assertRaisesRegex(ValueError,'ROUND_TERMINAL_STATE_CONTRADICTION'):
+   RoundLedger(1000,'stake-id',500).accept(contradictory)
+  terminal=dict(start,gameRoundClosed=True,gameData=dict(start['gameData'],nextRound='BET_END_STATE_IDENTIFIER',totalWinAmount=0))
+  RoundLedger(1000,'stake-id',500).accept(terminal)
+  false_terminal=dict(terminal,gameRoundClosed=False)
+  with self.assertRaisesRegex(ValueError,'ROUND_TERMINAL_STATE_CONTRADICTION'):
+   RoundLedger(1000,'stake-id',500).accept(false_terminal)
+
  def test_continuation_cannot_charge_again(self):
   ledger=RoundLedger(1000,"id",100);ledger.accept({"stakeAmount":100,"winAmount":0,"gameData":{"stakeCostUuid":"id"}})
   with self.assertRaises(ValueError):ledger.accept({"stakeAmount":100,"winAmount":0,"gameData":{"stakeCostUuid":"id"}})
