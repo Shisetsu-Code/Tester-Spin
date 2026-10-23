@@ -39,7 +39,17 @@ class DemoSession(BrowserDemoSession):
             release=self._get(ROOT+'gpasclientconf_live.php')['id']
             if not re.fullmatch(r'[0-9.]+',release):raise ValueError('DIRECT_RELEASE_UNSUPPORTED')
             bundle=self._get(ROOT+release+'/logical_bundle.php')
-            game_root=urljoin(ROOT,bundle['games'][self.code])
+            games=bundle.get('games') if isinstance(bundle,dict) else None
+            if not isinstance(games,dict):
+                raise ValueError('GPAS_RELEASE_CATALOG_INVALID')
+            path=games.get(self.code)
+            if not isinstance(path,str) or not path:
+                # Historical catalog entries can disappear from a newer release.
+                # Never silently substitute a similarly named game/edition.
+                raise ValueError('GPAS_GAME_NOT_IN_ACTIVE_RELEASE:'+self.code)
+            if not path.startswith(('/', 'https://gpas-games.playtechone.com/')):
+                raise ValueError('GPAS_RELEASE_GAME_PATH_UNSUPPORTED')
+            game_root=urljoin(ROOT,path)
             manifest_url=urljoin(game_root.rstrip('/')+'/', 'packs/manifest.json')
             self.manifest=self._get(manifest_url)
             if self.manifest.get('gameCode')!=self.code:raise ValueError('GAME_IDENTITY_MISMATCH')
