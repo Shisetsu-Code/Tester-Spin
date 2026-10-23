@@ -7,6 +7,7 @@ from pathlib import Path
 from urllib.parse import urlencode, urlsplit
 
 from .ngm_execution import NGMRoundLedger
+from .ngm_dispatch import DispatchJournal
 from .ngm_observation import observation_points, spin_request_contract, spin_action_binding, event_action_binding, continuation_probes
 from .ngm_contracts import request_catalog, functional_manifest, passive_request_roles
 
@@ -37,7 +38,9 @@ class NGMDemoSession:
         self.scripts = []
         self.seen = set()
         self.ledger = None
-        self.dispatch_stack = []
+        self.dispatch_journal = DispatchJournal()
+        self.dispatch_stack = self.dispatch_journal.stack
+        self.round_pair_start = 0
         self.capture_directory = None
         self.request_schemas = []
         self.passive_roles = {}
@@ -186,13 +189,14 @@ class NGMDemoSession:
                     dispatch_kind = 'spin' if isinstance(spin, dict) else self.passive_roles.get(request_class, 'unknown')
                     if dispatch_kind == 'unhandled_candidate':
                         dispatch_kind = 'round_metadata' if value.get('handlerAbsent') is True else 'unknown'
-                    self.dispatch_stack.append((dispatch_kind, self.ledger.spins if dispatch_kind == 'spin' and self.ledger else None))
-                    if len(self.dispatch_stack) > 32:
-                        raise ValueError('NGM_DISPATCH_DEPTH_LIMIT')
+                    step = self.ledger.spins if dispatch_kind == 'spin' and self.ledger else None
+                    dispatch = self.dispatch_journal.request(kind=dispatch_kind,
+                        frame=row.get('frame_instance') or row['frame'],
+                        event_index=self.event_count,step=step,request_class=request_class)
                     if dispatch_kind == 'spin':
                         if not self.ledger:
                             raise ValueError('NGM_UNEXPECTED_SPIN_OUTSIDE_ROUND')
-                        self._capture_exchange(self.ledger.spins, 'request', row)
+                        self._capture_exchange(self.ledger.spins, 'request', row, dispatch_id=dispatch['dispatch_id'])
                         self.ledger.accept('spin', spin)
                     elif dispatch_kind in ('continuation', 'round_metadata', 'state_save', 'round_finish'):
                         if not self.ledger or not self.ledger.started or self.ledger.ended or not self.ledger.spins:
@@ -202,11 +206,11 @@ class NGMDemoSession:
                     elif dispatch_kind == 'unknown' and self.ledger:
                         self.ledger.errors.append('NGM_COMMAND_UNBOUND')
                 elif kind == 'offline.response':
-                    if not self.dispatch_stack:
-                        raise ValueError('NGM_RESPONSE_WITHOUT_DISPATCH')
-                    dispatch_kind, step = self.dispatch_stack.pop()
+                    receipt = self.dispatch_journal.response(
+                        frame=row.get('frame_instance') or row['frame'],event_index=self.event_count)
+                    dispatch_kind, step = receipt['kind'], receipt['step']
                     if dispatch_kind == 'spin' and self.ledger:
-                        self._capture_exchange(step, 'response', row)
+                        self._capture_exchange(step, 'response', row, dispatch_id=receipt['dispatch_id'])
                         self.ledger.accept('response', value)
                 elif kind == 'offline.payout' and self.ledger:
                     self.ledger.accept('payout', value if isinstance(value, dict) else {})
@@ -215,11 +219,12 @@ class NGMDemoSession:
         except (OSError, ValueError, TypeError, KeyError) as exc:
             self.errors.append(str(exc))
 
-    def _capture_exchange(self, step, direction, row):
+    def _capture_exchange(self, step, direction, row, *, dispatch_id=None):
         if self.capture_directory is None:
             return
         evidence = dict(execution_scope='official-local-demo', server_execution=False,
-                        source_sha256=self.source_hashes, event_index=self.event_count, observation=row)
+                        source_sha256=self.source_hashes, event_index=self.event_count,
+                        dispatch_id=dispatch_id, observation=row)
         (Path(self.capture_directory)/f'step-{step}-{direction}.json').write_text(
             json.dumps(evidence, ensure_ascii=False, indent=2), encoding='utf-8')
 
@@ -373,7 +378,7 @@ class NGMDemoSession:
         if ledger.errors:
             raise ValueError(ledger.errors[0])
         if ledger.ended and ledger.allowed and self.busy is False:
-            return True
+            return not self.dispatch_journal.stack
         self._try_free_continuation(frame)
         return False
 
@@ -384,7 +389,10 @@ class NGMDemoSession:
             raise ValueError(self.errors[0])
         if not self.demo_verified or not self.contract or self.ledger is not None or self.busy is True or any(self.popups.values()):
             raise ValueError('NGM_NOT_READY_FOR_SPIN')
+        if self.dispatch_journal.stack:
+            raise ValueError('NGM_UNSETTLED_DISPATCH_BEFORE_SPIN')
         self.continuation_tokens.clear()
+        self.round_pair_start = len(self.dispatch_journal.pairs)
         self.ledger = ledger = NGMRoundLedger(self.balance)
         try:
             frame = self._action_frame()
@@ -396,11 +404,17 @@ class NGMDemoSession:
                       'NGM_ROUND_NOT_CLOSED_AND_READY')
             if not ledger.verified:
                 raise ValueError(';'.join(ledger.issues))
+            self.dispatch_journal.verify_round(from_pair=self.round_pair_start,
+                                               expected_spins=ledger.spins)
             return ledger.summary()
         finally:
             if self.capture_directory is not None:
-                (Path(self.capture_directory)/'wire-events.json').write_text(json.dumps(dict(
-                    schema='tester-spin/ngm-ledger/v1', execution_scope='official-local-demo',
+                evidence_dir=Path(self.capture_directory)
+                (evidence_dir/'dispatch-journal.json').write_text(json.dumps(
+                    self.dispatch_journal.result(from_pair=self.round_pair_start),
+                    ensure_ascii=False, indent=2), encoding='utf-8')
+                (evidence_dir/'wire-events.json').write_text(json.dumps(dict(
+                    schema='tester-spin/ngm-ledger/v2', execution_scope='official-local-demo',
                     server_execution=False, balance_before=ledger.before, events=ledger.events),
                     ensure_ascii=False, indent=2), encoding='utf-8')
             (self.directory/('round-'+str(self.event_count)+'.json')).write_text(
