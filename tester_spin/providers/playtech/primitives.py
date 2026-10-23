@@ -184,8 +184,16 @@ class RoundLedger:
         data=decode_game_data(message.get("gameData"))
         if (not self.count or "stakeCostUuid" in data) and data.get("stakeCostUuid")!=self.identity:
             raise ValueError("STAKE_UUID_MISMATCH")
+        if "stake" in data and (type(data["stake"]) is not int or data["stake"] != self.cost):
+            raise ValueError("GAME_DATA_STAKE_MISMATCH")
+        terminal=message.get("gameRoundClosed")
+        if "gameRoundClosed" in message:
+            if type(terminal) is not bool:
+                raise ValueError("ROUND_TERMINAL_STATUS_INVALID")
+            if terminal != (data.get("nextRound")==END):
+                raise ValueError("ROUND_TERMINAL_STATE_CONTRADICTION")
         self.count+=1;self.wins+=win;self.data=data
-        self.closed=message.get("gameRoundClosed") is True and data.get("nextRound")==END
+        self.closed=terminal is True and data.get("nextRound")==END
         if self.closed and data.get("totalWinAmount")!=self.wins:raise ValueError("CUMULATIVE_WIN_MISMATCH")
         return data
 
