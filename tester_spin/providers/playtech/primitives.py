@@ -10,6 +10,7 @@ import zlib
 from copy import deepcopy
 from .protocol import money
 from .client_sources import compiled_pick_binding
+from .mode_families import base_price_families, is_disabled_extra_base, uniquely_declared_standard
 
 COMMAND = "com.pt.casino.platform.game.GameCommand"
 GAME_CLASS = "com.pt.gpas.platform.game.OgwCorosinGameCommand"
@@ -86,7 +87,8 @@ def discover_modes(configuration, contract, sources):
     line_domain=line_binding and len(costs)>1 and all(isinstance(r,dict) and isinstance(r.get('parameters'),dict)
         and str(r.get('name','')).isdigit() and r['parameters'].get('winline')==r['name']
         and r['parameters'].get('startingMode')=='Standard' for r in costs)
-    modes=[]; issues=[]; names=set(); ids=set()
+    band_names=base_price_families(costs,game,contract,text)
+    modes=[]; issues=[]; disabled=[]; names=set(); ids=set()
     for index, row in enumerate(costs):
         if not isinstance(row,dict) or not money(row.get("cost")) or row["cost"]<=0:
             raise ValueError("INVALID_MODE_COST")
@@ -95,6 +97,10 @@ def discover_modes(configuration, contract, sources):
             raise ValueError("INVALID_OR_DUPLICATE_MODE_IDENTITY")
         names.add(name);ids.add(identity)
         if active is not None and name not in active and not (index==0 and "default" in active):
+            continue
+        if (active is None and game.get('featureBetEnabled') is False and
+                name.casefold() in ('bf','buyfeature') and purchase_binding):
+            disabled.append(name)
             continue
         normalized=name.casefold()
         scope=scopes.get(name,{})
@@ -112,11 +118,18 @@ def discover_modes(configuration, contract, sources):
             kind=next(iter(declared_kinds))
         elif len(declared_kinds)>1:
             kind='UNKNOWN_FEATURE';issues.append('STAKE_KIND_CONFLICT:'+name)
-        elif (normalized in {"extra","extrabet"} or (scoped and re.fullmatch(r"extra(?:[0-9]+|x[0-9]+(?:low|mid|high)?)",normalized))) and ante_binding:
+        elif (normalized in {"extra","extrabet"} or (scoped and (
+                re.fullmatch(r"extra(?:[0-9]+|x[0-9]+(?:low|mid|high)?)",normalized) or
+                game.get('extraBetEnabled') is True and re.fullmatch(r"extra(?:fg|collector)",normalized)))) and ante_binding:
             kind="ANTE_BET"
         elif (normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and (re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized) or (pot_domain and re.fullmatch(r"buyfeature[0-9]+pot",normalized))))) and purchase_binding:
             kind="PURCHASE"
-        elif standard or line_domain or (scoped and volatility_binding and re.fullmatch(r"default(?:low|mid|high)",normalized)) or normalized in {"default","base"} or (len(costs)==1 and normalized not in {"bf","buyfeature","extra","extrabet"}):
+        elif (standard or line_domain or name in band_names or
+              is_disabled_extra_base(row,costs,game,contract) or
+              uniquely_declared_standard(row,costs,contract,text) or
+              (scoped and volatility_binding and re.fullmatch(r"default(?:low|mid|high)",normalized)) or
+              normalized in {"default","base"} or
+              (len(costs)==1 and normalized not in {"bf","buyfeature","extra","extrabet"})):
             kind="SPIN"
         else:
             kind="UNKNOWN_FEATURE";issues.append("UNBOUND_STAKE_MODE:"+name)
@@ -128,7 +141,7 @@ def discover_modes(configuration, contract, sources):
             if name not in names and not (name=="default" and costs):issues.append("ACTIVE_OPTION_UNBOUND:"+name)
     domains={key:{"complete":not issues,"source":"fresh_session.costConfiguration+client_binding+activeBetOptions",
                   "options":[m["id"] for m in modes if m["kind"]==kind]} for key,kind in (("purchase","PURCHASE"),("ante","ANTE_BET"))}
-    return {"modes":modes,"domains":domains,"unresolved":issues}
+    return {"modes":modes,"domains":domains,"unresolved":issues,"disabled_modes":disabled}
 
 
 def entry_command(mode, contract):
