@@ -15,7 +15,7 @@ class DemoSession:
         self.demo_verified=False;self.config=None;self.manifest=None;self.sources=[];self.source_hashes=[]
         self.balance=None;self.replies=[];self.errors=[];self.frames=[];self.bindings={};self.socket_urls={};self.first=True
         self.pw=None;self.browser=None;self.context=None;self.page=None;self.frame_bytes=0
-        self.sent_game_commands=[]
+        self.sent_game_commands=[];self.uncertain_dispatch=False
 
     def __enter__(self):
         from playwright.sync_api import sync_playwright
@@ -119,6 +119,7 @@ class DemoSession:
         raise TimeoutError(reason)
 
     def exchange(self,command,contract):
+        if self.uncertain_dispatch:raise ValueError('GAME_COMMAND_OUTCOME_UNCERTAIN')
         count=len(self.replies)
         before_sent=len(self.sent_game_commands)
         if self.first:
@@ -132,6 +133,7 @@ class DemoSession:
             # correlation ID instead of accepting whichever GameCommand replied.
             # Mark consumed before waiting: an uncertain wager is never retried.
             self.first=False
+            self.uncertain_dispatch=True
             self.wait(lambda:len(self.sent_game_commands)>before_sent,'CLIENT_GAME_COMMAND_NOT_OBSERVED')
             fresh=self.sent_game_commands[before_sent:]
             if len(fresh)!=1:raise ValueError('CLIENT_WAGER_DISPATCH_AMBIGUOUS')
@@ -139,14 +141,18 @@ class DemoSession:
             self.wait(lambda:any(c==correlation for c,d in self.replies[count:]),'GAME_COMMAND_TIMEOUT')
             replies=[d for c,d in self.replies[count:] if c==correlation]
             if len(replies)!=1:raise ValueError('GAME_COMMAND_RESPONSE_AMBIGUOUS')
+            self.uncertain_dispatch=False
             return replies[0]
         correlation='tester-'+uuid.uuid4().hex
+        # A failure after a send is ambiguous; preserve the session as poisoned.
+        self.uncertain_dispatch=True
         self.page.evaluate("""({command,id})=>{if(!window.__testerSocket||window.__testerSocket.readyState!==1)throw Error('DEMO_SOCKET_CLOSED');
             const envelope={...window.__testerEnvelope,correlationId:id,t:Date.now(),data:command};
             window.__testerSocket.send('3:::'+JSON.stringify(envelope));}""",{'command':command,'id':correlation})
         self.wait(lambda:any(c==correlation for c,d in self.replies[count:]),'GAME_COMMAND_TIMEOUT')
         replies=[d for c,d in self.replies[count:] if c==correlation]
         if len(replies)!=1:raise ValueError('GAME_COMMAND_RESPONSE_AMBIGUOUS')
+        self.uncertain_dispatch=False
         return replies[0]
 
     def __exit__(self,*args):
