@@ -18,6 +18,7 @@ class DemoSession(BrowserDemoSession):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.http=requests.Session();self.direct=None;self.entries=[];self.initialized=False;self.adapter_config={}
+        self.pending_wager_unknown=False
         self.http.headers.update({'Origin':ROOT.rstrip('/'),'Referer':ROOT+'gpasclient.html'})
     def _get(self,url,*,as_json=True):
         if self.stop.is_set():raise InterruptedError('DETENIDO')
@@ -113,10 +114,13 @@ class DemoSession(BrowserDemoSession):
         if self.errors:raise ValueError(self.errors[-1])
     def exchange(self,command,contract):
         if not self.demo_verified:raise ValueError('DEMO_MODE_NOT_CONFIRMED')
+        if self.pending_wager_unknown:raise ValueError('GAME_COMMAND_OUTCOME_UNCERTAIN')
         # No retries or browser fallback after dispatch: the wager may have committed.
         before=len(self.replies)
+        self.pending_wager_unknown=True
         self._request(command)
         if len(self.replies)!=before+1:raise ValueError('COMMAND_RESPONSE_MISSING')
+        self.pending_wager_unknown=False
         return self.replies[-1][1]
     def __exit__(self,*args):
         try:
