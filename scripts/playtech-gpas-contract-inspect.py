@@ -18,6 +18,18 @@ def inspect(code):
             game=current.get("game",{})
             costs=game.get("costConfiguration",[])
             text="\n".join(session.sources)
+            # Limited shape evidence for the unbound pick serializer, not a HAR.
+            contexts=[]
+            if code=='gpas_jdice_pop':
+                def sketch(pattern):
+                    for m in list(re.finditer(pattern,text))[:3]:
+                        fragment=text[max(0,m.start()-110):min(len(text),m.end()+110)]
+                        fragment=re.sub(r"https?://[^\\s;]+","[URL]",fragment)
+                        fragment=re.sub(r"[A-Za-z0-9+/=]{40,}","[OPAQUE]",fragment)
+                        contexts.append(fragment.replace("\n"," ")[:260])
+                sketch(r"[\\x27\\x22]pick[\\x27\\x22]")
+                sketch(r"GLU\\.game\\.playOut")
+                sketch(r"48775")
             def row(x):
                 params=x.get("parameters") if isinstance(x.get("parameters"),dict) else {}
                 scope=game.get("namedScopes",{}).get(x.get("name"),{})
@@ -37,7 +49,7 @@ def inspect(code):
                     compiled_pick_binding=compiled_pick_binding(text),
                     known_stake_cost="stakeCostUuid" in text,
                     known_feature_type="featureType" in text),
-                adapter_map_keys=sorted(contract.get("adapter_maps",{})))
+                adapter_map_keys=sorted(contract.get("adapter_maps",{})),pick_shapes=contexts)
 
 def main():
     ap=argparse.ArgumentParser()
