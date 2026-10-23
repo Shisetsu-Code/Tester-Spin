@@ -385,3 +385,32 @@ def test_partial_run_surfaces_empty_capture_and_recapture_steps(tmp_path):
     assert 'HAR_EMPTY_CAPTURE' in result.error
     assert any('recarg' in message for message in messages)
     assert result.structural_map['capture_next_steps']
+
+
+def test_ngm_splash_keys_target_game_iframe_not_launcher(tmp_path):
+    from types import SimpleNamespace
+    session,_=make_runtime(tmp_path)
+    frame=session.page.frames[0]
+    frame_keys=[];outer_keys=[]
+    frame.locator=lambda _:SimpleNamespace(press=lambda *args,**kw:frame_keys.append(args))
+    session.page.locator=lambda _:SimpleNamespace(press=lambda *args,**kw:outer_keys.append(args))
+    session.popups['splash']=True
+    def acknowledge(predicate,reason):
+        session.popups['splash']=False
+        assert predicate()
+    session.wait=acknowledge
+    session._dismiss_splash()
+    assert frame_keys==[('Space',)] and outer_keys==[]
+
+
+def test_ngm_splash_never_picks_from_ambiguous_game_frames(tmp_path):
+    from types import SimpleNamespace
+    session,_=make_runtime(tmp_path)
+    frame=session.page.frames[0]
+    session.page.frames=[frame,SimpleNamespace(url=frame.url,evaluate=lambda _:True)]
+    session.popups['splash']=True
+    with pytest.raises(ValueError,match='NGM_SPLASH_GAME_FRAME_UNBOUND'):
+        session._dismiss_splash()
+    session.stop.set()
+    with pytest.raises(InterruptedError,match='DETENIDO'):
+        session._dismiss_splash()
