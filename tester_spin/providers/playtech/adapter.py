@@ -57,6 +57,9 @@ class PlaytechProvider(CatalogProvider):
                         for step in range(200):
                             response=session.exchange(request,contract)
                             (directory/('response.json' if step==0 else f'response-{step}.json')).write_text(json.dumps(response,indent=2),encoding='utf-8')
+                            # Do not infer terminality from a missing boolean.
+                            if type(response.get('gameRoundClosed')) is not bool:
+                                raise ValueError('ROUND_TERMINAL_STATUS_MISSING')
                             data=ledger.accept(response);attempt.wire_steps+=1
                             if ledger.closed:break
                             if response.get('gameRoundClosed') is True:
