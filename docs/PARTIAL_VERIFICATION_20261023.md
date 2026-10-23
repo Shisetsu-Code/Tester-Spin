@@ -67,8 +67,11 @@ conserva el número de intentos y la huella del archivo de evidencia de cada jue
 
 El diagnóstico posterior de Mystery Heist identificó un fallo de resolución del
 loader: la ruta elegida por `SKIN_DIRS.basic` contiene `basic/` antes de la versión.
-El bundle exacto declarado respondió HTTP 200; el resolutor y la ejecución de los
-tres niveles de compra siguen pendientes en este checkpoint.
+El bundle exacto declarado respondió HTTP 200. Una corrección posterior dentro
+de este PR añade la resolución genérica de skins literales inequívocas y pruebas
+de regresión negativas. La prueba sintética del resolvedor pasó, pero **todavía
+faltan** la ejecución con el cliente actual, los tres niveles de compra, la
+contabilidad y el retorno confirmado: Mystery Heist sigue **PARCIAL**.
 
 ### Nolimit City
 
