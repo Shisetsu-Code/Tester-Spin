@@ -36,8 +36,6 @@ def base_price_families(costs, game, contract, source):
     Two observed wire variants:
       * monetary-labeled cost presets with identical base startingMode and
         explicitly scoped featureTypes (DOLLAR-10 .. DOLLAR-1000)
-      * numeric stake bands where name/cost ratio is constant, fixed winline,
-        and the source binds both the stake UUID and featureType (20..100).
     Prices alone are insufficient: every row needs its own base-wager schema.
     """
     if not isinstance(costs,list) or not isinstance(game,dict) or not isinstance(contract,dict):
@@ -65,24 +63,9 @@ def base_price_families(costs, game, contract, source):
             len({p.get('winline') for p in params})==1 and
             all(p.get('winline') is not None for p in params)):
             return set(labels)
-    # Numeric line/stake tiers: require the client to bind UUID + selector.
-    if not ('stakeCostUuid' in source and 'featureType' in source and 'GLU.game.playMoney' in source):
-        return set()
-    if game.get('activeBetOptions') is not None:
-        return set()
-    if not all(re.fullmatch(r'[1-9][0-9]{0,3}',n) for n in labels):
-        return set()
-    factors=[]
-    for name,cost in zip(labels,values):
-        q,r=divmod(int(name),cost)
-        if r or q<1 or q>100:
-            return set()
-        factors.append(q)
-    if (len(set(factors))==1 and len(set(labels))>=3 and
-        len({p.get('winline') for p in params})==1 and
-        next(iter({p.get('winline') for p in params})) not in (None,'') and
-        len({p.get('startingMode') for p in params})==len(entries)):
-        return set(labels)
+    # Numeric names/cost ratios without a declared server selector are NOT
+    # sufficient. Live GPAS demos returned EngineError and, on another tier,
+    # STAKE_UUID_MISMATCH even with featureType='default'. Fail closed.
     return set()
 
 
