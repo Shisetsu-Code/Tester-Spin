@@ -9,7 +9,7 @@ from hashlib import sha256
 import json
 import re
 
-_PHASE = re.compile(r"[A-Za-z][A-Za-z0-9_]{0,79}\\Z")
+_PHASE = re.compile(r"[A-Za-z][A-Za-z0-9_]{0,79}\Z")
 
 
 class ContinuationPlanner:
