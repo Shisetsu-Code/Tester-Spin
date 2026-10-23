@@ -109,5 +109,37 @@ def test_skin_loader_rejects_ambiguous_mutated_or_nonexecutable_paths():
         SKIN_LOADER + "Object.assign(SKIN_DIRS,{basic:'changed'});",
         SKIN_LOADER.replace("basic:'basic'", "basic:'basic',basic:'other'"),
     ]
+    untrusted += [
+        SKIN_LOADER.replace(
+            "const url=skin+'/'+t+'/bundle.js';",
+            "const url='/unrelated/'+t+'/bundle.js';",
+        ),
+        SKIN_LOADER.replace(
+            "const url=skin+'/'+t+'/bundle.js';",
+            "const url=skin+'/'+other+'/bundle.js';",
+        ),
+        SKIN_LOADER.replace(
+            "const skin=SKIN_DIRS.basic;",
+            "const skin=SKIN_DIRS.basic;skin='mobile';",
+        ),
+        SKIN_LOADER.replace("res:t='v0.0.38_v14.19.2'", "res:t='v1..bad'"),
+    ]
     for loader in untrusted:
         assert _declared_loader_skin_directory(loader) == ""
+
+
+def test_skin_loader_checks_bundle_version_and_direct_path():
+    assert _declared_loader_skin_directory(
+        SKIN_LOADER, version="v0.0.38_v14.19.2"
+    ) == "basic"
+    assert _declared_loader_skin_directory(
+        SKIN_LOADER, version="different"
+    ) == ""
+    direct_loader = SKIN_LOADER.replace(
+        "const skin=SKIN_DIRS.basic;const release",
+        "const release",
+    ).replace(
+        "const url=skin+'/'+t+'/bundle.js';",
+        "const url=SKIN_DIRS.basic+'/'+t+'/bundle.js';",
+    )
+    assert _declared_loader_skin_directory(direct_loader) == "basic"
