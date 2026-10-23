@@ -52,6 +52,17 @@ def test_unconfirmed_session_cannot_send_wager(tmp_path):
     with pytest.raises(ValueError,match='DEMO_MODE_NOT_CONFIRMED'):s.exchange({}, {})
     s.http.close()
 
+def test_missing_gpas_release_entry_is_not_a_keyerror_or_silent_alias(tmp_path):
+    class Missing(Session):
+        def _get(self,url,*,as_json=True):
+            if 'logical_bundle' in url:
+                return {'games':{'gpas_squeenpa_pop':'/gpasdistributed/squeenpa/'}}
+            return super()._get(url,as_json=as_json)
+    with pytest.raises(ValueError, match='GPAS_GAME_NOT_IN_ACTIVE_RELEASE:gpas_squeen_pop'):
+        with Missing('gpas_squeen_pop',tmp_path,2,threading.Event()):
+            pytest.fail('must not accept another edition as the requested game')
+
+
 def test_uncertain_direct_wager_poisoned_until_fresh_session(tmp_path):
     s=Session('gpas_fixture',tmp_path,1,threading.Event())
     s.demo_verified=True
