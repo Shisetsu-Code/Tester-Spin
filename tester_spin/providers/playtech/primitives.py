@@ -138,9 +138,14 @@ def discover_modes(configuration, contract, sources):
         # Monetary namedScopes must retain their explicit non-default selector.
         default_family_selector = (name in band_names and name.isdigit()) or (
             uniquely_declared_standard(row,costs,contract,text))
-        selector = scope.get("featureType", (
-            "default" if standard or default_family_selector else (contract.get("base_selector") or name))
-            if kind=="SPIN" and (index==0 or default_family_selector) else name)
+        # Only the fully bound Standard/winline client family authorizes this
+        # GPAS lines-N selector. Its fresh server responses were verified for
+        # 1 and 10, with an open Respin branch for 5.
+        explicit_line_selector = (kind=="SPIN" and line_domain and name.isdigit())
+        selector = (("lines-"+name) if explicit_line_selector else
+            scope.get("featureType", (
+                "default" if standard or default_family_selector else (contract.get("base_selector") or name))
+                if kind=="SPIN" and (index==0 or default_family_selector) else name))
         modes.append({"id":identity,"name":name,"kind":kind,"selector":selector,"cost":row["cost"],
                       "bet_type":scope.get("betType","default"),"multiplier":min(factors),"declaration":deepcopy(row),"server_declared":True,"observed":True})
     if not any(m["kind"]=="SPIN" for m in modes):issues.append("BASE_MODE_UNBOUND")
