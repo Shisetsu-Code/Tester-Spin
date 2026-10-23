@@ -24,11 +24,11 @@ def inspect(code):
                 def sketch(pattern):
                     for m in list(re.finditer(pattern,text))[:3]:
                         fragment=text[max(0,m.start()-110):min(len(text),m.end()+110)]
-                        fragment=re.sub(r"https?://[^\\s;]+","[URL]",fragment)
+                        fragment=re.sub(r"https?://[^\s;]+","[URL]",fragment)
                         fragment=re.sub(r"[A-Za-z0-9+/=]{40,}","[OPAQUE]",fragment)
                         contexts.append(fragment.replace("\n"," ")[:260])
-                sketch(r"[\\x27\\x22]pick[\\x27\\x22]")
-                sketch(r"GLU\\.game\\.playOut")
+                sketch(r"pick")
+                sketch(r"GLU\.game\.playOut")
                 sketch(r"48775")
             def row(x):
                 params=x.get("parameters") if isinstance(x.get("parameters"),dict) else {}
