@@ -146,3 +146,42 @@ def test_second_numbered_buy_feature_uses_active_scope_and_live_client():
     negative=plan(modes,active=['default','buyFeature','buyFeature2'],
                   scopes=scopes,featureBetEnabled=False)
     assert negative['modes'][2]['kind']=='UNKNOWN_FEATURE'
+
+
+def test_mixed_standard_winline_tiers_use_observed_gpas_lines_selectors():
+    from tester_spin.providers.playtech.mode_families import mixed_standard_line_selectors
+    rows=[row('5',5,start='Standard',line='25')]+[
+          row(str(i),i,start='special-'+str(i),line=str(5*i)) for i in (1,2,3,4)]
+    game=dict(costConfiguration=rows,baseCostMultipliers=[1])
+    source=SOURCE+' winline'
+    bound=mixed_standard_line_selectors(rows,game,CONTRACT,source)
+    assert bound=={'5':'default','1':'lines-5','2':'lines-10',
+                   '3':'lines-15','4':'lines-20'}
+    planned=discover_modes({'game':game},CONTRACT,[source])
+    assert [m['kind'] for m in planned['modes']]==['SPIN']*5
+    assert [m['selector'] for m in planned['modes']]==[
+        'default','lines-5','lines-10','lines-15','lines-20']
+    assert not planned['unresolved']
+
+
+def test_mixed_line_family_requires_complete_domain_not_price_ratios():
+    from tester_spin.providers.playtech.mode_families import mixed_standard_line_selectors
+    rows=[row('5',5,start='Standard',line='25')]+[
+          row(str(i),i,start='special-'+str(i),line=str(5*i)) for i in (1,2,3,4)]
+    config=dict(costConfiguration=rows,baseCostMultipliers=[1])
+    source=SOURCE+' winline'
+    assert not mixed_standard_line_selectors(rows,config,CONTRACT,SOURCE)
+    bad=[dict(x,parameters=dict(x['parameters'])) for x in rows]
+    bad[-1]['parameters']['winline']='20'
+    assert not mixed_standard_line_selectors(bad,config,CONTRACT,source)
+    bad=[dict(x) for x in rows]
+    bad[-1]['uuid']=bad[0]['uuid']
+    assert not mixed_standard_line_selectors(bad,config,CONTRACT,source)
+    bad=[dict(x) for x in rows]
+    bad[1]=dict(bad[1],cost=20)
+    assert not mixed_standard_line_selectors(bad,config,CONTRACT,source)
+    active=dict(config,activeBetOptions=['5','1'])
+    assert not mixed_standard_line_selectors(rows,active,CONTRACT,source)
+    # This is the previous unsafe pattern: numeric labels with same winline.
+    other=[row(n,int(n)//2,start='id-'+n,line='20') for n in ('20','40','60','80','100')]
+    assert not mixed_standard_line_selectors(other,config,CONTRACT,source)
