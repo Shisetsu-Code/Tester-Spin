@@ -143,3 +143,19 @@ def test_skin_loader_checks_bundle_version_and_direct_path():
         "const url=SKIN_DIRS.basic+'/'+t+'/bundle.js';",
     )
     assert _declared_loader_skin_directory(direct_loader) == "basic"
+
+
+
+def test_script_graph_ignores_commented_and_escaped_string_references():
+    rt = runtime()
+    parent = "https://cdn.bgaming-network.com/html/Fixture/loader.js"
+    source = (
+        "// import('assets/obsolete.js')\n"
+        "/* const old='assets/archived.js'; */"
+        'const explanation="import(\\"assets/fake.js\\")";'
+        "import('assets/current.js');"
+    )
+    discovered = _provider_script_references(rt, parent_url=parent, text=source)
+    assert discovered == [
+        "https://cdn.bgaming-network.com/html/Fixture/assets/current.js"
+    ]
