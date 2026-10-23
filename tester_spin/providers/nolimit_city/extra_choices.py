@@ -24,9 +24,14 @@ def _selector_values(expression,depth=0):
 
 def numeric_domain(source,game,*,direct_demo_transport=False):
     if game.get('nextMode')!='EXTRA_SPIN':return None
+    scan=source
+    if direct_demo_transport is True:
+        from .client_actions import _block
+        from .replay_methods import selector_source
+        scan=selector_source(source,'playerSelectedExtraSpin',_block)
     pattern=r'zeroBet\(\{playerSelectedExtraSpin:([^{}]{1,40})\}\)'
-    literals=re.findall(pattern,source)
-    if not literals or len(literals)!=len(re.findall(r'zeroBet\(\{playerSelectedExtraSpin:',source)):return None
+    literals=re.findall(pattern,scan)
+    if not literals or len(literals)!=len(re.findall(r'zeroBet\(\{playerSelectedExtraSpin:',scan)):return None
     branches=[_selector_values(value) for value in literals]
     if any(value is None for value in branches):return None
     literals=[literal for values in branches for literal in values]
@@ -44,6 +49,9 @@ def numeric_domain(source,game,*,direct_demo_transport=False):
         'ack_field':'numeric_extra_transition','source':'CLIENT_QUOTED_NUMERIC_EXTRA',
         'price_source':'game.extraSpinCost','quoted_price':str(price),
         'quoted_accumulated':str(accumulated),'target_phase':target}
+    if scan!=source:
+        domain['live_selector_contract']='nolimit-city/fresh-demo-selector/v1'
+        domain['live_selector_binding_sha256']=hashlib.sha256(source.encode('utf-8')).hexdigest()
     counter=counter_contract(source)
     if counter is not None:domain['remaining_counter_contract']=counter
     bound_returns=_bound_returns(source,direct_demo_transport)

@@ -10,6 +10,9 @@ import zlib
 from copy import deepcopy
 from .protocol import money
 from .client_sources import compiled_pick_binding
+from .mode_families import (base_price_families, is_disabled_extra_base,
+                             uniquely_declared_standard, mixed_standard_line_selectors,
+                             named_standard_line_selectors)
 
 COMMAND = "com.pt.casino.platform.game.GameCommand"
 GAME_CLASS = "com.pt.gpas.platform.game.OgwCorosinGameCommand"
@@ -86,7 +89,10 @@ def discover_modes(configuration, contract, sources):
     line_domain=line_binding and len(costs)>1 and all(isinstance(r,dict) and isinstance(r.get('parameters'),dict)
         and str(r.get('name','')).isdigit() and r['parameters'].get('winline')==r['name']
         and r['parameters'].get('startingMode')=='Standard' for r in costs)
-    modes=[]; issues=[]; names=set(); ids=set()
+    band_names=base_price_families(costs,game,contract,text)
+    mixed_lines=mixed_standard_line_selectors(costs,game,contract,text)
+    named_lines=named_standard_line_selectors(costs,game,contract,text)
+    modes=[]; issues=[]; disabled=[]; names=set(); ids=set()
     for index, row in enumerate(costs):
         if not isinstance(row,dict) or not money(row.get("cost")) or row["cost"]<=0:
             raise ValueError("INVALID_MODE_COST")
@@ -95,6 +101,10 @@ def discover_modes(configuration, contract, sources):
             raise ValueError("INVALID_OR_DUPLICATE_MODE_IDENTITY")
         names.add(name);ids.add(identity)
         if active is not None and name not in active and not (index==0 and "default" in active):
+            continue
+        if (active is None and game.get('featureBetEnabled') is False and
+                name.casefold() in ('bf','buyfeature') and purchase_binding):
+            disabled.append(name)
             continue
         normalized=name.casefold()
         scope=scopes.get(name,{})
@@ -112,15 +122,48 @@ def discover_modes(configuration, contract, sources):
             kind=next(iter(declared_kinds))
         elif len(declared_kinds)>1:
             kind='UNKNOWN_FEATURE';issues.append('STAKE_KIND_CONFLICT:'+name)
-        elif (normalized=="extra" or (scoped and re.fullmatch(r"extra(?:[0-9]+|x[0-9]+(?:low|mid|high)?)",normalized))) and ante_binding:
+        elif (normalized in {"extra","extrabet"} or (scoped and (
+                re.fullmatch(r"extra(?:[0-9]+|x[0-9]+(?:low|mid|high)?)",normalized) or
+                game.get('extraBetEnabled') is True and re.fullmatch(r"extra(?:fg|collector)",normalized)))) and ante_binding:
             kind="ANTE_BET"
-        elif (normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and (re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized) or (pot_domain and re.fullmatch(r"buyfeature[0-9]+pot",normalized))))) and purchase_binding:
+        elif (normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and (re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized) or (pot_domain and re.fullmatch(r"buyfeature[0-9]+pot",normalized)))) or
+              (scoped and game.get('featureBetEnabled') is True and
+               re.fullmatch(r'buyfeature(?:[1-9][0-9]*|red|green|blue|redgreen|redblue|greenblue|redgreenblue)', normalized))) and purchase_binding:
+            # Configured numbered / coloured bonus entries require *both*
+            # the active scoped selector and the live BuyFeature client binding.
+            # Mode names alone are not purchase authorization.
             kind="PURCHASE"
-        elif standard or line_domain or (scoped and volatility_binding and re.fullmatch(r"default(?:low|mid|high)",normalized)) or normalized in {"default","base"} or (len(costs)==1 and normalized not in {"bf","buyfeature","extra"}):
+        elif (standard or line_domain or name in band_names or name in mixed_lines or name in named_lines or
+              is_disabled_extra_base(row,costs,game,contract) or
+              uniquely_declared_standard(row,costs,contract,text) or
+              (scoped and volatility_binding and re.fullmatch(r"default(?:low|mid|high)",normalized)) or
+              normalized in {"default","base"} or
+              (len(costs)==1 and normalized not in {"bf","buyfeature","extra","extrabet"})):
             kind="SPIN"
         else:
             kind="UNKNOWN_FEATURE";issues.append("UNBOUND_STAKE_MODE:"+name)
-        modes.append({"id":identity,"name":name,"kind":kind,"selector":scope.get("featureType",("default" if standard else (contract.get("base_selector") or name)) if kind=="SPIN" and index==0 else name),"cost":row["cost"],
+        # Current demo proof: numeric cost bands and the unique Standard base
+        # bind through featureType='default'; prices/UUID still select the row.
+        # Monetary namedScopes must retain their explicit non-default selector.
+        default_family_selector = (name in band_names and name.isdigit()) or (
+            uniquely_declared_standard(row,costs,contract,text))
+        # Only the fully bound Standard/winline client family authorizes this
+        # GPAS lines-N selector. Its fresh server responses were verified for
+        # 1 and 10, with an open Respin branch for 5.
+        explicit_line_selector = (kind=="SPIN" and line_domain and name.isdigit())
+        selector = (("lines-"+name) if explicit_line_selector else
+            named_lines.get(name, mixed_lines.get(name, scope.get("featureType", (
+                "default" if standard or default_family_selector else (contract.get("base_selector") or name))
+                if kind=="SPIN" and (index==0 or default_family_selector) else name))))
+        # A current GPAS antebet can be displayed as "Extra" while its
+        # protocol selector is lower-case "extra". This requires an enabled
+        # ante declaration, the existing client ExtraBets binding and no
+        # explicit conflicting server scope; never lower-case arbitrary modes.
+        if (kind=="ANTE_BET" and normalized=="extra" and name!="extra"
+                and game.get('extraBetEnabled') is True and ante_binding
+                and 'featureType' not in scope):
+            selector="extra"
+        modes.append({"id":identity,"name":name,"kind":kind,"selector":selector,"cost":row["cost"],
                       "bet_type":scope.get("betType","default"),"multiplier":min(factors),"declaration":deepcopy(row),"server_declared":True,"observed":True})
     if not any(m["kind"]=="SPIN" for m in modes):issues.append("BASE_MODE_UNBOUND")
     if active is not None:
@@ -128,7 +171,7 @@ def discover_modes(configuration, contract, sources):
             if name not in names and not (name=="default" and costs):issues.append("ACTIVE_OPTION_UNBOUND:"+name)
     domains={key:{"complete":not issues,"source":"fresh_session.costConfiguration+client_binding+activeBetOptions",
                   "options":[m["id"] for m in modes if m["kind"]==kind]} for key,kind in (("purchase","PURCHASE"),("ante","ANTE_BET"))}
-    return {"modes":modes,"domains":domains,"unresolved":issues}
+    return {"modes":modes,"domains":domains,"unresolved":issues,"disabled_modes":disabled}
 
 
 def entry_command(mode, contract):
@@ -184,8 +227,16 @@ class RoundLedger:
         data=decode_game_data(message.get("gameData"))
         if (not self.count or "stakeCostUuid" in data) and data.get("stakeCostUuid")!=self.identity:
             raise ValueError("STAKE_UUID_MISMATCH")
+        if "stake" in data and (type(data["stake"]) is not int or data["stake"] != self.cost):
+            raise ValueError("GAME_DATA_STAKE_MISMATCH")
+        terminal=message.get("gameRoundClosed")
+        if "gameRoundClosed" in message:
+            if type(terminal) is not bool:
+                raise ValueError("ROUND_TERMINAL_STATUS_INVALID")
+            if terminal != (data.get("nextRound")==END):
+                raise ValueError("ROUND_TERMINAL_STATE_CONTRADICTION")
         self.count+=1;self.wins+=win;self.data=data
-        self.closed=message.get("gameRoundClosed") is True and data.get("nextRound")==END
+        self.closed=terminal is True and data.get("nextRound")==END
         if self.closed and data.get("totalWinAmount")!=self.wins:raise ValueError("CUMULATIVE_WIN_MISMATCH")
         return data
 

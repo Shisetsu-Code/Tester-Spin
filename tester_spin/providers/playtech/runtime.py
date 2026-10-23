@@ -15,6 +15,7 @@ class DemoSession:
         self.demo_verified=False;self.config=None;self.manifest=None;self.sources=[];self.source_hashes=[]
         self.balance=None;self.replies=[];self.errors=[];self.frames=[];self.bindings={};self.socket_urls={};self.first=True
         self.pw=None;self.browser=None;self.context=None;self.page=None;self.frame_bytes=0
+        self.sent_game_commands=[];self.uncertain_dispatch=False
 
     def __enter__(self):
         from playwright.sync_api import sync_playwright
@@ -86,7 +87,16 @@ class DemoSession:
         if not isinstance(data,dict):return
         kind=data.get('_type','')
         if direction=='sent' and kind=='InitGameSession':self.bindings[key]=data.get('gameCode')
-        if self.bindings[key]!=self.code or direction!='received':return
+        if self.bindings[key]!=self.code:return
+        if direction=='sent' and kind==COMMAND:
+            correlation=packet.get('correlationId')
+            if not isinstance(correlation,str) or not correlation or len(correlation)>256:
+                self.errors.append('GAME_COMMAND_CORRELATION_MISSING')
+            elif len(self.sent_game_commands)>=20000:
+                self.errors.append('GAME_COMMAND_CAPTURE_LIMIT')
+            else:
+                self.sent_game_commands.append((key,correlation))
+        if direction!='received':return
         if kind.endswith('GetGameConfigurationResponse'):self.config=data.get('data')
         elif kind.endswith('BalanceNotification'):
             values=[b.get('amount') for b in data.get('balance',[]) if isinstance(b,dict) and b.get('_type','').endswith('MonetaryBalanceData')]
@@ -109,7 +119,9 @@ class DemoSession:
         raise TimeoutError(reason)
 
     def exchange(self,command,contract):
+        if self.uncertain_dispatch:raise ValueError('GAME_COMMAND_OUTCOME_UNCERTAIN')
         count=len(self.replies)
+        before_sent=len(self.sent_game_commands)
         if self.first:
             result=self.page.evaluate("""({command,legacy})=>{try{
                 const data={...command.gameData};delete data._type;
@@ -117,15 +129,31 @@ class DemoSession:
                 else {GLU.game.report.stake(command.betCost);GLU.game.playMoney(command.gameData._type,data,command.featureType);}
                 return {ok:true};}catch(e){return {error:String(e)}}}""",{'command':command,'legacy':contract['dialect']=='legacy'})
             if result.get('error'):raise ValueError('CLIENT_API_REJECTED:'+result['error'][:200])
+            # The client constructs the first wager envelope. Bind its observed
+            # correlation ID instead of accepting whichever GameCommand replied.
+            # Mark consumed before waiting: an uncertain wager is never retried.
             self.first=False
-            self.wait(lambda:len(self.replies)>count,'GAME_COMMAND_TIMEOUT')
-            return self.replies[-1][1]
+            self.uncertain_dispatch=True
+            self.wait(lambda:len(self.sent_game_commands)>before_sent,'CLIENT_GAME_COMMAND_NOT_OBSERVED')
+            fresh=self.sent_game_commands[before_sent:]
+            if len(fresh)!=1:raise ValueError('CLIENT_WAGER_DISPATCH_AMBIGUOUS')
+            correlation=fresh[0][1]
+            self.wait(lambda:any(c==correlation for c,d in self.replies[count:]),'GAME_COMMAND_TIMEOUT')
+            replies=[d for c,d in self.replies[count:] if c==correlation]
+            if len(replies)!=1:raise ValueError('GAME_COMMAND_RESPONSE_AMBIGUOUS')
+            self.uncertain_dispatch=False
+            return replies[0]
         correlation='tester-'+uuid.uuid4().hex
+        # A failure after a send is ambiguous; preserve the session as poisoned.
+        self.uncertain_dispatch=True
         self.page.evaluate("""({command,id})=>{if(!window.__testerSocket||window.__testerSocket.readyState!==1)throw Error('DEMO_SOCKET_CLOSED');
             const envelope={...window.__testerEnvelope,correlationId:id,t:Date.now(),data:command};
             window.__testerSocket.send('3:::'+JSON.stringify(envelope));}""",{'command':command,'id':correlation})
         self.wait(lambda:any(c==correlation for c,d in self.replies[count:]),'GAME_COMMAND_TIMEOUT')
-        return next(d for c,d in self.replies[count:] if c==correlation)
+        replies=[d for c,d in self.replies[count:] if c==correlation]
+        if len(replies)!=1:raise ValueError('GAME_COMMAND_RESPONSE_AMBIGUOUS')
+        self.uncertain_dispatch=False
+        return replies[0]
 
     def __exit__(self,*args):
         try:

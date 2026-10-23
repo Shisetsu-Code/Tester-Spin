@@ -1,0 +1,55 @@
+name: Playtech original numbered and colored BuyFeature
+run-name: Original ZIP · Cash of Fortune + Gold of the Gods
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-original-buys.yml
+      - tester_spin/providers/playtech/primitives.py
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  purchases:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[playtech]'
+      - name: Execute all official purchase choices and verify terminal return
+        shell: bash
+        run: |
+          set +e
+          python scripts/playtech-actions-sample.py \
+            --games gpas_coft_pop gpas_gotzon_pop \
+            --spins 1 --timeout 45 --wall-timeout 130 \
+            --data-root "$RUNNER_TEMP/playtech-original-purchase-demo" \
+            --output-dir safe-output
+          code=$?
+          echo "CLI_EXIT=$code"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('safe-output/summary.json')
+          for r in json.loads(p.read_text())['results'] if p.exists() else []:
+              print('BUY_FEATURE_RESULT',json.dumps({
+                  'code':r.get('symbol'),'status':r.get('status'),
+                  'closed':r.get('successful_spins'),
+                  'issues':r.get('execution_issues',[])},ensure_ascii=False))
+          PY
+          exit 0
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-gpas-buy-feature
+          path: safe-output/
+          if-no-files-found: warn
+          retention-days: 7

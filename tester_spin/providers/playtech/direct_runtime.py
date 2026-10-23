@@ -18,6 +18,7 @@ class DemoSession(BrowserDemoSession):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.http=requests.Session();self.direct=None;self.entries=[];self.initialized=False;self.adapter_config={}
+        self.pending_wager_unknown=False
         self.http.headers.update({'Origin':ROOT.rstrip('/'),'Referer':ROOT+'gpasclient.html'})
     def _get(self,url,*,as_json=True):
         if self.stop.is_set():raise InterruptedError('DETENIDO')
@@ -38,7 +39,17 @@ class DemoSession(BrowserDemoSession):
             release=self._get(ROOT+'gpasclientconf_live.php')['id']
             if not re.fullmatch(r'[0-9.]+',release):raise ValueError('DIRECT_RELEASE_UNSUPPORTED')
             bundle=self._get(ROOT+release+'/logical_bundle.php')
-            game_root=urljoin(ROOT,bundle['games'][self.code])
+            games=bundle.get('games') if isinstance(bundle,dict) else None
+            if not isinstance(games,dict):
+                raise ValueError('GPAS_RELEASE_CATALOG_INVALID')
+            path=games.get(self.code)
+            if not isinstance(path,str) or not path:
+                # Historical catalog entries can disappear from a newer release.
+                # Never silently substitute a similarly named game/edition.
+                raise ValueError('GPAS_GAME_NOT_IN_ACTIVE_RELEASE:'+self.code)
+            if not path.startswith(('/', 'https://gpas-games.playtechone.com/')):
+                raise ValueError('GPAS_RELEASE_GAME_PATH_UNSUPPORTED')
+            game_root=urljoin(ROOT,path)
             manifest_url=urljoin(game_root.rstrip('/')+'/', 'packs/manifest.json')
             self.manifest=self._get(manifest_url)
             if self.manifest.get('gameCode')!=self.code:raise ValueError('GAME_IDENTITY_MISMATCH')
@@ -113,10 +124,13 @@ class DemoSession(BrowserDemoSession):
         if self.errors:raise ValueError(self.errors[-1])
     def exchange(self,command,contract):
         if not self.demo_verified:raise ValueError('DEMO_MODE_NOT_CONFIRMED')
+        if self.pending_wager_unknown:raise ValueError('GAME_COMMAND_OUTCOME_UNCERTAIN')
         # No retries or browser fallback after dispatch: the wager may have committed.
         before=len(self.replies)
+        self.pending_wager_unknown=True
         self._request(command)
         if len(self.replies)!=before+1:raise ValueError('COMMAND_RESPONSE_MISSING')
+        self.pending_wager_unknown=False
         return self.replies[-1][1]
     def __exit__(self,*args):
         try:
