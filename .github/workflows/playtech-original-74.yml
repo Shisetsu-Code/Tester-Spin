@@ -1,0 +1,120 @@
+name: Playtech ZIP original 74 demos baseline
+run-name: 24 GPAS + 50 NGM · complete original fuzzer sample
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-original-74.yml
+      - tester_spin/providers/playtech/**
+      - scripts/playtech-actions-sample.py
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        include:
+          - group: 'gpas1'
+            kind: 'gpas'
+            games: 'gpas_aogggriffin_pop gpas_gstorm2_pop gpas_agstorm3_pop gpas_mgaogkol_pop'
+          - group: 'gpas2'
+            kind: 'gpas'
+            games: 'gpas_aogww_pop gpas_aogwfot_pop gpas_cashrl_pop gpas_coft_pop'
+          - group: 'gpas3'
+            kind: 'gpas'
+            games: 'gpas_crylo_pop gpas_dostormspp_pop gpas_eemeraldspp_pop gpas_scqueen_pop'
+          - group: 'gpas4'
+            kind: 'gpas'
+            games: 'gpas_squeen_pop gpas_fluffyf_pop gpas_jokjac_pop gpas_goalmsnjp_pop'
+          - group: 'gpas5'
+            kind: 'gpas'
+            games: 'gpas_wcupcc_pop gpas_gporang_pop gpas_gotzon_pop gpas_krluprising_pop'
+          - group: 'gpas6'
+            kind: 'gpas'
+            games: 'gpas_krsqueen_pop gpas_gotabyss_pop gpas_lluckmcc_pop gpas_lluckmccpp_pop'
+          - group: 'ngm1'
+            kind: 'ngm'
+            games: 'ashadv ftsis aogmt aogroo ashamw'
+          - group: 'ngm2'
+            kind: 'ngm'
+            games: 'anwild tmccoy gtsatq bs bl'
+          - group: 'ngm3'
+            kind: 'ngm'
+            games: 'bt bigsh ashbob bup catqc'
+          - group: 'ngm4'
+            kind: 'ngm'
+            games: 'cm cbells ccccny c7 dvncvnoptpp'
+          - group: 'ngm5'
+            kind: 'ngm'
+            games: 'mobdt nian esm evj fcgz'
+          - group: 'ngm6'
+            kind: 'ngm'
+            games: 'gtsfc fbr fxf fdtsl fdtjg'
+          - group: 'ngm7'
+            kind: 'ngm'
+            games: 'fdt fnfrj fm fmjp galst'
+          - group: 'ngm8'
+            kind: 'ngm'
+            games: 'ges gemheat ashhotj irl jbells'
+          - group: 'ngm9'
+            kind: 'ngm'
+            games: 'jpgt jdlo ashjut ashjid ashlcl'
+          - group: 'ngm10'
+            kind: 'ngm'
+            games: 'ght_a lumli mgstk mwilds mcb'
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+      PYTHONUNBUFFERED: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare official demo client
+        env:
+          FAMILY: ${{ matrix.kind }}
+        run: |
+          python -m pip install '.[playtech]'
+          if [ "$FAMILY" = 'ngm' ]; then
+            python -m playwright install --with-deps chromium
+          fi
+      - name: Verify every original game in a fresh demo session
+        shell: bash
+        env:
+          GAME_CODES: ${{ matrix.games }}
+        run: |
+          set +e
+          read -ra codes <<< "$GAME_CODES"
+          python scripts/playtech-actions-sample.py \
+            --games "${codes[@]}" --spins 1 --timeout 45 --wall-timeout 110 \
+            --data-root "$RUNNER_TEMP/original-games-74" \
+            --output-dir evidence-summary
+          code=$?
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path('evidence-summary/summary.json')
+          rows=json.loads(path.read_text())['results'] if path.exists() else []
+          print('ORIGINAL_74_RESULTS',json.dumps([{
+            'code':r.get('symbol'),'status':r.get('status'),
+            'spins':r.get('successful_spins',0),
+            'issues':r.get('execution_issues',[])[:15]} for r in rows],ensure_ascii=False))
+          PY
+          echo "cli_exit_code=$code"
+          exit 0
+      - name: Keep only sanitized summaries, never raw HAR or tokens
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playtech-original-${{ matrix.group }}
+          path: evidence-summary/
+          if-no-files-found: warn
+          retention-days: 7
