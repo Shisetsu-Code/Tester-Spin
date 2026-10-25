@@ -11,7 +11,7 @@ import re
 
 _ID=re.compile(r'(?:gpas_)?[A-Za-z][A-Za-z0-9_]{0,79}\Z')
 _MODE=re.compile(r'[A-Za-z0-9][A-Za-z0-9_-]{0,55}\Z')
-_UUID=re.compile(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\Z')
+_UUID=re.compile(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\Z')
 _END='BET_END_STATE_IDENTIFIER'
 _AUTH={'model-reported','direct-observation','scope-reconciliation','captured-protocol'}
 
