@@ -10,7 +10,8 @@ from collections import Counter
 import re
 
 _ID=re.compile(r'(?:gpas_)?[A-Za-z][A-Za-z0-9_]{0,79}\Z')
-_MODE=re.compile(r'[A-Za-z][A-Za-z0-9_-]{0,55}\Z')
+_MODE=re.compile(r'[A-Za-z0-9][A-Za-z0-9_-]{0,55}\Z')
+_UUID=re.compile(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\Z')
 _END='BET_END_STATE_IDENTIFIER'
 _AUTH={'model-reported','direct-observation','scope-reconciliation','captured-protocol'}
 
@@ -18,7 +19,7 @@ _AUTH={'model-reported','direct-observation','scope-reconciliation','captured-pr
 def _labels(value):
     if not isinstance(value,str) or not _MODE.fullmatch(value):
         return 'UNKNOWN_OR_UUID_SELECTOR'
-    if value.casefold().startswith('stakecostuuid'):
+    if value.casefold().startswith('stakecostuuid') or _UUID.fullmatch(value):
         return 'UNKNOWN_OR_UUID_SELECTOR'
     return value
 
