@@ -79,3 +79,17 @@ def test_duplicate_games_cannot_be_inferred_as_distinct():
     c['total']=len(c['games'])
     with pytest.raises(ValueError,match='BUNDLE_GAME_IDS_INVALID'):
         summarize_capture(c,s,m)
+
+
+def test_numeric_line_identifiers_are_kept_but_raw_uuid_modes_are_redacted():
+    c,s,m=bundle()
+    ops=c['games'][0]['attempts'][0]['operations']
+    ops.append(op('5x5_3_bomb'))
+    ops.append(op('40'))
+    ops.append(op('550e8400-e29b-41d4-a716-446655440000'))
+    report=summarize_capture(c,s,m)
+    row=next(x for x in report['rows'] if x['game_code']=='gpas_checked_pop')
+    assert '5x5_3_bomb' in row['observed_mode_labels']
+    assert '40' in row['observed_mode_labels']
+    assert '550e8400' not in json.dumps(report)
+    assert 'UNKNOWN_OR_UUID_SELECTOR' in row['observed_mode_labels']
