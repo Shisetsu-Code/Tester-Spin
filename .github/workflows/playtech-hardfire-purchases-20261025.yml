@@ -1,0 +1,55 @@
+name: GPAS 2026-10-25 captured purchase scale regression
+run-name: HardFire compra BuyFeature · default coin y liquidación
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-hardfire-purchases-20261025.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    env:
+      PYTHONUNBUFFERED: '1'
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[playtech]'
+      - name: Verify real demo buy-feature and buy-bonus sequences
+        shell: bash
+        run: |
+          set +e
+          python scripts/playtech-actions-sample.py \
+            --games gpas_diamdhrbf_pop gpas_pigeonfs_pop gpas_ghgranny_pop \
+            --spins 1 --timeout 35 --wall-timeout 110 \
+            --data-root "$RUNNER_TEMP/har25-purchases" \
+            --output-dir output
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path('output/summary.json')
+          if p.exists():
+            for row in json.loads(p.read_text())['results']:
+              print('HAR25_PURCHASE_RECHECK',json.dumps({
+                 'code':row['symbol'],'status':row['status'],
+                 'verified_rounds':row.get('successful_spins',0),
+                 'issues':row.get('execution_issues',[])[:10]
+              },ensure_ascii=False))
+          PY
+          exit 0
+      - name: Upload sanitized analysis only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: har25-purchases
+          path: output/
+          if-no-files-found: warn
+          retention-days: 7
