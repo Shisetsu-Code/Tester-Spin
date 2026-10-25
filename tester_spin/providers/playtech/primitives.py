@@ -13,7 +13,7 @@ from .client_sources import compiled_pick_binding
 from .two_option_contracts import infer_two_option_modes
 from .mode_families import (base_price_families, is_disabled_extra_base,
                              uniquely_declared_standard, mixed_standard_line_selectors,
-                             named_standard_line_selectors)
+                             named_standard_line_selectors, card_buy_family)
 
 COMMAND = "com.pt.casino.platform.game.GameCommand"
 GAME_CLASS = "com.pt.gpas.platform.game.OgwCorosinGameCommand"
@@ -94,6 +94,7 @@ def discover_modes(configuration, contract, sources):
     mixed_lines=mixed_standard_line_selectors(costs,game,contract,text)
     named_lines=named_standard_line_selectors(costs,game,contract,text)
     guarded_pairs=infer_two_option_modes(costs,game,contract,text)
+    card_buys=card_buy_family(costs,game,contract,text)
     modes=[]; issues=[]; disabled=[]; names=set(); ids=set()
     for index, row in enumerate(costs):
         if not isinstance(row,dict) or not money(row.get("cost")) or row["cost"]<=0:
@@ -133,7 +134,7 @@ def discover_modes(configuration, contract, sources):
                 game.get('extraBetEnabled') is True and re.fullmatch(r"extra(?:fg|collector)",normalized) or
                 game.get('extraBetEnabled') is True and normalized=="ultra"))) and ante_binding:
             kind="ANTE_BET"
-        elif (normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and (re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized) or (pot_domain and re.fullmatch(r"buyfeature[0-9]+pot",normalized)))) or
+        elif (name in card_buys or normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and (re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized) or (pot_domain and re.fullmatch(r"buyfeature[0-9]+pot",normalized)))) or
               (scoped and game.get('featureBetEnabled') is True and
                re.fullmatch(r'buyfeature(?:[1-9][0-9]*|red|green|blue|redgreen|redblue|greenblue|redgreenblue)', normalized))) and purchase_binding:
             # Configured numbered / coloured bonus entries require *both*
