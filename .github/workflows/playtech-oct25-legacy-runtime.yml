@@ -1,0 +1,51 @@
+name: Playtech Oct25 legacy two-option runtime verification
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-oct25-legacy-runtime.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    env:
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[playtech]'
+      - name: Check normal and buy with real legacy game protocol
+        shell: bash
+        run: |
+          set +e
+          python scripts/playtech-actions-sample.py \
+            --games gpas_sorome_pop --spins 1 --timeout 30 --wall-timeout 110 \
+            --data-root "$RUNNER_TEMP/oct25-legacy-demo" \
+            --output-dir safe-result
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('safe-result/summary.json')
+          if p.is_file():
+            for r in json.loads(p.read_text())['results']:
+              print('OCT25_LEGACY_RUNTIME',json.dumps({
+                'game':r['symbol'],'status':r['status'],'rounds':r['successful_spins'],
+                'issues':r.get('execution_issues',[])[:12],
+                'attempts':[{'ok':a['ok'],'steps':a['wire_steps'],
+                  'error':a['error']} for a in r.get('attempts',[])[:12]]},ensure_ascii=False))
+          PY
+          exit 0
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: oct25-legacy-runtime
+          path: safe-result/
+          if-no-files-found: warn
+          retention-days: 7
