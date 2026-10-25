@@ -10,6 +10,7 @@ import zlib
 from copy import deepcopy
 from .protocol import money
 from .client_sources import compiled_pick_binding
+from .two_option_contracts import infer_two_option_modes
 from .mode_families import (base_price_families, is_disabled_extra_base,
                              uniquely_declared_standard, mixed_standard_line_selectors,
                              named_standard_line_selectors)
@@ -92,6 +93,7 @@ def discover_modes(configuration, contract, sources):
     band_names=base_price_families(costs,game,contract,text)
     mixed_lines=mixed_standard_line_selectors(costs,game,contract,text)
     named_lines=named_standard_line_selectors(costs,game,contract,text)
+    guarded_pairs=infer_two_option_modes(costs,game,contract,text)
     modes=[]; issues=[]; disabled=[]; names=set(); ids=set()
     for index, row in enumerate(costs):
         if not isinstance(row,dict) or not money(row.get("cost")) or row["cost"]<=0:
@@ -120,11 +122,16 @@ def discover_modes(configuration, contract, sources):
         if mapped:declared_kinds=set(declared_kinds)|{mapped}
         if len(declared_kinds)==1:
             kind=next(iter(declared_kinds))
+            if name in guarded_pairs and kind != guarded_pairs[name]['kind']:
+                kind='UNKNOWN_FEATURE';issues.append('STAKE_KIND_CONFLICT:'+name)
         elif len(declared_kinds)>1:
             kind='UNKNOWN_FEATURE';issues.append('STAKE_KIND_CONFLICT:'+name)
+        elif name in guarded_pairs:
+            kind=guarded_pairs[name]['kind']
         elif (normalized in {"extra","extrabet"} or (scoped and (
                 re.fullmatch(r"extra(?:[0-9]+|x[0-9]+(?:low|mid|high)?)",normalized) or
-                game.get('extraBetEnabled') is True and re.fullmatch(r"extra(?:fg|collector)",normalized)))) and ante_binding:
+                game.get('extraBetEnabled') is True and re.fullmatch(r"extra(?:fg|collector)",normalized) or
+                game.get('extraBetEnabled') is True and normalized=="ultra"))) and ante_binding:
             kind="ANTE_BET"
         elif (normalized in {"bf","buyfeature"} or ((scoped or game.get("featureBetEnabled") is True) and (re.fullmatch(r"(?:bf[0-9]+|buyfeature(?:[0-9]+x|extra))",normalized) or (pot_domain and re.fullmatch(r"buyfeature[0-9]+pot",normalized)))) or
               (scoped and game.get('featureBetEnabled') is True and
@@ -159,6 +166,8 @@ def discover_modes(configuration, contract, sources):
         # protocol selector is lower-case "extra". This requires an enabled
         # ante declaration, the existing client ExtraBets binding and no
         # explicit conflicting server scope; never lower-case arbitrary modes.
+        if kind!="UNKNOWN_FEATURE" and name in guarded_pairs:
+            selector=guarded_pairs[name]['selector']
         if (kind=="ANTE_BET" and normalized=="extra" and name!="extra"
                 and game.get('extraBetEnabled') is True and ante_binding
                 and 'featureType' not in scope):
