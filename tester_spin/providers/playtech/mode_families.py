@@ -186,3 +186,56 @@ def named_standard_line_selectors(costs, game, contract, source):
         or special[0][1]!=max(levels)):
         return {}
     return mapping
+
+
+def card_buy_family(costs, game, contract, source):
+    """A bounded, client-backed BF*Cards purchase family from live GPAS.
+
+    Do not infer purchases from names or historical captures alone. Require
+    the full *current* active-options list, a live BuyFeature client binder,
+    individually named/UUID-backed feature options, and distinct server
+    starting modes. Any incomplete/contradictory declaration fails closed.
+    """
+    if (not isinstance(costs,list) or not 2 <= len(costs) <= 12
+        or not isinstance(game,dict) or not isinstance(contract,dict)
+        or contract.get('dialect') != 'modern'
+        or game.get('featureBetEnabled') is not True
+        or not all(key in source for key in ('BuyFeatureController','featureType',
+                                             'stakeCostUuid','GLU.game.playMoney'))):
+        return set()
+    active=game.get('activeBetOptions')
+    if (not isinstance(active,list) or len(active)!=len(costs)
+        or set(active)!={r.get('name') for r in costs if isinstance(r,dict)}):
+        return set()
+    bases=[r for r in costs if isinstance(r,dict) and r.get('name')=='default']
+    if len(bases)!=1:
+        return set()
+    base=bases[0]
+    if not _base_plays(base) or type(base.get('cost')) is not int or base['cost']<=0:
+        return set()
+    base_winline=_parameters(base).get('winline')
+    if not isinstance(base_winline,str) or not base_winline:
+        return set()
+    seen_uuid={base.get('uuid')}
+    seen_modes={_parameters(base).get('startingMode')}
+    if not all(isinstance(x,str) and x for x in seen_uuid|seen_modes):
+        return set()
+    features=set()
+    for row in costs:
+        if row is base:
+            continue
+        if not isinstance(row,dict):
+            return set()
+        name=row.get('name')
+        if not isinstance(name,str) or not re.fullmatch(r'BF[1-9][0-9]{0,2}Cards',name):
+            return set()
+        params=_parameters(row)
+        uuid,mode=row.get('uuid'),params.get('startingMode')
+        if (not _base_plays(row)
+            or params.get('winline')!=base_winline
+            or type(row.get('cost')) is not int or row['cost']<=base['cost']
+            or not isinstance(uuid,str) or not uuid or uuid in seen_uuid
+            or not isinstance(mode,str) or not mode or mode in seen_modes):
+            return set()
+        seen_uuid.add(uuid);seen_modes.add(mode);features.add(name)
+    return features
