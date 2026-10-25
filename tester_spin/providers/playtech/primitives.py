@@ -13,7 +13,8 @@ from .client_sources import compiled_pick_binding
 from .two_option_contracts import infer_two_option_modes
 from .mode_families import (base_price_families, is_disabled_extra_base,
                              uniquely_declared_standard, mixed_standard_line_selectors,
-                             named_standard_line_selectors, card_buy_family)
+                             named_standard_line_selectors, card_buy_family,
+                             legacy_numeric_base_with_named_buy)
 
 COMMAND = "com.pt.casino.platform.game.GameCommand"
 GAME_CLASS = "com.pt.gpas.platform.game.OgwCorosinGameCommand"
@@ -95,6 +96,7 @@ def discover_modes(configuration, contract, sources):
     named_lines=named_standard_line_selectors(costs,game,contract,text)
     guarded_pairs=infer_two_option_modes(costs,game,contract,text)
     card_buys=card_buy_family(costs,game,contract,text)
+    legacy_pair=legacy_numeric_base_with_named_buy(costs,game,contract,text)
     modes=[]; issues=[]; disabled=[]; names=set(); ids=set()
     for index, row in enumerate(costs):
         if not isinstance(row,dict) or not money(row.get("cost")) or row["cost"]<=0:
@@ -129,6 +131,8 @@ def discover_modes(configuration, contract, sources):
             kind='UNKNOWN_FEATURE';issues.append('STAKE_KIND_CONFLICT:'+name)
         elif name in guarded_pairs:
             kind=guarded_pairs[name]['kind']
+        elif name in legacy_pair:
+            kind=legacy_pair[name]
         elif (normalized in {"extra","extrabet"} or (scoped and (
                 re.fullmatch(r"extra(?:[0-9]+|x[0-9]+(?:low|mid|high)?)",normalized) or
                 game.get('extraBetEnabled') is True and re.fullmatch(r"extra(?:fg|collector)",normalized) or
