@@ -119,3 +119,46 @@ def test_observed_buy_bonus_free_game_auto_continuation_stays_unpaid_and_termina
     assert len(plan.records)==6
     assert ledger.closed and ledger.verify(9450)
     assert all(rec['chosen_options']==[] for rec in plan.records)
+
+
+def test_purchases_use_declared_server_default_factor_with_live_max_bet_cap():
+    from tester_spin.providers.playtech.primitives import entry_command
+    purchases=[
+        (cost('default',10,10,'Standard'),cost('BuyFeature',500,10,'bonus'),100000,25000),
+        (cost('10',10,36,'base'),cost('BuyBonus',550,36,'bonus'),550000,27500),
+    ]
+    for first,second,cap,expected in purchases:
+        game={'costConfiguration':[first,second],
+              'baseCostMultipliers':[1,10,50],
+              'defaultBaseCostMultiplier':50,'maxBet':cap,'featureBetEnabled':True}
+        result=discover_modes({'game':game},CONTRACT,[LIVE_SOURCE])
+        assert [m['kind'] for m in result['modes']]==['SPIN','PURCHASE']
+        assert result['modes'][0]['multiplier']==1
+        assert result['modes'][1]['multiplier']==50
+        request=entry_command(result['modes'][1],dict(CONTRACT, **{
+            'class':'com.pt.gpas.platform.game.OgwCorosinGameCommand','entry_id':40021}))
+        assert request['betCost']==expected
+
+
+def test_unavailable_default_factor_or_oversize_bonus_stays_at_minimum():
+    modes_input=[cost('10',10,36,'base'),cost('BuyBonus',550,36,'bonus')]
+    for update in (
+        dict(defaultBaseCostMultiplier=50,maxBet=1000),
+        dict(defaultBaseCostMultiplier=50,maxBet=None),
+        dict(defaultBaseCostMultiplier=True,maxBet=550000),
+        dict(defaultBaseCostMultiplier=60,maxBet=550000),
+    ):
+        game=dict(costConfiguration=modes_input,baseCostMultipliers=[1,10,50],
+                  featureBetEnabled=True,**update)
+        r=discover_modes({'game':game},CONTRACT,[LIVE_SOURCE])
+        assert r['modes'][1]['kind']=='PURCHASE'
+        assert r['modes'][1]['multiplier']==1
+
+
+def test_ante_mode_never_inherits_purchase_default_multiplier():
+    rows=[cost('default-20',20,20,'base'),cost('feature-20',30,20,'boost')]
+    config={'game':{'costConfiguration':rows,'baseCostMultipliers':[1,50],
+                    'defaultBaseCostMultiplier':50,'maxBet':20000,
+                    'featureBetEnabled':True}}
+    p=discover_modes(config,CONTRACT,[LIVE_SOURCE])
+    assert [m['multiplier'] for m in p['modes']]==[1,1]
