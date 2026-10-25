@@ -172,8 +172,22 @@ def discover_modes(configuration, contract, sources):
                 and game.get('extraBetEnabled') is True and ante_binding
                 and 'featureType' not in scope):
             selector="extra"
+        multiplier=min(factors)
+        # A purchase may be rejected at the cheapest coin size even though
+        # that size is legal for ordinary base spins. GPAS exposes the actual
+        # UI default in the *current* game config. The HardFire 2026-10-25
+        # bonus witnesses and fresh demo trials confirmed that the default
+        # can be mandatory for a buy. Never retry a failed purchase: choose
+        # one fully declared multiplier BEFORE the wager is sent.
+        default_factor=game.get('defaultBaseCostMultiplier')
+        maximum_stake=game.get('maxBet')
+        if (kind=="PURCHASE" and type(default_factor) is int
+                and default_factor in factors and default_factor>=multiplier
+                and type(maximum_stake) is int and maximum_stake>0
+                and row["cost"]*default_factor<=maximum_stake):
+            multiplier=default_factor
         modes.append({"id":identity,"name":name,"kind":kind,"selector":selector,"cost":row["cost"],
-                      "bet_type":scope.get("betType","default"),"multiplier":min(factors),"declaration":deepcopy(row),"server_declared":True,"observed":True})
+                      "bet_type":scope.get("betType","default"),"multiplier":multiplier,"declaration":deepcopy(row),"server_declared":True,"observed":True})
     if not any(m["kind"]=="SPIN" for m in modes):issues.append("BASE_MODE_UNBOUND")
     if active is not None:
         for name in active:
