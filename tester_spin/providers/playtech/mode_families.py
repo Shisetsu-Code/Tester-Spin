@@ -239,3 +239,49 @@ def card_buy_family(costs, game, contract, source):
             return set()
         seen_uuid.add(uuid);seen_modes.add(mode);features.add(name)
     return features
+
+
+def legacy_numeric_base_with_named_buy(costs, game, contract, source):
+    """Two-option legacy GPAS client, never a guessed feature selector.
+
+    Historical capture showed this envelope uses an explicit server cost UUID
+    and coin multiplier rather than a modern featureType. Only a fully live,
+    unambiguous base plus one feature purchase can use this family. A terminal
+    receipt remains mandatory for each operation and a later ChooseFG must
+    retain PARCIAL until the pick serializer is actually bound.
+    """
+    if (not isinstance(costs,list) or len(costs)!=2 or
+        not isinstance(game,dict) or not isinstance(contract,dict) or
+        contract.get('dialect')!='legacy' or
+        game.get('featureBetEnabled') is not True or
+        not all(word in source for word in
+                ('GLU.game.bet','stakeCostUuid','baseCostMultiplier'))):
+        return {}
+    active=game.get('activeBetOptions')
+    if active is not None and (
+        not isinstance(active,list) or
+        set(active)!={r.get('name') for r in costs if isinstance(r,dict)}):
+        return {}
+    base,feature=costs
+    if not all(isinstance(x,dict) for x in (base,feature)):
+        return {}
+    name=base.get('name')
+    if (not isinstance(name,str) or not re.fullmatch(r'[1-9][0-9]{0,3}',name)
+        or feature.get('name')!='Buy feature'
+        or type(base.get('cost')) is not int or base['cost']<=0
+        or type(feature.get('cost')) is not int or feature['cost']<=base['cost']):
+        return {}
+    b,f=_parameters(base),_parameters(feature)
+    if (b.get('winline')!=name or f.get('winline')!=name or
+        not isinstance(b.get('startingMode'),str) or
+        not isinstance(f.get('startingMode'),str) or
+        not b['startingMode'] or not f['startingMode'] or
+        b['startingMode']==f['startingMode'] or
+        b.get('startingPlays') not in (1,'1') or
+        f.get('startingPlays') not in (1,'1')):
+        return {}
+    if (not isinstance(base.get('uuid'),str) or not base['uuid'] or
+        not isinstance(feature.get('uuid'),str) or not feature['uuid'] or
+        base['uuid']==feature['uuid']):
+        return {}
+    return {name:'SPIN','Buy feature':'PURCHASE'}
