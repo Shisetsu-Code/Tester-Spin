@@ -1,0 +1,59 @@
+name: Playtech Oct25 BF Cards complete demo verification
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-oct25-cards-live.yml
+      - tester_spin/providers/playtech/mode_families.py
+      - tester_spin/providers/playtech/primitives.py
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install current demo backend
+        run: python -m pip install '.[playtech]'
+      - name: Execute three BF Cards purchases and base return
+        shell: bash
+        run: |
+          set +e
+          python scripts/playtech-actions-sample.py \
+            --games gpas_wlroll_pop gpas_wcupcc_pop \
+            --spins 1 --timeout 35 --wall-timeout 115 \
+            --data-root "$RUNNER_TEMP/oct25-cards-repro" \
+            --output-dir safe-report
+          code=$?
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('safe-report/summary.json')
+          if p.is_file():
+            for r in json.loads(p.read_text())['results']:
+              print('OCT25_CARDS_LIVE',json.dumps({
+                'game':r['symbol'],'status':r['status'],
+                'rounds':r['successful_spins'],
+                'issues':r.get('execution_issues',[])[:14],
+                'attempts':[{'ok':a['ok'],'steps':a['wire_steps']}
+                  for a in r.get('attempts',[])[:20]]},ensure_ascii=False))
+          PY
+          echo "CLI_EXIT=$code"
+          exit 0
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: oct25-card-buys-sanitized
+          path: safe-report/
+          if-no-files-found: warn
+          retention-days: 7

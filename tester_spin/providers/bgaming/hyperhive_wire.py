@@ -615,6 +615,20 @@ def install_observed_wire_adapter() -> None:
                             }
                         )
 
+            if modes and bool(modes[0].get("executable")):
+                from tester_spin.providers.bgaming.forwarded_features import forwarded_feature_modes
+                from tester_spin.providers.bgaming.event_flow_features import event_feature_modes
+                feature_modes = forwarded_feature_modes(combined) + event_feature_modes(combined)
+                if feature_modes:
+                    # A selector-bearing finite menu refines the loose feature
+                    # literal into its complete client-proven request variants.
+                    proven_features = {item["request"]["purchased_feature"] for item in feature_modes}
+                    modes = [item for item in modes if not (
+                        item.get("kind") == "PURCHASE"
+                        and (item.get("request") or {}).get("purchased_feature") in proven_features
+                        and set(item.get("request") or {}).issubset({"bet_type", "purchased_feature"})
+                    )] + feature_modes
+
             return modes
 
         def observed_result_summary(data: dict[str, Any]):

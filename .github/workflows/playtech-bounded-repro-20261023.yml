@@ -1,0 +1,62 @@
+name: Playtech bounded live diagnosis
+run-name: Playtech · GPAS + NGM · fresh demo diagnostic
+
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-bounded-repro-20261023.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tester-spin-playtech-bounded-probe
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    env:
+      PYTHONUNBUFFERED: '1'
+      PYTHONUTF8: '1'
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install current Playtech runtime
+        run: |
+          python -m pip install '.[playtech]'
+          python -m playwright install --with-deps chromium
+      - name: Inspect official GPAS release keys
+        run: python scripts/playtech-bundle-inventory.py gpas_squeen_pop gpas_bbt_pop gpas_scqueen_pop gpas_wcupcc_pop
+      - name: Diagnose three official demos (no historical replay)
+        shell: bash
+        run: |
+          set +e
+          python scripts/playtech-actions-sample.py \
+            --games gpas_bbt_pop gpas_scqueen_pop ashhof \
+            --spins 1 --timeout 35 --wall-timeout 85 \
+            --data-root "$RUNNER_TEMP/playtech-bounded-data" \
+            --output-dir safe-diagnostics
+          status=$?
+          echo "CLI batch exit status: $status"
+          if [ -f safe-diagnostics/summary.json ]; then
+            echo '===== Sanitized diagnostic summary ====='
+            cat safe-diagnostics/summary.json
+          fi
+          exit 0
+      - name: Save sanitized diagnostics (no raw HAR)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playtech-bounded-probe
+          path: safe-diagnostics/
+          if-no-files-found: warn
+          retention-days: 7

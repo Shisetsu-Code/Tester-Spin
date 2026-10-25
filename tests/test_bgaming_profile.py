@@ -269,7 +269,8 @@ class BGamingProfileTests(unittest.TestCase):
             confidence=1.0,
             spin_options={"mode": "60"},
             validated=True,
-            source="bundle",
+            source="https://cdn.bgaming-network.com/game/bundle.js",
+            bundle_sha256="current-bundle",
         )
         with patch(
             "tester_spin.providers.bgaming.profile.discover_api_v2_wire_profile",
@@ -280,6 +281,11 @@ class BGamingProfileTests(unittest.TestCase):
                 init,
                 timeout_s=1,
                 persisted=persisted,
+                wire_profile={
+                    "source": "https://cdn.bgaming-network.com/game/bundle.js",
+                    "bundle_sha256": "current-bundle",
+                    "spin_options": {"mode": "60"},
+                },
             )
         self.assertEqual(profile.spin_options, {"mode": "60"})
         self.assertTrue(profile.validated)
@@ -307,6 +313,7 @@ class BGamingProfileTests(unittest.TestCase):
                 confidence=1.0,
                 validated=True,
             ),
+            wire_profile={},
         )
         self.assertFalse(profile.variable_layout)
 

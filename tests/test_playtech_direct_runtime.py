@@ -52,6 +52,42 @@ def test_unconfirmed_session_cannot_send_wager(tmp_path):
     with pytest.raises(ValueError,match='DEMO_MODE_NOT_CONFIRMED'):s.exchange({}, {})
     s.http.close()
 
+def test_missing_gpas_release_entry_is_not_a_keyerror_or_silent_alias(tmp_path):
+    class Missing(Session):
+        def _get(self,url,*,as_json=True):
+            if 'logical_bundle' in url:
+                return {'games':{'gpas_squeenpa_pop':'/gpasdistributed/squeenpa/'}}
+            return super()._get(url,as_json=as_json)
+    with pytest.raises(ValueError, match='GPAS_GAME_NOT_IN_ACTIVE_RELEASE:gpas_squeen_pop'):
+        with Missing('gpas_squeen_pop',tmp_path,2,threading.Event()):
+            pytest.fail('must not accept another edition as the requested game')
+
+
+def test_uncertain_direct_wager_poisoned_until_fresh_session(tmp_path):
+    s=Session('gpas_fixture',tmp_path,1,threading.Event())
+    s.demo_verified=True
+    calls=[]
+    def lost(command):
+        calls.append(command)
+        raise TimeoutError('GAME_COMMAND_TIMEOUT')
+    s._request=lost
+    with pytest.raises(TimeoutError,match='GAME_COMMAND_TIMEOUT'):
+        s.exchange(dict(_type='GameCommand'),{})
+    with pytest.raises(ValueError,match='GAME_COMMAND_OUTCOME_UNCERTAIN'):
+        s.exchange(dict(_type='GameCommand'),{})
+    assert len(calls)==1
+    s.http.close()
+
+
+def test_correlated_direct_response_allows_next_round(tmp_path):
+    s=Session('gpas_fixture',tmp_path,1,threading.Event())
+    s.demo_verified=True
+    s._request=lambda command:s.replies.append(('corr',dict(stakeAmount=10)))
+    assert s.exchange(dict(_type='GameCommand'),{})==dict(stakeAmount=10)
+    assert not s.pending_wager_unknown
+    s.http.close()
+
+
 def test_cleanup_on_bootstrap_failure(tmp_path):
     w=Wire()
     with patch('websocket.create_connection',return_value=w),patch.object(Session,'_request',side_effect=ValueError('rejected')):

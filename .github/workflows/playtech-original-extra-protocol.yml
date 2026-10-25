@@ -1,0 +1,51 @@
+name: Playtech original Extra ante protocol
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-original-extra-protocol.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[playtech]'
+      - name: Verify the current Extra ante, base and return-to-base
+        shell: bash
+        run: |
+          set +e
+          python scripts/playtech-actions-sample.py \
+            --games gpas_aogwfot_pop gpas_lluckmcc_pop gpas_wcupcc_pop \
+            --spins 1 --timeout 35 --wall-timeout 95 \
+            --data-root "$RUNNER_TEMP/extra-protocol" \
+            --output-dir safe-output
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('safe-output/summary.json')
+          if p.exists():
+            for row in json.loads(p.read_text())['results']:
+              print('GPAS_EXTRA_RESULT',json.dumps({
+                'code':row['symbol'],'status':row['status'],
+                'rounds':row['successful_spins'],
+                'issues':row.get('execution_issues',[])},ensure_ascii=False))
+          PY
+          exit 0
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-extra-ante-results
+          path: safe-output/
+          if-no-files-found: warn
+          retention-days: 7

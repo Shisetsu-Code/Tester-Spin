@@ -1,0 +1,98 @@
+name: Playtech 2026-10-25 HardFire HAR reproduction
+run-name: Captures reales · 8 GPAS + 7 NGM · contratos y rondas
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-hardfire-20261025.yml
+      - tester_spin/providers/playtech/two_option_contracts.py
+      - tester_spin/providers/playtech/primitives.py
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tester-spin-playtech-hardfire-20261025
+  cancel-in-progress: false
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      max-parallel: 7
+      matrix:
+        include:
+          - group: 'g1'
+            family: 'gpas'
+            codes: 'gpas_diamdhrbf_pop gpas_ghgranny_pop'
+          - group: 'g2'
+            family: 'gpas'
+            codes: 'gpas_icave_pop gpas_krfforest_pop'
+          - group: 'g3'
+            family: 'gpas'
+            codes: 'gpas_krsqueen_pop gpas_lluckmcc_pop'
+          - group: 'g4'
+            family: 'gpas'
+            codes: 'gpas_pigeonfs_pop gpas_twolf_pop'
+          - group: 'n1'
+            family: 'ngm'
+            codes: 'roos ub'
+          - group: 'n2'
+            family: 'ngm'
+            codes: 'ashamw dvncvnoptpp'
+          - group: 'n3'
+            family: 'ngm'
+            codes: 'er gemheat anwild'
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    env:
+      PYTHONUNBUFFERED: '1'
+      PYTHONUTF8: '1'
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare verified demo runtime
+        shell: bash
+        env:
+          FAMILY: ${{ matrix.family }}
+        run: |
+          python -m pip install '.[playtech]'
+          if [ "$FAMILY" = ngm ]; then python -m playwright install --with-deps chromium; fi
+      - name: Execute fresh demo modes and financial settlement
+        shell: bash
+        env:
+          GAME_CODES: ${{ matrix.codes }}
+        run: |
+          set +e
+          read -ra codes <<< "$GAME_CODES"
+          python scripts/playtech-actions-sample.py \
+            --games "${codes[@]}" --spins 1 --timeout 40 --wall-timeout 100 \
+            --data-root "$RUNNER_TEMP/hardfire-fresh-data" \
+            --output-dir sanitized-diagnostics
+          result=$?
+          echo "DEMO_RUN_EXIT_CODE=$result"
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path('sanitized-diagnostics/summary.json')
+          if p.exists():
+            d=json.loads(p.read_text())
+            print('HAR25_RESULTS',json.dumps([{
+              'code':r['symbol'],'status':r['status'],
+              'verified':r.get('successful_spins',0),
+              'issues':r.get('execution_issues',[])[:12],
+              'modes':len(r.get('diagnostic',{}).get('modes',[]))
+             } for r in d['results']],ensure_ascii=False))
+          PY
+          exit 0
+      - name: Publish sanitized summaries only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: har25-${{ matrix.group }}
+          path: sanitized-diagnostics/
+          if-no-files-found: warn
+          retention-days: 7

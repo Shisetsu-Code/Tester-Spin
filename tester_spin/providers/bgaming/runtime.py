@@ -566,6 +566,101 @@ def _bundle_contract_score(text: str) -> int:
         score += 2
     return score
 
+
+def _declared_loader_skin_directory(source: str, *, version: str | None = None) -> str:
+    """Extract a uniquely selected, literal skin subdirectory from loader JS.
+
+    A versioned bundle can live under SKIN_DIRS.basic (or another explicitly
+    selected skin), rather than directly under resources_path. Dynamic skin
+    selectors, mutations, comments and ambiguous declarations fail closed.
+    """
+    from tester_spin.providers.bgaming.forwarded_request import _lexical_source
+
+    clean, code = _lexical_source(source or "")
+    if "bundle.js" not in clean or re.search(r"\bSKIN_DIRS\s*\[", code):
+        return ""
+    selected = set(re.findall(
+        r"\bSKIN_DIRS\s*\.\s*([A-Za-z_$][A-Za-z0-9_$]*)\b", code
+    ))
+    if len(selected) != 1:
+        return ""
+    if len(re.findall(r"(?<![\w$.])SKIN_DIRS\s*=(?!=|>)", code)) != 1:
+        return ""
+    if re.search(
+        r"\bSKIN_DIRS\s*\.\s*[A-Za-z_$][A-Za-z0-9_$]*\s*"
+        r"(?:[+*/%-]=|=(?!=|>))", code
+    ) or re.search(r"\b(?:Object\.assign|Reflect\.set)\s*\(\s*SKIN_DIRS\b", code):
+        return ""
+    declarations = list(re.finditer(
+        r"(?<![\w$.])SKIN_DIRS\s*=\s*\{(?P<body>[^{}]{1,1200})\}", clean
+    ))
+    if len(declarations) != 1:
+        return ""
+    key = re.escape(next(iter(selected)))
+    pattern = (
+        rf"""(?:^|,)\s*(?:["']?{key}["']?)\s*:\s*"""
+        rf"""(?P<quote>["'])(?P<path>[^"'\\]{{1,120}})(?P=quote)"""
+    )
+    matches = list(re.finditer(pattern, declarations[0].group("body")))
+    if len(matches) != 1:
+        return ""
+    directory = matches[0].group("path").strip("/")
+    if not re.fullmatch(r"[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*", directory):
+        return ""
+
+    # A mention of SKIN_DIRS and bundle.js in the same loader is not
+    # evidence that this skin is used for the bundle URL. Require a static
+    # binding from the version declared by the loader into the URL suffix.
+    bindings = [
+        match for match in re.finditer(
+            r"""(?<![\w$.])res\s*:\s*(?P<name>[A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*(?P<quote>['"])(?P<version>[A-Za-z0-9_.-]+)(?P=quote)""",
+            clean,
+        )
+        if code[match.start()].strip()
+    ]
+    if len(bindings) != 1:
+        return ""
+    declared_version = bindings[0].group("version")
+    if (version is not None and declared_version != version) or ".." in declared_version:
+        return ""
+    variable = bindings[0].group("name")
+    if len(re.findall(
+        rf"(?<![\w$.]){re.escape(variable)}\s*=(?!=|>)", code,
+    )) != 1:
+        return ""
+
+    skin_property = rf"SKIN_DIRS\s*\.\s*{key}"
+    aliases = list(re.finditer(
+        rf"(?<![\w$.])const\s+(?P<name>[A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*{skin_property}\b",
+        code,
+    ))
+    if len(aliases) > 1:
+        return ""
+    skin_expressions = [skin_property]
+    if aliases:
+        alias = aliases[0].group("name")
+        escaped_alias = re.escape(alias)
+        if len(re.findall(rf"(?<![\w$.]){escaped_alias}\s*=(?!=|>)", code)) != 1:
+            return ""
+        if re.search(rf"(?<![\w$.]){escaped_alias}\s*(?:[+*/%-]=|\+\+|--)", code):
+            return ""
+        skin_expressions.append(escaped_alias)
+
+    skin_expression = "(?:" + "|".join(skin_expressions) + ")"
+    version_variable = re.escape(variable)
+    bundle_path = (
+        rf"(?<![\w$.]){skin_expression}\s*\+\s*(?P<sep>['\"])/(?P=sep)"
+        rf"\s*\+\s*{version_variable}\s*\+\s*"
+        rf"(?P<end>['\"])/bundle\.js(?P=end)"
+    )
+    if not any(
+        code[match.start()].strip()
+        for match in re.finditer(bundle_path, clean)
+    ):
+        return ""
+    return directory
+
+
 def _runtime_bundle_candidates(
     runtime: BGamingRuntime,
     *,
@@ -624,7 +719,13 @@ def _runtime_bundle_candidates(
                     version = match.group(1).strip()
                     break
             if version and resources_path:
+                skin_directory = _declared_loader_skin_directory(loader_text, version=version)
+                if skin_directory:
+                    candidates.append(
+                        f"{resources_path}/{skin_directory}/{version}/bundle.js"
+                    )
                 candidates.append(f"{resources_path}/{version}/bundle.js")
+            candidates.extend(url for url, _start, _end in _resource_script_references(runtime, loader_text))
 
     if configured:
         candidates.append(configured)
@@ -899,6 +1000,33 @@ def effective_bet_for_options(
         return float(requested_bet)
     return float(requested_bet) * float(multiplier)
 
+def _resource_script_references(runtime: BGamingRuntime, source: str) -> list[tuple[str, int, int]]:
+    """Resolve a loader's literal script suffix against its declared resource path.
+
+    A leading slash in ``resources_path + '/assets/...'`` is concatenation,
+    not an origin-relative URL. Preserve that relationship without executing JS.
+    """
+    from tester_spin.providers.bgaming.forwarded_request import _lexical_source
+    text, code = _lexical_source(source or "")
+    resources = str(runtime.options.get("resources_path") or "").rstrip("/")
+    if not resources or re.search(r'window\.__OPTIONS__\.resources_path\s*[+*/%-]?=(?!=)', code):
+        return []
+    pattern = (
+        r'(?<![\w$.])[A-Za-z_$][A-Za-z0-9_$]*\.src\s*=\s*\(?\s*'
+        r'window\.__OPTIONS__\.resources_path\s*\+\s*'
+        r'(?P<quote>["\'])(?P<suffix>/[^"\'\s\\]+\.js(?:\?[^"\'\s\\]*)?)(?P=quote)'
+        r'\s*\)?\s*(?=[;,}])'
+    )
+    refs = []
+    for match in re.finditer(pattern, text):
+        if not code[match.start()].strip():
+            continue
+        url = resources + match['suffix']
+        if _provider_script_url(runtime, url):
+            refs.append((url, match.start(), match.end()))
+    return refs
+
+
 def _provider_script_references(
     runtime: BGamingRuntime,
     *,
@@ -906,14 +1034,26 @@ def _provider_script_references(
     text: str,
 ) -> list[str]:
     """Discover static provider-owned JS references from another JS resource."""
-    refs: list[str] = []
+    from tester_spin.providers.bgaming.forwarded_request import _lexical_source
+
+    # Quoted filenames inside inactive JS comments are not script references.
+    # Keep executable quoted literals, including imports and src assignments.
+    uncommented, _code = _lexical_source(text or "")
+    resolved = _resource_script_references(runtime, text)
+    refs: list[str] = list(dict.fromkeys(url for url, _start, _end in resolved))
     patterns = [
         r'["\']([^"\']+\.js(?:\?[^"\']*)?)["\']',
         r'import\(\s*["\']([^"\']+)["\']\s*\)',
     ]
-    seen: set[str] = set()
+    seen: set[str] = set(refs)
     for pattern in patterns:
-        for raw in re.findall(pattern, text or ""):
+        for match in re.finditer(pattern, uncommented):
+            if (match.start() > 0 and uncommented[match.start() - 1] == "\\"):
+                # An escaped quote inside another string is not a new literal.
+                continue
+            if any(start <= match.start() < end for _url, start, end in resolved):
+                continue
+            raw = match.group(1)
             value = str(raw or "").strip()
             if not value:
                 continue
@@ -1035,6 +1175,13 @@ def discover_api_v2_wire_profile(
 
     spin_option_choices = discover_additional_spin_option_choices(bundle)
     effective_bet_multipliers = discover_effective_bet_multipliers(bundle)
+    from tester_spin.providers.bgaming.modern_api_v2 import modern_purchase_level_supported
+    # Modern bundles are ES modules with independent minified bindings. Prove
+    # the entire chain inside one resource rather than concatenating scopes.
+    modern_purchase_levels = any(
+        modern_purchase_level_supported(script, other_sources=[other for _rank, _path, other in contract_parts if other != script])
+        for _score, _url, script in contract_parts
+    )
 
     required_option_fields = sorted(
         {
@@ -1051,13 +1198,13 @@ def discover_api_v2_wire_profile(
         "spin_options": {},
         "request_extra_data": dict(request_extra_data),
         "purchase_features": sorted(purchase_features),
-        "dynamic_purchased_feature": bool(
+        "dynamic_purchased_feature": modern_purchase_levels or bool(
             re.search(
                 r"additionalSpinOptions\.purchased_feature(?:\b|\s*=)",
                 bundle,
             )
         ),
-        "purchase_feature_level_supported": bool(
+        "purchase_feature_level_supported": modern_purchase_levels or bool(
             re.search(
                 r"additionalSpinOptions\.purchased_feature_level(?:\b|\s*=)",
                 bundle,
@@ -1078,6 +1225,13 @@ def discover_api_v2_wire_profile(
     }
     if not bundle:
         return profile
+
+    from tester_spin.providers.bgaming.modern_variants import modern_variant_contract
+    modern_variants = [contract for _score, _url, script in contract_parts
+                       if (contract := modern_variant_contract(script))]
+    variant_contracts = {json.dumps(contract, sort_keys=True) for contract in modern_variants}
+    if len(variant_contracts) == 1 and not spin_option_choices and not effective_bet_multipliers:
+        profile.update(modern_variants[0])
 
     if "additionalSpinOptions.mode" in bundle:
         default_mode = ""

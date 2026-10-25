@@ -1,0 +1,45 @@
+name: Playtech original 24 GPAS contracts (non-playing)
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-original-gpas-contracts.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        include:
+          - group: '1'
+            codes: 'gpas_aogggriffin_pop gpas_gstorm2_pop gpas_agstorm3_pop gpas_mgaogkol_pop'
+          - group: '2'
+            codes: 'gpas_aogww_pop gpas_aogwfot_pop gpas_cashrl_pop gpas_coft_pop'
+          - group: '3'
+            codes: 'gpas_crylo_pop gpas_dostormspp_pop gpas_eemeraldspp_pop gpas_scqueen_pop'
+          - group: '4'
+            codes: 'gpas_squeen_pop gpas_fluffyf_pop gpas_jokjac_pop gpas_goalmsnjp_pop'
+          - group: '5'
+            codes: 'gpas_wcupcc_pop gpas_gporang_pop gpas_gotzon_pop gpas_krluprising_pop'
+          - group: '6'
+            codes: 'gpas_krsqueen_pop gpas_gotabyss_pop gpas_lluckmcc_pop gpas_lluckmccpp_pop'
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[playtech]'
+      - name: Inspect allowlisted client and server contracts only
+        shell: bash
+        env:
+          CODES: ${{ matrix.codes }}
+        run: |
+          read -ra codes <<< "$CODES"
+          python scripts/playtech-gpas-contract-inspect.py "${codes[@]}"

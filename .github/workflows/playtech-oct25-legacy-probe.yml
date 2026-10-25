@@ -1,0 +1,26 @@
+name: Playtech Oct25 legacy 40 and feature demo probe
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-oct25-legacy-probe.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[playtech]'
+      - name: Verify legacy wagers in fresh separate demo sessions
+        run: python scripts/playtech-oct25-legacy-probe.py

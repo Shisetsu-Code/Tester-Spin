@@ -200,6 +200,9 @@ def test_ngm_game(provider, game, *, spins, timeout_s, stop_event, progress):
         and result.structural_map.get('return_to_base_verified')) else 'PARCIAL'
     result.error = '; '.join(dict.fromkeys(issues))
     result.structural_map['execution_issues'] = list(dict.fromkeys(issues))
+    from .replay_rules import runtime_actions
+    result.structural_map['verification_worklist'] = (runtime_actions('ngm', list(dict.fromkeys(issues)))
+        if result.status == 'PARCIAL' else [])
     result.finished_at = utc_now_iso()
     result.elapsed_ms = (time.monotonic()-clock)*1000
     (run/'result.json').write_text(json.dumps(result.to_dict(), indent=2), encoding='utf-8')

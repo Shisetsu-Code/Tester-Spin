@@ -320,6 +320,7 @@ def analyze_har(har, code):
     from .ngm_capture import capture_diagnostics
     capture = capture_diagnostics(har)
     sources, manifests, unresolved = [], [], []
+    unrelated_jmm = 0
     for index, entry in enumerate(har.get('log', {}).get('entries', [])):
         parsed = urlsplit(entry.get('request', {}).get('url', ''))
         if parsed.scheme != 'https' or parsed.hostname != 'cachedownload.playtechone.com':
@@ -342,6 +343,11 @@ def analyze_har(har, code):
             elif parsed.path.endswith('.jmm'):
                 document = json.loads(_body(entry))
                 if isinstance(document, dict) and isinstance(document.get('config'), dict):
+                    if document['config'].get('game_code') != code:
+                        # The downloaded resources can include sibling-game JMMs.
+                        # No economic or execution inference comes from them.
+                        unrelated_jmm += 1
+                        continue
                     manifests.append((ref, functional_manifest(document, code)))
         except (ValueError, UnicodeError, TypeError) as exc:
             unresolved.append(ref+':'+str(exc))
@@ -360,7 +366,10 @@ def analyze_har(har, code):
         unresolved.append('NGM_MANIFEST_MISSING' if not manifests else 'NGM_MANIFEST_AMBIGUOUS')
     if not sources:
         capture['next_steps'].append('Falta el cliente JavaScript .cache.js del juego. Recargá con caché desactivada y exportá el HAR con cuerpos de respuesta, incluyendo JavaScript y el manifiesto .jmm de la misma versión.')
+    capture['ignored_unrelated_jmm_count'] = unrelated_jmm
     if not manifests:
+        if unrelated_jmm:
+            unresolved.append('NGM_MATCHING_GAME_MANIFEST_NOT_CAPTURED')
         capture['next_steps'].append('Falta el manifiesto del juego: incluí la respuesta .jmm con config, sin filtros que eliminen recursos.')
     from .ngm_plan import build_execution_plan
     report['execution_plan'] = build_execution_plan(report, sources[0][1] if len(sources) == 1 else '')

@@ -1,0 +1,69 @@
+name: Playtech GPAS family live verification
+run-name: GPAS · 16 distinct demos · family primitives
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-gpas-family-live.yml
+      - tester_spin/providers/playtech/mode_families.py
+      - tester_spin/providers/playtech/primitives.py
+      - tester_spin/providers/playtech/direct_runtime.py
+      - tester_spin/providers/playtech/gpas_continuation.py
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  gpas:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - group: g1
+            games: 'gpas_fbww_pop gpas_sqmways_pop gpas_tccc_pop gpas_tcjpcc_pop'
+          - group: g2
+            games: 'gpas_ooop_pop gpas_jdice_pop gpas_gpotld_pop gpas_dwpfb_pop'
+          - group: g3
+            games: 'gpas_gporang_pop gpas_lluckmccpp_pop gpas_aogggriffin_pop gpas_eemeraldspp_pop'
+          - group: g4
+            games: 'gpas_cashrl_pop gpas_mgaogkol_pop gpas_jokjac_pop gpas_bbt_pop'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PYTHONUNBUFFERED: '1'
+      PYTHONUTF8: '1'
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install GPAS runtime only (no browser required)
+        run: python -m pip install '.[playtech]'
+      - name: Verify game contracts, rounds, and return-to-base
+        shell: bash
+        env:
+          DEMOS: ${{ matrix.games }}
+        run: |
+          set +e
+          read -ra codes <<< "$DEMOS"
+          python scripts/playtech-actions-sample.py \
+            --games "${codes[@]}" \
+            --spins 1 --timeout 30 --wall-timeout 75 \
+            --data-root "$RUNNER_TEMP/playtech-family-data" \
+            --output-dir family-diagnostics
+          status=$?
+          echo "CLI exit code: $status"
+          if [ -f family-diagnostics/summary.json ]; then
+            python -c 'import json; d=json.load(open("family-diagnostics/summary.json")); print("FAMILY_RESULTS", json.dumps([{"code":x["symbol"],"status":x["status"],"spins":x.get("successful_spins"),"issues":x.get("execution_issues")} for x in d["results"]],ensure_ascii=False))'
+          fi
+          exit 0
+      - name: Upload sanitized results only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpas-family-${{ matrix.group }}
+          path: family-diagnostics/
+          if-no-files-found: warn
+          retention-days: 7

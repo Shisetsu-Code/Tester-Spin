@@ -60,6 +60,9 @@ def configuration(data, gameid, currency, *, sdk_source=None):
     if not identifiers or any(x != gameid for x in identifiers):
         raise Unsupported('ConfiguraciÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³n de otro juego')
     props = props_of(data)
+    from .common_action_source import candidate as common_action_candidate, declaration as common_action_declaration
+    common_action_candidate_config=common_action_candidate(props)
+    other_sdk_source=None if common_action_candidate_config else sdk_source
     if "ApiVersion" in props and props["ApiVersion"] not in {"2.6.0","2.7.0","2.8.2"}:
         raise Unsupported('VersiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³n API no demostrada')
     modes = props.get("Modes")
@@ -107,15 +110,19 @@ def configuration(data, gameid, currency, *, sdk_source=None):
             else:declared_kinds[name]=kind
         for name in set(modes)-seen:typed_errors[name]="Mode missing from typed declaration"
     sdk_proof=None
-    if sdk_source is not None:
+    if other_sdk_source is not None:
         from .sdk_mode_roles import source_roles
-        sdk_proof=source_roles(sdk_source,modes)
+        sdk_proof=source_roles(other_sdk_source,modes)
         if sdk_proof is not None:
             sdk_kinds={name:{"SPIN":"SPIN","ANTE_BET":"ANTE_BET","BUY_BONUS":"PURCHASE"}[role] for name,role in sdk_proof["roles"].items()}
             if typed is not None and (typed_errors or sdk_kinds!=declared_kinds):raise Unsupported("SDK and typed server mode roles disagree")
             if ante_multiplier is not None and sdk_kinds.get('ANTE_BET')!='ANTE_BET':raise Unsupported("SDK and server ante multiplier disagree")
             declared_kinds=sdk_kinds
     settings = [data.get("orgSettings") or {}] + list(data.get("extraOrgSettings") or [])
+    if sdk_proof is not None and sdk_proof.get('purchase_price_factor_indices'):
+        from .sdk_purchase_list_roles import price_factors
+        try:sdk_proof['purchase_price_factors']=price_factors(sdk_proof,props.get('Config'))
+        except ValueError as exc:raise Unsupported(str(exc)) from None
     if sdk_proof is not None and sdk_proof.get('purchase_price_factors'):
         domains={}
         for name in modes:
@@ -170,6 +177,34 @@ def configuration(data, gameid, currency, *, sdk_source=None):
             unresolved['ANTE_BET']='Ante multiplier and current declared price disagree'
     constraints={"collection_modes":sorted(templates),"currency":currency,"basic_amount":templates.get("BASIC",{}).get("amount"),"basic_coin":templates.get("BASIC",{}).get("coin")}
     constraints['purchase_quotes']={name:templates[name] for name in templates if declared_kinds[name]=='PURCHASE'}
+    constraints['ante_quotes']={name:templates[name] for name in templates if declared_kinds[name]=='ANTE_BET'}
+    if common_action_candidate_config:
+        common_action_definition=common_action_declaration(props,sdk_source)
+        if common_action_definition is None or currency!=common_action_definition['currency']:
+            for name in list(templates):
+                templates.pop(name)
+                unresolved[name]='CommonAPI typed action requires its current source contract'
+        else:
+            constraints['common_action_definition']=common_action_definition
+    from .cash_collect_source import declaration as cash_collect_declaration
+    cash_collect_definition=cash_collect_declaration(other_sdk_source)
+    if cash_collect_definition is not None:constraints['cash_collect_definition']=cash_collect_definition
+    from .indexed_output_source import declaration as indexed_output_declaration
+    indexed_output_definition=indexed_output_declaration(props,other_sdk_source)
+    if indexed_output_definition is not None:constraints['indexed_output_definition']=indexed_output_definition
+    if indexed_output_definition is not None and sdk_proof is not None and sdk_proof.get('purchase_price_factor_indices'):
+        from .indexed_awards_source import declaration as indexed_award_declaration
+        indexed_award_definition=indexed_award_declaration(sdk_source)
+        games=(props.get('Config') or {}).get('buyInConfig',{}).get('bonusGames')
+        indices=sdk_proof['purchase_price_factor_indices']
+        if indexed_award_definition is not None and isinstance(games,list) and len(games)==2 and len(set(games))==2 and all(isinstance(game,str) and 1<=len(game)<=64 for game in games) and all(type(index) is int and 0<=index<len(games) for index in indices.values()):
+            constraints['indexed_award_definition']={**indexed_award_definition,'purchase_games':{name:games[index] for name,index in indices.items()}}
+    from .host_guest import declaration as host_guest_declaration
+    host_guest_definition=host_guest_declaration(props)
+    if host_guest_definition is not None:constraints['host_guest_definition']=host_guest_definition
+    from .cluster_cascades import declaration as cluster_cascade_declaration
+    cluster_cascade_definition=cluster_cascade_declaration(props,other_sdk_source)
+    if cluster_cascade_definition is not None:constraints['cluster_cascade_definition']=cluster_cascade_definition
     from .growing_ways import declaration as growing_declaration
     growing_geometry=growing_declaration(props)
     if growing_geometry is not None:constraints['growing_ways_geometry']=growing_geometry
@@ -246,7 +281,8 @@ def wager_state(payload):
                 if value not in commands:
                     commands.append(value)
     terminal = wager.get("status") == "Finished" and all(b.get("status") == "RESULTED" for b in bets) and not commands
-    return {"wagerid": str(wager["wagerid"]), "status": wager.get("status"), "bets": bets, "max_step": max(steps), "root_step": min(steps), "commands": commands, "terminal": terminal}
+    balances={label:value.get('cash') if isinstance(value,dict) else None for label,value in (('buy',data.get('buyBal')),('result',data.get('resultBal')))}
+    return {"wagerid": str(wager["wagerid"]), "status": wager.get("status"), "bets": bets, "max_step": max(steps), "root_step": min(steps), "commands": commands, "terminal": terminal,"cash_balances":balances}
 
 def classic_wildcard_collect(state):
     if state.get('commands')!=['C','*'] or not state.get('bets'):return False
@@ -287,9 +323,28 @@ def named_choice_command(state):
 def continuation_request(state,constraints=None):
     import re
     commands=state["commands"]
+    from .common_action import family as common_action_family, validate as validate_common_action
+    if common_action_family(state):
+        try:
+            if not state.get('common_action_proof'):validate_common_action(state,constraints or {})
+            if commands!=['C']:raise ValueError('Unlearned action continuation')
+            return collect_request(state)
+        except (ValueError,TypeError,KeyError,AttributeError,ArithmeticError) as exc:
+            raise Unsupported('Common action: '+str(exc)) from None
+    from .indexed_awards import request as indexed_award_request
+    from .indexed_output import family as indexed_output_family
+    indexed_request=indexed_award_request(state,constraints)
+    if indexed_request is not None:return indexed_request
+    if indexed_output_family(state) and commands!=['C']:
+        raise Unsupported('Unlearned indexed award continuation or missing current renderer declaration')
     from .supermeter import request as supermeter_request
     meter_request=supermeter_request(state)
     if meter_request is not None:return meter_request
+    from .cash_purchase import request as cash_purchase_request,family as cash_purchase_family
+    cash_request=cash_purchase_request(state,constraints)
+    if cash_request is not None:return cash_request
+    if cash_purchase_family(state) and commands!=['C']:
+        raise Unsupported('Unlearned cash award continuation or missing current renderer declaration')
     from .repeated_purchase_award import request as awarded_purchase_request
     awarded_request=awarded_purchase_request(state,constraints)
     if awarded_request is not None:return awarded_request
@@ -369,9 +424,22 @@ def validate_transition(before, after, request,constraints=None):
         if generated["step"] > before["max_step"]:
             if number(generated.get("betamount")) != 0 or generated.get("betcurrency") != currency:
                 raise Unsupported("Continuation charged a new stake or changed currency")
+    from .common_action import collect as validate_common_action_collect
+    try:
+        if validate_common_action_collect(before,after,request,constraints or {}):return
+    except (ValueError,TypeError,KeyError,AttributeError,ArithmeticError) as exc:
+        raise Unsupported('Common action: '+str(exc)) from None
     from .repeated_purchase_award import validate_transition as validate_purchased_transition
-    try:validate_purchased_transition(before,after,request,constraints)
+    from .cash_purchase import validate_transition as validate_cash_transition
+    from .indexed_awards import validate_transition as validate_indexed_transition
+    try:
+        if not validate_indexed_transition(before,after,request,constraints) and not validate_cash_transition(before,after,request,constraints):validate_purchased_transition(before,after,request,constraints)
     except (ValueError,TypeError,KeyError,AttributeError,ArithmeticError) as exc:raise Unsupported(str(exc)) from None
+    from .cash_accounting import transition as validate_cash_ledger
+    try:
+        proof=validate_cash_ledger(before,after,request,constraints)
+        if proof is not None:after['cash_accounting_proof']=proof
+    except (ValueError,TypeError,KeyError,AttributeError,ArithmeticError) as exc:raise Unsupported('Cash ledger: '+str(exc)) from None
     from .supermeter import validate as validate_supermeter
     try:
         if validate_supermeter(before,after,request):return
@@ -409,8 +477,21 @@ def validate_start(state, template, currency="EUR", *, classic_line_quantity=Fal
         raise Unsupported("Importe o moneda de respuesta distinto a la jugada")
 
 def ordinary_round(state,constraints=None):
+    from .common_action import family as common_action_family, ordinary as ordinary_common_action
+    if common_action_family(state) or (constraints or {}).get('common_action_definition'):
+        return ordinary_common_action(state,constraints or {})
     if len(state["bets"]) != 1:
         return False
+    from .cluster_cascades import ordinary as ordinary_cluster_cascade,family as cluster_cascade_family
+    if cluster_cascade_family(state) or (constraints or {}).get('cluster_cascade_definition'):
+        return ordinary_cluster_cascade(state['bets'][0],constraints or {})
+    from .indexed_output import ordinary as ordinary_indexed_output,family as indexed_output_family
+    if indexed_output_family(state):
+        return ordinary_indexed_output(state['bets'][0],constraints or {})
+    from .cash_collect import ordinary as ordinary_cash_collect
+    from .cash_purchase import family as cash_family
+    if cash_family(state) and (constraints or {}).get('growing_ways_geometry'):
+        return ordinary_cash_collect(state['bets'][0],constraints)
     from .random_multiplier_base import ordinary as ordinary_random_multiplier
     if ordinary_random_multiplier(state['bets'][0],constraints):return True
     from .growing_ways import ordinary as ordinary_growing_ways
@@ -428,6 +509,9 @@ def ordinary_round(state,constraints=None):
     from .classic_wire import ordinary_flat_event,ordinary_jackpot_collections
     from .base_game_state import ordinary_flat_multiplier
     event=state["bets"][0].get("eventdata")
+    if isinstance(event,dict) and {'gameModeCurrent','gameModeNext'}&set(event):
+        from .host_guest import ordinary as ordinary_host_guest
+        return ordinary_host_guest(state['bets'][0],constraints)
     if isinstance(event,dict) and (event.get("freeSpins") or event.get("freeSpinTypePlayed")):return False
     from .collection_actions import ordinary_collection_actions,collection_envelope
     if collection_envelope(event):return ordinary_collection_actions(state["bets"][0],constraints)
@@ -481,6 +565,20 @@ class DemoRuntime:
         self.token = ""
         self.seen_wagers = set()
         self.round_refs = {}
+        self.host_mode = None
+        self.indexed_award_history = None
+        self.common_action_history = None
+        self.common_action_message_id = 0
+
+    def current_constraints(self):
+        constraints=dict(getattr(self,'config',{}).get('ordinary_constraints') or {})
+        history=self.indexed_award_history
+        if history is not None and history['session']==(self.token,self.gameid,self.currency):
+            constraints['settled_indexed_award_state']=history['player_state']
+        common_history=self.common_action_history
+        if common_history is not None and common_history['session']==(self.token,self.gameid,self.currency):
+            constraints['settled_common_action_state']=common_history
+        return constraints
 
     def call(self, fn, body=None, query=None):
         if self.stop_event.is_set():
@@ -541,10 +639,19 @@ class DemoRuntime:
         return template
 
     def save(self, directory, index, request, state, choices=None, transition_validated=False):
-        constraints=getattr(self,"config",{}).get("ordinary_constraints")
+        constraints=self.current_constraints()
         directory.mkdir(parents=True, exist_ok=True)
         ref = self.round_refs.setdefault(state["wagerid"], "round-"+str(len(self.round_refs)+1))
         safe = {"round_ref":ref,"status":state["status"], "terminal":state["terminal"],"next_commands":state["commands"],"bets":[]}
+        if state.get('cash_accounting_proof') is not None:safe['cash_accounting']=state['cash_accounting_proof']
+        if state.get('common_action_proof') is not None:
+            safe['common_action_proof']=state['common_action_proof']
+            from .common_action import safe_output as common_action_output
+            safe['common_action_outcomes']=common_action_output(state)
+        if state.get('indexed_award_proof') is not None:
+            safe['indexed_award_proof']=state['indexed_award_proof']
+            from .indexed_awards import safe_output
+            safe['indexed_award_outcomes']=safe_output(state)
         if classic_wildcard_collect(state):safe["continuation_markers"]={"*":"server_wildcard; not_an_executable_choice"}
         if choices is None and len(state["commands"])>1:
             try:
@@ -572,6 +679,14 @@ class DemoRuntime:
             safe["enum_bonus_choice"]={"step":state["max_step"],"NextRound":current_data(state)["NextRound"]}
         if choices is not None:
             safe["choices"]={**choices,"scope":"server_offered_current_step; not_all_branches_tested","protocol":"yggdrasil-current-zero-cost-menu/v1"}
+            from .indexed_awards import request as indexed_menu_request
+            rules=constraints.get('indexed_award_definition')
+            proof=state.get('indexed_award_proof')
+            if rules and (indexed_menu_request(state,constraints) is not None or proof is not None and choices.get('selected')==rules['accept']):
+                from .choice_coverage import LEDGER_PROTOCOL
+                safe['choices']['protocol']=LEDGER_PROTOCOL
+                command=proof['paid_command'] if proof is not None else state['bets'][0]['betdata']['cmd']
+                safe['indexed_award_menu']={'schema':rules['schema'],'accept':rules['accept'],'risk':rules['risk'],'source_sha256':rules['source_sha256'],'currency':constraints['currency'],'base_amount':constraints['basic_amount'],'paid_command':command}
         safe["transition_validated"]=transition_validated
         for bet in state["bets"]:
             bd = bet.get("betdata") or {}
@@ -588,6 +703,24 @@ class DemoRuntime:
                 safe.setdefault("ordinary_collection_outcomes",[]).append({"step":bet["step"],"schema":"current-stake-collection/v1","mode_domain":(constraints or {}).get("collection_modes"),"betdata":{"coin":bd["coin"],"cmd":bd["cmd"]},"eventdata":bet["eventdata"]})
             from .typed_actions import ordinary_typed_actions
             typed_base=ordinary_typed_actions(bet)
+            from .cash_collect import ordinary as ordinary_cash_collect,neutral_ante as neutral_cash_ante
+            cash_base=ordinary_cash_collect(bet,constraints)
+            cash_ante=neutral_cash_ante(bet,constraints)
+            from .indexed_output import ordinary as ordinary_indexed_output,known as known_indexed_output
+            if known_indexed_output(bet,constraints):
+                event=bet['eventdata']
+                response=event['response']
+                output=[{key:value for key,value in frame.items() if key!='debug'} for frame in response['clientData']['output']]
+                schema='indexed-cash-path-base/v1' if ordinary_indexed_output(bet,constraints) else 'indexed-cash-path-inline-feature/v1'
+                safe.setdefault('indexed_output_outcomes',[]).append({'step':bet['step'],'schema':schema,'definition':constraints['indexed_output_definition'],'data':{**event,'response':{**response,'clientData':{'output':output}}}})
+            from .cash_purchase import awarded as cash_awarded,active as cash_active
+            cash_feature=cash_awarded(bet,constraints) or cash_active(bet,constraints)
+            if cash_base or cash_feature or cash_ante:
+                cash_event=bet['eventdata'];cash_response=cash_event['response']
+                safe_cash_event={**cash_event,'response':{**cash_response,'clientData':{**cash_response['clientData'],'wagerId':ref}}}
+                key='ordinary_cash_collect_outcomes' if cash_base else 'ante_cash_collect_outcomes' if cash_ante else 'cash_award_outcomes'
+                schema='numeric-cash-row-base/v1' if cash_base else 'numeric-cash-neutral-ante/v1' if cash_ante else 'numeric-cash-purchased-award/v1'
+                safe.setdefault(key,[]).append({'step':bet['step'],'schema':schema,'definition':(constraints or {}).get('cash_collect_definition'),'bet':{**{k:bet[k] for k in ('step','status','betamount','betcurrency')},'eventdata':safe_cash_event,'betdata':{k:v for k,v in bd.items() if k!='initialBalance'}}})
             from .bbg_cascades import ordinary_cascade
             bbg_base=ordinary_cascade(bet,constraints)
             if bbg_base:
@@ -604,28 +737,80 @@ class DemoRuntime:
                 cd["actions"] = [{k:a[k] for k in ("$type","modeName","featureIdentifier","name") if k in a} for a in cd["actions"] if isinstance(a,dict)]
             from .classic_wire import ordinary_flat_event,ordinary_jackpot_collections
             flat=bet.get("eventdata")
+            from .cluster_cascades import known as known_cluster_cascade,ordinary as ordinary_cluster_cascade
+            if known_cluster_cascade(bet,constraints):
+                schema='legacy-cluster-cascade/ordinary/v1' if ordinary_cluster_cascade(bet,constraints) else 'legacy-cluster-cascade/feature/v1'
+                safe.setdefault('cluster_cascade_outcomes',[]).append({'step':bet['step'],'schema':schema,'definition':constraints['cluster_cascade_definition'],'bet':{**{key:bet[key] for key in ('step','status','betamount','betcurrency','eventdata')},'betdata':{key:value for key,value in bd.items() if key!='initialBalance'}}})
+            from .host_guest import ordinary as ordinary_host_guest
+            if ordinary_host_guest(bet,constraints):
+                safe.setdefault('ordinary_host_guest_outcomes',[]).append({'step':bet['step'],'schema':'indexed-host-reels-without-guest/v1','definition':(constraints or {}).get('host_guest_definition'),'data':flat})
+            else:
+                from .host_guest import known as known_host_guest
+                if known_host_guest(bet,constraints):
+                    safe.setdefault('host_guest_feature_outcomes',[]).append({'step':bet['step'],'schema':'indexed-host-reels-counted-guest/v1','definition':(constraints or {}).get('host_guest_definition'),'data':flat})
             if ordinary_flat_event(flat,constraints) or ordinary_jackpot_collections(flat) or ordinary_flat_multiplier(flat):
                 safe.setdefault("ordinary_flat_outcomes",[]).append({"step":bet["step"],"schema":"classic-flat/v1" if ordinary_flat_event(flat,constraints) else "flat-multiplier/v1" if ordinary_flat_multiplier(flat) else "classic-jackpot/v1","data":flat})
-            keep_cd=explicit_base or known_awarded_sequence(cd)
+            keep_cd=explicit_base or cash_base or known_awarded_sequence(cd)
             safe["bets"].append({"step":bet["step"],"status":bet.get("status"),"command":bd.get("cmd"),"clientData":{k:v for k,v in cd.items() if k not in {"wagerId","wagerid","ResultId","ResultTime"}} if keep_cd else {k:cd[k] for k in ("featuresUsed","freeSpinTypePlayed","freeSpins","isFinished","actions")+( ("finalBoard",) if named else ()) if k in cd}})
         clean = {k:v for k,v in request.items() if k in {"cmd","amount","coin","coins","lines","step","betid","type","clientParams"}}
         (directory / f"step-{index:03d}-request.json").write_text(json.dumps(clean),encoding="utf-8")
         (directory / f"step-{index:03d}-response.json").write_text(json.dumps(safe),encoding="utf-8")
 
     def round(self, template, directory):
+        constraints=self.current_constraints()
+        if constraints.get('common_action_definition'):
+            from .common_action import prepare_request
+            try:template=prepare_request(template,constraints,self.common_action_message_id+1)
+            except (ValueError,TypeError,KeyError,AttributeError,ArithmeticError) as exc:
+                raise Unsupported('Common action: '+str(exc)) from None
         body = {"channel":"pc","currency":self.currency,"lang":"en","gameid":self.gameid, **template}
         classic_lines=bool(getattr(self,"config",{}).get("classic_line_quantity")) and not template.get("cmd")
         if classic_lines:body.pop("coins",None)
         state = wager_state(self.call("play", body))
         validate_start(state,template,self.currency,classic_line_quantity=classic_lines)
+        from .common_action import family as common_action_family, validate as validate_common_action
+        common_action_proof=None
+        common_action_state=None
+        if common_action_family(state) or constraints.get('common_action_definition'):
+            try:
+                common_action_proof=validate_common_action(state,constraints,template)
+                common_action_state=state['common_action_player_state']
+                common_action_message_id=state['common_action_message_id']
+            except (ValueError,TypeError,KeyError,AttributeError,ArithmeticError) as exc:
+                raise Unsupported('Common action: '+str(exc)) from None
+        from .cash_accounting import paid as validate_cash_debit
+        try:
+            proof=validate_cash_debit(state,constraints)
+            if proof is not None:state['cash_accounting_proof']=proof
+        except (ValueError,TypeError,KeyError,AttributeError,ArithmeticError) as exc:raise Unsupported('Cash ledger: '+str(exc)) from None
         if state["wagerid"] in self.seen_wagers:
             raise Unsupported('El servidor reutilizÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³ una ronda anterior')
         self.seen_wagers.add(state["wagerid"])
-        normal = not template.get("cmd") and ordinary_round(state,getattr(self,"config",{}).get("ordinary_constraints"))
+        normal = not template.get("cmd") and ordinary_round(state,constraints)
         from .client_data_sequence import known_awarded_sequence
         from .parameter_choices import current_info
+        from .host_guest import known as known_host_guest
         root_cd=((state['bets'][0].get('eventdata') or {}).get('response') or {}).get('clientData')
-        known_feature=bool(template.get('cmd')) or known_awarded_sequence(root_cd) or current_info(state,getattr(self,'config',{}).get('ordinary_constraints')) is not None
+        host_declared=bool(constraints.get('host_guest_definition'))
+        host_known=known_host_guest(state['bets'][0],constraints)
+        host_event=state['bets'][0].get('eventdata') or {}
+        from .indexed_output import known as known_indexed_output,family as indexed_output_family
+        from .indexed_awards import direct as direct_indexed_award
+        indexed_present=indexed_output_family(state)
+        indexed_known=known_indexed_output(state['bets'][0],constraints)
+        indexed_award_state=state['indexed_award_player_state'] if direct_indexed_award(state,constraints) is not None else None
+        from .cash_purchase import family as cash_family,awarded as cash_awarded
+        from .cash_collect import ordinary as ordinary_cash_collect,neutral_ante as neutral_cash_ante
+        cash_present=cash_family(state)
+        cash_known=bool(constraints.get('cash_collect_definition')) and (ordinary_cash_collect(state['bets'][0],constraints) or neutral_cash_ante(state['bets'][0],constraints) or cash_awarded(state['bets'][0],constraints))
+        from .cluster_cascades import known as known_cluster_cascade,family as cluster_cascade_family
+        cluster_present=cluster_cascade_family(state)
+        cluster_known=known_cluster_cascade(state['bets'][0],constraints)
+        strict_result=(host_declared or cash_present or indexed_present or cluster_present or
+                       any(constraints.get(key) for key in ('cash_collect_definition','indexed_output_definition','cluster_cascade_definition')))
+        if strict_result and len(state['bets'])!=1:
+            raise Unsupported('Unlearned multiple result steps in a single response')
+        known_feature=bool(template.get('cmd')) or bool(common_action_proof) or known_awarded_sequence(root_cd) or host_known or indexed_known or cluster_known or current_info(state,constraints) is not None
         self.save(directory,1,body,state)
         steps = 1
         continuation_commands=[]
@@ -633,16 +818,38 @@ class DemoRuntime:
         while not state["terminal"]:
             if steps >= 32:
                 raise Unsupported('LÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­mite de continuaciones; ronda sin cierre')
-            request = continuation_request(state,getattr(self,"config",{}).get("ordinary_constraints"))
+            request = continuation_request(state,constraints)
             following = wager_state(self.call("play", {"channel":"pc","currency":self.currency,"lang":"en","gameid":self.gameid, **request}))
             self.save(directory,steps+1,request,following,choices={"available":state["commands"],"selected":request["cmd"]} if len(state["commands"])>1 and request["cmd"]!="Finished" else None)
-            validate_transition(state,following,request,getattr(self,"config",{}).get("ordinary_constraints"))
+            validate_transition(state,following,request,constraints)
+            if following.get('indexed_award_proof') is not None:
+                indexed_award_state=following['indexed_award_player_state']
             self.save(directory,steps+1,request,following,choices={"available":state["commands"],"selected":request["cmd"]} if len(state["commands"])>1 and request["cmd"]!="Finished" else None,transition_validated=True)
             continuation_commands.append(request["cmd"])
             sequence_bets.extend(following["bets"])
             following["root_step"] = state["root_step"]
             state = following
             steps += 1
+        if host_declared:
+            if not host_known:raise Unsupported('Unlearned host/guest outcome; closed wager does not prove the feature contract')
+            if self.host_mode is not None and host_event['gameModeCurrent']!=self.host_mode:raise Unsupported('Host/guest state changed between paid rounds')
+            self.host_mode=dict(host_event['gameModeNext'])
+        if (indexed_present or constraints.get('indexed_output_definition')) and not indexed_known and indexed_award_state is None:
+            raise Unsupported('Unlearned indexed output; closed wager does not prove the feature contract')
+        if (cash_present or constraints.get('cash_collect_definition')) and not cash_known:
+            raise Unsupported('Unlearned cash outcome; closed wager does not prove the feature contract')
+        if (cluster_present or constraints.get('cluster_cascade_definition')) and not cluster_known:
+            raise Unsupported('Unlearned cluster cascade; closed wager does not prove the feature contract')
+        if indexed_award_state is not None:
+            if continuation_commands[-1:]!=['C'] or not state.get('cash_accounting_proof',{}).get('balance_delta_verified'):
+                raise Unsupported('Indexed award was not reconciled by terminal cash settlement')
+            self.indexed_award_history={'session':(self.token,self.gameid,self.currency),'player_state':indexed_award_state}
+        if common_action_state is not None:
+            if not state.get('cash_accounting_proof',{}).get('balance_delta_verified'):
+                raise Unsupported('Common action: no proven terminal cash settlement')
+            self.common_action_history={'session':(self.token,self.gameid,self.currency),'player_state':common_action_state,
+                                        'balance':state['cash_balances']['result'],'message_id':common_action_message_id}
+            self.common_action_message_id=common_action_message_id
         from .free_board_sequence import known_sequence as known_free_board_sequence
         from .respin_sequence import known_sequence as known_respin_sequence
         from .walking_sequence import known_sequence

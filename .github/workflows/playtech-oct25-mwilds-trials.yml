@@ -1,0 +1,28 @@
+name: GPAS Oct25 missing feature selector trials
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-oct25-mwilds-trials.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    env:
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[playtech]'
+      - name: One fresh command per original unknown mode
+        run: |
+          python scripts/playtech-gpas-declared-probe.py \
+            gpas_mwilds_pop,1,default gpas_mwilds_pop,1,1 \
+            gpas_mwilds_pop,FG40,FG40

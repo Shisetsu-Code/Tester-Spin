@@ -1,0 +1,69 @@
+name: Playtech October 25 protocol-witness demos
+run-name: Playtech new package · 6 GPAS · current executor
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-new-package-witness.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - family: 'completed-long'
+            codes: 'gpas_dncftnt_pop gpas_wlroll_pop'
+          - family: 'choice-and-extra'
+            codes: 'gpas_wcupcc_pop gpas_sorome_pop'
+          - family: 'reconciled'
+            codes: 'gpas_efnof_pop gpas_mwilds_pop'
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    env:
+      PYTHONUNBUFFERED: '1'
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install GPAS backend
+        run: python -m pip install '.[playtech]'
+      - name: Run six independent new official demo sessions
+        shell: bash
+        env:
+          GAME_CODES: ${{ matrix.codes }}
+        run: |
+          set +e
+          read -ra codes <<< "$GAME_CODES"
+          python scripts/playtech-actions-sample.py \
+            --games "${codes[@]}" --spins 1 --timeout 35 --wall-timeout 110 \
+            --data-root "$RUNNER_TEMP/playtech-20261025-witness" \
+            --output-dir reports
+          code=$?
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('reports/summary.json')
+          if p.is_file():
+            for r in json.loads(p.read_text())['results']:
+              print('WITNESS_DEMO',json.dumps({'game':r['symbol'],'status':r['status'],
+                 'rounds':r['successful_spins'],'issues':r['execution_issues'][:20],
+                 'attempts':[{'ok':a['ok'],'steps':a['wire_steps'],'error':a['error']}
+                    for a in r['attempts'][:20]]},ensure_ascii=False))
+          PY
+          echo "CLI_EXIT=$code"
+          exit 0
+      - name: Upload allowlisted results only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playtech-oct25-${{ matrix.family }}
+          path: reports/
+          if-no-files-found: warn
+          retention-days: 7

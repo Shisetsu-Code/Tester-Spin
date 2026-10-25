@@ -12,16 +12,24 @@ def execute(provider, game, result, run_dir, *, spins, timeout_s, stop_event, pr
     runtime = DemoRuntime(provider.http, game.symbol, timeout_s, stop_event, gate=provider.request_gate,capture_path=run_dir/"analysis"/"http.har")
     try:
         config = runtime.bootstrap()
-        if config["unresolved"]:
+        constraints=config['ordinary_constraints']
+        from .runtime import props_of
+        props=props_of(runtime.bootstrap_data)
+        cluster_candidate=(type(props.get('MinClusterSize')) is int and isinstance(props.get('PrizesPerIcon'),dict)
+                           and isinstance(props.get('MultipliersPerLevel'),dict) and isinstance(props.get('Icons'),list)
+                           and isinstance(props.get('IconTypes'),list) and isinstance(props.get('Prizes'),list)
+                           and type(props.get('NumberOfReels')) is int and type(props.get('WindowHeight')) is int)
+        from .common_action_source import candidate as common_action_candidate
+        if config["unresolved"] or constraints.get('growing_ways_geometry') and constraints.get('purchase_quotes') or cluster_candidate and not constraints.get('cluster_cascade_definition') or common_action_candidate(props) and not constraints.get('common_action_definition'):
             from .sdk_mode_roles import load_source
             from .runtime import configuration
             page=provider.har_artifact_dir(game)/"official-page.html"
             if page.is_file():
-                source=load_source(provider.http,page.read_text(encoding="utf-8"),game.symbol,config['wire_modes'],run_dir/"analysis",timeout_s)
+                source=load_source(provider.http,page.read_text(encoding="utf-8"),game.symbol,config['wire_modes'],run_dir/"analysis",timeout_s,props=props)
                 if source is not None:
                     config=configuration(runtime.bootstrap_data,game.symbol,runtime.currency,sdk_source=source)
                     runtime.config=config
-                    progress("Yggdrasil: roles del cliente oficial contrastados con los modos y precios actuales.")
+                    progress("Yggdrasil: contratos del cliente oficial contrastados con la configuración actual.")
     except InterruptedError:
         result.status, result.error = "CANCELADO", 'Detención solicitada durante bootstrap Demo'
         return result

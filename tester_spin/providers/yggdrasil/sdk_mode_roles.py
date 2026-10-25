@@ -40,12 +40,18 @@ def source_roles(source,modes):
  proof=card_roles(source,modes)
  if proof is not None:return proof
  from .single_card_roles import source_roles as single_card_roles
- return single_card_roles(source,modes)
+ proof=single_card_roles(source,modes)
+ if proof is not None:return proof
+ from .sdk_purchase_list_roles import source_roles as purchase_list_roles
+ return purchase_list_roles(source,modes)
 
-def load_source(http,page_html,gameid,modes,directory,timeout):
+def load_source(http,page_html,gameid,modes,directory,timeout,*,props=None):
  from urllib.parse import urlsplit,parse_qs,urljoin
  from bs4 import BeautifulSoup
  from pathlib import Path
+ from .common_action_source import candidate as common_action_candidate, declaration as common_action_declaration, loader_paths
+ common_action=common_action_candidate(props)
+ loader_source=None;loader_manifest=None
  allowed={'staticdemo.yggdrasilgaming.com','staticpff.yggdrasilgaming.com'}
  urls=[]
  for element in BeautifulSoup(page_html,'html.parser').select('[data-iframe-src]'):
@@ -62,16 +68,40 @@ def load_source(http,page_html,gameid,modes,directory,timeout):
    url=urljoin(base,node['src']);p=urlsplit(url)
    if p.scheme=='https' and p.hostname in allowed and p.path.endswith('.js'):scripts.append(url)
   if not 1<=len(set(scripts))<=8:return None
+  if common_action:
+   loaders=[url for url in dict.fromkeys(scripts) if urlsplit(url).path.endswith('/debug-loader.js')]
+   if loaders:
+    if len(loaders)!=1:return None
+    response=http.get(loaders[0],timeout=timeout);p=urlsplit(getattr(response,'url',loaders[0]));expected=urlsplit(loaders[0])
+    if response.status_code!=200 or p.scheme!='https' or (p.hostname,p.path)!=(expected.hostname,expected.path) or len(response.text)>100000:return None
+    loader_source=response.text
+    paths=loader_paths(loader_source)
+    if paths is None:return None
+    loader_manifest={'host':p.hostname,'path':p.path,'sha256':hashlib.sha256(loader_source.encode()).hexdigest()}
+    scripts=[urljoin(base,path) for path in paths]
   sources=[];manifest=[]
   for url in dict.fromkeys(scripts):
    response=http.get(url,timeout=timeout);p=urlsplit(getattr(response,'url',url))
    if response.status_code!=200 or p.scheme!='https' or p.hostname not in allowed or not p.path.endswith('.js') or len(response.text)>36000000:return None
+   if common_action and (p.hostname,p.path)!=(urlsplit(url).hostname,urlsplit(url).path):return None
    if sum(map(len,sources))+len(response.text)>64000000:return None
    sources.append(response.text);manifest.append({'host':p.hostname,'path':p.path,'sha256':hashlib.sha256(response.text.encode()).hexdigest()})
  except Exception:return None
- source='\n'.join(sources);proof=source_roles(source,modes)
- if proof is None:return None
+ source='\n'.join(sources);proof=None;cash_proof=None;cluster_proof=None
+ if not common_action:
+  proof=source_roles(source,modes)
+  from .cash_collect_source import declaration as cash_declaration
+  cash_proof=cash_declaration(source)
+  from .cluster_cascades import declaration as cluster_declaration
+  cluster_proof=cluster_declaration(props,source)
+ common_action_proof=common_action_declaration(props,source)
+ if proof is None and cash_proof is None and cluster_proof is None and common_action_proof is None:return None
  directory=Path(directory);directory.mkdir(parents=True,exist_ok=True)
  (directory/'sdk-mode-role-source.js').write_text(source,encoding='utf-8')
- (directory/'sdk-mode-role-proof.json').write_text(json.dumps({**proof,'assets':manifest},indent=2),encoding='utf-8')
+ if proof is not None:(directory/'sdk-mode-role-proof.json').write_text(json.dumps({**proof,'assets':manifest},indent=2),encoding='utf-8')
+ if cash_proof is not None:(directory/'sdk-cash-collector-proof.json').write_text(json.dumps({**cash_proof,'assets':manifest},indent=2),encoding='utf-8')
+ if cluster_proof is not None:(directory/'sdk-cluster-cascade-proof.json').write_text(json.dumps({**cluster_proof,'assets':manifest},indent=2),encoding='utf-8')
+ if common_action_proof is not None:
+  if loader_source is not None:(directory/'sdk-common-action-loader.js').write_text(loader_source,encoding='utf-8')
+  (directory/'sdk-common-action-proof.json').write_text(json.dumps({**common_action_proof,'assets':manifest,'loader':loader_manifest},indent=2),encoding='utf-8')
  return source
