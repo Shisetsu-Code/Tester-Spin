@@ -1,0 +1,61 @@
+name: GPAS HAR 2026-10-25 wire contract probes
+on:
+  push:
+    branches: [fix/verify-partials-20261023]
+    paths:
+      - .github/workflows/playtech-hardfire-probes-20261025.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - group: 'pigeon'
+            cases: 'gpas_pigeonfs_pop,10,default gpas_pigeonfs_pop,BuyBonus,buy-bonus'
+          - group: 'ice'
+            cases: 'gpas_icave_pop,default-20,default-20 gpas_icave_pop,default-20,default gpas_icave_pop,feature-20,feature-20'
+          - group: 'wolf'
+            cases: 'gpas_twolf_pop,Classic,classic gpas_twolf_pop,20,default'
+          - group: 'granny'
+            cases: 'gpas_ghgranny_pop,ultra,ultra gpas_ghgranny_pop,BuyFeature,BuyFeature'
+          - group: 'diamond'
+            cases: 'gpas_diamdhrbf_pop,BuyFeature,BuyFeature'
+          - group: 'forest'
+            cases: 'gpas_krfforest_pop,6x,6x gpas_krfforest_pop,15x,15x'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[playtech]'
+      - name: One fresh official demo wager per HAR-observed candidate
+        shell: bash
+        env:
+          CANDIDATES: ${{ matrix.cases }}
+        run: |
+          read -ra cases <<< "$CANDIDATES"
+          python scripts/playtech-gpas-declared-probe.py "${cases[@]}"
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[playtech]'
+      - name: Inspect current GPAS scopes, flags, client bindings (no gameplay)
+        run: |
+          python scripts/playtech-gpas-contract-inspect.py \
+            gpas_diamdhrbf_pop gpas_ghgranny_pop gpas_icave_pop \
+            gpas_krfforest_pop gpas_krsqueen_pop gpas_lluckmcc_pop \
+            gpas_pigeonfs_pop gpas_twolf_pop
