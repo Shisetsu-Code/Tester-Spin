@@ -140,6 +140,10 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
         ).pack(side="left", padx=(14, 0))
 
         catalog_controls = self.crawl_btn.master
+        self.export_catalog_btn = ttk.Button(
+            catalog_controls, text="EXPORTAR CATÁLOGO TXT", command=self._export_catalog,
+        )
+        self.export_catalog_btn.pack(side="left", padx=(8, 0))
         self.delete_catalog_selected_btn = ttk.Button(
             catalog_controls,
             text="BORRAR SELECCIONADOS",
@@ -210,6 +214,32 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
         if mode=="all":return games
         results={row.get('slug'):row for row in self.storage.latest_results(provider_key)}
         return [g for g in games if matches_features(results.get(g.slug,{}),mode)]
+
+    def _export_catalog(self) -> None:
+        """Export every persisted game of the selected provider, without UI filters."""
+        from datetime import datetime
+        from tester_spin.partial_export import write_game_export
+        provider = self._provider()
+        games = self.storage.list_games(provider.key)
+        if not games:
+            messagebox.showinfo("Exportar catálogo", "Este proveedor no tiene juegos cargados.", parent=self)
+            return
+        target = filedialog.asksaveasfilename(
+            parent=self, title=f"Exportar catálogo de {provider.display_name}",
+            initialdir=str(Path.home() / "Desktop"),
+            initialfile=f"catalogo-{provider.key}-{datetime.now():%Y%m%d-%H%M%S}.txt",
+            defaultextension=".txt", filetypes=[("Archivo de texto", "*.txt")],
+        )
+        if not target:
+            return
+        try:
+            count = write_game_export(target, games)
+        except (OSError, ValueError) as exc:
+            messagebox.showerror("Exportar catálogo", str(exc), parent=self)
+            return
+        self.status_var.set(f"Exportados {count} enlaces del catálogo")
+        self._append_log(f"Catálogo de {provider.display_name}: {count} enlaces exportados a {target}")
+        messagebox.showinfo("Exportar catálogo", f"Exportados {count} enlaces, uno por línea.\n\n{target}", parent=self)
 
     def _export_filtered(self):
         from pathlib import Path
