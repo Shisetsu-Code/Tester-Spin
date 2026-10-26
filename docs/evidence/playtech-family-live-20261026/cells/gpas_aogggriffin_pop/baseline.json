@@ -1,0 +1,228 @@
+{
+  "schema": "tester-spin/playtech-family-live-cell/v1",
+  "manifest_sha256": "e7340b35c58dfc7f3336f925b0b62c923c6cf347993b542e8f181c97f1ac79a4",
+  "version": "baseline",
+  "case": {
+    "code": "gpas_aogggriffin_pop",
+    "family": "corosin-modern",
+    "name": "Glorious Griffin"
+  },
+  "expected_sha": "fbc4258af94e31ae8db70e899d0208280df9b033",
+  "checkout_sha": "fbc4258af94e31ae8db70e899d0208280df9b033",
+  "budget": {
+    "spins": 1,
+    "timeout": 45,
+    "wall_timeout": 600
+  },
+  "exit_code": 0,
+  "summary_proof": {
+    "schema": "tester-spin/playtech-actions-sample/v1",
+    "source_commit": "fbc4258af94e31ae8db70e899d0208280df9b033",
+    "spins_per_mode": 1,
+    "selected": [
+      "gpas_aogggriffin_pop"
+    ],
+    "fresh_data": true,
+    "dry_run": false
+  },
+  "invocation": {
+    "schema": "tester-spin/playtech-family-live-invocation/v1",
+    "version": "baseline",
+    "code": "gpas_aogggriffin_pop",
+    "source_commit": "fbc4258af94e31ae8db70e899d0208280df9b033",
+    "workflow_commit": "38ef4c441a291f423806f78d28c1197a6841954a",
+    "budget": {
+      "spins": 1,
+      "timeout": 45,
+      "wall_timeout": 600
+    },
+    "started_at": "2026-10-26T13:23:55.472311+00:00",
+    "finished_at": "2026-10-26T13:24:00.669860+00:00",
+    "exit_code": 0,
+    "python_version": "3.12.15",
+    "dependency_sha256": "fe07082a226250888054c133ced801aeeaa2eadcb5393ec363330e55b1cd518f"
+  },
+  "validation": {
+    "valid": true,
+    "issues": []
+  },
+  "result": {
+    "status": "PARCIAL",
+    "reported_status": "PARCIAL",
+    "requested_spins": 2,
+    "successful_spins": 2,
+    "failed_spins": 0,
+    "elapsed_ms": 3899.695478000005,
+    "error": "UNBOUND_STAKE_MODE:HR10; UNBOUND_STAKE_MODE:HR20; UNBOUND_STAKE_MODE:HR40 Cobertura de ramificaciones pendiente: PURCHASE_DECLARATION -> ['DOMAIN_UNRESOLVED']; ANTE_DECLARATION -> ['DOMAIN_UNRESOLVED'].",
+    "execution_issues": [
+      "UNBOUND_STAKE_MODE:HR10",
+      "UNBOUND_STAKE_MODE:HR20",
+      "UNBOUND_STAKE_MODE:HR40"
+    ],
+    "return_to_base_verified": true,
+    "live_contract_family": null,
+    "discovered_modes": [
+      {
+        "mode": "mode-001",
+        "name": "20",
+        "kind": "SPIN",
+        "cost": 20,
+        "multiplier": 1,
+        "stake": 20,
+        "configuration_context": {},
+        "selector": "default",
+        "bet_type": "default",
+        "validated": true
+      },
+      {
+        "mode": "mode-002",
+        "name": "HR10",
+        "kind": "UNKNOWN_FEATURE",
+        "cost": 200,
+        "multiplier": 1,
+        "stake": 200,
+        "configuration_context": {},
+        "selector": "HR10",
+        "bet_type": "default",
+        "validated": false
+      },
+      {
+        "mode": "mode-003",
+        "name": "HR20",
+        "kind": "UNKNOWN_FEATURE",
+        "cost": 400,
+        "multiplier": 1,
+        "stake": 400,
+        "configuration_context": {},
+        "selector": "HR20",
+        "bet_type": "default",
+        "validated": false
+      },
+      {
+        "mode": "mode-004",
+        "name": "HR40",
+        "kind": "UNKNOWN_FEATURE",
+        "cost": 800,
+        "multiplier": 1,
+        "stake": 800,
+        "configuration_context": {},
+        "selector": "HR40",
+        "bet_type": "default",
+        "validated": false
+      }
+    ],
+    "attempts": [
+      {
+        "number": 1,
+        "mode": "mode-001",
+        "name": "20",
+        "mode_kind": "SPIN",
+        "ok": true,
+        "terminal": true,
+        "wire_steps": 1,
+        "error": "",
+        "warning": ""
+      },
+      {
+        "number": 2,
+        "mode": "mode-001",
+        "name": "20",
+        "mode_kind": "SPIN",
+        "ok": true,
+        "terminal": true,
+        "wire_steps": 1,
+        "error": "",
+        "warning": ""
+      }
+    ],
+    "operation_inventory": {
+      "schema": "tester-spin/gpas-operation-coverage/v1",
+      "modes": [
+        {
+          "mode": "mode-001",
+          "name": "20",
+          "kind": "SPIN",
+          "executable": true,
+          "attempts": 2,
+          "verified": true,
+          "choice_coverage_complete": true,
+          "failed_attempts": 0
+        },
+        {
+          "mode": "mode-002",
+          "name": "HR10",
+          "kind": "UNKNOWN_FEATURE",
+          "executable": false,
+          "attempts": 0,
+          "verified": false,
+          "choice_coverage_complete": true,
+          "failed_attempts": 0
+        },
+        {
+          "mode": "mode-003",
+          "name": "HR20",
+          "kind": "UNKNOWN_FEATURE",
+          "executable": false,
+          "attempts": 0,
+          "verified": false,
+          "choice_coverage_complete": true,
+          "failed_attempts": 0
+        },
+        {
+          "mode": "mode-004",
+          "name": "HR40",
+          "kind": "UNKNOWN_FEATURE",
+          "executable": false,
+          "attempts": 0,
+          "verified": false,
+          "choice_coverage_complete": true,
+          "failed_attempts": 0
+        }
+      ],
+      "expected_by_kind": {
+        "SPIN": 1,
+        "ANTE_BET": 0,
+        "PURCHASE": 0
+      },
+      "verified_by_kind": {
+        "SPIN": 1,
+        "ANTE_BET": 0,
+        "PURCHASE": 0
+      },
+      "declared_unknown": [
+        "mode-002",
+        "mode-003",
+        "mode-004"
+      ],
+      "missing": [],
+      "disabled_not_offered": [],
+      "all_declared_operations_verified": false
+    },
+    "pending_choice_branches": [],
+    "cli_exit_code": 0
+  },
+  "metrics": {
+    "modes_discovered": 4,
+    "modes_recognized": 1,
+    "modes_verified": 1,
+    "modes_unknown": 3,
+    "modes_pending": 3,
+    "pending_choice_branches": 0,
+    "rounds_requested": 2,
+    "rounds_attempted": 2,
+    "rounds_verified": 2,
+    "rounds_failed": 0,
+    "wire_steps": 2
+  },
+  "fingerprints": {
+    "client_source_sha256": [
+      "53d38a7b6d8791f3ce53d6128d5aa377b7117de3a878b6ae9d3bc8e222be7d3b"
+    ],
+    "client_source_origin": "protocol",
+    "client_sources_consistent": true,
+    "monetary_configuration_sha256": "9d7e878038cde75dc66c1fa6e89c438b9a056101fd34170d90a58e54795405e1",
+    "monetary_configuration_origin": "scoped-server-rows",
+    "manifest_sha256": "ae440ddd637e9bf0574d3fad3cdf29fe6ef7b74f723fc0c8f61129f815df4811",
+    "projection_schema": "tester-spin/live-fingerprints/allowlist-v1"
+  }
+}

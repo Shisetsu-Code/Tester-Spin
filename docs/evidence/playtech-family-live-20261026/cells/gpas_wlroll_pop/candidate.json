@@ -1,0 +1,265 @@
+{
+  "schema": "tester-spin/playtech-family-live-cell/v1",
+  "manifest_sha256": "e7340b35c58dfc7f3336f925b0b62c923c6cf347993b542e8f181c97f1ac79a4",
+  "version": "candidate",
+  "case": {
+    "code": "gpas_wlroll_pop",
+    "family": "corosin-modern",
+    "name": "Wild Roll"
+  },
+  "expected_sha": "f4e524335ae07eea2f8ad5440651bcd163fed5bc",
+  "checkout_sha": "f4e524335ae07eea2f8ad5440651bcd163fed5bc",
+  "budget": {
+    "spins": 1,
+    "timeout": 45,
+    "wall_timeout": 600
+  },
+  "exit_code": 0,
+  "summary_proof": {
+    "schema": "tester-spin/playtech-actions-sample/v1",
+    "source_commit": "f4e524335ae07eea2f8ad5440651bcd163fed5bc",
+    "spins_per_mode": 1,
+    "selected": [
+      "gpas_wlroll_pop"
+    ],
+    "fresh_data": true,
+    "dry_run": false
+  },
+  "invocation": {
+    "schema": "tester-spin/playtech-family-live-invocation/v1",
+    "version": "candidate",
+    "code": "gpas_wlroll_pop",
+    "source_commit": "f4e524335ae07eea2f8ad5440651bcd163fed5bc",
+    "workflow_commit": "38ef4c441a291f423806f78d28c1197a6841954a",
+    "budget": {
+      "spins": 1,
+      "timeout": 45,
+      "wall_timeout": 600
+    },
+    "started_at": "2026-10-26T13:26:27.611235+00:00",
+    "finished_at": "2026-10-26T13:26:41.067498+00:00",
+    "exit_code": 0,
+    "python_version": "3.12.15",
+    "dependency_sha256": "fe07082a226250888054c133ced801aeeaa2eadcb5393ec363330e55b1cd518f"
+  },
+  "validation": {
+    "valid": true,
+    "issues": []
+  },
+  "result": {
+    "status": "OK",
+    "reported_status": "OK",
+    "requested_spins": 5,
+    "successful_spins": 5,
+    "failed_spins": 0,
+    "elapsed_ms": 12438.175273000006,
+    "error": "",
+    "execution_issues": [],
+    "return_to_base_verified": true,
+    "live_contract_family": "corosin-modern",
+    "discovered_modes": [
+      {
+        "mode": "mode-001",
+        "name": "default",
+        "kind": "SPIN",
+        "cost": 10,
+        "multiplier": 1,
+        "stake": 10,
+        "configuration_context": {
+          "betType": "default",
+          "featureType": "default"
+        },
+        "selector": "default",
+        "bet_type": "default",
+        "validated": true
+      },
+      {
+        "mode": "mode-002",
+        "name": "BF3Cards",
+        "kind": "PURCHASE",
+        "cost": 1000,
+        "multiplier": 50,
+        "stake": 50000,
+        "configuration_context": {
+          "betType": "default",
+          "featureType": "BF3Cards"
+        },
+        "selector": "BF3Cards",
+        "bet_type": "default",
+        "validated": true
+      },
+      {
+        "mode": "mode-003",
+        "name": "BF6Cards",
+        "kind": "PURCHASE",
+        "cost": 1500,
+        "multiplier": 50,
+        "stake": 75000,
+        "configuration_context": {
+          "betType": "default",
+          "featureType": "BF6Cards"
+        },
+        "selector": "BF6Cards",
+        "bet_type": "default",
+        "validated": true
+      },
+      {
+        "mode": "mode-004",
+        "name": "BF9Cards",
+        "kind": "PURCHASE",
+        "cost": 2000,
+        "multiplier": 50,
+        "stake": 100000,
+        "configuration_context": {
+          "betType": "default",
+          "featureType": "BF9Cards"
+        },
+        "selector": "BF9Cards",
+        "bet_type": "default",
+        "validated": true
+      }
+    ],
+    "attempts": [
+      {
+        "number": 1,
+        "mode": "mode-001",
+        "name": "default",
+        "mode_kind": "SPIN",
+        "ok": true,
+        "terminal": true,
+        "wire_steps": 1,
+        "error": "",
+        "warning": ""
+      },
+      {
+        "number": 2,
+        "mode": "mode-002",
+        "name": "BF3Cards",
+        "mode_kind": "PURCHASE",
+        "ok": true,
+        "terminal": true,
+        "wire_steps": 12,
+        "error": "",
+        "warning": ""
+      },
+      {
+        "number": 3,
+        "mode": "mode-003",
+        "name": "BF6Cards",
+        "mode_kind": "PURCHASE",
+        "ok": true,
+        "terminal": true,
+        "wire_steps": 21,
+        "error": "",
+        "warning": ""
+      },
+      {
+        "number": 4,
+        "mode": "mode-004",
+        "name": "BF9Cards",
+        "mode_kind": "PURCHASE",
+        "ok": true,
+        "terminal": true,
+        "wire_steps": 13,
+        "error": "",
+        "warning": ""
+      },
+      {
+        "number": 5,
+        "mode": "mode-001",
+        "name": "default",
+        "mode_kind": "SPIN",
+        "ok": true,
+        "terminal": true,
+        "wire_steps": 1,
+        "error": "",
+        "warning": ""
+      }
+    ],
+    "operation_inventory": {
+      "schema": "tester-spin/gpas-operation-coverage/v1",
+      "modes": [
+        {
+          "mode": "mode-001",
+          "name": "default",
+          "kind": "SPIN",
+          "executable": true,
+          "attempts": 2,
+          "verified": true,
+          "choice_coverage_complete": true,
+          "failed_attempts": 0
+        },
+        {
+          "mode": "mode-002",
+          "name": "BF3Cards",
+          "kind": "PURCHASE",
+          "executable": true,
+          "attempts": 1,
+          "verified": true,
+          "choice_coverage_complete": true,
+          "failed_attempts": 0
+        },
+        {
+          "mode": "mode-003",
+          "name": "BF6Cards",
+          "kind": "PURCHASE",
+          "executable": true,
+          "attempts": 1,
+          "verified": true,
+          "choice_coverage_complete": true,
+          "failed_attempts": 0
+        },
+        {
+          "mode": "mode-004",
+          "name": "BF9Cards",
+          "kind": "PURCHASE",
+          "executable": true,
+          "attempts": 1,
+          "verified": true,
+          "choice_coverage_complete": true,
+          "failed_attempts": 0
+        }
+      ],
+      "expected_by_kind": {
+        "SPIN": 1,
+        "ANTE_BET": 0,
+        "PURCHASE": 3
+      },
+      "verified_by_kind": {
+        "SPIN": 1,
+        "ANTE_BET": 0,
+        "PURCHASE": 3
+      },
+      "declared_unknown": [],
+      "missing": [],
+      "disabled_not_offered": [],
+      "all_declared_operations_verified": true
+    },
+    "pending_choice_branches": [],
+    "cli_exit_code": 0
+  },
+  "metrics": {
+    "modes_discovered": 4,
+    "modes_recognized": 4,
+    "modes_verified": 4,
+    "modes_unknown": 0,
+    "modes_pending": 0,
+    "pending_choice_branches": 0,
+    "rounds_requested": 5,
+    "rounds_attempted": 5,
+    "rounds_verified": 5,
+    "rounds_failed": 0,
+    "wire_steps": 48
+  },
+  "fingerprints": {
+    "client_source_sha256": [
+      "6b2119dde05987eb3b0804ba85b022eab015351fb4d8a107cd9cdda84a5b6310"
+    ],
+    "client_source_origin": "protocol",
+    "client_sources_consistent": true,
+    "monetary_configuration_sha256": "122eebca5a3fcd956344fc28993d1e07ee0792e39920a691d29bb9656bbae94e",
+    "monetary_configuration_origin": "scoped-server-rows",
+    "manifest_sha256": "ec7c27bebc5a492bfac7098343de791c8a69b315b2f8e38bfe429349d2f0e0e1",
+    "projection_schema": "tester-spin/live-fingerprints/allowlist-v1"
+  }
+}
