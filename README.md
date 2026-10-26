@@ -30,6 +30,11 @@ El ejecutor prioriza peticiones directas y registra una política común de tran
 
 La ampliación de familias GPAS incorpora cargadores estáticos, scopes de modalidades y reentrada para elecciones. [Validación y evidencia pendiente](docs/PLAYTECH_FAMILY_EXPANSION.md).
 
+`tester-spin families playtech capturas.zip --output familias.json` evalúa las
+primitivas sobre HAR agrupados por contrato de protocolo. Incluye configuración
+por modalidad, comandos Quickspin y diagnóstico de continuaciones y saldo.
+[Uso, capacidades y límites](docs/PLAYTECH_FAMILY_PRIMITIVES.md).
+
 ## Interpretar resultados
 
 - **OK**: las operaciones requeridas y su cobertura comprobada terminaron correctamente.

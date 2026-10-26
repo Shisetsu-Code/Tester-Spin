@@ -1,0 +1,586 @@
+{
+  "schema": "tester-spin/playtech-family-comparison/v1",
+  "baseline_commit": "fbc4258af94e31ae8db70e899d0208280df9b033",
+  "archive_sha256": "a8775ef185cac1587b46bc86e20a132843c41af02c2fd53de9e66250d023bc7b",
+  "implementation_sha256": {
+    "primitives.py": "c3eb850c5713ddeaccc2ca7b8c2b8bab6e21a1e9df927d27016969c1c2bffdb6",
+    "command_families.py": "d9b679f4492b9850205d7c5f023c1884c98954aa66079b72b696746d65d62f7b",
+    "operation_scopes.py": "6102dea9848c6193cca799e0bd0260007e0e781f100d40eca6b1d3d34778e6c0",
+    "family_audit.py": "388316c686b2d057a2fb2a11e20c4dba6574c513de6af275c307f7d84e578d2b",
+    "adapter.py": "a10395c98bb3855e8e4da70f25f72f81f8b902d2a579b64628dffb89482bb1f3"
+  },
+  "method": "The same current auditor evaluates baseline and updated pure primitives. Baseline continuation uses the original adapter inline construction. Shared audit/domain validation is held constant; source binding and scoped discovery are checked separately.",
+  "scope": "Offline primitive compatibility; no live wagers or changed game verdicts.",
+  "summary": {
+    "files": 76,
+    "connections": 33,
+    "games": 9,
+    "frames": 2215,
+    "duplicate_frames": 0,
+    "decoded_only_frames": 0,
+    "unique_frames": 2215,
+    "gameplay_requests": 175,
+    "gameplay_responses": 175,
+    "paired_operations": 175,
+    "unpaired_requests": 0,
+    "unpaired_responses": 0,
+    "rounds": 76,
+    "closed_and_settled_rounds": 74,
+    "open_round_prefixes": 2,
+    "invalid_rounds": 0,
+    "families": 3,
+    "reproduced_operations_before": 122,
+    "reproduced_operations_after": 159,
+    "newly_reproduced_operations": 37,
+    "game_verdicts_changed": 0
+  },
+  "families": [
+    {
+      "family_id": "gpas-5ea8617c28b713b812f9",
+      "command_class": "quickspin.game.playMoney",
+      "dialect": "modern",
+      "games": 1,
+      "operations": 37,
+      "rounds": 4,
+      "capabilities": {
+        "recognition": {
+          "before": {
+            "state": "MISSING_EVIDENCE",
+            "observed": 0,
+            "verified": 0,
+            "issues": [],
+            "missing_evidence": [
+              "CURRENT_CLIENT_CONTRACT_REQUIRED"
+            ]
+          },
+          "after": {
+            "state": "MISSING_EVIDENCE",
+            "observed": 0,
+            "verified": 0,
+            "issues": [],
+            "missing_evidence": [
+              "CURRENT_CLIENT_CONTRACT_REQUIRED"
+            ]
+          }
+        },
+        "entry": {
+          "before": {
+            "state": "PARTIAL",
+            "observed": 4,
+            "verified": 0,
+            "issues": [
+              "PARAMETERS_NOT_REPRODUCED"
+            ],
+            "missing_evidence": []
+          },
+          "after": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 4,
+            "verified": 4,
+            "issues": [],
+            "missing_evidence": []
+          }
+        },
+        "configuration_scope": {
+          "before": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 4,
+            "verified": 4,
+            "issues": [],
+            "missing_evidence": []
+          },
+          "after": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 4,
+            "verified": 4,
+            "issues": [],
+            "missing_evidence": []
+          }
+        },
+        "continuation": {
+          "before": {
+            "state": "PARTIAL",
+            "observed": 33,
+            "verified": 0,
+            "issues": [
+              "PARAMETERS_NOT_REPRODUCED"
+            ],
+            "missing_evidence": [],
+            "phases": [
+              {
+                "phase": "FreeSpin",
+                "state": "PARTIAL",
+                "observed": 33,
+                "verified": 0,
+                "issues": [
+                  "PARAMETERS_NOT_REPRODUCED"
+                ],
+                "missing_evidence": []
+              }
+            ]
+          },
+          "after": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 33,
+            "verified": 33,
+            "issues": [],
+            "missing_evidence": [],
+            "phases": [
+              {
+                "phase": "FreeSpin",
+                "state": "VERIFIED_OFFLINE",
+                "observed": 33,
+                "verified": 33,
+                "issues": [],
+                "missing_evidence": []
+              }
+            ]
+          }
+        },
+        "settlement": {
+          "before": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 4,
+            "verified": 4,
+            "issues": [],
+            "missing_evidence": []
+          },
+          "after": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 4,
+            "verified": 4,
+            "issues": [],
+            "missing_evidence": []
+          }
+        }
+      }
+    },
+    {
+      "family_id": "gpas-a53c5d7cffd042ef9ef9",
+      "command_class": "com.pt.gpas.platform.game.OgwCorosinGameCommand",
+      "dialect": "legacy",
+      "games": 1,
+      "operations": 32,
+      "rounds": 32,
+      "capabilities": {
+        "recognition": {
+          "before": {
+            "state": "MISSING_EVIDENCE",
+            "observed": 0,
+            "verified": 0,
+            "issues": [],
+            "missing_evidence": [
+              "CURRENT_CLIENT_CONTRACT_REQUIRED"
+            ]
+          },
+          "after": {
+            "state": "MISSING_EVIDENCE",
+            "observed": 0,
+            "verified": 0,
+            "issues": [],
+            "missing_evidence": [
+              "CURRENT_CLIENT_CONTRACT_REQUIRED"
+            ]
+          }
+        },
+        "entry": {
+          "before": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 32,
+            "verified": 32,
+            "issues": [],
+            "missing_evidence": []
+          },
+          "after": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 32,
+            "verified": 32,
+            "issues": [],
+            "missing_evidence": []
+          }
+        },
+        "configuration_scope": {
+          "before": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 32,
+            "verified": 32,
+            "issues": [],
+            "missing_evidence": []
+          },
+          "after": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 32,
+            "verified": 32,
+            "issues": [],
+            "missing_evidence": []
+          }
+        },
+        "continuation": {
+          "before": {
+            "state": "MISSING_EVIDENCE",
+            "observed": 0,
+            "verified": 0,
+            "issues": [],
+            "missing_evidence": [],
+            "phases": []
+          },
+          "after": {
+            "state": "MISSING_EVIDENCE",
+            "observed": 0,
+            "verified": 0,
+            "issues": [],
+            "missing_evidence": [],
+            "phases": []
+          }
+        },
+        "settlement": {
+          "before": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 32,
+            "verified": 32,
+            "issues": [],
+            "missing_evidence": []
+          },
+          "after": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 32,
+            "verified": 32,
+            "issues": [],
+            "missing_evidence": []
+          }
+        }
+      }
+    },
+    {
+      "family_id": "gpas-cc1d171091de24ed1d87",
+      "command_class": "com.pt.gpas.platform.game.OgwCorosinGameCommand",
+      "dialect": "modern",
+      "games": 7,
+      "operations": 106,
+      "rounds": 40,
+      "capabilities": {
+        "recognition": {
+          "before": {
+            "state": "MISSING_EVIDENCE",
+            "observed": 0,
+            "verified": 0,
+            "issues": [],
+            "missing_evidence": [
+              "CURRENT_CLIENT_CONTRACT_REQUIRED"
+            ]
+          },
+          "after": {
+            "state": "MISSING_EVIDENCE",
+            "observed": 0,
+            "verified": 0,
+            "issues": [],
+            "missing_evidence": [
+              "CURRENT_CLIENT_CONTRACT_REQUIRED"
+            ]
+          }
+        },
+        "entry": {
+          "before": {
+            "state": "PARTIAL",
+            "observed": 40,
+            "verified": 36,
+            "issues": [
+              "PARAMETERS_NOT_REPRODUCED"
+            ],
+            "missing_evidence": []
+          },
+          "after": {
+            "state": "PARTIAL",
+            "observed": 40,
+            "verified": 36,
+            "issues": [
+              "PARAMETERS_NOT_REPRODUCED"
+            ],
+            "missing_evidence": []
+          }
+        },
+        "configuration_scope": {
+          "before": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 40,
+            "verified": 40,
+            "issues": [],
+            "missing_evidence": []
+          },
+          "after": {
+            "state": "VERIFIED_OFFLINE",
+            "observed": 40,
+            "verified": 40,
+            "issues": [],
+            "missing_evidence": []
+          }
+        },
+        "continuation": {
+          "before": {
+            "state": "PARTIAL",
+            "observed": 66,
+            "verified": 54,
+            "issues": [
+              "PARAMETERS_NOT_REPRODUCED"
+            ],
+            "missing_evidence": [],
+            "phases": [
+              {
+                "phase": "FreeGames",
+                "state": "VERIFIED_OFFLINE",
+                "observed": 54,
+                "verified": 54,
+                "issues": [],
+                "missing_evidence": []
+              },
+              {
+                "phase": "Respins",
+                "state": "PARTIAL",
+                "observed": 12,
+                "verified": 0,
+                "issues": [
+                  "PARAMETERS_NOT_REPRODUCED"
+                ],
+                "missing_evidence": []
+              }
+            ]
+          },
+          "after": {
+            "state": "PARTIAL",
+            "observed": 66,
+            "verified": 54,
+            "issues": [
+              "PARAMETERS_NOT_REPRODUCED"
+            ],
+            "missing_evidence": [],
+            "phases": [
+              {
+                "phase": "FreeGames",
+                "state": "VERIFIED_OFFLINE",
+                "observed": 54,
+                "verified": 54,
+                "issues": [],
+                "missing_evidence": []
+              },
+              {
+                "phase": "Respins",
+                "state": "PARTIAL",
+                "observed": 12,
+                "verified": 0,
+                "issues": [
+                  "PARAMETERS_NOT_REPRODUCED"
+                ],
+                "missing_evidence": []
+              }
+            ]
+          }
+        },
+        "settlement": {
+          "before": {
+            "state": "PARTIAL",
+            "observed": 40,
+            "verified": 38,
+            "issues": [],
+            "missing_evidence": [
+              "ROUND_END_NOT_CAPTURED"
+            ]
+          },
+          "after": {
+            "state": "PARTIAL",
+            "observed": 40,
+            "verified": 38,
+            "issues": [],
+            "missing_evidence": [
+              "ROUND_END_NOT_CAPTURED"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "current_source_binding": {
+    "source_sha256": "32a11ea9cd05ab57c040feaadf6e345ddf9d497843c3ea39824bff48ee94d406",
+    "source_reference": "tests/fixtures/playtech_command_sources.json",
+    "before": {
+      "bound": false,
+      "reason": "CLIENT_COMMAND_BINDING_UNKNOWN"
+    },
+    "after": {
+      "command_family": "quickspin-modern",
+      "command_binding_validated": true,
+      "binding_source": "current_client_source",
+      "feature_prefix_bindings": {
+        "buyFeature": "PURCHASE",
+        "extraBet": "ANTE_BET"
+      },
+      "pick_bound": false
+    }
+  },
+  "scoped_purchase_discovery": {
+    "configuration_source": {
+      "file": "gpas-games.playtechone.com-2026-10-25T12-27-15-077Z.har",
+      "entry_index": 1,
+      "frame_index": 9
+    },
+    "binder_source": "Existing synthetic cards-family fixture, used solely to isolate configuration handling.",
+    "changes": [
+      {
+        "mode": "BF3Cards",
+        "before": {
+          "factor": 1,
+          "amount": 1000
+        },
+        "after": {
+          "factor": 50,
+          "amount": 50000,
+          "context": {
+            "betType": "default",
+            "featureType": "BF3Cards"
+          },
+          "domain": {
+            "factors": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              8,
+              10,
+              15,
+              20,
+              25,
+              30,
+              40,
+              50,
+              80,
+              100,
+              115,
+              150,
+              200,
+              275,
+              300,
+              400,
+              500,
+              700,
+              750,
+              1000,
+              1500,
+              1900
+            ],
+            "default_factor": 50,
+            "min_bet": 1000,
+            "max_bet": 500000
+          }
+        }
+      },
+      {
+        "mode": "BF6Cards",
+        "before": {
+          "factor": 1,
+          "amount": 1500
+        },
+        "after": {
+          "factor": 50,
+          "amount": 75000,
+          "context": {
+            "betType": "default",
+            "featureType": "BF6Cards"
+          },
+          "domain": {
+            "factors": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              8,
+              10,
+              15,
+              20,
+              25,
+              30,
+              40,
+              50,
+              80,
+              100,
+              115,
+              150,
+              200,
+              275,
+              300,
+              400,
+              500,
+              700,
+              750,
+              1000,
+              1500,
+              1900
+            ],
+            "default_factor": 50,
+            "min_bet": 1500,
+            "max_bet": 600000
+          }
+        }
+      },
+      {
+        "mode": "BF9Cards",
+        "before": {
+          "factor": 1,
+          "amount": 2000
+        },
+        "after": {
+          "factor": 50,
+          "amount": 100000,
+          "context": {
+            "betType": "default",
+            "featureType": "BF9Cards"
+          },
+          "domain": {
+            "factors": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              8,
+              10,
+              15,
+              20,
+              25,
+              30,
+              40,
+              50,
+              80,
+              100,
+              115,
+              150,
+              200,
+              275,
+              300,
+              400,
+              500,
+              700,
+              750,
+              1000,
+              1500,
+              1900
+            ],
+            "default_factor": 50,
+            "min_bet": 2000,
+            "max_bet": 600000
+          }
+        }
+      }
+    ]
+  },
+  "limits": [
+    "Historical HARs do not contain the current client source.",
+    "Corosin global antebet parameters remain unresolved where source/configuration state is missing.",
+    "No ChooseFG choice is observed in this corpus.",
+    "Two captured rounds have no recorded ending.",
+    "Quickspin compound buy plus ante selectors use a separate unbound collector."
+  ]
+}
