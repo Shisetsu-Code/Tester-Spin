@@ -217,6 +217,7 @@ class CurrentTesterSpinApp(LiveTesterSpinApp):
 
     def _export_catalog(self) -> None:
         """Export every persisted game of the selected provider, without UI filters."""
+        from pathlib import Path
         from datetime import datetime
         from tester_spin.partial_export import write_game_export
         provider = self._provider()
