@@ -10,6 +10,7 @@ import zlib
 from copy import deepcopy
 from .protocol import money
 from .client_sources import compiled_pick_binding
+from .command_families import source_command_family, QUICKSPIN_CLASS
 from .two_option_contracts import infer_two_option_modes
 from .mode_families import (base_price_families, is_disabled_extra_base,
                              uniquely_declared_standard, mixed_standard_line_selectors,
@@ -44,23 +45,14 @@ def decode_game_data(data, limit=8*1024*1024):
 
 def client_contract(manifest, sources, adapter_config=None):
     text = "\n".join(sources)
-    if GAME_CLASS not in text or not all(re.search(r"\b"+str(n)+r"\b",text) for n in (40021,48775)):
-        raise ValueError("CLIENT_COMMAND_BINDING_UNKNOWN")
-    setup = manifest.get("setup", {})
-    legacy = setup.get("usesLegacyBetApi")
-    if legacy is True and "GLU.game.bet" in text and "stakeCostUuid" in text:
-        dialect = "legacy"
-    elif legacy is not True and "GLU.game.playMoney" in text and (legacy is False or setup.get("useExtendedBetApi") is True or "GLU.game.bet" not in text):
-        dialect = "modern"
-    else:
-        raise ValueError("CLIENT_BET_API_UNKNOWN")
-    return {"adapter_maps": deepcopy(adapter_config or {}) if all(key in text for key in ("game_adapter","bet_features","bet_feature_types","toFeatureTypes")) else {}, "dialect":dialect, "class":GAME_CLASS, "entry_id":40021, "continuation_id":48775,
+    family = source_command_family(manifest, sources)
+    return {**family, "adapter_maps": deepcopy(adapter_config or {}) if all(key in text for key in ("game_adapter","bet_features","bet_feature_types","toFeatureTypes")) else {},
             "standard_start_bound": ('startingMode' in text and 'stakeCostName' in text and bool(re.search(r'!\s*[A-Za-z_$][\w$]*\([A-Za-z_$][\w$]*,["\']Standard["\']\)',text))),
             "base_selector": "default" if 'baseCostName:"default"' in text or "baseCostName:'default'" in text else None,
-            "pick_bound": (bool(re.search(r'[\"\']pick[\"\']',text)) and "FGPickController" in text) or compiled_pick_binding(text)}
+            "pick_bound": family['class'] != QUICKSPIN_CLASS and ((bool(re.search(r'[\"\']pick[\"\']',text)) and "FGPickController" in text) or compiled_pick_binding(text))}
 
 
-def discover_modes(configuration, contract, sources):
+def discover_modes(configuration, contract, sources, *, configuration_rows=None):
     game = configuration.get("game", {})
     costs = game.get("costConfiguration")
     factors = game.get("baseCostMultipliers", game.get("coinSizes"))
@@ -71,6 +63,25 @@ def discover_modes(configuration, contract, sources):
     active = game.get("activeBetOptions")
     if active is not None and (not isinstance(active,list) or not all(isinstance(n,str) for n in active)):
         raise ValueError("INVALID_ACTIVE_OPTIONS")
+    prefix_bindings=contract.get('feature_prefix_bindings',{})
+    if not isinstance(prefix_bindings,dict) or not all(
+            isinstance(prefix,str) and prefix and kind in ('PURCHASE','ANTE_BET')
+            for prefix,kind in prefix_bindings.items()):
+        raise ValueError('FEATURE_PREFIX_BINDINGS_INVALID')
+    prefix_kinds={}; prefix_issues=[]
+    if prefix_bindings and active is None:
+        prefix_issues.append('FEATURE_PREFIX_DOMAIN_UNKNOWN')
+    elif active is not None:
+        # This walker is authorized only by the current client contract. The
+        # client requires the base prefix and stops at the first numeric gap.
+        offered=set(active)
+        for prefix,kind in prefix_bindings.items():
+            if prefix not in offered:continue
+            prefix_kinds.setdefault(prefix,set()).add(kind)
+            index=2
+            while prefix+str(index) in offered:
+                prefix_kinds.setdefault(prefix+str(index),set()).add(kind)
+                index+=1
     text = "\n".join(sources)
     purchase_binding = bool(re.search(r"BuyFeature(?:Module|Controller|Configuration)",text))
     ante_binding = bool(re.search(r"ExtraBets?(?:Module|Controller|Configuration|Widget)",text)) or bool(re.search(r"extraBetNum\s*:\s*1",text))
@@ -97,7 +108,7 @@ def discover_modes(configuration, contract, sources):
     guarded_pairs=infer_two_option_modes(costs,game,contract,text)
     card_buys=card_buy_family(costs,game,contract,text)
     legacy_pair=legacy_numeric_base_with_named_buy(costs,game,contract,text)
-    modes=[]; issues=[]; disabled=[]; names=set(); ids=set()
+    modes=[]; issues=prefix_issues; disabled=[]; names=set(); ids=set()
     for index, row in enumerate(costs):
         if not isinstance(row,dict) or not money(row.get("cost")) or row["cost"]<=0:
             raise ValueError("INVALID_MODE_COST")
@@ -119,7 +130,7 @@ def discover_modes(configuration, contract, sources):
         standard=(contract.get('standard_start_bound') is True and sum(isinstance(c,dict) and isinstance(c.get('parameters'),dict) and c['parameters'].get('startingMode')=='Standard' for c in costs)==1 and isinstance(parameters,dict)
                   and parameters.get('startingMode')=='Standard' and type(parameters.get('startingPlays')) in (str,int) and parameters.get('startingPlays') in ('1',1)
                   and set(parameters)<={'startingMode','startingPlays','winline','discountable','evalPayout','disableBCMValidation'})
-        declared_kinds=descriptors.get(name,set())
+        declared_kinds=descriptors.get(name,set()) | prefix_kinds.get(name,set())
         from .adapter_config import mapped_kind
         mapped=mapped_kind(name,contract.get('adapter_maps',{}))
         if mapped:declared_kinds=set(declared_kinds)|{mapped}
@@ -191,8 +202,24 @@ def discover_modes(configuration, contract, sources):
                 and type(maximum_stake) is int and maximum_stake>0
                 and row["cost"]*default_factor<=maximum_stake):
             multiplier=default_factor
-        modes.append({"id":identity,"name":name,"kind":kind,"selector":selector,"cost":row["cost"],
-                      "bet_type":scope.get("betType","default"),"multiplier":multiplier,"declaration":deepcopy(row),"server_declared":True,"observed":True})
+        mode={"id":identity,"name":name,"kind":kind,"selector":selector,"cost":row["cost"],
+              "bet_type":scope.get("betType","default"),"multiplier":multiplier,"declaration":deepcopy(row),"server_declared":True,"observed":True}
+        if configuration_rows is not None and kind!="UNKNOWN_FEATURE":
+            from .operation_scopes import resolve_operation_stake
+            enabled_flag = ('featureBetEnabled' if kind=="PURCHASE" or
+                kind=="ANTE_BET" and name in guarded_pairs else
+                'extraBetEnabled' if kind=="ANTE_BET" else None)
+            try:
+                scoped_stake=resolve_operation_stake(configuration_rows,mode,costs,
+                                                      enabled_flag=enabled_flag)
+                if scoped_stake is None:
+                    disabled.append(name)
+                    continue
+                mode.update(scoped_stake)
+            except ValueError as exc:
+                mode['kind']="UNKNOWN_FEATURE"
+                issues.append(str(exc)+':'+name)
+        modes.append(mode)
     if not any(m["kind"]=="SPIN" for m in modes):issues.append("BASE_MODE_UNBOUND")
     if active is not None:
         for name in active:
@@ -205,11 +232,34 @@ def discover_modes(configuration, contract, sources):
 def entry_command(mode, contract):
     if mode["kind"]=="UNKNOWN_FEATURE":raise ValueError("UNBOUND_STAKE_MODE")
     amount=mode["cost"]*mode["multiplier"]
-    data={"_type":contract["class"],"ID":contract["entry_id"],"parameters":[]}
+    data={"_type":contract["class"],"ID":contract["entry_id"]}
+    if contract["class"] == QUICKSPIN_CLASS:
+        data["parameters"] = None
     if contract["dialect"]=="legacy":
         data.update(bet=amount,stakeCostUuid=mode["id"],baseCostMultiplier=mode["multiplier"])
         return {"_type":COMMAND,"gameData":data,"betType":"default"}
     return {"_type":COMMAND,"gameData":data,"autoplay":False,"betCost":amount,"betType":mode.get("bet_type","default"),"featureType":mode["selector"]}
+
+
+def continuation_command(parameters, contract):
+    """Serialize semantic parameters; this pure builder does not certify source.
+
+    A wire-only audit may use the builder without promoting its observation to a
+    live binding. Execution obtains its contract separately from client_contract.
+    """
+    if not isinstance(parameters, list):
+        raise ValueError("CLIENT_PARAMETER_DOMAIN_INVALID")
+    if contract["class"] == QUICKSPIN_CLASS:
+        if parameters:
+            raise ValueError("CLIENT_PARAMETER_BINDING_UNKNOWN")
+        encoded = None
+    else:
+        encoded = deepcopy(parameters)
+    command = {"_type":COMMAND,"gameData":{"_type":contract["class"],
+               "ID":contract["continuation_id"],"parameters":encoded}}
+    if contract["dialect"] == "modern":
+        command["autoplay"] = False
+    return command
 
 
 class PickState:

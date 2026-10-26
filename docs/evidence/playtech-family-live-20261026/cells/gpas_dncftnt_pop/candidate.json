@@ -1,0 +1,265 @@
+{
+  "schema": "tester-spin/playtech-family-live-cell/v1",
+  "manifest_sha256": "e7340b35c58dfc7f3336f925b0b62c923c6cf347993b542e8f181c97f1ac79a4",
+  "version": "candidate",
+  "case": {
+    "code": "gpas_dncftnt_pop",
+    "family": "corosin-modern",
+    "name": "Oriana's Orbs"
+  },
+  "expected_sha": "f4e524335ae07eea2f8ad5440651bcd163fed5bc",
+  "checkout_sha": "f4e524335ae07eea2f8ad5440651bcd163fed5bc",
+  "budget": {
+    "spins": 1,
+    "timeout": 45,
+    "wall_timeout": 600
+  },
+  "exit_code": 0,
+  "summary_proof": {
+    "schema": "tester-spin/playtech-actions-sample/v1",
+    "source_commit": "f4e524335ae07eea2f8ad5440651bcd163fed5bc",
+    "spins_per_mode": 1,
+    "selected": [
+      "gpas_dncftnt_pop"
+    ],
+    "fresh_data": true,
+    "dry_run": false
+  },
+  "invocation": {
+    "schema": "tester-spin/playtech-family-live-invocation/v1",
+    "version": "candidate",
+    "code": "gpas_dncftnt_pop",
+    "source_commit": "f4e524335ae07eea2f8ad5440651bcd163fed5bc",
+    "workflow_commit": "38ef4c441a291f423806f78d28c1197a6841954a",
+    "budget": {
+      "spins": 1,
+      "timeout": 45,
+      "wall_timeout": 600
+    },
+    "started_at": "2026-10-26T13:24:44.261360+00:00",
+    "finished_at": "2026-10-26T13:25:18.114799+00:00",
+    "exit_code": 0,
+    "python_version": "3.12.15",
+    "dependency_sha256": "fe07082a226250888054c133ced801aeeaa2eadcb5393ec363330e55b1cd518f"
+  },
+  "validation": {
+    "valid": true,
+    "issues": []
+  },
+  "result": {
+    "status": "OK",
+    "reported_status": "OK",
+    "requested_spins": 5,
+    "successful_spins": 5,
+    "failed_spins": 0,
+    "elapsed_ms": 31363.041316999996,
+    "error": "",
+    "execution_issues": [],
+    "return_to_base_verified": true,
+    "live_contract_family": "corosin-modern",
+    "discovered_modes": [
+      {
+        "mode": "mode-001",
+        "name": "default",
+        "kind": "SPIN",
+        "cost": 10,
+        "multiplier": 1,
+        "stake": 10,
+        "configuration_context": {
+          "betType": "default",
+          "featureType": "default"
+        },
+        "selector": "default",
+        "bet_type": "default",
+        "validated": true
+      },
+      {
+        "mode": "mode-002",
+        "name": "buyFeature3",
+        "kind": "PURCHASE",
+        "cost": 600,
+        "multiplier": 50,
+        "stake": 30000,
+        "configuration_context": {
+          "betType": "default",
+          "featureType": "buyFeature3"
+        },
+        "selector": "buyFeature3",
+        "bet_type": "default",
+        "validated": true
+      },
+      {
+        "mode": "mode-003",
+        "name": "buyFeature4",
+        "kind": "PURCHASE",
+        "cost": 900,
+        "multiplier": 50,
+        "stake": 45000,
+        "configuration_context": {
+          "betType": "default",
+          "featureType": "buyFeature4"
+        },
+        "selector": "buyFeature4",
+        "bet_type": "default",
+        "validated": true
+      },
+      {
+        "mode": "mode-004",
+        "name": "buyFeature5",
+        "kind": "PURCHASE",
+        "cost": 1200,
+        "multiplier": 50,
+        "stake": 60000,
+        "configuration_context": {
+          "betType": "default",
+          "featureType": "buyFeature5"
+        },
+        "selector": "buyFeature5",
+        "bet_type": "default",
+        "validated": true
+      }
+    ],
+    "attempts": [
+      {
+        "number": 1,
+        "mode": "mode-001",
+        "name": "default",
+        "mode_kind": "SPIN",
+        "ok": true,
+        "terminal": true,
+        "wire_steps": 1,
+        "error": "",
+        "warning": ""
+      },
+      {
+        "number": 2,
+        "mode": "mode-002",
+        "name": "buyFeature3",
+        "mode_kind": "PURCHASE",
+        "ok": true,
+        "terminal": true,
+        "wire_steps": 15,
+        "error": "",
+        "warning": ""
+      },
+      {
+        "number": 3,
+        "mode": "mode-003",
+        "name": "buyFeature4",
+        "mode_kind": "PURCHASE",
+        "ok": true,
+        "terminal": true,
+        "wire_steps": 78,
+        "error": "",
+        "warning": ""
+      },
+      {
+        "number": 4,
+        "mode": "mode-004",
+        "name": "buyFeature5",
+        "mode_kind": "PURCHASE",
+        "ok": true,
+        "terminal": true,
+        "wire_steps": 82,
+        "error": "",
+        "warning": ""
+      },
+      {
+        "number": 5,
+        "mode": "mode-001",
+        "name": "default",
+        "mode_kind": "SPIN",
+        "ok": true,
+        "terminal": true,
+        "wire_steps": 1,
+        "error": "",
+        "warning": ""
+      }
+    ],
+    "operation_inventory": {
+      "schema": "tester-spin/gpas-operation-coverage/v1",
+      "modes": [
+        {
+          "mode": "mode-001",
+          "name": "default",
+          "kind": "SPIN",
+          "executable": true,
+          "attempts": 2,
+          "verified": true,
+          "choice_coverage_complete": true,
+          "failed_attempts": 0
+        },
+        {
+          "mode": "mode-002",
+          "name": "buyFeature3",
+          "kind": "PURCHASE",
+          "executable": true,
+          "attempts": 1,
+          "verified": true,
+          "choice_coverage_complete": true,
+          "failed_attempts": 0
+        },
+        {
+          "mode": "mode-003",
+          "name": "buyFeature4",
+          "kind": "PURCHASE",
+          "executable": true,
+          "attempts": 1,
+          "verified": true,
+          "choice_coverage_complete": true,
+          "failed_attempts": 0
+        },
+        {
+          "mode": "mode-004",
+          "name": "buyFeature5",
+          "kind": "PURCHASE",
+          "executable": true,
+          "attempts": 1,
+          "verified": true,
+          "choice_coverage_complete": true,
+          "failed_attempts": 0
+        }
+      ],
+      "expected_by_kind": {
+        "SPIN": 1,
+        "ANTE_BET": 0,
+        "PURCHASE": 3
+      },
+      "verified_by_kind": {
+        "SPIN": 1,
+        "ANTE_BET": 0,
+        "PURCHASE": 3
+      },
+      "declared_unknown": [],
+      "missing": [],
+      "disabled_not_offered": [],
+      "all_declared_operations_verified": true
+    },
+    "pending_choice_branches": [],
+    "cli_exit_code": 0
+  },
+  "metrics": {
+    "modes_discovered": 4,
+    "modes_recognized": 4,
+    "modes_verified": 4,
+    "modes_unknown": 0,
+    "modes_pending": 0,
+    "pending_choice_branches": 0,
+    "rounds_requested": 5,
+    "rounds_attempted": 5,
+    "rounds_verified": 5,
+    "rounds_failed": 0,
+    "wire_steps": 177
+  },
+  "fingerprints": {
+    "client_source_sha256": [
+      "8fc090b38786ca6e3a33c0ef6785e1213b0b54279be49d98a1a5d965325b05a7"
+    ],
+    "client_source_origin": "protocol",
+    "client_sources_consistent": true,
+    "monetary_configuration_sha256": "439c46a4935ffca0016f517e21639950707a7116daff12dba9f1b5275fbe7250",
+    "monetary_configuration_origin": "scoped-server-rows",
+    "manifest_sha256": "fdacec2603eff35179ff30c4a2572dcd06b97f4aec206d01b6cfba599aba20ad",
+    "projection_schema": "tester-spin/live-fingerprints/allowlist-v1"
+  }
+}

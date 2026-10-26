@@ -73,6 +73,22 @@ def inspect_capture(har):
     entries=capture_entries(document)
     if not entries and not document['log'].get('_warpWebSockets'):
         raise ValueError('HAR_EMPTY_CAPTURE: iniciá la grabación antes de recargar la demo y exportá con contenido después de cerrar la ronda.')
+    if document['log'].get('_warpWebSockets') or any(
+            entry.get('_webSocketFrames') or entry.get('_webSocketMessages') for entry in entries):
+        from tester_spin.providers.playtech.family_audit import analyze_hars
+        audit=analyze_hars([har])
+        if audit['families'] or audit['summary'].get('gameplay_requests',0):
+            issues=[issue for issue in audit.get('issues',[]) if isinstance(issue,str)]
+            for family in audit['families']:
+                issues.extend(issue for issue in family.get('issues',[]) if isinstance(issue,str))
+            if any(family.get('missing_evidence') for family in audit['families']):
+                issues.append('GPAS_FAMILY_EVIDENCE_INCOMPLETE')
+            if audit['summary'].get('gameplay_requests',0)>audit['summary'].get('paired_operations',0):
+                issues.append('GPAS_GAMEPLAY_RESPONSE_MISSING')
+            return dict(entry_count=len(entries),protocol='GPAS',issues=list(dict.fromkeys(issues)),
+                next_steps=['Evaluá juntos los fragmentos HAR o el ZIP con tester-spin families playtech CAPTURAS --output familias.json.',
+                            'El informe detalla por familia las primitivas verificadas y la evidencia pendiente.'],
+                family_audit=audit)
     codes=set()
     for entry in entries:
         try: url=urlsplit(entry.get('request',{}).get('url',''))

@@ -8,7 +8,8 @@ from tester_spin.models import GameTestResult, SpinAttempt, utc_now_iso
 from tester_spin.providers.catalogs.adapter import CatalogProvider
 from tester_spin.providers.catalogs.sources import SOURCES
 from .protocol import resolve_configuration
-from .primitives import COMMAND, client_contract, discover_modes, entry_command, PickState, RoundLedger
+from .primitives import (client_contract, discover_modes, entry_command,
+                         continuation_command, PickState, RoundLedger)
 from .direct_runtime import DemoSession
 from .gpas_continuation import ContinuationPlanner
 from .demo_sessions import GPASDemoSessions
@@ -41,7 +42,7 @@ class PlaytechProvider(CatalogProvider):
                 (run/'bootstrap.json').write_text(json.dumps({'manifest':session.manifest,'source_sha256':session.source_hashes,'contract':None,'configuration_status':'captured_in_session_har'},indent=2),encoding='utf-8')
                 contract=client_contract(session.manifest,session.sources,adapter_config=getattr(session,"adapter_config",None))
                 resolved=resolve_configuration(session.config,{'betType':'default'})
-                plan=discover_modes(resolved,contract,session.sources)
+                plan=discover_modes(resolved,contract,session.sources,configuration_rows=session.config)
                 result.discovered_modes=plan['modes'];result.feature_domains=plan['domains'];issues.extend(plan['unresolved'])
                 result.structural_map['operation_inventory']=operation_coverage(plan)
                 result.structural_map['playtech_protocol']={'contract':contract,'source_sha256':session.source_hashes,'configuration':resolved,'fresh_demo':True,'transport':getattr(session,'transport_kind','unspecified')}
@@ -67,7 +68,8 @@ class PlaytechProvider(CatalogProvider):
                             current_contract=client_contract(session.manifest,session.sources,
                                 adapter_config=getattr(session,'adapter_config',None))
                             current_config=resolve_configuration(session.config,{'betType':'default'})
-                            current_plan=discover_modes(current_config,current_contract,session.sources)
+                            current_plan=discover_modes(current_config,current_contract,session.sources,
+                                                        configuration_rows=session.config)
                             def identity(m):
                                 return tuple(m.get(k) for k in ('id','name','kind','selector','cost','multiplier','bet_type'))
                             if not any(identity(m)==identity(mode) for m in current_plan['modes']):
@@ -89,8 +91,7 @@ class PlaytechProvider(CatalogProvider):
                             if response.get('gameRoundClosed') is True:
                                 raise ValueError('CLOSED_ROUND_WITH_ACTIVE_CONTINUATION')
                             parameters=continuation.parameters(data,contract,picks)
-                            request={'_type':COMMAND,'gameData':{'_type':contract['class'],'ID':contract['continuation_id'],'parameters':parameters}}
-                            if contract['dialect']=='modern':request['autoplay']=False
+                            request=continuation_command(parameters,contract)
                             (directory/f'request-{step+1}.json').write_text(json.dumps(request,indent=2),encoding='utf-8')
                         if not ledger.closed:raise ValueError('ROUND_STEP_LIMIT')
                         session.wait(lambda:ledger.verify(session.balance),'BALANCE_NOT_RECONCILED')

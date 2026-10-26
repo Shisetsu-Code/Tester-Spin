@@ -21,6 +21,10 @@ def parser():
     root=argparse.ArgumentParser(prog='tester-spin')
     sub=root.add_subparsers(dest='command',required=True)
     sub.add_parser('providers',help='listar los proveedores independientes')
+    families=sub.add_parser('families',help='evaluar primitivas por familia sobre HAR o ZIP guardados')
+    families.add_argument('provider',choices=['playtech'])
+    families.add_argument('captures',nargs='+',type=Path)
+    families.add_argument('--output',type=Path,help='guardar el informe de familias en JSON')
     for name in ('catalog','run'):
         p=sub.add_parser(name);p.add_argument('provider',choices=PROVIDERS)
         p.add_argument('--data-root',type=Path,default=Path(os.environ.get('TESTER_SPIN_DATA_ROOT','data')))
@@ -65,6 +69,25 @@ def write_json(path,value):
     finally:
         Path(temporary).unlink(missing_ok=True)
 
+def audit_families(args):
+    """Keep historical family evaluation outside provider/storage initialization."""
+    from zipfile import BadZipFile
+    try:
+        if args.output:
+            output=args.output.resolve()
+            for capture in args.captures:
+                if output==capture.resolve() or (output.exists() and capture.exists() and output.samefile(capture)):
+                    print('El informe no puede sobrescribir una captura de entrada.',file=sys.stderr)
+                    return 2
+        from tester_spin.providers.playtech.family_audit import analyze_hars
+        report=analyze_hars(args.captures)
+        if args.output:write_json(args.output,report)
+        print(json.dumps(report,ensure_ascii=False,indent=2))
+        return 0
+    except (OSError,ValueError,BadZipFile) as exc:
+        print('No se pudo analizar la captura: '+type(exc).__name__+'. Revisá el archivo HAR o ZIP.',file=sys.stderr)
+        return 2
+
 def main(argv=None):
     os.environ.setdefault('PYTHONUTF8','1');os.environ.setdefault('PYTHONIOENCODING','utf-8')
     for stream in (sys.stdout,sys.stderr):
@@ -74,6 +97,7 @@ def main(argv=None):
         parser().error('--group-report y --group-id se requieren juntos')
     if args.command=='providers':
         print(json.dumps({k:v[2] for k,v in PROVIDERS.items()},ensure_ascii=False,indent=2));return 0
+    if args.command=='families':return audit_families(args)
     try:profiles=profiles_for(args)
     except (ValueError,RuntimeError) as exc:print(str(exc),file=sys.stderr);return 2
     from tester_spin.storage import Storage

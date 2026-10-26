@@ -1,0 +1,206 @@
+name: Playtech family baseline comparison
+run-name: GPAS families · baseline vs PR38 · 9 paired demos
+
+on:
+  push:
+    branches: [fix/gpas-family-primitives-20261025]
+    paths:
+      - .github/workflows/playtech-family-comparison.yml
+      - scripts/playtech-family-live-manifest.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tester-spin-playtech-family-comparison
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      baseline_sha: ${{ steps.plan.outputs.baseline_sha }}
+      candidate_sha: ${{ steps.plan.outputs.candidate_sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Prepare fixed paired sample
+        id: plan
+        shell: python
+        run: |
+          import json, os, re
+          from pathlib import Path
+          manifest = json.loads(Path('scripts/playtech-family-live-manifest.json').read_text())
+          assert manifest['schema'] == 'tester-spin/playtech-family-live-manifest/v1'
+          assert len({c['code'] for c in manifest['cases']}) == len(manifest['cases']) == 9
+          assert manifest['max_parallel'] == 3
+          for key in ('baseline_sha', 'candidate_sha'):
+              assert re.fullmatch('[a-f0-9]{40}', manifest[key])
+          matrix = {'include': [dict(c, order=('baseline candidate' if i % 2 == 0 else 'candidate baseline'))
+                                for i, c in enumerate(manifest['cases'])]}
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('matrix=' + json.dumps(matrix, separators=(',', ':')) + '\n')
+              for key in ('baseline_sha', 'candidate_sha'):
+                  output.write(key + '=' + manifest[key] + '\n')
+
+  demos:
+    name: Paired demo · ${{ matrix.code }}
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    env:
+      PYTHONUNBUFFERED: '1'
+      PYTHONUTF8: '1'
+      TESTER_SPIN_PUBLISH_RESULTS: '0'
+      GAME_CODE: ${{ matrix.code }}
+      ARM_ORDER: ${{ matrix.order }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: harness
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.prepare.outputs.baseline_sha }}
+          path: baseline
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.prepare.outputs.candidate_sha }}
+          path: candidate
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Install identical dependencies in isolated environments
+        shell: bash
+        run: |
+          python -m venv "$RUNNER_TEMP/venv-baseline"
+          python -m venv "$RUNNER_TEMP/venv-candidate"
+          "$RUNNER_TEMP/venv-baseline/bin/python" -m pip install './baseline[playtech]'
+          "$RUNNER_TEMP/venv-baseline/bin/python" -m pip freeze --exclude tester-spin > "$RUNNER_TEMP/family-constraints.txt"
+          "$RUNNER_TEMP/venv-candidate/bin/python" -m pip install --constraint "$RUNNER_TEMP/family-constraints.txt" './candidate[playtech]'
+      - name: Run both fixed revisions with fresh official demo sessions
+        shell: python
+        run: |
+          import datetime, hashlib, json, os, subprocess, sys
+          from pathlib import Path
+          workspace = Path(os.environ['GITHUB_WORKSPACE'])
+          temporary = Path(os.environ['RUNNER_TEMP'])
+          harness = workspace / 'harness'
+          manifest_path = harness / 'scripts/playtech-family-live-manifest.json'
+          manifest = json.loads(manifest_path.read_text())
+          budget = manifest['budget']
+          code = os.environ['GAME_CODE']
+          assert code in {c['code'] for c in manifest['cases']}
+          versions = os.environ['ARM_ORDER'].split()
+          assert sorted(versions) == ['baseline', 'candidate']
+          dependency_hashes = {}
+          dependency_query = ('import importlib.metadata,json; '
+              'print(json.dumps(sorted((d.metadata["Name"].lower(),d.version) '
+              'for d in importlib.metadata.distributions() '
+              'if d.metadata["Name"].lower() not in {"tester-spin","pip","setuptools"})))')
+          for version in versions:
+              executable = temporary / ('venv-' + version) / 'bin/python'
+              dependencies = subprocess.check_output([str(executable), '-c', dependency_query], text=True)
+              dependency_hashes[version] = hashlib.sha256(dependencies.encode()).hexdigest()
+          assert len(set(dependency_hashes.values())) == 1, 'DEPENDENCIES_DIFFER_BETWEEN_ARMS'
+          failed = False
+          for version in versions:
+              checkout = workspace / version
+              tested_sha = subprocess.check_output(['git', '-C', str(checkout), 'rev-parse', 'HEAD'], text=True).strip()
+              assert tested_sha == manifest[version + '_sha'], 'CHECKOUT_SHA_MISMATCH'
+              executable = temporary / ('venv-' + version) / 'bin/python'
+              private_data = temporary / ('private-' + code + '-' + version)
+              sample_output = temporary / ('sample-' + code + '-' + version)
+              sample_output.mkdir()
+              output = workspace / 'public-results' / code / (version + '.json')
+              output.parent.mkdir(parents=True, exist_ok=True)
+              env = dict(os.environ, GITHUB_SHA=tested_sha, TESTER_SPIN_PUBLISH_RESULTS='0')
+              started_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+              completed = subprocess.run([str(executable), 'scripts/playtech-actions-sample.py',
+                  '--games', code, '--spins', str(budget['spins']),
+                  '--timeout', str(budget['timeout']), '--wall-timeout', str(budget['wall_timeout']),
+                  '--data-root', str(private_data), '--output-dir', str(sample_output)],
+                  cwd=checkout, env=env, check=False)
+              invocation = {'schema': 'tester-spin/playtech-family-live-invocation/v1',
+                  'version': version, 'code': code, 'source_commit': tested_sha,
+                  'workflow_commit': os.environ['GITHUB_SHA'], 'budget': budget,
+                  'started_at': started_at,
+                  'finished_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                  'exit_code': completed.returncode, 'python_version': sys.version.split()[0],
+                  'dependency_sha256': dependency_hashes[version]}
+              (sample_output / 'invocation.json').write_text(json.dumps(invocation), encoding='utf-8')
+              collected = subprocess.run([str(executable), str(harness / 'scripts/playtech-family-live-compare.py'),
+                  'collect', '--manifest', str(manifest_path), '--version', version,
+                  '--code', code, '--checkout', str(checkout), '--data-root', str(private_data),
+                  '--input-dir', str(sample_output), '--output', str(output),
+                  '--exit-code', str(completed.returncode)], cwd=checkout, check=False)
+              failed = failed or collected.returncode != 0
+              # sample.py maps a blocked CLI (3/4) to its own exit code 1.
+              # Inspect the underlying result before starting another arm.
+              sample_summary = sample_output / 'summary.json'
+              underlying_codes = ([r.get('cli_exit_code') for r in json.loads(sample_summary.read_text()).get('results', [])]
+                                  if sample_summary.exists() else [])
+              blocked = next((value for value in underlying_codes if value in (3, 4)), None)
+              if blocked is not None or completed.returncode in (3, 4):
+                  raise SystemExit(blocked or completed.returncode)
+          raise SystemExit(int(failed))
+      - name: Preserve derived public evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: family-live-${{ matrix.code }}
+          path: public-results/
+          if-no-files-found: error
+          retention-days: 14
+
+  comparison:
+    name: Compare actual statuses and unresolved modes
+    needs: [prepare, demos]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: family-live-*
+          path: live-evidence
+          merge-multiple: true
+      - name: Measure promotions, remaining partials and regressions
+        run: |
+          python scripts/playtech-family-live-compare.py compare \
+            --manifest scripts/playtech-family-live-manifest.json \
+            --input-dir live-evidence \
+            --output comparison/summary.json \
+            --markdown comparison/summary.md
+      - name: Show comparison even when partials remain
+        if: always()
+        shell: bash
+        run: |
+          if [ -f comparison/summary.md ]; then
+            cat comparison/summary.md >> "$GITHUB_STEP_SUMMARY"
+            cat comparison/summary.md
+          fi
+      - name: Preserve complete comparison
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: playtech-family-live-comparison
+          path: comparison/
+          if-no-files-found: error
+          retention-days: 30
